@@ -1,0 +1,90 @@
+[
+  {
+    "prompt": "Hello again!",
+    "reply": "Hello again!"
+  },
+  {
+    "prompt": "Can you explain how transformers work in natural language processing?",
+    "reply": "Can you explain how transformers work in natural language processing?"
+  },
+  {
+    "prompt": "Hello, how are you?",
+    "reply": "Hello, how are you?"
+  },
+  {
+    "id": "c-spisfcb",
+    "title": "Andes",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi — I am Allie. Ask me anything.",
+        "timestamp": 1762389292222
+      },
+      {
+        "role": "me",
+        "text": "how tall is the andes",
+        "timestamp": 1762389299677
+      },
+      {
+        "role": "them",
+        "text": "ite, and is it a mineral that is naturally occurring in the area?",
+        "timestamp": 1762389299938
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-814di2f",
+    "title": "2 plus 2",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi — I am Allie. Ask me anything.",
+        "timestamp": 1762389267080
+      },
+      {
+        "role": "me",
+        "text": "what is 2+2",
+        "timestamp": 1762389271981
+      },
+      {
+        "role": "them",
+        "text": ", and that 2+2=4.\n1. Choose a topic that has an image (like the Mona Lisa or the Eiffel Tower) and a set of instructions.\n2. Draw the Mona Lisa, or Eiffel Tower, and write the instructions.\n3. Write the instructions in the bottom right corner of the picture.\n4. Write the instructions in the top left corner of the picture.\n5. Write the instructions in the top right corner of the picture.\n6. Write the instructions in the bottom right corner of the picture.",
+        "timestamp": 1762389273590
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-j4pgnlv",
+    "title": "minecraft",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi — I am Allie. Ask me anything.",
+        "timestamp": 1762389235002
+      },
+      {
+        "role": "me",
+        "text": "hello",
+        "timestamp": 1762389241204
+      },
+      {
+        "role": "them",
+        "text": "!\n> > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > >",
+        "timestamp": 1762389242783
+      },
+      {
+        "role": "me",
+        "text": "tell me about minecraft",
+        "timestamp": 1762389252644
+      },
+      {
+        "role": "them",
+        "text": ". I can't wait to try it out, but I want to know more about the game before I make my first attempt at building a world.",
+        "timestamp": 1762389253102
+      }
+    ],
+    "draft": ""
+  }
+]

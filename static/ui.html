@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Allie — Tabbed Conversations</title>
+<style>
+  :root{--bg:#0f1720;--panel:#0b1220;--muted:#9ca3af;--text:#e6eef6;--accent:#60a5fa;--me:#0b84ff}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:linear-gradient(180deg,#08101a,#07121a);color:var(--text);display:flex;align-items:center;justify-content:center;padding:24px}
+  .app{width:75vw;max-width:1200px;height:75vh;background:var(--panel);border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,.6);display:flex;overflow:hidden;box-sizing:border-box}
+  .sidebar{width:260px;padding:12px;border-right:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px}
+  .tab{padding:8px 10px;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;border:1px solid transparent}
+  .tab.active{background:rgba(255,255,255,0.05);color:var(--text);border-color:rgba(255,255,255,0.07)}
+  .tab-controls{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+  button{background:var(--accent);color:#021125;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+  button.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08)}
+  .main{flex:1;display:flex;flex-direction:column;min-height:0}
+  .header{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px}
+  .messages{flex:1;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px;min-height:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
+  .row{display:flex;gap:10px;align-items:flex-end}
+  .bubble{max-width:75%;padding:12px 14px;border-radius:13px;font-size:15px;line-height:1.4}
+  .bubble.me{margin-left:auto;background:linear-gradient(90deg,var(--me),#1f7fe8);color:#021125;border-bottom-right-radius:6px}
+  .bubble.them{margin-right:auto;background:#111827;border:1px solid rgba(255,255,255,0.02)}
+  .meta{font-size:12px;color:var(--muted);margin-top:6px}
+  .inputbar{padding:12px 14px;border-top:1px solid rgba(255,255,255,0.03);display:flex;gap:10px;align-items:end}
+  textarea#prompt{width:100%;min-height:56px;max-height:160px;resize:none;padding:10px 12px;background:#081219;color:var(--text);border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Allie chat UI">
+  <aside class="sidebar">
+    <h3 style="margin:6px 4px;color:var(--accent);font-size:14px">Conversations</h3>
+    <div class="tabs" id="tabs"></div>
+    <div class="tab-controls">
+      <button id="newConv">New</button>
+      <button id="renameConv" class="secondary">Rename</button>
+      <button id="deleteConv" class="secondary">Delete</button>
+    </div>
+    <div style="margin-top:auto;font-size:13px;color:var(--muted);padding-top:12px">Local model · <span id="modelName">tinyllama</span></div>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <div style="font-weight:600" id="convTitle">Allie</div>
+      <div style="flex:1"></div>
+      <div id="status" style="color:var(--muted);font-size:13px">connected</div>
+      <button id="exportAllBtn" class="secondary">Export All</button>
+      <button id="exportBtn" class="secondary">Export</button>
+      <input id="importAllFile" type="file" style="display:none" accept=".json"/>
+      <button id="importAllBtn" class="secondary">Import All</button>
+
+      <input id="importFile" type="file" style="display:none" accept=".json"/>
+      <button id="importBtn" class="secondary">Import</button>
+    </div>
+
+    <div class="messages" id="messages" aria-live="polite"></div>
+
+    <div class="inputbar">
+      <textarea id="prompt" placeholder="Send a message..."></textarea>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <button id="sendBtn">Send</button>
+          <button id="stopBtn" class="secondary" style="display:none">Stop</button>
+        </div>
+        <div style="width:120px;text-align:right;color:var(--muted);font-size:12px">
+          Max tokens<br/><input id="maxTokens" type="number" value="120" min="1" style="width:80px;margin-top:6px"/>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* Tabbed conversations UI with server-side persistence.
+   Endpoints used:
+   - GET    /api/conversations
+   - POST   /api/conversations
+   - PUT    /api/conversations/{id}
+   - DELETE /api/conversations/{id}
+   - POST   /api/generate  { prompt, max_tokens }
+*/
+
+const tabsEl = document.getElementById('tabs');
+const messagesEl = document.getElementById('messages');
+const promptEl = document.getElementById('prompt');
+const sendBtn = document.getElementById('sendBtn');
+const stopBtn = document.getElementById('stopBtn');
+const newBtn = document.getElementById('newConv');
+const renameBtn = document.getElementById('renameConv');
+const deleteBtn = document.getElementById('deleteConv');
+const convTitle = document.getElementById('convTitle');
+const statusEl = document.getElementById('status');
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
+const importFile = document.getElementById('importFile');
+const maxTokensEl = document.getElementById('maxTokens');
+const exportAllBtn = document.getElementById('exportAllBtn');
+
+exportAllBtn.onclick = () => {
+  const blob = new Blob([JSON.stringify(conversations, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'all-conversations.json';
+  document.body.appendChild(a); a.click(); a.remove();
+};
+
+const importAllBtn = document.getElementById('importAllBtn');
+const importAllFile = document.getElementById('importAllFile');
+
+importAllBtn.onclick = () => importAllFile.click();
+
+importAllFile.addEventListener('change', async (ev) => {
+  const f = ev.target.files[0]; if (!f) return;
+  try {
+    const txt = await f.text();
+    const arr = JSON.parse(txt);
+    if (Array.isArray(arr)) {
+      conversations = arr;
+      activeId = conversations[0]?.id || uid();
+      renderTabs(); renderActive();
+      // push all to server
+      for (const c of conversations) {
+        try { await apiCreate(c); } catch { /* ignore errors */ }
+      }
+      statusEl.textContent = 'connected';
+    } else {
+      alert('Invalid JSON format');
+    }
+  } catch {
+    alert('Import failed');
+  }
+  importAllFile.value = '';
+});
+
+
+let conversations = [];
+let activeId = null;
+
+function uid(){ return 'c-' + Math.random().toString(36).slice(2,9); }
+function getActive(){ return conversations.find(c => c.id === activeId); }
+
+function renderTabs(){
+  tabsEl.innerHTML = '';
+  conversations.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (c.id === activeId ? ' active' : '');
+    b.textContent = c.title;
+    b.onclick = () => setActive(c.id);
+    tabsEl.appendChild(b);
+  });
+}
+
+function renderActive(){
+  const conv = getActive();
+  if (!conv) return;
+  convTitle.textContent = conv.title || 'Conversation';
+  messagesEl.innerHTML = '';
+  (conv.messages || []).forEach(m => appendMessage(m.text, m.role, new Date(m.timestamp)));
+  promptEl.value = conv.draft || '';
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function appendMessage(text, who = 'them', time = new Date()){
+  const row = document.createElement('div'); row.className = 'row';
+  const bubble = document.createElement('div'); bubble.className = 'bubble ' + (who === 'me' ? 'me' : 'them'); bubble.textContent = text;
+  const meta = document.createElement('div'); meta.className = 'meta'; meta.textContent = time.toLocaleTimeString();
+  row.appendChild(bubble); row.appendChild(meta); messagesEl.appendChild(row);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function setActive(id){ activeId = id; renderTabs(); renderActive(); }
+
+// API helpers
+async function apiGetList(){
+  const r = await fetch('/api/conversations');
+  if (!r.ok) throw new Error(await r.text());
+  const j = await r.json();
+  if (!Array.isArray(j)) throw new Error('Server returned non-array conversations');
+  return j;
+}
+async function apiCreate(conv){
+  const r = await fetch('/api/conversations', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(conv) });
+  if (!r.ok) throw new Error(await r.text());
+}
+async function apiUpdate(conv){
+  const r = await fetch('/api/conversations/' + encodeURIComponent(conv.id), { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(conv) });
+  if (!r.ok) throw new Error(await r.text());
+}
+async function apiDelete(id){
+  const r = await fetch('/api/conversations/' + encodeURIComponent(id), { method:'DELETE' });
+  if (!r.ok) throw new Error(await r.text());
+}
+
+// Load conversations on startup
+async function loadConversations(){
+  try {
+    const list = await apiGetList();
+    conversations = list;
+    if (conversations.length === 0) {
+      const first = { id: uid(), title: 'Allie', messages: [{role:'them', text:'Hi — I am Allie. Ask me anything.', timestamp: Date.now()}], draft: '' };
+      conversations.push(first);
+      try { await apiCreate(first); } catch { /* ignore initial create error */ }
+    }
+    activeId = conversations[0].id;
+    renderTabs();
+    renderActive();
+    statusEl.textContent = 'connected';
+  } catch (err) {
+    console.error('Conversation load failed:', err);
+    // Minimal usable fallback
+    conversations = [{ id: uid(), title: 'Local', messages: [{role:'them', text:'Hi — I am Allie. Ask me anything.', timestamp: Date.now()}], draft: '' }];
+    activeId = conversations[0].id;
+    renderTabs();
+    renderActive();
+    statusEl.textContent = 'offline';
+  }
+}
+
+// Actions
+newBtn.onclick = async () => {
+  const conv = { id: uid(), title: 'New conversation', messages: [{role:'them', text:'Hi — I am Allie. Ask me anything.', timestamp: Date.now()}], draft: '' };
+  conversations.unshift(conv);
+  activeId = conv.id;
+  renderTabs(); renderActive();
+  try { await apiCreate(conv); statusEl.textContent = 'connected'; } catch { statusEl.textContent = 'offline'; }
+};
+
+renameBtn.onclick = async () => {
+  const conv = getActive(); if (!conv) return;
+  const name = prompt('Rename conversation', conv.title || 'Conversation');
+  if (!name) return;
+  conv.title = name;
+  renderTabs(); renderActive();
+  try { await apiUpdate(conv); statusEl.textContent = 'connected'; } catch { statusEl.textContent = 'offline'; }
+};
+
+deleteBtn.onclick = async () => {
+  if (!confirm('Delete this conversation?')) return;
+  const id = activeId;
+  conversations = conversations.filter(c => c.id !== id);
+  if (conversations.length === 0) {
+    conversations = [{ id: uid(), title: 'Allie', messages: [{role:'them', text:'Hi — I am Allie. Ask me anything.', timestamp: Date.now()}], draft: '' }];
+  }
+  activeId = conversations[0].id;
+  renderTabs(); renderActive();
+  try { await apiDelete(id); statusEl.textContent = 'connected'; } catch { statusEl.textContent = 'offline'; }
+};
+
+exportBtn.onclick = () => {
+  const conv = getActive(); if (!conv) return;
+  const blob = new Blob([JSON.stringify(conv, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = (conv.title || 'conversation') + '.json';
+  document.body.appendChild(a); a.click(); a.remove();
+};
+
+importBtn.onclick = () => importFile.click();
+importFile.addEventListener('change', async (ev) => {
+  const f = ev.target.files[0]; if (!f) return;
+  try {
+    const txt = await f.text();
+    const obj = JSON.parse(txt);
+    if (!obj.id) obj.id = uid();
+    conversations.unshift(obj); activeId = obj.id;
+    renderTabs(); renderActive();
+    try { await apiCreate(obj); statusEl.textContent = 'connected'; } catch { statusEl.textContent = 'offline'; }
+  } catch { alert('Invalid JSON'); }
+  importFile.value = '';
+});
+
+// Send flow
+sendBtn.onclick = async () => {
+  const txt = promptEl.value.trim(); if (!txt) return;
+  const conv = getActive(); if (!conv) return;
+  conv.draft = '';
+  (conv.messages || (conv.messages = [])).push({ role: 'me', text: txt, timestamp: Date.now() });
+  renderActive();
+  promptEl.value = '';
+  statusEl.textContent = 'sending…';
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({ prompt: txt, max_tokens: Number(maxTokensEl.value) || 120 })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    const j = await res.json();
+    const reply = j.text || j.content || (Array.isArray(j) && j[0]?.text) || JSON.stringify(j);
+    (conv.messages || (conv.messages = [])).push({ role: 'them', text: reply, timestamp: Date.now() });
+    renderActive();
+    try { await apiUpdate(conv); statusEl.textContent = 'connected'; } catch { statusEl.textContent = 'offline'; }
+  } catch (err) {
+    (conv.messages || (conv.messages = [])).push({ role: 'them', text: 'Error: ' + err.message, timestamp: Date.now() });
+    renderActive();
+    statusEl.textContent = 'error';
+  }
+};
+
+promptEl.addEventListener('input', () => {
+  const conv = getActive(); if (!conv) return;
+  conv.draft = promptEl.value;
+  // Fire-and-forget save
+  apiUpdate(conv).catch(() => {});
+});
+
+// Init
+(async function init(){
+  await loadConversations();
+})();
+</script>
+</body>
+</html>

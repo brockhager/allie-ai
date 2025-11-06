@@ -1,0 +1,57 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Allie  Single Window UI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{--bg:#0f1720;--panel:#0b1220;--muted:#9ca3af;--text:#e6eef6;--accent:#60a5fa;--me:#0b84ff}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:linear-gradient(180deg,#08101a,#07121a);color:var(--text);display:flex;align-items:center;justify-content:center;padding:24px}
+  .app{width:75vw;max-width:1200px;height:75vh;background:var(--panel);border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,.6);display:flex;overflow:hidden;box-sizing:border-box}
+  .sidebar{width:260px;padding:12px;border-right:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column}
+  .main{flex:1;display:flex;flex-direction:column;min-height:0}
+  .header{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px}
+  .messages{flex:1;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px;min-height:0}
+  .inputbar{padding:12px 14px;border-top:1px solid rgba(255,255,255,0.03);display:flex;gap:10px;align-items:end}
+  textarea{width:100%;min-height:56px;max-height:160px;resize:none;padding:10px 12px;background:#081219;color:var(--text);border-radius:10px;border:1px solid rgba(255,255,255,0.03);box-sizing:border-box}
+  button{background:var(--accent);color:#021125;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Allie chat UI">
+  <aside class="sidebar" aria-hidden="false">
+    <h3 style="margin:6px 4px;color:var(--accent);font-size:14px">Conversations</h3>
+    <div id="convoList">
+      <div style="padding:10px;border-radius:8px;color:var(--text)">Allie (default)</div>
+    </div>
+    <div style="margin-top:auto;font-size:13px;color:var(--muted);padding-top:12px">Local model  <span id="modelName">tinyllama</span></div>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <div style="font-weight:600">Allie</div>
+      <div style="flex:1"></div>
+      <div id="connStatus" style="color:var(--muted)">connected</div>
+    </div>
+
+    <div class="messages" id="messages" aria-live="polite"></div>
+
+    <div class="inputbar">
+      <textarea id="prompt" placeholder="Send a message...">Hello Allie, tell me a short joke about programmers.</textarea>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const messagesEl = document.getElementById('messages');
+  const promptEl = document.getElementById('prompt');
+  const sendBtn = document.getElementById('sendBtn');
+  function appendMessage(text){ const row=document.createElement('div'); row.style.marginBottom='8px'; row.textContent = text; messagesEl.appendChild(row); messagesEl.scrollTop = messagesEl.scrollHeight; }
+  sendBtn.addEventListener('click', ()=>{ const t = promptEl.value.trim(); if(!t) return; appendMessage('You: ' + t); promptEl.value=''; setTimeout(()=>appendMessage('Allie: (placeholder reply)'),400); });
+  appendMessage('Hi  I am Allie. Ask me anything.');
+</script>
+</body>
+</html>

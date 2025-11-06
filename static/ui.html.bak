@@ -1,0 +1,334 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Allie  Chat UI (Server Conversations)</title>
+<style>
+  :root{--bg:#0f1720;--panel:#0b1220;--muted:#9ca3af;--text:#e6eef6;--accent:#60a5fa;--bubble-me:#0b84ff;--bubble-them:#111827}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial;color:var(--text);background:linear-gradient(180deg,#08101a,#07121a);display:flex;align-items:center;justify-content:center;padding:20px}
+  .app{width:75vw;max-width:1200px;height:75vh;background:var(--panel);border-radius:12px;display:flex;overflow:hidden;box-shadow:0 10px 30px rgba(2,6,23,.6);box-sizing:border-box}
+  .sidebar{width:260px;padding:12px;border-right:1px solid rgba(255,255,255,0.03);box-sizing:border-box;display:flex;flex-direction:column}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .tab{padding:8px 10px;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;border:1px solid transparent}
+  .tab.active{background:rgba(255,255,255,0.02);color:var(--text);border-color:rgba(255,255,255,0.03)}
+  .tab-controls{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+  .main{flex:1;display:flex;flex-direction:column;min-height:0}
+  .header{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px}
+  .messages{flex:1;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);min-height:0}
+  .row{display:flex;gap:10px;align-items:flex-end}
+  .bubble{max-width:75%;padding:12px 14px;border-radius:13px;font-size:15px;line-height:1.4}
+  .bubble.me{margin-left:auto;background:linear-gradient(90deg,var(--bubble-me),#1f7fe8);color:#021125;border-bottom-right-radius:6px}
+  .bubble.them{margin-right:auto;background:var(--bubble-them);border:1px solid rgba(255,255,255,0.02)}
+  .meta{font-size:12px;color:var(--muted);margin-top:6px}
+  .inputbar{padding:12px 14px;border-top:1px solid rgba(255,255,255,0.03);display:flex;gap:10px;align-items:end}
+  textarea#prompt{width:100%;min-height:56px;max-height:160px;resize:none;padding:10px 12px;background:#081219;color:var(--text);border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+  button{background:var(--accent);color:#021125;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+  button.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
+  input[type="text"]{padding:6px;border-radius:6px;border:1px solid rgba(255,255,255,0.03);background:#07101a;color:var(--text)}
+  .small{font-size:13px;padding:6px 10px;border-radius:8px}
+  .messages::-webkit-scrollbar{width:10px} .messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.03);border-radius:999px}
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Allie chat UI">
+  <aside class="sidebar">
+    <h3 style="margin:6px 4px;color:var(--accent);font-size:14px">Conversations</h3>
+    <div class="tabs" id="tabs"></div>
+    <div class="tab-controls">
+      <button id="newConv" class="small">New</button>
+      <button id="renameConv" class="small secondary">Rename</button>
+      <button id="deleteConv" class="small secondary">Delete</button>
+    </div>
+    <div style="margin-top:auto;font-size:13px;color:var(--muted);padding-top:12px">Local model  <span id="modelName">tinyllama</span></div>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <div style="font-weight:600" id="convTitle">Allie</div>
+@'
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Allie — Chat UI (Server Conversations)</title>
+<style>
+  :root{--bg:#0f1720;--panel:#0b1220;--muted:#9ca3af;--text:#e6eef6;--accent:#60a5fa;--bubble-me:#0b84ff;--bubble-them:#111827}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial;color:var(--text);background:linear-gradient(180deg,#08101a,#07121a);display:flex;align-items:center;justify-content:center;padding:20px}
+  .app{width:75vw;max-width:1200px;height:75vh;background:var(--panel);border-radius:12px;display:flex;overflow:hidden;box-shadow:0 10px 30px rgba(2,6,23,.6);box-sizing:border-box}
+  .sidebar{width:260px;padding:12px;border-right:1px solid rgba(255,255,255,0.03);box-sizing:border-box;display:flex;flex-direction:column}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .tab{padding:8px 10px;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;border:1px solid transparent}
+  .tab.active{background:rgba(255,255,255,0.02);color:var(--text);border-color:rgba(255,255,255,0.03)}
+  .tab-controls{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+  .main{flex:1;display:flex;flex-direction:column;min-height:0}
+  .header{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px}
+  .messages{flex:1;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);min-height:0}
+  .row{display:flex;gap:10px;align-items:flex-end}
+  .bubble{max-width:75%;padding:12px 14px;border-radius:13px;font-size:15px;line-height:1.4}
+  .bubble.me{margin-left:auto;background:linear-gradient(90deg,var(--bubble-me),#1f7fe8);color:#021125;border-bottom-right-radius:6px}
+  .bubble.them{margin-right:auto;background:var(--bubble-them);border:1px solid rgba(255,255,255,0.02)}
+  .meta{font-size:12px;color:var(--muted);margin-top:6px}
+  .inputbar{padding:12px 14px;border-top:1px solid rgba(255,255,255,0.03);display:flex;gap:10px;align-items:end}
+  textarea#prompt{width:100%;min-height:56px;max-height:160px;resize:none;padding:10px 12px;background:#081219;color:var(--text);border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+  button{background:var(--accent);color:#021125;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+  button.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
+  input[type="text"]{padding:6px;border-radius:6px;border:1px solid rgba(255,255,255,0.03);background:#07101a;color:var(--text)}
+  .small{font-size:13px;padding:6px 10px;border-radius:8px}
+  .messages::-webkit-scrollbar{width:10px} .messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.03);border-radius:999px}
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Allie chat UI">
+  <aside class="sidebar">
+    <h3 style="margin:6px 4px;color:var(--accent);font-size:14px">Conversations</h3>
+    <div class="tabs" id="tabs"></div>
+    <div class="tab-controls">
+      <button id="newConv" class="small">New</button>
+      <button id="renameConv" class="small secondary">Rename</button>
+      <button id="deleteConv" class="small secondary">Delete</button>
+    </div>
+    <div style="margin-top:auto;font-size:13px;color:var(--muted);padding-top:12px">Local model · <span id="modelName">tinyllama</span></div>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <div style="font-weight:600" id="convTitle">Allie</div>
+      <div style="flex:1"></div>
+      <div id="status" style="color:var(--muted);font-size:13px">connected</div>
+      <button id="exportBtn" class="small secondary">Export</button>
+      <input id="importFile" type="file" style="display:none" accept=".json"/>
+      <button id="importBtn" class="small secondary">Import</button>
+    </div>
+
+    <div class="messages" id="messages" aria-live="polite"></div>
+
+    <div class="inputbar">
+      <textarea id="prompt" placeholder="Send a message...">Hello Allie, tell me a short joke about programmers.</textarea>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <button id="sendBtn">Send</button>
+          <button id="stopBtn" class="small secondary" style="display:none">Stop</button>
+        </div>
+        <div style="width:120px;text-align:right;color:var(--muted);font-size:12px">
+          Max tokens<br/><input id="maxTokens" type="number" value="120" min="1" style="width:80px;margin-top:6px"/>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+/*
+  Conversations UI that uses server-side persistence:
+  - lists conversations from GET /api/conversations
+  - creates conversations via POST /api/conversations
+  - updates (save) via PUT /api/conversations/{id}
+  - deletes via DELETE /api/conversations/{id}
+  - messages are stored in the conversation object as array entries {role,text,timestamp}
+  - UI falls back to a local conversation when server errors occur
+*/
+
+const tabsEl = document.getElementById('tabs');
+const messagesEl = document.getElementById('messages');
+const promptEl = document.getElementById('prompt');
+const sendBtn = document.getElementById('sendBtn');
+const newBtn = document.getElementById('newConv');
+const renameBtn = document.getElementById('renameConv');
+const deleteBtn = document.getElementById('deleteConv');
+const convTitle = document.getElementById('convTitle');
+const maxTokensEl = document.getElementById('maxTokens');
+const statusEl = document.getElementById('status');
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
+const importFile = document.getElementById('importFile');
+
+let conversations = [];
+let activeId = null;
+
+function uid(){ return 'c-' + Math.random().toString(36).slice(2,9); }
+
+async function serverList(){
+  try {
+    const r = await fetch('/api/conversations'); if (!r.ok) throw new Error(await r.text());
+    return await r.json();
+  } catch(e){
+    console.warn('server list failed', e); return null;
+  }
+}
+
+async function serverCreate(conv){
+  try {
+    const r = await fetch('/api/conversations', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(conv)});
+    if (!r.ok) throw new Error(await r.text());
+    return true;
+  } catch(e){ console.warn('server create failed', e); return false; }
+}
+
+async function serverUpdate(conv){
+  try {
+    const r = await fetch('/api/conversations/' + encodeURIComponent(conv.id), {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(conv)});
+    if (!r.ok) throw new Error(await r.text());
+    return true;
+  } catch(e){ console.warn('server update failed', e); return false; }
+}
+
+async function serverDelete(id){
+  try {
+    const r = await fetch('/api/conversations/' + encodeURIComponent(id), {method:'DELETE'});
+    if (!r.ok) throw new Error(await r.text());
+    return true;
+  } catch(e){ console.warn('server delete failed', e); return false; }
+}
+
+function localFallbackInit(){
+  const first = { id: uid(), title: 'Allie', messages:[{role:'them',text:'Hi — I am Allie. Ask me anything.',timestamp:Date.now()}], draft:'' };
+  conversations = [first]; activeId = first.id; renderTabs(); renderActive(); saveLocal();
+}
+
+function saveLocal(){ localStorage.setItem('allie_conversations_v1', JSON.stringify(conversations)); }
+
+function loadLocal(){
+  try {
+    const raw = localStorage.getItem('allie_conversations_v1');
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch(e){ return null; }
+}
+
+async function loadConversations(){
+  const serverListRes = await serverList();
+  if (serverListRes && Array.isArray(serverListRes) && serverListRes.length>0){
+    conversations = serverListRes;
+    activeId = conversations[0].id;
+    renderTabs(); renderActive();
+    return;
+  }
+  // fallback to local
+  const local = loadLocal();
+  if (local && local.length) { conversations = local; activeId = conversations[0].id; renderTabs(); renderActive(); return; }
+  localFallbackInit();
+}
+
+function getActive(){ return conversations.find(c=>c.id===activeId); }
+
+function renderTabs(){
+  tabsEl.innerHTML='';
+  conversations.forEach(c=>{
+    const b=document.createElement('button'); b.className='tab' + (c.id===activeId?' active':''); b.textContent=c.title; b.onclick=()=>{ setActive(c.id) };
+    tabsEl.appendChild(b);
+  });
+}
+
+function renderActive(){
+  const conv = getActive();
+  if(!conv) return;
+  convTitle.textContent = conv.title;
+  messagesEl.innerHTML = '';
+  (conv.messages||[]).forEach(m => {
+    appendMessage(m.text, m.role, new Date(m.timestamp));
+  });
+  promptEl.value = conv.draft || '';
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function appendMessage(text, who='them', time=new Date()){
+  const row=document.createElement('div');row.className='row';
+  const bubble=document.createElement('div');bubble.className='bubble ' + (who==='me'?'me':'them');bubble.textContent=text;
+  row.appendChild(bubble);
+  const meta=document.createElement('div');meta.className='meta';meta.textContent = time.toLocaleTimeString();
+  row.appendChild(meta);
+  messagesEl.appendChild(row);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function setActive(id){ activeId=id; renderTabs(); renderActive(); }
+
+newBtn.addEventListener('click', async ()=>{
+  const conv = { id: uid(), title: 'New conversation', messages:[{role:'them',text:'Hi — I am Allie. Ask me anything.',timestamp:Date.now()}], draft:'' };
+  // optimistic: add locally then persist
+  conversations.unshift(conv); activeId = conv.id; renderTabs(); renderActive();
+  const ok = await serverCreate(conv);
+  if (!ok) { saveLocal(); statusEl.textContent='local'; } else { statusEl.textContent='connected'; }
+});
+
+renameBtn.addEventListener('click', async ()=>{
+  const conv = getActive(); if(!conv) return;
+  const name = prompt('Rename conversation', conv.title);
+  if (!name) return;
+  conv.title = name;
+  renderTabs(); renderActive();
+  const ok = await serverUpdate(conv);
+  if (!ok) { saveLocal(); statusEl.textContent='local'; } else { statusEl.textContent='connected'; }
+});
+
+deleteBtn.addEventListener('click', async ()=>{
+  if(!confirm('Delete this conversation?')) return;
+  const id = activeId;
+  conversations = conversations.filter(c=>c.id!==id);
+  if (conversations.length===0){ conversations = [{ id: uid(), title:'Allie', messages:[{role:'them',text:'Hi — I am Allie. Ask me anything.',timestamp:Date.now()}], draft:'' }]; }
+  activeId = conversations[0].id;
+  renderTabs(); renderActive();
+  const ok = await serverDelete(id);
+  if (!ok) { saveLocal(); statusEl.textContent='local'; } else { statusEl.textContent='connected'; }
+});
+
+exportBtn.addEventListener('click', ()=>{
+  const conv = getActive();
+  const blob = new Blob([JSON.stringify(conv, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = (conv.title||'conversation') + '.json'; document.body.appendChild(a); a.click(); a.remove();
+});
+
+importBtn.addEventListener('click', ()=> importFile.click());
+importFile.addEventListener('change', async (ev)=>{
+  const f = ev.target.files[0]; if(!f) return;
+  const txt = await f.text();
+  try {
+    const obj = JSON.parse(txt);
+    if(!obj.id) obj.id = uid();
+    conversations.unshift(obj); activeId = conversations[0].id; renderTabs(); renderActive();
+    const ok = await serverCreate(obj);
+    if (!ok) saveLocal();
+  } catch(e){ alert('Invalid JSON'); }
+  importFile.value='';
+});
+
+// send flow: append locally, then call /api/generate, then persist conversation
+sendBtn.addEventListener('click', async ()=>{
+  const txt = promptEl.value.trim(); if(!txt) return;
+  const conv = getActive(); conv.draft=''; (conv.messages||(conv.messages=[])).push({role:'me',text:txt,timestamp:Date.now()}); renderActive();
+  promptEl.value='';
+  statusEl.textContent='sending…';
+  try {
+    const res = await fetch('/api/generate', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:txt, max_tokens: Number(maxTokensEl.value)||120})});
+    if(!res.ok){ const t = await res.text(); statusEl.textContent='error'; (conv.messages||(conv.messages=[])).push({role:'them',text:'Error: '+t,timestamp:Date.now()}); renderActive(); await serverUpdate(conv); return; }
+    const j = await res.json();
+    let text='';
+    if (j.text) text=j.text;
+    else if (Array.isArray(j) && j.length && j[0].text) text=j[0].text;
+    else if (j.content) text=j.content;
+    else text = JSON.stringify(j);
+    (conv.messages||(conv.messages=[])).push({role:'them',text, timestamp:Date.now()});
+    renderActive();
+    const ok = await serverUpdate(conv);
+    if (!ok) { saveLocal(); statusEl.textContent='local'; } else { statusEl.textContent='connected'; }
+  } catch(e){
+    (conv.messages||(conv.messages=[])).push({role:'them',text:'Request failed: '+String(e), timestamp:Date.now()});
+    renderActive();
+    saveLocal();
+    statusEl.textContent='offline';
+  }
+});
+
+promptEl.addEventListener('input', ()=>{
+  const conv = getActive(); if(conv){ conv.draft = promptEl.value; serverUpdate(conv).then(ok=>{ if(!ok) saveLocal(); }); }
+});
+
+// initialize from server then fallback to local
+(async function init(){
+  await loadConversations();
+})();
+</script>
+</body>
+</html>
