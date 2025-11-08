@@ -261,6 +261,8 @@ class AllieMemory:
         if removed:
             self.save_memory()
         return removed
+
+    def recall_facts(self, query: str, limit: int = 5) -> List[str]:
         """Recall relevant facts based on query"""
         relevant_facts = []
         query_lower = query.lower()
