@@ -17,6 +17,9 @@
   button.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08)}
   .main{flex:1;display:flex;flex-direction:column;min-height:0}
   .header{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px}
+  .status-section{margin-left:auto;display:flex;flex-direction:column;gap:4px}
+  .status-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+  .status-value{font-size:13px;color:var(--text);font-weight:500}
   .messages{flex:1;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px;min-height:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
   .row{display:flex;gap:10px;align-items:flex-end}
   .bubble{max-width:75%;padding:12px 14px;border-radius:13px;font-size:15px;line-height:1.4}
@@ -43,11 +46,12 @@
     </div>
 
     <div class="learning-panel">
-      <h4 style="margin:0 0 8px 0;color:var(--accent);font-size:13px">Learning</h4>
-      <div id="learningStatus" class="learning-status">Checking status...</div>
+      <h4 style="margin:0 0 8px 0;color:var(--accent);font-size:13px">Learning System</h4>
+      <div id="learningStatus" class="learning-status">Initializing learning system...</div>
       <div class="learning-controls">
-        <button id="checkLearningBtn" class="learning-btn secondary">Check Status</button>
+        <button id="checkLearningBtn" class="learning-btn secondary">Refresh Status</button>
         <button id="startLearningBtn" class="learning-btn">Start Learning</button>
+        <button id="stopLearningBtn" class="learning-btn secondary" style="display:none">Stop Learning</button>
         <button id="viewHistoryBtn" class="learning-btn secondary">View History</button>
       </div>
     </div>
@@ -59,7 +63,10 @@
     <div class="header">
       <div style="font-weight:600" id="convTitle">Allie</div>
       <div style="flex:1"></div>
-      <div id="status" style="color:var(--muted);font-size:13px">connected</div>
+      <div class="status-section">
+        <div class="status-label">Status</div>
+        <div class="status-value" id="status">Initializing...</div>
+      </div>
       <button id="exportAllBtn" class="secondary">Export All</button>
       <button id="exportBtn" class="secondary">Export</button>
       <input id="importAllFile" type="file" style="display:none" accept=".json"/>
@@ -116,6 +123,7 @@ const exportAllBtn = document.getElementById('exportAllBtn');
 const learningStatusEl = document.getElementById('learningStatus');
 const checkLearningBtn = document.getElementById('checkLearningBtn');
 const startLearningBtn = document.getElementById('startLearningBtn');
+const stopLearningBtn = document.getElementById('stopLearningBtn');
 const viewHistoryBtn = document.getElementById('viewHistoryBtn');
 
 exportAllBtn.onclick = () => {
@@ -144,7 +152,7 @@ importAllFile.addEventListener('change', async (ev) => {
       for (const c of conversations) {
         try { await apiCreate(c); } catch { /* ignore errors */ }
       }
-      statusEl.textContent = 'connected';
+      statusEl.textContent = 'All conversations imported';
     } else {
       alert('Invalid JSON format');
     }
@@ -245,7 +253,7 @@ async function loadConversations(){
     activeId = conversations[0].id;
     renderTabs();
     renderActive();
-    statusEl.textContent = 'connected';
+    statusEl.textContent = 'Connected';
   } catch (err) {
     console.error('Conversation load failed:', err);
     // Minimal usable fallback
@@ -253,7 +261,7 @@ async function loadConversations(){
     activeId = conversations[0].id;
     renderTabs();
     renderActive();
-    statusEl.textContent = 'offline';
+    statusEl.textContent = 'Offline mode';
   }
 }
 
@@ -263,7 +271,7 @@ newBtn.onclick = async () => {
   conversations.unshift(conv);
   activeId = conv.id;
   renderTabs(); renderActive();
-  try { await apiCreate(conv); statusEl.textContent = 'connected'; } catch { statusEl.textContent = 'offline'; }
+  try { await apiCreate(conv); statusEl.textContent = 'Connected'; } catch { statusEl.textContent = 'Offline mode'; }
 };
 
 renameBtn.onclick = async () => {
@@ -272,7 +280,7 @@ renameBtn.onclick = async () => {
   if (!name) return;
   conv.title = name;
   renderTabs(); renderActive();
-  try { await apiUpdate(conv); statusEl.textContent = 'connected'; } catch { statusEl.textContent = 'offline'; }
+  try { await apiUpdate(conv); statusEl.textContent = 'Connected'; } catch { statusEl.textContent = 'Offline mode'; }
 };
 
 deleteBtn.onclick = async () => {
@@ -284,7 +292,7 @@ deleteBtn.onclick = async () => {
   }
   activeId = conversations[0].id;
   renderTabs(); renderActive();
-  try { await apiDelete(id); statusEl.textContent = 'connected'; } catch { statusEl.textContent = 'offline'; }
+  try { await apiDelete(id); statusEl.textContent = 'Connected'; } catch { statusEl.textContent = 'Offline mode'; }
 };
 
 exportBtn.onclick = () => {
@@ -303,7 +311,7 @@ importFile.addEventListener('change', async (ev) => {
     if (!obj.id) obj.id = uid();
     conversations.unshift(obj); activeId = obj.id;
     renderTabs(); renderActive();
-    try { await apiCreate(obj); statusEl.textContent = 'connected'; } catch { statusEl.textContent = 'offline'; }
+    try { await apiCreate(obj); statusEl.textContent = 'Connected'; } catch { statusEl.textContent = 'Offline mode'; }
   } catch { alert('Invalid JSON'); }
   importFile.value = '';
 });
@@ -316,7 +324,7 @@ sendBtn.onclick = async () => {
   (conv.messages || (conv.messages = [])).push({ role: 'me', text: txt, timestamp: Date.now() });
   renderActive();
   promptEl.value = '';
-  statusEl.textContent = 'sending…';
+  statusEl.textContent = 'Sending message...';
 
   try {
     const res = await fetch('/api/generate', {
@@ -329,11 +337,11 @@ sendBtn.onclick = async () => {
     const reply = j.text || j.content || (Array.isArray(j) && j[0]?.text) || JSON.stringify(j);
     (conv.messages || (conv.messages = [])).push({ role: 'them', text: reply, timestamp: Date.now() });
     renderActive();
-    try { await apiUpdate(conv); statusEl.textContent = 'connected'; } catch { statusEl.textContent = 'offline'; }
+    try { await apiUpdate(conv); statusEl.textContent = 'Ready'; } catch { statusEl.textContent = 'Saved locally'; }
   } catch (err) {
     (conv.messages || (conv.messages = [])).push({ role: 'them', text: 'Error: ' + err.message, timestamp: Date.now() });
     renderActive();
-    statusEl.textContent = 'error';
+    statusEl.textContent = 'Error - check connection';
   }
 };
 
@@ -360,17 +368,34 @@ startLearningBtn.onclick = async () => {
     startLearningBtn.disabled = true;
     startLearningBtn.textContent = 'Starting...';
     const result = await apiStartLearning();
-    learningStatusEl.textContent = `Learning started: ${result.episode_id}`;
-    learningStatusEl.style.color = '#60a5fa'; // accent color
+    learningStatusEl.textContent = `Learning started: ${result.episode_id || 'episode'}`;
+    learningStatusEl.style.color = '#60a5fa';
+    // Switch to stop button
+    startLearningBtn.style.display = 'none';
+    stopLearningBtn.style.display = 'inline-block';
     // Refresh status after a delay
     setTimeout(() => checkLearningBtn.click(), 2000);
   } catch (err) {
     learningStatusEl.textContent = 'Error: ' + err.message;
     learningStatusEl.style.color = '#ff6b6b';
-  } finally {
     startLearningBtn.disabled = false;
     startLearningBtn.textContent = 'Start Learning';
   }
+};
+
+stopLearningBtn.onclick = async () => {
+  // For now, just refresh status - stopping learning would require additional API endpoint
+  stopLearningBtn.disabled = true;
+  stopLearningBtn.textContent = 'Stopping...';
+  learningStatusEl.textContent = 'Stopping learning...';
+  learningStatusEl.style.color = '#f59e0b';
+
+  // Refresh status after a delay
+  setTimeout(() => {
+    checkLearningBtn.click();
+    stopLearningBtn.disabled = false;
+    stopLearningBtn.textContent = 'Stop Learning';
+  }, 2000);
 };
 
 viewHistoryBtn.onclick = async () => {
@@ -378,7 +403,7 @@ viewHistoryBtn.onclick = async () => {
     const history = await apiGetLearningHistory();
     if (history.history && history.history.length > 0) {
       const historyText = history.history.map(ep =>
-        `${ep.id}: ${ep.status} (${new Date(ep.start_time).toLocaleString()})`
+        `${ep.id}: ${ep.status} (${new Date(ep.start_time * 1000).toLocaleString()})`
       ).join('\n');
       alert('Learning History:\n\n' + historyText);
     } else {
@@ -394,6 +419,8 @@ function updateLearningStatus(status) {
     learningStatusEl.textContent = 'Learning system not available';
     learningStatusEl.style.color = '#ff6b6b';
     startLearningBtn.disabled = true;
+    startLearningBtn.style.display = 'inline-block';
+    stopLearningBtn.style.display = 'none';
     return;
   }
 
@@ -403,15 +430,30 @@ function updateLearningStatus(status) {
   if (status.is_active) {
     statusText = `Learning active: ${status.current_episode?.status || 'running'}`;
     statusColor = '#60a5fa'; // accent color
-    startLearningBtn.disabled = true;
+    startLearningBtn.style.display = 'none';
+    stopLearningBtn.style.display = 'inline-block';
+    stopLearningBtn.disabled = false;
   } else if (status.should_learn) {
-    statusText = 'Ready to learn - ' + status.reason;
+    statusText = 'Ready to learn - ' + (status.reason || 'Conditions met');
     statusColor = '#4ade80'; // green
+    startLearningBtn.style.display = 'inline-block';
     startLearningBtn.disabled = false;
+    stopLearningBtn.style.display = 'none';
   } else {
-    statusText = 'Not ready: ' + status.reason;
+    statusText = 'Not ready: ' + (status.reason || 'Conditions not met');
     statusColor = '#9ca3af'; // muted
+    startLearningBtn.style.display = 'inline-block';
     startLearningBtn.disabled = true;
+    stopLearningBtn.style.display = 'none';
+  }
+
+  // Add system resource info if available
+  if (status.system_resources) {
+    const cpu = status.system_resources.cpu_percent;
+    const mem = status.system_resources.memory_percent;
+    if (cpu !== undefined && mem !== undefined) {
+      statusText += ` | CPU: ${cpu.toFixed(0)}% | RAM: ${mem.toFixed(0)}%`;
+    }
   }
 
   learningStatusEl.textContent = statusText;
@@ -421,6 +463,8 @@ function updateLearningStatus(status) {
 // Init
 (async function init(){
   await loadConversations();
+  statusEl.textContent = 'Initializing...';
+
   // Check learning status on load
   try {
     const status = await apiGetLearningStatus();
@@ -429,6 +473,19 @@ function updateLearningStatus(status) {
     learningStatusEl.textContent = 'Learning system unavailable';
     learningStatusEl.style.color = '#ff6b6b';
   }
+
+  // Set up periodic status updates
+  setInterval(async () => {
+    try {
+      const status = await apiGetLearningStatus();
+      updateLearningStatus(status);
+    } catch (err) {
+      // Silently handle errors for periodic updates
+      console.warn('Failed to update learning status:', err);
+    }
+  }, 30000); // Update every 30 seconds
+
+  statusEl.textContent = 'Ready';
 })();
 </script>
 </body>

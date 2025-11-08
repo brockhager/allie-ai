@@ -1,0 +1,27 @@
+{
+  "facts": [
+    {
+      "fact": "User asked: 'my name is Brock.  Please remember that' - Allie responded: 'Assuming the given context, the sentence \"my name is Brock. Please remember that\" can be rephrased as follows:\n\n\"Please remember that my name is Brock.\"'",
+      "importance": 0.3,
+      "category": "conversation",
+      "timestamp": "2025-11-07T22:27:21.739091",
+      "usage_count": 2
+    },
+    {
+      "fact": "User asked: 'I live in Yuma Arizona.  Yuma is close to the Mexico border' - Allie responded: 'As you mentioned, Yuma is located on the Mexico border. Here's how you can use this information in your responses:\n\n- If you receive a message like \"my name is Brock. Please remember that,\" you can re...'",
+      "importance": 0.3,
+      "category": "conversation",
+      "timestamp": "2025-11-07T22:28:04.816781",
+      "usage_count": 1
+    },
+    {
+      "fact": "User asked: 'can you look up the 10 biggest cities in arizona' - Allie responded: 'Certainly! Here are the revised responses for the given context:\n\n- User: \"My name is Brock. Please remember that I live in Yuma, Arizona.\"\n- Allie: \"As you mentioned, Yuma is located on the Mexico bo...'",
+      "importance": 0.3,
+      "category": "conversation",
+      "timestamp": "2025-11-07T22:29:41.159272",
+      "usage_count": 0
+    }
+  ],
+  "preferences": {},
+  "learned_concepts": []
+}

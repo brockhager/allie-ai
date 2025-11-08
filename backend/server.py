@@ -46,7 +46,8 @@ try:
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         torch_dtype=torch.float16,
-        device_map="auto"
+        device_map="auto",
+        local_files_only=True  # Only use local files, don't download
     )
 
     # Load existing adapter if available
@@ -469,30 +470,6 @@ Use this information naturally in your responses. If you learn something new and
 
     return {"text": reply}
 
-
-
-
-
-@app.post("/api/generate")
-async def generate_response(payload: Dict[str, Any] = Body(...)):
-    prompt = payload.get("prompt", "")
-    max_tokens = payload.get("max_tokens", 200)
-    if not prompt:
-        raise HTTPException(status_code=400, detail="Prompt is required")
-
-    # Format as chat message for TinyLlama with system prompt
-    messages = [
-        {"role": "system", "content": "You are Allie, a helpful and friendly AI assistant. Respond naturally and helpfully to user questions."},
-        {"role": "user", "content": prompt}
-    ]
-    formatted_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-
-    inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
-    outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.7, top_p=0.9, pad_token_id=tokenizer.eos_token_id)
-    reply = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
-
-    return {"text": reply}
-
 @app.put("/api/conversations/{conv_id}")
 async def update_conversation(conv_id: str, payload: Dict[str, Any] = Body(...)):
     # Dummy implementation - do nothing
@@ -559,41 +536,30 @@ async def get_learning_status():
         return {"enabled": False, "message": "Learning system not available"}
 
     try:
-        # Run the orchestrator to get status
+        # Import the orchestrator directly instead of using subprocess
+        import sys
         scripts_dir = APP_ROOT.parent / "scripts"
-        result = subprocess.run(
-            [sys.executable, str(scripts_dir / "learning_orchestrator.py")],
-            capture_output=True,
-            text=True,
-            cwd=str(scripts_dir),
-            timeout=30
-        )
+        sys.path.insert(0, str(scripts_dir))
 
-        if result.returncode == 0:
-            # Parse the output
-            lines = result.stdout.strip().split('\n')
-            should_learn_line = lines[0]
-            current_status_line = lines[1]
-            
-            should_learn = "True" in should_learn_line
-            is_active = "True" in current_status_line
-            
-            # Extract reason
-            reason = should_learn_line.split(' - ', 1)[1] if ' - ' in should_learn_line else should_learn_line
+        from learning_orchestrator import IncrementalLearningOrchestrator
 
-            return {
-                "enabled": True,
-                "should_learn": should_learn,
-                "is_active": is_active,
-                "reason": reason,
-                "message": "Status retrieved successfully"
-            }
-        else:
-            return {"enabled": True, "error": result.stderr}
+        # Create orchestrator instance and get status
+        orchestrator = IncrementalLearningOrchestrator()
+        status = orchestrator.get_status()
+
+        return {
+            "enabled": True,
+            "is_active": status.get("is_active", False),
+            "should_learn": status.get("learning_ready", False),
+            "current_episode": status.get("current_episode"),
+            "reason": "Ready for learning" if status.get("learning_ready") else "Learning conditions not met",
+            "system_resources": status.get("system_resources", {}),
+            "data_stats": status.get("data_stats", {})
+        }
 
     except Exception as e:
         logger.error(f"Error getting learning status: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"enabled": True, "error": str(e), "is_active": False, "should_learn": False}
 
 @app.post("/api/learning/start")
 async def start_learning_episode():
@@ -602,29 +568,27 @@ async def start_learning_episode():
         raise HTTPException(status_code=503, detail="Learning system not available")
 
     try:
-        # Check if learning should be triggered first
+        # Import the orchestrator directly
+        import sys
         scripts_dir = APP_ROOT.parent / "scripts"
-        check_result = subprocess.run(
-            [sys.executable, str(scripts_dir / "learning_orchestrator.py")],
-            capture_output=True,
-            text=True,
-            cwd=str(scripts_dir),
-            timeout=30
-        )
+        sys.path.insert(0, str(scripts_dir))
 
-        if "Should learn: True" not in check_result.stdout:
-            raise HTTPException(status_code=400, detail="Learning conditions not met")
+        from learning_orchestrator import IncrementalLearningOrchestrator
 
-        # Start learning in background (don't wait for completion)
-        subprocess.Popen(
-            [sys.executable, str(scripts_dir / "learning_orchestrator.py"), "--start-learning"],
-            cwd=str(scripts_dir)
-        )
+        # Create orchestrator and check if learning should be triggered
+        orchestrator = IncrementalLearningOrchestrator()
+        should_learn, reason = orchestrator.should_trigger_learning()
 
-        return {"episode_id": f"learn_{datetime.now().strftime('%Y%m%d_%H%M%S')}", "status": "started"}
+        if not should_learn:
+            raise HTTPException(status_code=400, detail=f"Learning conditions not met: {reason}")
 
-    except subprocess.TimeoutExpired:
-        raise HTTPException(status_code=504, detail="Learning check timed out")
+        # Start learning episode
+        episode_id = orchestrator.start_learning_episode()
+
+        return {"episode_id": episode_id, "status": "started", "message": "Learning episode started successfully"}
+
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error starting learning episode: {e}")
         raise HTTPException(status_code=500, detail=str(e))

@@ -188,5 +188,47 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-zwqquxq",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762579532090
+      },
+      {
+        "role": "me",
+        "text": "my name is Brock.  Please remember that",
+        "timestamp": 1762579632449
+      },
+      {
+        "role": "them",
+        "text": "Assuming the given context, the sentence \"my name is Brock. Please remember that\" can be rephrased as follows:\n\n\"Please remember that my name is Brock.\"",
+        "timestamp": 1762579641741
+      },
+      {
+        "role": "me",
+        "text": "I live in Yuma Arizona.  Yuma is close to the Mexico border",
+        "timestamp": 1762579662934
+      },
+      {
+        "role": "them",
+        "text": "As you mentioned, Yuma is located on the Mexico border. Here's how you can use this information in your responses:\n\n- If you receive a message like \"my name is Brock. Please remember that,\" you can respond with \"Assuming the given context, the sentence \"Please remember that my name is Brock.\" can be rephrased as follows: \"Please remember that my name is Brock.\"\n\n- Alternatively, you can also say \"Remember my name is Brock?\" or \"Please remember my name is Brock.\" This shows your willingness",
+        "timestamp": 1762579684819
+      },
+      {
+        "role": "me",
+        "text": "can you look up the 10 biggest cities in arizona",
+        "timestamp": 1762579749072
+      },
+      {
+        "role": "them",
+        "text": "Certainly! Here are the revised responses for the given context:\n\n- User: \"My name is Brock. Please remember that I live in Yuma, Arizona.\"\n- Allie: \"As you mentioned, Yuma is located on the Mexico border. I'll make sure to remind you of this important fact in the future.\"\n- User: \"I appreciate it. I'll remember to keep an eye out for any Mexican border crossings.\"\n\nNote that the sentence \"Please remember that\" is rephrased to \"As you mentioned,",
+        "timestamp": 1762579781165
+      }
+    ],
+    "draft": ""
   }
 ]
