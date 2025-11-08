@@ -1,5 +1,9 @@
 [
   {
+    "prompt": "Hello again!",
+    "reply": "Hello again!"
+  },
+  {
     "prompt": "Can you explain how transformers work in natural language processing?",
     "reply": "Can you explain how transformers work in natural language processing?"
   },
