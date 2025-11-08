@@ -1191,18 +1191,20 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
             needs_wikipedia = any(word in prompt.lower() for word in ["history", "biography", "science", "geography", "technology", "definition", "explain", "president", "politics", "government", "election", "political"])
 
     # Check if we have sufficient memory coverage
-    # If we have ANY relevant facts with good confidence, prefer using them
-    has_good_memory_coverage = len(relevant_facts) >= 1  # Changed from 3 to 1 - even one good fact is enough
+    # Memory is used as SUPPLEMENTARY context, not the primary source
+    has_good_memory_coverage = len(relevant_facts) >= 1
     
     logger.info(f"Memory coverage check: {len(relevant_facts)} facts, coverage={has_good_memory_coverage}, needs_web={needs_web_search if not is_self_referential else 'N/A'}")
 
     # Step 4: Perform external searches using new multi-source retrieval
+    # ALWAYS search external sources for factual queries to ensure accuracy
     web_results = None
     wiki_results = None
     multi_source_results = None
 
-    if (needs_web_search or needs_wikipedia) and not has_good_memory_coverage:
-        logger.info(f"Triggering multi-source search for: '{prompt}'")
+    # For factual queries, ALWAYS check external sources (don't rely solely on memory)
+    if (needs_web_search or needs_wikipedia) and not is_self_referential:
+        logger.info(f"Triggering multi-source search for: '{prompt}' (memory has {len(relevant_facts)} facts)")
         
         # Use new retrieval system that searches all sources
         multi_source_results = await search_all_sources(
@@ -1212,6 +1214,7 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
         )
         
         # Store facts from multi-source results
+        facts_stored = []
         if multi_source_results.get("success") and multi_source_results.get("facts_to_store"):
             for fact_data in multi_source_results["facts_to_store"]:
                 # Validate that fact is a string
@@ -1225,13 +1228,25 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
                     continue
                 
                 # Add to hybrid memory
-                hybrid_memory.add_fact(
+                result = hybrid_memory.add_fact(
                     fact,
                     category=fact_data.get("category", "general"),
                     confidence=fact_data.get("confidence", 0.8),
                     source=fact_data.get("source", "external")
                 )
+                
+                # Track stored facts for transparency
+                if result.get("status") == "stored":
+                    facts_stored.append({
+                        "fact": fact[:100] + "..." if len(fact) > 100 else fact,
+                        "source": fact_data.get("source")
+                    })
+                
                 logger.info(f"Stored fact from {fact_data.get('source')}: {fact[:100]}...")
+        
+        # Store facts_stored for later transparency message
+        if facts_stored:
+            multi_source_results["facts_stored_this_query"] = facts_stored
         
         # For backward compatibility, set web_results if DuckDuckGo succeeded
         if multi_source_results and "duckduckgo" in multi_source_results.get("sources_used", []):
@@ -1240,24 +1255,30 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
                 web_results = ddg_data
 
     # Step 5: Synthesize information from all sources
+    # PRIORITY: External sources > Memory (for accuracy and freshness)
     context_parts = []
 
     # For self-referential questions, don't include external memory/context
     if not is_self_referential:
-        # Add memory information - only include if directly relevant to query
-        if relevant_facts:
-            context_parts.append("From my memory:\n" + "\n".join(f"- {fact}" for fact in relevant_facts))
+        # Add multi-source synthesized results FIRST (highest priority for accuracy)
+        if multi_source_results and multi_source_results.get("success"):
+            sources_used = ", ".join(multi_source_results.get("sources_used", []))
+            synthesized_text = multi_source_results.get("synthesized_text", "")
+            
+            if synthesized_text:
+                context_parts.append(f"From external sources ({sources_used}):\n{synthesized_text}")
+        
+        # Add memory information ONLY as supplementary context, after external sources
+        if relevant_facts and not multi_source_results:
+            # Only use memory if no external sources returned results
+            context_parts.append("From my memory:\n" + "\n".join(f"- {fact}" for fact in relevant_facts[:3]))
+        elif relevant_facts and multi_source_results:
+            # If we have both, mention memory briefly for context
+            context_parts.append(f"(I also have {len(relevant_facts)} related fact(s) in memory)")
 
         # Skip recent context - it often pollutes responses with irrelevant information
         # if recent_context:
         #     context_parts.append(f"Recent conversation context: {recent_context}")
-
-    # Add multi-source synthesized results
-    if multi_source_results and multi_source_results.get("success"):
-        sources_used = ", ".join(multi_source_results.get("sources_used", []))
-        synthesized_text = multi_source_results.get("synthesized_text", "")
-        
-        if synthesized_text:
             context_parts.append(f"Information from {sources_used}:\n{synthesized_text}")
     # Fallback to old web results format
     elif web_results and web_results.get("success") and web_results.get("results"):

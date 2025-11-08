@@ -982,5 +982,27 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-pyyuydu",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762624335948
+      },
+      {
+        "role": "me",
+        "text": "\"how far is it from san diego to yuma az\"",
+        "timestamp": 1762624355997
+      },
+      {
+        "role": "them",
+        "text": "The distance between San Diego (CA) and Yuma (AZ), as measured by Google Maps, is approximately 1379 miles or 2216 kilometers in length. The journey time may vary depending on traffic conditions and other factors such as weather changes. However, you can use this information for reference purposes only and plan your route accordingly based on your location and travel preferences.",
+        "timestamp": 1762624379079
+      }
+    ],
+    "draft": ""
   }
 ]
