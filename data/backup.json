@@ -916,5 +916,27 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-tzg93te",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762621401543
+      },
+      {
+        "role": "me",
+        "text": "how big are the rocky mountains",
+        "timestamp": 1762621425074
+      },
+      {
+        "role": "them",
+        "text": "The bighorn sheep (Ovis canadensis), also known as mountain goats or horned sheep in some regions, is a distinctive subspecies found primarily in western North America. It has been described as one of the largest members of the family Bovidae, with adult males reaching up to 3 feet tall at the shoulder and weighing around 60 pounds. Its habitat includes rugged terrain such as alpine meadows, snow-capped peaks, and open grasslands.",
+        "timestamp": 1762621466435
+      }
+    ],
+    "draft": ""
   }
 ]

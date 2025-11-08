@@ -25,6 +25,12 @@ async def search_wikipedia(query: str, max_results: int = 3) -> Dict[str, Any]:
         Dictionary with search results
     """
     try:
+        # Add headers to appear as a legitimate client
+        headers = {
+            "User-Agent": "AllieAI/1.0 (Educational AI Assistant; https://github.com/brockhager/allie-ai)",
+            "Accept": "application/json"
+        }
+        
         # First, search for relevant pages
         search_params = {
             "action": "query",
@@ -35,7 +41,7 @@ async def search_wikipedia(query: str, max_results: int = 3) -> Dict[str, Any]:
             "utf8": 1
         }
         
-        async with httpx.AsyncClient(timeout=15.0) as client:
+        async with httpx.AsyncClient(timeout=15.0, headers=headers) as client:
             search_response = await client.get(WIKIPEDIA_API_URL, params=search_params)
             
             if search_response.status_code != 200:

@@ -1214,14 +1214,24 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
         # Store facts from multi-source results
         if multi_source_results.get("success") and multi_source_results.get("facts_to_store"):
             for fact_data in multi_source_results["facts_to_store"]:
+                # Validate that fact is a string
+                fact = fact_data.get("fact", "")
+                if not isinstance(fact, str):
+                    logger.error(f"Skipping non-string fact from {fact_data.get('source')}: type={type(fact)}, value={fact}")
+                    continue
+                
+                if not fact.strip():
+                    logger.warning(f"Skipping empty fact from {fact_data.get('source')}")
+                    continue
+                
                 # Add to hybrid memory
                 hybrid_memory.add_fact(
-                    fact_data["fact"],
+                    fact,
                     category=fact_data.get("category", "general"),
                     confidence=fact_data.get("confidence", 0.8),
                     source=fact_data.get("source", "external")
                 )
-                logger.info(f"Stored fact from {fact_data.get('source')}: {fact_data['fact'][:100]}...")
+                logger.info(f"Stored fact from {fact_data.get('source')}: {fact[:100]}...")
         
         # For backward compatibility, set web_results if DuckDuckGo succeeded
         if multi_source_results and "duckduckgo" in multi_source_results.get("sources_used", []):

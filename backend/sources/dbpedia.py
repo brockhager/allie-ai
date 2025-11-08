@@ -27,7 +27,7 @@ async def search_dbpedia(query: str, max_results: int = 5) -> Dict[str, Any]:
         Dictionary with search results
     """
     try:
-        # Use DBpedia Lookup service
+        # Use DBpedia Lookup service with improved parameters
         params = {
             "query": query,
             "maxResults": max_results,
@@ -46,6 +46,18 @@ async def search_dbpedia(query: str, max_results: int = 5) -> Dict[str, Any]:
                     label = doc.get("label", [""])[0]
                     description = doc.get("comment", [""])[0] if doc.get("comment") else ""
                     categories = doc.get("category", [])
+                    
+                    # Skip irrelevant results - filter by label similarity
+                    # Check if query words appear in the label
+                    query_words = set(query.lower().split())
+                    label_words = set(label.lower().split())
+                    
+                    # Require at least 50% word overlap for geographic/location queries
+                    if len(query_words) > 1:
+                        overlap = len(query_words & label_words)
+                        if overlap < len(query_words) * 0.4:  # Less than 40% match
+                            logger.debug(f"Skipping low-relevance result: {label}")
+                            continue
                     
                     # Get additional facts from resource
                     facts = await get_resource_facts(client, resource_uri)

@@ -28,6 +28,12 @@ async def search_wikidata(query: str, max_results: int = 5) -> Dict[str, Any]:
         Dictionary with search results including entities and facts
     """
     try:
+        # Add headers to appear as a legitimate client
+        headers = {
+            "User-Agent": "AllieAI/1.0 (Educational AI Assistant; https://github.com/brockhager/allie-ai)",
+            "Accept": "application/json"
+        }
+        
         # Search for entities
         params = {
             "action": "wbsearchentities",
@@ -37,7 +43,7 @@ async def search_wikidata(query: str, max_results: int = 5) -> Dict[str, Any]:
             "limit": max_results
         }
         
-        async with httpx.AsyncClient(timeout=15.0) as client:
+        async with httpx.AsyncClient(timeout=15.0, headers=headers) as client:
             response = await client.get(WIKIDATA_API_URL, params=params)
             
             if response.status_code == 200:

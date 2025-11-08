@@ -1,14 +1,23 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T09:50:15.442493",
-  "fact_count": 1,
+  "saved_at": "2025-11-08T10:04:08.442502",
+  "fact_count": 2,
   "facts": [
     {
-      "fact": "Animals <B>are</B> multicellular eukaryotic organisms <B>that</B> form <B>the</B> biological kingdom Animalia. With few",
-      "timestamp": "2025-11-08T09:50:15.441813",
+      "fact": "The <B>bighorn</B> sheep (Ovis canadensis) is a species of sheep native to North America. The species is",
+      "timestamp": "2025-11-08T10:04:08.439809",
       "category": "general",
       "confidence": 0.9,
       "source": "dbpedia",
+      "metadata": {},
+      "is_outdated": false
+    },
+    {
+      "fact": "Fables: by Aesop, Joseph Jacobs, Roger L'Estrange, Percy J. Billinghurst (1489) Subjects: Fables, Greek Fables, Translations from Greek",
+      "timestamp": "2025-11-08T10:04:08.441826",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
       "metadata": {},
       "is_outdated": false
     }
