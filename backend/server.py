@@ -1187,7 +1187,8 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
             needs_wikipedia = any(word in prompt.lower() for word in ["history", "biography", "science", "geography", "technology", "definition", "explain", "president", "politics", "government", "election", "political"])
 
     # Check if we have sufficient memory coverage
-    has_good_memory_coverage = len(relevant_facts) >= 3
+    # If we have ANY relevant facts with good confidence, prefer using them
+    has_good_memory_coverage = len(relevant_facts) >= 1  # Changed from 3 to 1 - even one good fact is enough
 
     # Step 4: Perform external searches using new multi-source retrieval
     web_results = None

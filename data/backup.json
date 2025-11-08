@@ -706,5 +706,37 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-lv94otv",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762593095194
+      },
+      {
+        "role": "me",
+        "text": "what is war?",
+        "timestamp": 1762593111333
+      },
+      {
+        "role": "them",
+        "text": "War refers to conflicts between nations or groups that involve armed conflict, violence, and destruction. It can take many forms such as military campaigns, diplomatic disputes, terrorist attacks, and political unrest. In your example, \"war\" could refer to any situation where two or more parties engage in hostilities with one another.",
+        "timestamp": 1762593141140
+      },
+      {
+        "role": "me",
+        "text": "what is war?",
+        "timestamp": 1762593182603
+      },
+      {
+        "role": "them",
+        "text": "War refers to any armed conflict between two or more nations that involves violence and destruction on a large scale. It may involve territorial conquest, looting, massacring civilians, and the use of weapons of mass destruction like chemical or biological agents. War has been an integral part of human history since ancient times, and it continues to be a significant issue today due to its potential for devastating consequences.",
+        "timestamp": 1762593204873
+      }
+    ],
+    "draft": ""
   }
 ]
