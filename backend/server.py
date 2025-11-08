@@ -1073,8 +1073,9 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
 
     # Step 2: Check memory for relevant facts (use hybrid memory first, fallback to legacy)
     hybrid_results = hybrid_memory.search(prompt, limit=5)
-    relevant_facts = [result["fact"] for result in hybrid_results] if hybrid_results else allie_memory.recall_facts(prompt)
-    recent_context = allie_memory.get_recent_context()
+    # Only use hybrid memory - no fallback to legacy memory to avoid pollution
+    relevant_facts = [result["fact"] for result in hybrid_results] if hybrid_results else []
+    recent_context = None  # Disabled to avoid pollution
     
     # Log hybrid memory usage
     if hybrid_results:
