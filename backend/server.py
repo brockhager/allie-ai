@@ -163,6 +163,8 @@ app = FastAPI(title="Allie")
 # Background task for automatic learning
 _auto_learning_task = None
 _last_learning_check = datetime.now()
+_last_learning_trigger = None
+_learning_cooldown_minutes = 30  # Wait 30 minutes between auto-triggers
 
 async def auto_learning_background_task():
     """Background task that periodically checks and triggers learning"""
@@ -896,10 +898,6 @@ async def update_conversation_api(conv_id: str, payload: Dict[str, Any] = Body(.
             with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
                 json.dump(conversation_history, f, indent=2)
             
-            # Check if we should trigger learning after conversation update
-            if LEARNING_ENABLED:
-                asyncio.create_task(check_and_trigger_auto_learning())
-            
             return payload
     raise HTTPException(status_code=404, detail="Conversation not found")
 
@@ -1303,8 +1301,17 @@ async def remove_memory_fact(fact: str):
 
 async def check_and_trigger_auto_learning():
     """Automatically trigger learning if conditions are met"""
+    global _last_learning_trigger
+    
     if not LEARNING_ENABLED:
         return None
+    
+    # Check cooldown period
+    if _last_learning_trigger is not None:
+        time_since_last = datetime.now() - _last_learning_trigger
+        if time_since_last < timedelta(minutes=_learning_cooldown_minutes):
+            logger.debug(f"Learning cooldown active: {_learning_cooldown_minutes - time_since_last.seconds // 60} minutes remaining")
+            return None
     
     try:
         import sys
@@ -1320,8 +1327,22 @@ async def check_and_trigger_auto_learning():
             # Check if there's already an active episode
             status = orchestrator.get_status()
             if not status.get("is_active", False):
+                # Check for recent failures in episode history
+                history = orchestrator.episode_history
+                if history:
+                    # Get last 3 episodes
+                    recent_episodes = sorted(history, key=lambda x: x.get('start_time', 0), reverse=True)[:3]
+                    recent_failures = [ep for ep in recent_episodes if ep.get('status') == 'failed']
+                    
+                    # If we have 2+ recent failures, wait longer before trying again
+                    if len(recent_failures) >= 2:
+                        logger.warning(f"Skipping auto-learning: {len(recent_failures)} recent failures detected")
+                        _last_learning_trigger = datetime.now()  # Reset cooldown
+                        return None
+                
                 logger.info(f"Auto-triggering learning episode: {reason}")
                 episode_id = orchestrator.start_learning_episode()
+                _last_learning_trigger = datetime.now()
                 return {"auto_triggered": True, "episode_id": episode_id, "reason": reason}
         
         return None

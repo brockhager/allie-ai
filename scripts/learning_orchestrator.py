@@ -437,7 +437,7 @@ class IncrementalLearningOrchestrator:
                 learning_rate=self.config['training_params']['learning_rate'],
                 logging_steps=10,
                 save_steps=100,
-                evaluation_strategy="no",
+                eval_strategy="no",  # Changed from evaluation_strategy to eval_strategy
                 save_strategy="no",
                 load_best_model_at_end=False,
                 push_to_hub=False,
