@@ -321,6 +321,48 @@
       "training_stats": null,
       "evaluation_results": null,
       "error_message": "IncrementalLearningOrchestrator._execute_training.<locals>.EWCTrainer.compute_loss() got an unexpected keyword argument 'num_items_in_batch'"
+    },
+    {
+      "id": "learn_20251108_100839",
+      "status": "failed",
+      "start_time": "2025-11-08T10:08:39.568144",
+      "end_time": "2025-11-08T10:08:58.363128",
+      "data_stats": {
+        "total_conversations": 36,
+        "approved_conversations": 4,
+        "avg_quality": 0.74725
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "IncrementalLearningOrchestrator._execute_training.<locals>.EWCTrainer.compute_loss() got an unexpected keyword argument 'num_items_in_batch'"
+    },
+    {
+      "id": "learn_20251108_101117",
+      "status": "failed",
+      "start_time": "2025-11-08T10:11:17.315445",
+      "end_time": "2025-11-08T10:11:35.091922",
+      "data_stats": {
+        "total_conversations": 37,
+        "approved_conversations": 4,
+        "avg_quality": 0.74725
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "IncrementalLearningOrchestrator._execute_training.<locals>.EWCTrainer.compute_loss() got an unexpected keyword argument 'num_items_in_batch'"
+    },
+    {
+      "id": "learn_20251108_101333",
+      "status": "failed",
+      "start_time": "2025-11-08T10:13:33.113503",
+      "end_time": "2025-11-08T10:13:56.193024",
+      "data_stats": {
+        "total_conversations": 37,
+        "approved_conversations": 4,
+        "avg_quality": 0.74725
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "IncrementalLearningOrchestrator._execute_training.<locals>.EWCTrainer.compute_loss() got an unexpected keyword argument 'num_items_in_batch'"
     }
   ],
   "config": {

@@ -1,23 +1,24 @@
 # Knowledge Sources Configuration
 
-Allie AI now integrates with **10 different knowledge sources** for comprehensive information retrieval.
+Allie AI now integrates with **11 different knowledge sources** for comprehensive information retrieval.
 
 ## Core Sources (No Configuration Required)
 
 These sources work out of the box:
 
-1. **DuckDuckGo** - Instant answers and quick facts
-2. **Wikipedia** - Comprehensive encyclopedia articles
-3. **Wikidata** - Structured knowledge graph
-4. **DBpedia** - Semantic encyclopedia data extracted from Wikipedia
-5. **OpenLibrary** - Books, authors, and literary information
-6. **ConceptNet** - Semantic network of common knowledge and relationships
+1. **Nominatim (OpenStreetMap)** - Geographic distances and location data (NEW!)
+2. **DuckDuckGo** - Instant answers and quick facts
+3. **Wikipedia** - Comprehensive encyclopedia articles
+4. **Wikidata** - Structured knowledge graph
+5. **DBpedia** - Semantic encyclopedia data extracted from Wikipedia
+6. **OpenLibrary** - Books, authors, and literary information
+7. **ConceptNet** - Semantic network of common knowledge and relationships
 
 ## Optional Sources (Require API Keys)
 
 These sources provide additional data but need configuration:
 
-### 7. Google Knowledge Graph API
+### 8. Google Knowledge Graph API
 
 **Setup:**
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
@@ -33,7 +34,7 @@ These sources provide additional data but need configuration:
 
 ---
 
-### 8. YAGO Knowledge Graph
+### 9. YAGO Knowledge Graph
 
 **Setup:**
 - Uses public SPARQL endpoint
@@ -44,7 +45,7 @@ These sources provide additional data but need configuration:
 
 ---
 
-### 9. Freebase
+### 10. Freebase
 
 **Note:** Freebase was officially shut down by Google in 2016. This integration:
 - Uses community-maintained endpoints
@@ -55,7 +56,7 @@ These sources provide additional data but need configuration:
 
 ---
 
-### 10. Bing Web Search API
+### 11. Bing Web Search API
 
 **Setup:**
 1. Go to [Azure Portal](https://portal.azure.com/)
@@ -74,16 +75,39 @@ These sources provide additional data but need configuration:
 
 When Allie searches for information, sources are consulted in this priority:
 
-1. **Memory** (fastest - already stored facts)
-2. **DuckDuckGo** (instant answers)
-3. **Wikipedia** (comprehensive articles)
-4. **Google KG** (if configured - high-quality entities)
-5. **Wikidata** (structured data)
-6. **DBpedia** (semantic facts)
-7. **YAGO** (if available)
-8. **ConceptNet** (relationships and common sense)
-9. **OpenLibrary** (books and authors)
-10. **Freebase** (if available)
+1. **Nominatim** (for distance queries - highest confidence 0.99)
+2. **Memory** (fastest - already stored facts)
+3. **DuckDuckGo** (instant answers)
+4. **Wikipedia** (comprehensive articles)
+5. **Google KG** (if configured - high-quality entities)
+6. **Wikidata** (structured data)
+7. **DBpedia** (semantic facts)
+8. **YAGO** (if available)
+9. **ConceptNet** (relationships and common sense)
+10. **OpenLibrary** (books and authors)
+11. **Freebase** (if available)
+
+## Special Features
+
+### Distance Calculations (Nominatim)
+
+Nominatim automatically detects and handles distance queries:
+- "how far is it from X to Y"
+- "distance from X to Y"  
+- "what is the distance between X and Y"
+
+Returns:
+- Distance in miles and kilometers
+- Estimated driving time
+- Full location names
+- Very high confidence (0.99)
+
+Example:
+```
+Q: "how far is it from san diego to yuma az"
+A: "The distance from San Diego, California to Yuma, Arizona is approximately 
+    172.3 miles (277.3 km). Estimated driving time at 60 mph: 2h 52m"
+```
 
 ## Performance Notes
 

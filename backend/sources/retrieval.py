@@ -2,7 +2,7 @@
 Knowledge Retrieval Orchestrator
 
 Coordinates searches across multiple sources and synthesizes results.
-Sources: Memory → DuckDuckGo → Wikipedia → Wikidata → DBpedia → OpenLibrary → ConceptNet
+Sources: Memory → DuckDuckGo → Wikipedia → Wikidata → DBpedia → OpenLibrary → ConceptNet → Nominatim (distances)
 Optional (require API keys): Google KG, YAGO, Freebase
 """
 
@@ -16,6 +16,7 @@ from sources.wikidata import search_wikidata
 from sources.dbpedia import search_dbpedia
 from sources.openlibrary import search_openlibrary
 from sources.conceptnet import search_conceptnet
+from sources.nominatim import search_nominatim
 # Optional sources (may require API keys or have limited availability)
 from sources.google_kg import search_google_kg
 from sources.yago import search_yago
@@ -55,6 +56,7 @@ async def search_all_sources(
     
     # Core sources (always enabled)
     core_tasks = [
+        search_nominatim(query, max_results_per_source),  # Use original query for distance detection
         search_duckduckgo(clean_query, max_results_per_source),
         search_wikipedia(clean_query, max_results_per_source),
         search_wikidata(clean_query, max_results_per_source),
@@ -75,21 +77,23 @@ async def search_all_sources(
     
     results = await asyncio.gather(*all_tasks, return_exceptions=True)
     
-    # Process results (9 sources total)
-    duckduckgo_result = results[0] if not isinstance(results[0], Exception) else {"success": False, "error": str(results[0])}
-    wikipedia_result = results[1] if not isinstance(results[1], Exception) else {"success": False, "error": str(results[1])}
-    wikidata_result = results[2] if not isinstance(results[2], Exception) else {"success": False, "error": str(results[2])}
-    dbpedia_result = results[3] if not isinstance(results[3], Exception) else {"success": False, "error": str(results[3])}
-    openlibrary_result = results[4] if not isinstance(results[4], Exception) else {"success": False, "error": str(results[4])}
-    conceptnet_result = results[5] if not isinstance(results[5], Exception) else {"success": False, "error": str(results[5])}
-    google_kg_result = results[6] if not isinstance(results[6], Exception) else {"success": False, "error": str(results[6])}
-    yago_result = results[7] if not isinstance(results[7], Exception) else {"success": False, "error": str(results[7])}
-    freebase_result = results[8] if not isinstance(results[8], Exception) else {"success": False, "error": str(results[8])}
+    # Process results (10 sources total)
+    nominatim_result = results[0] if not isinstance(results[0], Exception) else {"success": False, "error": str(results[0])}
+    duckduckgo_result = results[1] if not isinstance(results[1], Exception) else {"success": False, "error": str(results[1])}
+    wikipedia_result = results[2] if not isinstance(results[2], Exception) else {"success": False, "error": str(results[2])}
+    wikidata_result = results[3] if not isinstance(results[3], Exception) else {"success": False, "error": str(results[3])}
+    dbpedia_result = results[4] if not isinstance(results[4], Exception) else {"success": False, "error": str(results[4])}
+    openlibrary_result = results[5] if not isinstance(results[5], Exception) else {"success": False, "error": str(results[5])}
+    conceptnet_result = results[6] if not isinstance(results[6], Exception) else {"success": False, "error": str(results[6])}
+    google_kg_result = results[7] if not isinstance(results[7], Exception) else {"success": False, "error": str(results[7])}
+    yago_result = results[8] if not isinstance(results[8], Exception) else {"success": False, "error": str(results[8])}
+    freebase_result = results[9] if not isinstance(results[9], Exception) else {"success": False, "error": str(results[9])}
     
     # Synthesize all results
     synthesis = synthesize_results(
         query=query,
         memory_results=memory_results or [],
+        nominatim=nominatim_result,
         duckduckgo=duckduckgo_result,
         wikipedia=wikipedia_result,
         wikidata=wikidata_result,
@@ -107,6 +111,7 @@ async def search_all_sources(
 def synthesize_results(
     query: str,
     memory_results: List[str],
+    nominatim: Dict[str, Any],
     duckduckgo: Dict[str, Any],
     wikipedia: Dict[str, Any],
     wikidata: Dict[str, Any],
@@ -120,8 +125,8 @@ def synthesize_results(
     """
     Synthesize results from all sources into a coherent response
     
-    Priority: Memory > DuckDuckGo > Wikipedia > Google KG > Wikidata > 
-              DBpedia > YAGO > ConceptNet > OpenLibrary > Freebase
+    Priority: Nominatim (distances) > Memory > DuckDuckGo > Wikipedia > Google KG > 
+              Wikidata > DBpedia > YAGO > ConceptNet > OpenLibrary > Freebase
     
     Returns:
         {
@@ -137,6 +142,20 @@ def synthesize_results(
     sources_used = []
     facts_to_store = []
     text_parts = []
+    
+    # 0. Nominatim distance calculations (HIGHEST PRIORITY for distance queries)
+    if nominatim.get("success") and nominatim.get("results"):
+        sources_used.append("nominatim")
+        for result in nominatim["results"]:
+            text = result.get("text", "")
+            if text:
+                text_parts.append(text)
+                facts_to_store.append({
+                    "fact": text,
+                    "source": "nominatim",
+                    "category": "geography",
+                    "confidence": 0.99  # Very high confidence for calculated distances
+                })
     
     # 1. Memory results
     if memory_results:
@@ -325,6 +344,7 @@ def synthesize_results(
         "facts_to_store": facts_to_store,
         "all_results": {
             "memory": memory_results,
+            "nominatim": nominatim,
             "duckduckgo": duckduckgo,
             "wikipedia": wikipedia,
             "wikidata": wikidata,
