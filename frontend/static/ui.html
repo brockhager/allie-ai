@@ -478,7 +478,12 @@ sendBtn.onclick = async () => {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type':'application/json' },
-      body: JSON.stringify({ prompt: txt, max_tokens: Number(maxTokensEl.value) || 120 })
+      body: JSON.stringify({
+        prompt: txt,
+        max_tokens: Number(maxTokensEl.value) || 120,
+        // Send the current conversation messages to help resolve pronouns / context
+        conversation_context: conv.messages || []
+      })
     });
     if (!res.ok) throw new Error(await res.text());
     const j = await res.json();

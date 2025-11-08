@@ -198,7 +198,7 @@ The hybrid memory system is automatically integrated with Allie's chat:
 backend/
 ├── memory/
 │   ├── __init__.py           # Module exports
-│   ├── linked_list.py        # FactNode & FactLinkedList classes
+│   ├── linked_list_impl.py   # FactNode & FactLinkedList classes (migrated)
 │   ├── index.py              # KeywordIndex class
 │   └── hybrid.py             # HybridMemory integration layer
 ├── server.py                 # FastAPI with hybrid memory integration

@@ -143,7 +143,7 @@ async def search_wikipedia(query: str):
             "error": str(e)
         }
 
-async def test_search_functions():
+async def _test_search_functions():
     """Test the search functions"""
     print("Testing Search Functions")
     print("=" * 50)
@@ -175,4 +175,13 @@ async def test_search_functions():
         print(f"Error: {wiki_result.get('error')}")
 
 if __name__ == "__main__":
-    asyncio.run(test_search_functions())
+    asyncio.run(_test_search_functions())
+
+
+# Some test environments may not run native async test functions without a plugin.
+# Provide a synchronous wrapper so pytest will run the checks even if asyncio plugins
+# are not available in the environment.
+def test_search_functions_sync():
+    import asyncio as _asyncio
+    # Call the coroutine defined above
+    _asyncio.run(_test_search_functions())

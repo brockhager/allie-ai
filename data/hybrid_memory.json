@@ -1,8 +1,16 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T14:36:36.322516",
-  "fact_count": 4,
+  "saved_at": "2025-11-08T15:37:35.214366",
+  "fact_count": 5,
   "facts": [
+    {
+      "fact": "Paris is the capital of France",
+      "timestamp": "2025-11-08T15:37:35.214353",
+      "category": "geography",
+      "confidence": 0.9,
+      "source": "user",
+      "is_outdated": false
+    },
     {
       "fact": "The Eiffel Tower is a wrought-iron lattice tower in Paris",
       "timestamp": "2025-11-08T14:36:36.312101",

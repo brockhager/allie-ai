@@ -23,7 +23,7 @@ sys.modules['transformers'] = type('MockModule', (), {
 })()
 
 # Now import and test the validation logic
-from server import AllieMemory
+from backend.server import AllieMemory
 
 # Create memory instance
 memory = AllieMemory("test_memory.json")

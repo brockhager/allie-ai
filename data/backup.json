@@ -1026,5 +1026,37 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-oz6tnsq",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762638241573
+      },
+      {
+        "role": "me",
+        "text": "how big are the rocky mountains",
+        "timestamp": 1762638264199
+      },
+      {
+        "role": "them",
+        "text": "The given text does not provide specific measurements for the size of the Rocky Mountains. However, it mentions that they span over 4800 kilometers or approximately 3000 miles between their southernmost point in western Canada and their northernmost point in New Mexico in the southwest US. Therefore, the answer would be \"large\" or \"extensive\".",
+        "timestamp": 1762638294603
+      },
+      {
+        "role": "me",
+        "text": "how tall are they",
+        "timestamp": 1762638320426
+      },
+      {
+        "role": "them",
+        "text": "The height of the Eiffel Tower can vary depending on weather conditions or maintenance requirements. However, as per the given text material, it stands at approximately 330 meters tall.",
+        "timestamp": 1762638334668
+      }
+    ],
+    "draft": ""
   }
 ]

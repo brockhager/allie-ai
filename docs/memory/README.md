@@ -66,7 +66,7 @@ Complete migration documentation:
 backend/memory/
 ├── __init__.py           # Module exports
 ├── db.py                 # MySQL database connector (MemoryDB)
-├── linked_list.py        # Chronological storage (FactNode, FactLinkedList)
+├── linked_list_impl.py   # Chronological storage (FactNode, FactLinkedList) (migrated)
 ├── index.py              # Keyword indexing (KeywordIndex)
 └── hybrid.py             # Integration layer (HybridMemory)
 ```

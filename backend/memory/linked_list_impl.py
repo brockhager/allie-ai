@@ -1,5 +1,5 @@
 """
-Linked List Implementation for Chronological Fact Storage
+Linked List Implementation for Chronological Fact Storage (migrated)
 
 Each node contains:
 - Fact text
@@ -96,7 +96,7 @@ class FactLinkedList:
             confidence: Confidence score
             source: Source of the fact
             metadata: Additional metadata
-        
+
         Returns:
             The newly created FactNode
         """
