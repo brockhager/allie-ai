@@ -784,5 +784,49 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-s68vfn2",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762594319443
+      },
+      {
+        "role": "me",
+        "text": "what is the captial of usa",
+        "timestamp": 1762594340445
+      },
+      {
+        "role": "them",
+        "text": "The capital city of United States (USA) is Washington D.C., located at the northeastern corner of Virginia. However, there may be other capitals or state capitals that have been mentioned by users depending on their location within the USA. It would depend on where they live and which US states they reside in for them to refer to specific locations as \"capital\".",
+        "timestamp": 1762594361752
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-m0xooyl",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762619594785
+      },
+      {
+        "role": "me",
+        "text": "what is the capital of the usa",
+        "timestamp": 1762619618269
+      },
+      {
+        "role": "them",
+        "text": "The answer to your question would depend on where in the United States you live or work. The current capital city of the USA is Washington D.C., located in the District of Columbia (DC). However, there have been several other capitals throughout US history, including Philadelphia before it became part of Pennsylvania; New York City during its early years as an independent colony; Boston after becoming Massachusetts; Baltimore prior to being incorporated into Maryland; Charleston, South Carolina when it was still under British rule until 1792; Richmond, Virginia from 1634-1\n\n\n\n\u2713 Learned: capital city of the USA is Washington (stored in geography)\n\n\n\n\u2713 Learned: What is the capital of the usa (stored in geography)",
+        "timestamp": 1762619641548
+      }
+    ],
+    "draft": ""
   }
 ]

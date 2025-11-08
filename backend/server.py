@@ -1081,6 +1081,8 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
         logger.info(f"Hybrid memory: Found {len(hybrid_results)} relevant facts")
         for result in hybrid_results:
             logger.debug(f"  - [{result['category']}] {result['fact']} (confidence: {result['confidence']})")
+    
+    logger.info(f"relevant_facts list has {len(relevant_facts)} items")
 
     # Step 2.1: Check for self-referential questions that shouldn't trigger external searches
     self_referential_patterns = [
@@ -1189,6 +1191,8 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     # Check if we have sufficient memory coverage
     # If we have ANY relevant facts with good confidence, prefer using them
     has_good_memory_coverage = len(relevant_facts) >= 1  # Changed from 3 to 1 - even one good fact is enough
+    
+    logger.info(f"Memory coverage check: {len(relevant_facts)} facts, coverage={has_good_memory_coverage}, needs_web={needs_web_search if not is_self_referential else 'N/A'}")
 
     # Step 4: Perform external searches using new multi-source retrieval
     web_results = None
