@@ -1,23 +1,14 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T10:04:08.442502",
-  "fact_count": 2,
+  "saved_at": "2025-11-08T10:58:50.045909",
+  "fact_count": 1,
   "facts": [
     {
-      "fact": "The <B>bighorn</B> sheep (Ovis canadensis) is a species of sheep native to North America. The species is",
-      "timestamp": "2025-11-08T10:04:08.439809",
-      "category": "general",
-      "confidence": 0.9,
-      "source": "dbpedia",
-      "metadata": {},
-      "is_outdated": false
-    },
-    {
-      "fact": "Fables: by Aesop, Joseph Jacobs, Roger L'Estrange, Percy J. Billinghurst (1489) Subjects: Fables, Greek Fables, Translations from Greek",
-      "timestamp": "2025-11-08T10:04:08.441826",
-      "category": "cultural",
-      "confidence": 0.85,
-      "source": "openlibrary",
+      "fact": "This is a list of college football teams by the number of weeks they have been ranked number one in the AP poll since its inception in 1936 through November 2, 2025.\n\n† No longer a FBS school.\nBold: Team ranked number one in most recent poll.",
+      "timestamp": "2025-11-08T10:58:50.044688",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
       "metadata": {},
       "is_outdated": false
     }
