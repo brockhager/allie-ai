@@ -1,16 +1,7 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T02:25:00.100730",
-  "fact_count": 1,
+  "saved_at": "2025-11-08T02:26:46.492901",
+  "fact_count": 4,
   "facts": [
     {
-      "fact": "Test fact about persistence",
-      "timestamp": "2025-11-08T02:25:00.100099",
-      "category": "test",
-      "confidence": 1.0,
-      "source": "test_script",
-      "metadata": {},
-      "is_outdated": false
-    }
-  ]
-}
+      "fact": 

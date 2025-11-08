@@ -1153,7 +1153,7 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
                         
                         # Add validated facts to hybrid memory
                         for action in wiki_learning["learning_actions"]:
-                            if action["type"] == "add_fact":
+                            if action.get("action") == "stored_fact":
                                 hybrid_memory.add_fact(
                                     action["fact"],
                                     category=action.get("category", "general"),

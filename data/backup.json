@@ -760,5 +760,17 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-2gzkrb2",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762593979651
+      }
+    ],
+    "draft": "what is the capital of california"
   }
 ]

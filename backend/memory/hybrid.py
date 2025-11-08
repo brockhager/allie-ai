@@ -378,6 +378,12 @@ class HybridMemory:
             facts_data = []
             for node in all_facts:
                 fact_dict = node.to_dict()
+                
+                # Ensure fact is a string (not a FactNode)
+                if not isinstance(fact_dict["fact"], str):
+                    logger.error(f"Skipping non-string fact: {type(fact_dict['fact'])}")
+                    continue
+                
                 # timestamp is already converted to ISO string by to_dict()
                 # Clean up any non-serializable objects
                 if fact_dict.get("updated_by"):
@@ -385,8 +391,8 @@ class HybridMemory:
                 if fact_dict.get("metadata") and isinstance(fact_dict["metadata"], dict):
                     # Remove any FactNode references from metadata
                     fact_dict["metadata"] = {
-                        k: v for k, v in fact_dict["metadata"].items() 
-                        if not isinstance(v, FactNode)
+                        k: str(v) if not isinstance(v, (str, int, float, bool, type(None))) else v
+                        for k, v in fact_dict["metadata"].items()
                     }
                 facts_data.append(fact_dict)
             
@@ -403,6 +409,11 @@ class HybridMemory:
             
         except Exception as e:
             logger.error(f"Failed to save memory to disk: {e}")
+            # Debug: print problematic fact
+            if facts_data:
+                logger.error(f"Last fact being saved: {facts_data[-1]}")
+                for key, value in facts_data[-1].items():
+                    logger.error(f"  {key}: {type(value)}")
     
     def load_from_disk(self):
         """Load facts from disk"""
