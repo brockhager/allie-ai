@@ -6,6 +6,8 @@ for efficient fact storage and retrieval.
 """
 
 import logging
+import json
+from pathlib import Path
 from typing import List, Dict, Any, Optional, Set
 from datetime import datetime
 
@@ -25,15 +27,29 @@ class HybridMemory:
     - Fact versioning and updates
     - Integration with external sources
     - Timeline queries
+    - Disk persistence (auto-save)
     """
     
-    def __init__(self):
-        """Initialize the hybrid memory system"""
+    def __init__(self, storage_file: Optional[Path] = None):
+        """
+        Initialize the hybrid memory system
+        
+        Args:
+            storage_file: Path to JSON file for persistence (default: data/hybrid_memory.json)
+        """
         self.linked_list = FactLinkedList()
         self.index = KeywordIndex()
         
         # Track fact topics for conflict detection
         self.fact_topics: Dict[str, FactNode] = {}  # topic -> latest fact node
+        
+        # Storage configuration
+        if storage_file is None:
+            storage_file = Path(__file__).parent.parent.parent / "data" / "hybrid_memory.json"
+        self.storage_file = Path(storage_file)
+        
+        # Load existing facts from disk
+        self.load_from_disk()
     
     def add_fact(
         self,
@@ -107,6 +123,9 @@ class HybridMemory:
         if old_node:
             result["updated"] = True
             result["old_fact"] = old_node.fact
+        
+        # Auto-save to disk after adding fact
+        self.save_to_disk()
         
         return result
     
@@ -345,6 +364,92 @@ class HybridMemory:
         self.index.clear()
         self.fact_topics.clear()
         logger.info("Memory cleared")
+    
+    def save_to_disk(self):
+        """Save all facts to disk as JSON"""
+        try:
+            # Ensure directory exists
+            self.storage_file.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Get all facts (including outdated for versioning history)
+            all_facts = list(self.linked_list.traverse(include_outdated=True))
+            
+            # Serialize to JSON-compatible format
+            facts_data = []
+            for node in all_facts:
+                fact_dict = node.to_dict()
+                # timestamp is already converted to ISO string by to_dict()
+                # Clean up any non-serializable objects
+                if fact_dict.get("updated_by"):
+                    fact_dict["updated_by"] = None
+                if fact_dict.get("metadata") and isinstance(fact_dict["metadata"], dict):
+                    # Remove any FactNode references from metadata
+                    fact_dict["metadata"] = {
+                        k: v for k, v in fact_dict["metadata"].items() 
+                        if not isinstance(v, FactNode)
+                    }
+                facts_data.append(fact_dict)
+            
+            # Write to file
+            with open(self.storage_file, 'w', encoding='utf-8') as f:
+                json.dump({
+                    "version": "1.0",
+                    "saved_at": datetime.now().isoformat(),
+                    "fact_count": len(facts_data),
+                    "facts": facts_data
+                }, f, indent=2, ensure_ascii=False)
+            
+            logger.info(f"Saved {len(facts_data)} facts to {self.storage_file}")
+            
+        except Exception as e:
+            logger.error(f"Failed to save memory to disk: {e}")
+    
+    def load_from_disk(self):
+        """Load facts from disk"""
+        try:
+            if not self.storage_file.exists():
+                logger.info(f"No existing memory file at {self.storage_file}")
+                return
+            
+            with open(self.storage_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            facts = data.get("facts", [])
+            
+            # Restore facts in chronological order
+            for fact_dict in facts:
+                # Convert ISO string back to datetime
+                timestamp = datetime.fromisoformat(fact_dict["timestamp"])
+                
+                # Create node (without is_outdated - set it after)
+                node = FactNode(
+                    fact=fact_dict["fact"],
+                    timestamp=timestamp,
+                    category=fact_dict.get("category", "general"),
+                    confidence=fact_dict.get("confidence", 1.0),
+                    source=fact_dict.get("source", "user"),
+                    metadata=fact_dict.get("metadata")
+                )
+                
+                # Set outdated flag
+                node.is_outdated = fact_dict.get("is_outdated", False)
+                
+                # Add to linked list
+                self.linked_list.append(node)
+                
+                # Add to index (only if not outdated)
+                if not node.is_outdated:
+                    self.index.add_node(node)
+                    
+                    # Track topics
+                    topic = self._extract_topic(node.fact)
+                    if topic:
+                        self.fact_topics[topic] = node
+            
+            logger.info(f"Loaded {len(facts)} facts from {self.storage_file}")
+            
+        except Exception as e:
+            logger.error(f"Failed to load memory from disk: {e}")
     
     def __repr__(self) -> str:
         return f"HybridMemory(facts={self.linked_list.size()}, keywords={self.index.size()})"

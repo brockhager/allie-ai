@@ -1228,13 +1228,13 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
 
     # For self-referential questions, don't include external memory/context
     if not is_self_referential:
-        # Add memory information
+        # Add memory information - only include if directly relevant to query
         if relevant_facts:
             context_parts.append("From my memory:\n" + "\n".join(f"- {fact}" for fact in relevant_facts))
 
-        # Add recent context
-        if recent_context:
-            context_parts.append(f"Recent conversation context: {recent_context}")
+        # Skip recent context - it often pollutes responses with irrelevant information
+        # if recent_context:
+        #     context_parts.append(f"Recent conversation context: {recent_context}")
 
     # Add multi-source synthesized results
     if multi_source_results and multi_source_results.get("success"):
@@ -1274,9 +1274,18 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
 
 Remember: You are Allie, a helpful and friendly AI assistant created to answer questions and engage in natural conversation. Answer directly without referencing external sources or memory."""
     else:
+        # Build prompt with only the most relevant context
         enhanced_prompt = prompt
-        if context_parts:
-            enhanced_prompt = f"{prompt}\n\nContext from multiple sources:\n" + "\n\n".join(context_parts)
+        
+        # Only add external source results if available - they're more reliable than memory
+        if multi_source_results and multi_source_results.get("success"):
+            sources_used = ", ".join(multi_source_results.get("sources_used", []))
+            synthesized_text = multi_source_results.get("synthesized_text", "")
+            if synthesized_text:
+                enhanced_prompt = f"Question: {prompt}\n\nAnswer based on this information: {synthesized_text}"
+        # Fallback to memory only if no external results
+        elif relevant_facts:
+            enhanced_prompt = f"Question: {prompt}\n\nAnswer based on what you know: {relevant_facts[0]}"
 
     # Step 7: Generate response using TinyLlama (moved to thread pool for async performance)
     from datetime import datetime
@@ -1299,10 +1308,10 @@ Answer the user's question directly and naturally. Use the provided context if r
             **inputs, 
             max_length=inputs['input_ids'].shape[1] + max_tokens, 
             do_sample=True, 
-            temperature=0.1,  # Lower temperature for more focused responses
-            top_p=0.5,        # Lower top_p for more focused responses
-            top_k=50,         # Add top_k for better control
-            repetition_penalty=1.2,  # Penalize repetition
+            temperature=0.05,  # Very low temperature to reduce hallucinations
+            top_p=0.3,         # Very low top_p for focused responses  
+            top_k=40,          # Reduced top_k for better control
+            repetition_penalty=1.3,  # Higher penalty to avoid repetition
             pad_token_id=tokenizer.eos_token_id,
             eos_token_id=tokenizer.eos_token_id,
             num_return_sequences=1

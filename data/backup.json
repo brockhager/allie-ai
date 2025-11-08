@@ -738,5 +738,27 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-dyntt0u",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762593383005
+      },
+      {
+        "role": "me",
+        "text": "what is war",
+        "timestamp": 1762593394428
+      },
+      {
+        "role": "them",
+        "text": "War refers to any conflict or armed confrontation between two or more parties. In terms of geography, \"war\" can refer to various locations across different countries such as \"top 15 biggest cities in Arizona,\" which includes major metropolitan areas like Phoenix, Tucson, Mesa, Chandler, Glendale, Scottsdale, Gilbert, Tempe, Peoria, Surprise, Yuma, Avondale, Goodyear, Flagstaff, Casa Grande, among others. Additionally, \"war\" may also be used to describe conflicts within nations or",
+        "timestamp": 1762593432971
+      }
+    ],
+    "draft": ""
   }
 ]
