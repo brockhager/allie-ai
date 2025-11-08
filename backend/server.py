@@ -30,19 +30,55 @@ LLAMA_BACKOFF_BASE = float(os.environ.get("LLAMA_BACKOFF_BASE", "0.25"))
 logger = logging.getLogger("allie")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 
-# Dummy model for testing (to avoid downloading TinyLlama)
-class DummyModel:
-    def generate(self, **kwargs):
-        return ["Dummy response from model"]
+# Load real model for chat
+try:
+    from transformers import AutoTokenizer, AutoModelForCausalLM
+    from peft import PeftModel
+    import torch
 
-class DummyTokenizer:
-    def __call__(self, prompt, return_tensors=None):
-        return {"input_ids": [1, 2, 3]}
-    def decode(self, tokens, skip_special_tokens=None):
-        return "This is a dummy response for testing purposes."
+    model_name = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+    logger.info(f"Loading model: {model_name}")
 
-tokenizer = DummyTokenizer()
-model = DummyModel()
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        torch_dtype=torch.float16,
+        device_map="auto"
+    )
+
+    # Load existing adapter if available
+    adapter_paths = [
+        Path("../allie_finetuned"),
+        Path("../allie-finetuned/checkpoint-150"),
+        Path("../allie_finetuned/checkpoint-100")
+    ]
+
+    for adapter_path in adapter_paths:
+        if adapter_path.exists():
+            logger.info(f"Loading adapter from {adapter_path}")
+            model = PeftModel.from_pretrained(model, str(adapter_path))
+            break
+
+    logger.info("Model loaded successfully")
+
+except Exception as e:
+    logger.warning(f"Failed to load real model: {e}. Using dummy model.")
+    # Dummy model for testing (fallback)
+    class DummyModel:
+        def generate(self, **kwargs):
+            return ["Dummy response from model"]
+
+    class DummyTokenizer:
+        def __call__(self, prompt, return_tensors=None):
+            return {"input_ids": [1, 2, 3]}
+        def decode(self, tokens, skip_special_tokens=None):
+            return "This is a dummy response for testing purposes."
+
+    tokenizer = DummyTokenizer()
+    model = DummyModel()
 
 # Import learning orchestrator
 try:
@@ -320,4 +356,4 @@ backup_conversations()
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)
