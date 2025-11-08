@@ -15,6 +15,8 @@ import threading
 import time
 import psutil
 from dataclasses import dataclass, asdict
+import os
+import shutil
 
 from experience_replay import ExperienceReplayBuffer
 from ewc_regularization import ElasticWeightConsolidation, EWCOptimizer
@@ -214,6 +216,11 @@ class IncrementalLearningOrchestrator:
             # Phase 5: Deployment
             self.current_episode.status = 'deploying'
             deployment_success = self._deploy_model(training_results['model_path'])
+
+            # Phase 6: Cleanup
+            self.current_episode.status = 'cleaning_up'
+            self.cleanup_folder(self.config['models_dir'])
+            self.cleanup_folder(str(Path(self.config['data_dir']) / 'backups'))
 
             # Success
             self.current_episode.status = 'completed'
@@ -530,6 +537,37 @@ class IncrementalLearningOrchestrator:
         except Exception as e:
             logger.warning(f"Resource check failed: {e}")
             return True  # Default to allowing learning
+
+    def cleanup_folder(self, folder_path: str, max_files: int = 30):
+        """Clean up folder to keep only the most recent max_files files"""
+        try:
+            path = Path(folder_path)
+            if not path.exists() or not path.is_dir():
+                return
+
+            # Get all files in the folder (not subdirectories)
+            files = [f for f in path.iterdir() if f.is_file()]
+
+            if len(files) <= max_files:
+                return
+
+            # Sort by modification time (newest first)
+            files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
+
+            # Keep the most recent max_files, delete the rest
+            files_to_delete = files[max_files:]
+
+            for file_path in files_to_delete:
+                try:
+                    file_path.unlink()
+                    logger.info(f"Cleaned up old file: {file_path}")
+                except Exception as e:
+                    logger.warning(f"Failed to delete {file_path}: {e}")
+
+            logger.info(f"Cleaned up {len(files_to_delete)} files from {folder_path}")
+
+        except Exception as e:
+            logger.error(f"Failed to cleanup folder {folder_path}: {e}")
 
     def get_status(self) -> Dict[str, Any]:
         """Get current learning status"""

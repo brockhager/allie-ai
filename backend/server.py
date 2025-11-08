@@ -160,7 +160,144 @@ async def list_conversations_file():
 async def list_conversations_memory():
     return {"conversations": conversation_history}
 
-# Web search functionality
+# File management utilities
+MAX_FILES_PER_FOLDER = 30
+
+def cleanup_folder(folder_path: Path, max_files: int = MAX_FILES_PER_FOLDER):
+    """Clean up old files in a folder, keeping only the most recent max_files"""
+    if not folder_path.exists():
+        return
+
+    try:
+        # Get all files in the folder (not subdirectories)
+        files = [f for f in folder_path.iterdir() if f.is_file()]
+
+        if len(files) <= max_files:
+            return
+
+        # Sort by modification time (newest first)
+        files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
+
+        # Remove old files
+        files_to_remove = files[max_files:]
+        for old_file in files_to_remove:
+            try:
+                old_file.unlink()
+                logger.info(f"Cleaned up old file: {old_file}")
+            except Exception as e:
+                logger.warning(f"Failed to remove {old_file}: {e}")
+
+        logger.info(f"Cleaned up {len(files_to_remove)} files from {folder_path}")
+
+    except Exception as e:
+        logger.warning(f"Failed to cleanup {folder_path}: {e}")
+
+def cleanup_all_folders():
+    """Clean up all monitored folders"""
+    folders_to_cleanup = [
+        DATA_DIR / "backups",
+        Path("../outputs"),
+        Path("../allie_finetuned"),
+        Path("../allie-finetuned/checkpoint-100"),
+        Path("../allie-finetuned/checkpoint-150"),
+        Path("../scripts/logs") if Path("../scripts/logs").exists() else None,
+        DATA_DIR  # Main data directory
+    ]
+
+    for folder in folders_to_cleanup:
+        if folder and folder.exists():
+            cleanup_folder(folder)
+class AllieMemory:
+    """Enhanced memory system for Allie"""
+    def __init__(self, memory_file: Path):
+        self.memory_file = memory_file
+        self.knowledge_base = self.load_memory()
+        self.conversation_summaries = []
+        self.max_memories = 1000
+
+    def load_memory(self) -> Dict[str, Any]:
+        """Load persistent memory"""
+        if self.memory_file.exists():
+            try:
+                with open(self.memory_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except:
+                return {"facts": [], "preferences": {}, "learned_concepts": []}
+        return {"facts": [], "preferences": {}, "learned_concepts": []}
+
+    def save_memory(self):
+        """Save memory to disk"""
+        with open(self.memory_file, 'w', encoding='utf-8') as f:
+            json.dump(self.knowledge_base, f, indent=2, ensure_ascii=False)
+        # Clean up memory-related files
+        cleanup_folder(self.memory_file.parent)
+
+    def add_fact(self, fact: str, importance: float = 0.5, category: str = "general"):
+        """Add an important fact to memory"""
+        new_fact = {
+            "fact": fact,
+            "importance": importance,
+            "category": category,
+            "timestamp": datetime.now().isoformat(),
+            "usage_count": 0
+        }
+        self.knowledge_base["facts"].append(new_fact)
+
+        # Keep only most important facts
+        self.knowledge_base["facts"].sort(key=lambda x: x["importance"] * (1 + x["usage_count"]), reverse=True)
+        self.knowledge_base["facts"] = self.knowledge_base["facts"][:self.max_memories]
+
+        self.save_memory()
+
+    def recall_facts(self, query: str, limit: int = 5) -> List[str]:
+        """Recall relevant facts based on query"""
+        relevant_facts = []
+        query_lower = query.lower()
+
+        for fact in self.knowledge_base["facts"]:
+            fact_text = fact["fact"].lower()
+            # Simple keyword matching (could be improved with embeddings)
+            if any(word in fact_text for word in query_lower.split()):
+                relevant_facts.append(fact)
+                fact["usage_count"] += 1
+
+        # Sort by relevance and recency
+        relevant_facts.sort(key=lambda x: (x["usage_count"], x["importance"]), reverse=True)
+        self.save_memory()
+
+        return [f["fact"] for f in relevant_facts[:limit]]
+
+    def add_conversation_summary(self, summary: str, key_points: List[str]):
+        """Add conversation summary"""
+        summary_entry = {
+            "summary": summary,
+            "key_points": key_points,
+            "timestamp": datetime.now().isoformat()
+        }
+        self.conversation_summaries.append(summary_entry)
+
+        # Keep last 50 summaries
+        self.conversation_summaries = self.conversation_summaries[-50:]
+
+    def get_recent_context(self, limit: int = 3) -> str:
+        """Get recent conversation context"""
+        if not self.conversation_summaries:
+            return ""
+
+        recent = self.conversation_summaries[-limit:]
+        context = "Recent conversation context:\n"
+        for entry in recent:
+            context += f"- {entry['summary']}\n"
+            for point in entry['key_points'][:2]:  # Limit key points
+                context += f"  • {point}\n"
+        return context
+
+# Initialize memory system
+MEMORY_FILE = DATA_DIR / "allie_memory.json"
+allie_memory = AllieMemory(MEMORY_FILE)
+
+# Initial cleanup on startup
+cleanup_all_folders()
 async def search_web(query: str) -> str:
     """Search the web using DuckDuckGo instant answers"""
     try:
@@ -207,12 +344,53 @@ async def update_conversation_api(conv_id: str, payload: Dict[str, Any] = Body(.
     """Update a conversation"""
     for i, conv in enumerate(conversation_history):
         if conv.get("id") == conv_id:
+            old_conv = conversation_history[i]
             conversation_history[i] = payload
+
+            # Generate conversation summary if it has grown
+            if payload.get("messages") and len(payload["messages"]) > len(old_conv.get("messages", [])):
+                try:
+                    summary = await generate_conversation_summary(payload)
+                    key_points = extract_key_points(payload)
+                    allie_memory.add_conversation_summary(summary, key_points)
+                except Exception as e:
+                    logger.warning(f"Failed to summarize conversation: {e}")
+
             # Save to backup
             with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
                 json.dump(conversation_history, f, indent=2)
             return payload
     raise HTTPException(status_code=404, detail="Conversation not found")
+
+async def generate_conversation_summary(conversation: Dict[str, Any]) -> str:
+    """Generate a summary of the conversation"""
+    messages = conversation.get("messages", [])
+    if len(messages) < 4:  # Need at least a few exchanges
+        return f"Conversation with {len(messages)} messages"
+
+    # Simple summary based on first and last messages
+    first_user = next((m["text"] for m in messages if m.get("role") == "me"), "Unknown topic")
+    last_assistant = next((m["text"] for m in reversed(messages) if m.get("role") == "them"), "")
+
+    if len(last_assistant) > 100:
+        last_assistant = last_assistant[:100] + "..."
+
+    return f"Discussion about: {first_user[:50]}... Result: {last_assistant}"
+
+def extract_key_points(conversation: Dict[str, Any]) -> List[str]:
+    """Extract key points from conversation"""
+    messages = conversation.get("messages", [])
+    key_points = []
+
+    # Look for important information in responses
+    for msg in messages:
+        if msg.get("role") == "them" and len(msg.get("text", "")) > 20:
+            text = msg["text"]
+            # Extract sentences that might contain facts
+            sentences = [s.strip() for s in text.split('.') if len(s.strip()) > 10]
+            key_points.extend(sentences[:2])  # Take first 2 substantial sentences
+
+    return key_points[:5]  # Limit to 5 key points
 
 @app.delete("/api/conversations/{conv_id}")
 async def delete_conversation_api(conv_id: str):
@@ -232,6 +410,10 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt is required")
 
+    # Get relevant memories and context
+    relevant_facts = allie_memory.recall_facts(prompt)
+    recent_context = allie_memory.get_recent_context()
+
     # Check if this query might need web search
     search_keywords = ["current", "today", "latest", "news", "weather", "price", "stock", "score", "result", "update", "now"]
     needs_search = any(keyword in prompt.lower() for keyword in search_keywords)
@@ -239,17 +421,31 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     search_results = ""
     if needs_search:
         search_results = await search_web(prompt)
-        # Add search results to the prompt
-        enhanced_prompt = f"{prompt}\n\nWeb search results: {search_results}"
-    else:
-        enhanced_prompt = prompt
+
+    # Build enhanced context
+    context_parts = []
+    if relevant_facts:
+        context_parts.append("Relevant information I remember:\n" + "\n".join(f"- {fact}" for fact in relevant_facts))
+    if recent_context:
+        context_parts.append(recent_context)
+    if search_results:
+        context_parts.append(f"Current web search results: {search_results}")
+
+    enhanced_prompt = prompt
+    if context_parts:
+        enhanced_prompt = f"{prompt}\n\nContext:\n" + "\n\n".join(context_parts)
 
     # Format as chat message for TinyLlama with system prompt
     from datetime import datetime
     current_date = datetime.now().strftime("%B %d, %Y")
-    system_content = f"You are Allie, a helpful and friendly AI assistant. Today's date is {current_date}. Respond naturally and helpfully to user questions."
-    if search_results:
-        system_content += f" Use this web search information if relevant: {search_results}"
+    system_content = f"""You are Allie, a helpful and friendly AI assistant. Today's date is {current_date}.
+
+You have access to:
+- Your long-term memory of important facts and information
+- Recent conversation context
+- Current web search results when needed
+
+Use this information naturally in your responses. If you learn something new and important, remember it for future conversations."""
 
     messages = [
         {"role": "system", "content": system_content},
@@ -260,6 +456,16 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
     outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.7, top_p=0.9, pad_token_id=tokenizer.eos_token_id)
     reply = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
+
+    # Try to extract and store important information from the conversation
+    try:
+        # Simple heuristic: if response contains factual information, store it
+        if len(reply) > 20 and not reply.startswith(("I'm sorry", "I don't know", "I can't")):
+            # Store the user's question and Allie's answer as a fact
+            fact = f"User asked: '{prompt}' - Allie responded: '{reply[:200]}...'" if len(reply) > 200 else f"User asked: '{prompt}' - Allie responded: '{reply}'"
+            allie_memory.add_fact(fact, importance=0.3, category="conversation")
+    except Exception as e:
+        logger.warning(f"Failed to store memory: {e}")
 
     return {"text": reply}
 
@@ -306,19 +512,45 @@ async def backup_conversations():
     try:
         with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
             json.dump(conversation_history, f, indent=2)
+        # Clean up backup folder
+        cleanup_folder(DATA_DIR / "backups")
         return {"status": "backup successful"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/search")
-async def web_search(payload: Dict[str, Any] = Body(...)):
-    """Manual web search endpoint"""
-    query = payload.get("query", "")
-    if not query:
-        raise HTTPException(status_code=400, detail="Query is required")
+@app.post("/api/memory/add")
+async def add_memory(payload: Dict[str, Any] = Body(...)):
+    """Manually add a fact to Allie's memory"""
+    fact = payload.get("fact", "")
+    importance = payload.get("importance", 0.5)
+    category = payload.get("category", "general")
 
-    results = await search_web(query)
-    return {"query": query, "results": results}
+    if not fact:
+        raise HTTPException(status_code=400, detail="Fact is required")
+
+    allie_memory.add_fact(fact, importance, category)
+    return {"status": "fact_added", "fact": fact}
+
+@app.get("/api/memory/recall")
+async def recall_memory(query: str = "", limit: int = 5):
+    """Recall relevant facts from memory"""
+    if not query:
+        # Return all facts if no query
+        facts = allie_memory.knowledge_base.get("facts", [])[:limit]
+        return {"facts": [f["fact"] for f in facts]}
+
+    facts = allie_memory.recall_facts(query, limit)
+    return {"query": query, "facts": facts}
+
+@app.get("/api/memory/stats")
+async def memory_stats():
+    """Get memory statistics"""
+    facts = allie_memory.knowledge_base.get("facts", [])
+    return {
+        "total_facts": len(facts),
+        "categories": list(set(f["category"] for f in facts if "category" in f)),
+        "most_used": sorted(facts, key=lambda x: x.get("usage_count", 0), reverse=True)[:3]
+    }
 
 @app.get("/api/learning/status")
 async def get_learning_status():
