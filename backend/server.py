@@ -160,12 +160,35 @@ async def list_conversations_file():
 async def list_conversations_memory():
     return {"conversations": conversation_history}
 
-# ------------------------- Conversation Storage -------------------------
-
-@app.get("/api/conversations")
-async def list_conversations():
-    """List all conversations"""
-    return {"conversations": conversation_history}
+# Web search functionality
+async def search_web(query: str) -> str:
+    """Search the web using DuckDuckGo instant answers"""
+    try:
+        # Use DuckDuckGo instant answer API (no API key required)
+        url = f"https://api.duckduckgo.com/?q={query}&format=json&no_html=1&skip_disambig=1"
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(url)
+            if response.status_code == 200:
+                data = response.json()
+                # Extract useful information
+                result = ""
+                if data.get("AbstractText"):
+                    result += data["AbstractText"] + "\n"
+                if data.get("Answer"):
+                    result += data["Answer"] + "\n"
+                if data.get("Definition"):
+                    result += data["Definition"] + "\n"
+                if not result and data.get("RelatedTopics"):
+                    # Fallback to related topics
+                    for topic in data["RelatedTopics"][:2]:  # Limit to first 2
+                        if topic.get("Text"):
+                            result += topic["Text"] + "\n"
+                return result.strip() or f"I searched for '{query}' but couldn't find specific information."
+            else:
+                return f"Search failed for '{query}'."
+    except Exception as e:
+        logger.warning(f"Web search failed: {e}")
+        return f"I couldn't access the internet to search for '{query}' right now."
 
 @app.post("/api/conversations")
 async def create_conversation_api(payload: Dict[str, Any] = Body(...)):
@@ -209,10 +232,28 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt is required")
 
+    # Check if this query might need web search
+    search_keywords = ["current", "today", "latest", "news", "weather", "price", "stock", "score", "result", "update", "now"]
+    needs_search = any(keyword in prompt.lower() for keyword in search_keywords)
+
+    search_results = ""
+    if needs_search:
+        search_results = await search_web(prompt)
+        # Add search results to the prompt
+        enhanced_prompt = f"{prompt}\n\nWeb search results: {search_results}"
+    else:
+        enhanced_prompt = prompt
+
     # Format as chat message for TinyLlama with system prompt
+    from datetime import datetime
+    current_date = datetime.now().strftime("%B %d, %Y")
+    system_content = f"You are Allie, a helpful and friendly AI assistant. Today's date is {current_date}. Respond naturally and helpfully to user questions."
+    if search_results:
+        system_content += f" Use this web search information if relevant: {search_results}"
+
     messages = [
-        {"role": "system", "content": "You are Allie, a helpful and friendly AI assistant. Respond naturally and helpfully to user questions."},
-        {"role": "user", "content": prompt}
+        {"role": "system", "content": system_content},
+        {"role": "user", "content": enhanced_prompt}
     ]
     formatted_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
@@ -269,7 +310,15 @@ async def backup_conversations():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# ------------------------- Learning Management Endpoints -------------------------
+@app.post("/api/search")
+async def web_search(payload: Dict[str, Any] = Body(...)):
+    """Manual web search endpoint"""
+    query = payload.get("query", "")
+    if not query:
+        raise HTTPException(status_code=400, detail="Query is required")
+
+    results = await search_web(query)
+    return {"query": query, "results": results}
 
 @app.get("/api/learning/status")
 async def get_learning_status():
