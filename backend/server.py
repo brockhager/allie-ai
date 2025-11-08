@@ -166,9 +166,13 @@ async def create_conversation(payload: Dict[str, Any] = Body(...)):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt is required")
 
-    inputs = tokenizer(prompt, return_tensors="pt")
-    outputs = model.generate(**inputs, max_length=200)
-    reply = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    # Format as chat message for TinyLlama
+    messages = [{"role": "user", "content": prompt}]
+    formatted_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+
+    inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
+    outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + 200, do_sample=True, temperature=0.7, top_p=0.9)
+    reply = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
 
     # Store in memory
     conversation_history.append({"prompt": prompt, "response": reply})
@@ -190,9 +194,13 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt is required")
 
-    inputs = tokenizer(prompt, return_tensors="pt")
-    outputs = model.generate(**inputs, max_length=max_tokens)
-    reply = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    # Format as chat message for TinyLlama
+    messages = [{"role": "user", "content": prompt}]
+    formatted_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+
+    inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
+    outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.7, top_p=0.9)
+    reply = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
 
     return {"text": reply}
 
