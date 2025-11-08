@@ -330,5 +330,37 @@
       }
     ],
     "draft": "what is your nam"
+  },
+  {
+    "id": "c-9g1fk3k",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762585371624
+      },
+      {
+        "role": "me",
+        "text": "hello",
+        "timestamp": 1762585382802
+      },
+      {
+        "role": "them",
+        "text": "Bienvenue.",
+        "timestamp": 1762585396670
+      },
+      {
+        "role": "me",
+        "text": "what language is that",
+        "timestamp": 1762586239046
+      },
+      {
+        "role": "them",
+        "text": "Yes, the text is written in English and includes information about the top 15 biggest cities in Arizona, California, and other regions.",
+        "timestamp": 1762586263749
+      }
+    ],
+    "draft": ""
   }
 ]

@@ -47,7 +47,7 @@ try:
         model_name,
         torch_dtype=torch.float16,
         device_map="auto",
-        local_files_only=True  # Only use local files, don't download
+        local_files_only=False  # Allow downloading if not cached locally
     )
 
     # Load existing adapter if available
@@ -786,20 +786,45 @@ Remember: You are Allie, a helpful and friendly AI assistant created to answer q
         if context_parts:
             enhanced_prompt = f"{prompt}\n\nContext from multiple sources:\n" + "\n\n".join(context_parts)
 
-    # Build enhanced prompt
-    if is_self_referential:
-        # For self-referential questions, use a direct prompt without external context
-        enhanced_prompt = f"""Please answer this question directly about yourself as Allie the AI assistant: {prompt}
-
-Remember: You are Allie, a helpful and friendly AI assistant created to answer questions and engage in natural conversation. Answer directly without referencing external sources or memory."""
-    else:
-        enhanced_prompt = prompt
-        if context_parts:
-            enhanced_prompt = f"{prompt}\n\nContext from multiple sources:\n" + "\n\n".join(context_parts)
-
     # Step 7: Generate response using TinyLlama
     from datetime import datetime
     current_date = datetime.now().strftime("%B %d, %Y")
+    
+    # Handle simple greetings and common phrases with direct responses
+    prompt_lower = prompt.lower().strip()
+    simple_responses = {
+        "hello": "Hello! How can I help you today?",
+        "hi": "Hi there! What can I do for you?",
+        "hey": "Hey! How's it going?",
+        "good morning": "Good morning! How can I assist you today?",
+        "good afternoon": "Good afternoon! What can I help you with?",
+        "good evening": "Good evening! How may I help you?",
+        "how are you": "I'm doing well, thank you! How can I help you today?",
+        "how's it going": "I'm doing great! What can I help you with?",
+        "what's up": "Not much! How can I assist you today?",
+        "thanks": "You're welcome!",
+        "thank you": "You're very welcome!",
+        "bye": "Goodbye! Have a great day!",
+        "goodbye": "Goodbye! Take care!",
+        "see you later": "See you later!",
+        "yes": "Great!",
+        "no": "Okay, understood.",
+        "okay": "Alright!",
+        "sure": "Of course!",
+        "maybe": "Let me know if you need help with anything else.",
+        "i don't know": "That's okay! Is there something I can help you figure out?",
+        "help": "I'm here to help! What do you need assistance with?",
+        "please": "Of course! How can I help you?"
+    }
+    
+    # Check for exact matches first
+    if prompt_lower in simple_responses:
+        return {"text": simple_responses[prompt_lower]}
+    
+    # Check for partial matches
+    for key, response in simple_responses.items():
+        if key in prompt_lower:
+            return {"text": response}
     
     # Handle common self-referential questions with direct responses
     if is_self_referential:
@@ -817,7 +842,6 @@ Remember: You are Allie, a helpful and friendly AI assistant created to answer q
         }
         
         # Check for exact matches first
-        prompt_lower = prompt.lower().strip()
         if prompt_lower in direct_responses:
             return {"text": direct_responses[prompt_lower]}
         
@@ -828,19 +852,21 @@ Remember: You are Allie, a helpful and friendly AI assistant created to answer q
     
     system_content = f"""You are Allie, a helpful and friendly AI assistant. Today's date is {current_date}.
 
+You are designed to respond naturally and helpfully in English. Always provide direct, clear answers to questions.
+
 You have access to:
 - Your long-term memory of important facts and information
 - Recent conversation context
 - Current web search results from DuckDuckGo
 - Authoritative background information from Wikipedia
 
-Your primary role is to answer questions and engage in natural conversation. When someone asks you a question, provide a direct, helpful answer based on all available information. Do not rephrase sentences or perform text transformation tasks unless specifically asked.
+Your primary role is to answer questions and engage in natural conversation. When someone asks you a question, provide a direct, helpful answer based on all available information.
 
-IMPORTANT: When someone asks about you personally (your name, who you are, what you do, your purpose, etc.), answer directly about yourself as Allie the AI assistant. Do not search external sources or use memory for these questions - introduce yourself naturally and accurately.
+IMPORTANT: Always respond in clear, natural English. Do not respond in other languages unless specifically asked. Be conversational but informative.
 
-I automatically validate my stored knowledge against authoritative sources like Wikipedia. If I find conflicting information, I update my memory to ensure accuracy. Wikipedia is considered the most authoritative source for factual information.
+I automatically validate my stored knowledge against authoritative sources like Wikipedia. If I find conflicting information, I update my memory to ensure accuracy.
 
-Synthesize information from all available sources to provide comprehensive, accurate, and natural responses. If you learn something new and important from external sources, acknowledge that you're storing it for future conversations."""
+Synthesize information from all available sources to provide comprehensive, accurate responses. If you learn something new and important, acknowledge that you're storing it for future conversations."""
 
     messages = [
         {"role": "system", "content": system_content},
@@ -849,7 +875,7 @@ Synthesize information from all available sources to provide comprehensive, accu
     formatted_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
     inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
-    outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.7, top_p=0.9, pad_token_id=tokenizer.eos_token_id)
+    outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.3, top_p=0.7, pad_token_id=tokenizer.eos_token_id)
     reply = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
 
     # Step 8: Process assistant response for additional learning
