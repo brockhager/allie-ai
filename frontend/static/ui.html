@@ -34,6 +34,16 @@
   .learning-btn{background:var(--accent);color:#021125;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600}
   .learning-btn.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08)}
   .learning-btn:disabled{background:#666;color:#999;cursor:not-allowed}
+  .memory-panel{width:240px;padding:12px;border-left:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:12px;overflow-y:auto}
+  .memory-stats-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:12px}
+  .memory-stats-title{font-size:13px;color:var(--accent);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .memory-stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+  .memory-stat-row:last-child{border-bottom:none}
+  .memory-stat-label{font-size:12px;color:var(--muted)}
+  .memory-stat-value{font-size:14px;color:var(--text);font-weight:600}
+  .memory-category-item{display:flex;justify-content:space-between;font-size:11px;padding:4px 0;color:var(--muted)}
+  .memory-refresh-btn{background:transparent;color:var(--accent);border:1px solid rgba(96,165,250,0.3);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;width:100%;margin-top:8px}
+  .memory-refresh-btn:hover{background:rgba(96,165,250,0.1)}
 </style>
 </head>
 <body>
@@ -93,6 +103,60 @@
       </div>
     </div>
   </main>
+
+  <aside class="memory-panel">
+    <div class="memory-stats-card">
+      <div class="memory-stats-title">
+        <span>🧠</span>
+        <span>Memory Stats</span>
+      </div>
+      <div class="memory-stat-row">
+        <span class="memory-stat-label">Total Facts</span>
+        <span class="memory-stat-value" id="memTotalFacts">-</span>
+      </div>
+      <div class="memory-stat-row">
+        <span class="memory-stat-label">Active</span>
+        <span class="memory-stat-value" id="memActiveFacts">-</span>
+      </div>
+      <div class="memory-stat-row">
+        <span class="memory-stat-label">Outdated</span>
+        <span class="memory-stat-value" id="memOutdatedFacts">-</span>
+      </div>
+      <div class="memory-stat-row">
+        <span class="memory-stat-label">Keywords</span>
+        <span class="memory-stat-value" id="memKeywords">-</span>
+      </div>
+      <button id="memRefreshBtn" class="memory-refresh-btn">↻ Refresh</button>
+    </div>
+
+    <div class="memory-stats-card">
+      <div class="memory-stats-title">
+        <span>📂</span>
+        <span>Categories</span>
+      </div>
+      <div id="memCategories" style="max-height:150px;overflow-y:auto">
+        <div style="font-size:11px;color:var(--muted);text-align:center;padding:8px">Loading...</div>
+      </div>
+    </div>
+
+    <div class="memory-stats-card">
+      <div class="memory-stats-title">
+        <span>🔗</span>
+        <span>Sources</span>
+      </div>
+      <div id="memSources" style="max-height:120px;overflow-y:auto">
+        <div style="font-size:11px;color:var(--muted);text-align:center;padding:8px">Loading...</div>
+      </div>
+    </div>
+
+    <div class="memory-stats-card">
+      <div class="memory-stats-title">
+        <span>⏱️</span>
+        <span>Last Updated</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);text-align:center;padding:8px" id="memLastUpdate">Never</div>
+    </div>
+  </aside>
 </div>
 
 <script>
@@ -127,6 +191,72 @@ const checkLearningBtn = document.getElementById('checkLearningBtn');
 const startLearningBtn = document.getElementById('startLearningBtn');
 const stopLearningBtn = document.getElementById('stopLearningBtn');
 const viewHistoryBtn = document.getElementById('viewHistoryBtn');
+
+// Memory statistics elements
+const memTotalFacts = document.getElementById('memTotalFacts');
+const memActiveFacts = document.getElementById('memActiveFacts');
+const memOutdatedFacts = document.getElementById('memOutdatedFacts');
+const memKeywords = document.getElementById('memKeywords');
+const memCategories = document.getElementById('memCategories');
+const memSources = document.getElementById('memSources');
+const memLastUpdate = document.getElementById('memLastUpdate');
+const memRefreshBtn = document.getElementById('memRefreshBtn');
+
+// Fetch and update memory statistics
+async function updateMemoryStats() {
+  try {
+    const resp = await fetch('/api/hybrid-memory/statistics');
+    if (!resp.ok) {
+      console.error('Failed to fetch memory stats:', resp.status);
+      return;
+    }
+    
+    const data = await resp.json();
+    const stats = data.statistics;
+    
+    // Update main stats
+    memTotalFacts.textContent = stats.total_facts || 0;
+    memActiveFacts.textContent = stats.active_facts || 0;
+    memOutdatedFacts.textContent = stats.outdated_facts || 0;
+    memKeywords.textContent = stats.indexed_keywords || 0;
+    
+    // Update categories
+    const categoriesHtml = Object.entries(stats.categories || {})
+      .sort((a, b) => b[1] - a[1])
+      .map(([cat, count]) => `
+        <div class="memory-category-item">
+          <span>${cat}</span>
+          <span style="color:var(--text);font-weight:600">${count}</span>
+        </div>
+      `).join('') || '<div style="font-size:11px;color:var(--muted);text-align:center;padding:8px">No categories</div>';
+    memCategories.innerHTML = categoriesHtml;
+    
+    // Update sources
+    const sourcesHtml = Object.entries(stats.sources || {})
+      .sort((a, b) => b[1] - a[1])
+      .map(([src, count]) => `
+        <div class="memory-category-item">
+          <span>${src}</span>
+          <span style="color:var(--text);font-weight:600">${count}</span>
+        </div>
+      `).join('') || '<div style="font-size:11px;color:var(--muted);text-align:center;padding:8px">No sources</div>';
+    memSources.innerHTML = sourcesHtml;
+    
+    // Update last update time
+    const now = new Date();
+    memLastUpdate.textContent = now.toLocaleTimeString();
+    
+  } catch (err) {
+    console.error('Error updating memory stats:', err);
+    memTotalFacts.textContent = 'Error';
+    memActiveFacts.textContent = '-';
+    memOutdatedFacts.textContent = '-';
+    memKeywords.textContent = '-';
+  }
+}
+
+// Refresh button handler
+memRefreshBtn.onclick = updateMemoryStats;
 
 exportAllBtn.onclick = () => {
   const blob = new Blob([JSON.stringify(conversations, null, 2)], { type: 'application/json' });
@@ -339,7 +469,14 @@ sendBtn.onclick = async () => {
     const reply = j.text || j.content || (Array.isArray(j) && j[0]?.text) || JSON.stringify(j);
     (conv.messages || (conv.messages = [])).push({ role: 'them', text: reply, timestamp: Date.now() });
     renderActive();
-    try { await apiUpdate(conv); statusEl.textContent = 'Ready'; } catch { statusEl.textContent = 'Saved locally'; }
+    try { 
+      await apiUpdate(conv); 
+      statusEl.textContent = 'Ready'; 
+      // Update memory stats after message
+      updateMemoryStats().catch(err => console.warn('Failed to update memory stats:', err));
+    } catch { 
+      statusEl.textContent = 'Saved locally'; 
+    }
   } catch (err) {
     (conv.messages || (conv.messages = [])).push({ role: 'them', text: 'Error: ' + err.message, timestamp: Date.now() });
     renderActive();
@@ -500,6 +637,9 @@ function updateLearningStatus(status) {
     learningStatusEl.style.color = '#ff6b6b';
   }
 
+  // Load memory statistics on init
+  await updateMemoryStats();
+
   // Set up periodic status updates
   setInterval(async () => {
     try {
@@ -510,6 +650,15 @@ function updateLearningStatus(status) {
       console.warn('Failed to update learning status:', err);
     }
   }, 30000); // Update every 30 seconds
+
+  // Set up periodic memory stats updates
+  setInterval(async () => {
+    try {
+      await updateMemoryStats();
+    } catch (err) {
+      console.warn('Failed to update memory stats:', err);
+    }
+  }, 60000); // Update every 60 seconds
 
   statusEl.textContent = 'Ready';
 })();

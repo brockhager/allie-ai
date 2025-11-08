@@ -32,26 +32,30 @@ class AutomaticLearner:
         # Fact patterns for different categories - capture complete fact sentences
         self.fact_patterns = {
             "geography": [
-                r"(Paris is the capital of France)",
-                r"(Tokyo is the largest city in Japan)",
-                r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)* has about [\d,]+(?:\.\d+)? million people(?: living there\.)?)",
-                r"(Mount Everest is the highest mountain in the world at [\d,]+ feet)",
+                r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)* is the capital (?:of|city of) [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+                r"((?:the )?capital (?:of|city of) [A-Z][a-z]+(?:\s+[A-Z][a-z]+)* is [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+                r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)* is (?:in|located in) [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+                r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)* is the (?:largest|biggest|smallest) city in [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+                r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)* has (?:about|approximately|around) [\d,]+(?:\.\d+)? million (?:people|residents))",
+                r"(Mount [A-Z][a-z]+ is the (?:highest|tallest) mountain (?:in the world|on Earth))",
             ],
             "biography": [
                 r"([A-Z][a-z]+ [A-Z][a-z]+ was born in [A-Z][a-z]+)",
-                r"([A-Z][a-z]+ [A-Z][a-z]+ developed the theory of relativity)",
-                r"(The first computer was invented by [A-Z][a-z]+ [A-Z][a-z]+)",
-                r"(Python is a programming language created by Guido van Rossum)",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ (?:developed|created|invented|discovered) (?:the )?[\w\s]+)",
+                r"((?:the )?[\w\s]+ was (?:invented|created|developed|discovered) by [A-Z][a-z]+ [A-Z][a-z]+)",
             ],
             "history": [
-                r"(World War II ended in [\d]{4})",
+                r"([\w\s]+ (?:ended|began|started|occurred) in \d{4})",
+                r"([\w\s]+ (?:lasted|continued) from \d{4} to \d{4})",
             ],
             "science": [
-                r"(Photosynthesis is the process by which plants convert sunlight into energy)",
-                r"(The human heart pumps about [\d,]+ gallons of blood each day)",
+                r"([\w\s]+ is (?:the process (?:by which|of)|a (?:chemical|physical|biological) process)[\w\s]+)",
+                r"(the (?:square root|cube root) of \d+(?:\.\d+)? is (?:approximately |about )?\d+(?:\.\d+)?)",
+                r"(\d+(?:\.\d+)? (?:\+|\-|\*|×|÷|/) \d+(?:\.\d+)? (?:equals|is|=) \d+(?:\.\d+)?)",
             ],
             "technology": [
-                r"(The iPhone was released by Apple in [\d]{4})",
+                r"(the [A-Z][\w\s]+ was (?:released|launched|introduced) (?:by )?[A-Z][\w\s]+ in \d{4})",
+                r"([A-Z][\w]+ is a (?:programming language|software|operating system|platform)[\w\s]*)",
             ]
         }
 

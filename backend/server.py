@@ -452,7 +452,11 @@ def extract_info_after_keyword(text, keyword):
             return " ".join(result) if result else None
     return None
 
-# Initialize memory system
+# Initialize hybrid memory system
+from memory.hybrid import HybridMemory
+hybrid_memory = HybridMemory()
+
+# Initialize legacy memory system for backward compatibility
 MEMORY_FILE = DATA_DIR / "allie_memory.json"
 allie_memory = AllieMemory(MEMORY_FILE)
 
@@ -1011,6 +1015,43 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
 
     # Check simple facts database first for common questions
     prompt_lower = prompt.lower().strip()
+    
+    # Handle "show memory timeline" command
+    if "show memory timeline" in prompt_lower or "memory timeline" in prompt_lower:
+        timeline = hybrid_memory.get_timeline(include_outdated=True)
+        if not timeline:
+            return {"text": "My memory timeline is empty. I haven't learned any facts yet!"}
+        
+        response_parts = ["Here's my complete memory timeline:\n"]
+        for i, fact_dict in enumerate(timeline, 1):
+            timestamp = fact_dict["timestamp"][:16].replace("T", " ")  # Format: YYYY-MM-DD HH:MM
+            outdated_marker = " [OUTDATED]" if fact_dict["is_outdated"] else ""
+            response_parts.append(f"{i}. [{timestamp}] [{fact_dict['category']}] {fact_dict['fact']}{outdated_marker}")
+        
+        stats = hybrid_memory.get_statistics()
+        response_parts.append(f"\n📊 Total: {stats['total_facts']} facts, {stats['active_facts']} active, {stats['outdated_facts']} outdated")
+        
+        return {"text": "\n".join(response_parts)}
+    
+    # Handle "memory statistics" command
+    if "memory statistics" in prompt_lower or "memory stats" in prompt_lower:
+        stats = hybrid_memory.get_statistics()
+        response_parts = [
+            "📊 Hybrid Memory Statistics:",
+            f"Total Facts: {stats['total_facts']}",
+            f"Active Facts: {stats['active_facts']}",
+            f"Outdated Facts: {stats['outdated_facts']}",
+            f"Indexed Keywords: {stats['indexed_keywords']}",
+            "\nCategories:"
+        ]
+        for category, count in stats['categories'].items():
+            response_parts.append(f"  • {category}: {count}")
+        response_parts.append("\nSources:")
+        for source, count in stats['sources'].items():
+            response_parts.append(f"  • {source}: {count}")
+        
+        return {"text": "\n".join(response_parts)}
+    
     for key, response in SIMPLE_FACTS.items():
         if key in prompt_lower:
             return {"text": response}
@@ -1022,14 +1063,14 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     
     # Handle simple math questions
     math_patterns = [
-        (r"what\s+(?:is|are|does)\s+(\d+)\s*\+\s*(\d+)", lambda m: int(m.group(1)) + int(m.group(2))),
-        (r"(\d+)\s*\+\s*(\d+)", lambda m: int(m.group(1)) + int(m.group(2))),
-        (r"what\s+(?:is|are|does)\s+(\d+)\s*-\s*(\d+)", lambda m: int(m.group(1)) - int(m.group(2))),
-        (r"(\d+)\s*-\s*(\d+)", lambda m: int(m.group(1)) - int(m.group(2))),
-        (r"what\s+(?:is|are|does)\s+(\d+)\s*\*\s*(\d+)", lambda m: int(m.group(1)) * int(m.group(2))),
-        (r"(\d+)\s*\*\s*(\d+)", lambda m: int(m.group(1)) * int(m.group(2))),
-        (r"what\s+(?:is|are|does)\s+(\d+)\s*/\s*(\d+)", lambda m: int(m.group(1)) / int(m.group(2))),
-        (r"(\d+)\s*/\s*(\d+)", lambda m: int(m.group(1)) / int(m.group(2))),
+        (r"what\s+(?:is|are|does)\s+(\d+\.?\d*)\s*\+\s*(\d+\.?\d*)", lambda m: float(m.group(1)) + float(m.group(2))),
+        (r"(\d+\.?\d*)\s*\+\s*(\d+\.?\d*)", lambda m: float(m.group(1)) + float(m.group(2))),
+        (r"what\s+(?:is|are|does)\s+(\d+\.?\d*)\s*-\s*(\d+\.?\d*)", lambda m: float(m.group(1)) - float(m.group(2))),
+        (r"(\d+\.?\d*)\s*-\s*(\d+\.?\d*)", lambda m: float(m.group(1)) - float(m.group(2))),
+        (r"what\s+(?:is|are|does)\s+(\d+\.?\d*)\s*(?:\*|x)\s*(\d+\.?\d*)", lambda m: float(m.group(1)) * float(m.group(2))),
+        (r"(\d+\.?\d*)\s*(?:\*|x)\s*(\d+\.?\d*)", lambda m: float(m.group(1)) * float(m.group(2))),
+        (r"what\s+(?:is|are|does)\s+(\d+\.?\d*)\s*/\s*(\d+\.?\d*)", lambda m: float(m.group(1)) / float(m.group(2))),
+        (r"(\d+\.?\d*)\s*/\s*(\d+\.?\d*)", lambda m: float(m.group(1)) / float(m.group(2))),
     ]
     
     import re
@@ -1038,7 +1079,11 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
         if match:
             try:
                 result = calculator(match)
-                return {"text": f"{result}"}
+                # Format the result nicely (remove unnecessary decimals)
+                if result == int(result):
+                    return {"text": str(int(result))}
+                else:
+                    return {"text": f"{result:.4f}".rstrip('0').rstrip('.')}
             except:
                 pass
 
@@ -1046,9 +1091,16 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     learning_result = auto_learner.process_message(prompt, "user")
     learning_confirmation = auto_learner.generate_learning_response(learning_result["learning_actions"])
 
-    # Step 2: Check memory for relevant facts
-    relevant_facts = allie_memory.recall_facts(prompt)
+    # Step 2: Check memory for relevant facts (use hybrid memory first, fallback to legacy)
+    hybrid_results = hybrid_memory.search(prompt, limit=5)
+    relevant_facts = [result["fact"] for result in hybrid_results] if hybrid_results else allie_memory.recall_facts(prompt)
     recent_context = allie_memory.get_recent_context()
+    
+    # Log hybrid memory usage
+    if hybrid_results:
+        logger.info(f"Hybrid memory: Found {len(hybrid_results)} relevant facts")
+        for result in hybrid_results:
+            logger.debug(f"  - [{result['category']}] {result['fact']} (confidence: {result['confidence']})")
 
     # Step 2.1: Check for self-referential questions that shouldn't trigger external searches
     self_referential_patterns = [
@@ -1107,7 +1159,7 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
                             break
                 
                 if needs_update:
-                    # Remove the old fact and extract new facts from Wikipedia
+                    # Remove from legacy memory and update hybrid memory
                     allie_memory.remove_fact(fact)
                     memory_validation_updates.append(f"Updated {conflict_type} fact: '{fact}' → validated against Wikipedia")
                     
@@ -1116,6 +1168,16 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
                     if wiki_learning["learning_actions"]:
                         validation_confirmations = auto_learner.generate_learning_response(wiki_learning["learning_actions"])
                         memory_validation_updates.extend(validation_confirmations)
+                        
+                        # Add validated facts to hybrid memory
+                        for action in wiki_learning["learning_actions"]:
+                            if action["type"] == "add_fact":
+                                hybrid_memory.add_fact(
+                                    action["fact"],
+                                    category=action.get("category", "general"),
+                                    confidence=0.9,  # High confidence from Wikipedia
+                                    source="wikipedia_validation"
+                                )
 
     # Step 3: Determine if external search is needed
     if is_self_referential:
@@ -1304,7 +1366,10 @@ async def add_memory(payload: Dict[str, Any] = Body(...)):
     if not fact:
         raise HTTPException(status_code=400, detail="Fact is required")
 
+    # Add to both legacy and hybrid memory systems
     allie_memory.add_fact(fact, importance, category)
+    hybrid_memory.add_fact(fact, category=category, confidence=importance, source="user")
+    
     return {"status": "fact_added", "fact": fact}
 
 @app.get("/api/memory/recall")
@@ -1329,6 +1394,107 @@ async def remove_memory_fact(fact: str):
         return {"status": "fact_removed", "fact": fact}
     else:
         raise HTTPException(status_code=404, detail="Fact not found in memory")
+
+# ======================================
+# HYBRID MEMORY API ENDPOINTS
+# ======================================
+
+@app.post("/api/hybrid-memory/add")
+async def add_to_hybrid_memory(
+    fact: str = Body(...),
+    category: str = Body("general"),
+    confidence: float = Body(1.0),
+    source: str = Body("user")
+):
+    """Add a fact to the hybrid memory system"""
+    try:
+        hybrid_memory.add_fact(fact, category=category, confidence=confidence, source=source)
+        return {
+            "status": "success",
+            "message": "Fact added to hybrid memory",
+            "fact": fact,
+            "category": category
+        }
+    except Exception as e:
+        logger.error(f"Error adding to hybrid memory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/hybrid-memory/search")
+async def search_hybrid_memory(query: str, limit: int = 10):
+    """Search the hybrid memory system"""
+    try:
+        results = hybrid_memory.search(query, limit=limit)
+        return {
+            "query": query,
+            "count": len(results),
+            "facts": results  # Already in dict format
+        }
+    except Exception as e:
+        logger.error(f"Error searching hybrid memory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/hybrid-memory/timeline")
+async def get_memory_timeline(include_outdated: bool = False):
+    """Get chronological timeline of all memories"""
+    try:
+        timeline = hybrid_memory.get_timeline(include_outdated=include_outdated)
+        return {
+            "count": len(timeline),
+            "timeline": timeline  # Already in dict format
+        }
+    except Exception as e:
+        logger.error(f"Error getting timeline: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/api/hybrid-memory/update")
+async def update_hybrid_memory(
+    old_fact: str = Body(...),
+    new_fact: str = Body(...),
+    source: str = Body("correction")
+):
+    """Update a fact in hybrid memory"""
+    try:
+        success = hybrid_memory.update_fact(old_fact, new_fact, source=source)
+        if success:
+            return {
+                "status": "success",
+                "message": "Fact updated",
+                "old_fact": old_fact,
+                "new_fact": new_fact
+            }
+        else:
+            raise HTTPException(status_code=404, detail="Original fact not found")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating hybrid memory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/hybrid-memory/reconcile")
+async def reconcile_with_external(external_facts: List[Dict[str, Any]] = Body(...)):
+    """Reconcile hybrid memory with external facts"""
+    try:
+        report = hybrid_memory.reconcile_with_external(external_facts)
+        return {
+            "status": "success",
+            "reconciliation_report": report
+        }
+    except Exception as e:
+        logger.error(f"Error reconciling memory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/hybrid-memory/statistics")
+async def get_hybrid_memory_stats():
+    """Get statistics about the hybrid memory system"""
+    try:
+        stats = hybrid_memory.get_statistics()
+        return {
+            "status": "success",
+            "statistics": stats
+        }
+    except Exception as e:
+        logger.error(f"Error getting statistics: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 async def check_and_trigger_auto_learning():
     """Automatically trigger learning if conditions are met"""

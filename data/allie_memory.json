@@ -5,14 +5,14 @@
       "importance": 0.9,
       "category": "geography",
       "timestamp": "2025-11-07T22:42:24.683159",
-      "usage_count": 33
+      "usage_count": 42
     },
     {
       "fact": "Top 15 biggest cities in California: Los Angeles, San Diego, San Jose, San Francisco, Fresno, Sacramento, Long Beach, Oakland, Bakersfield, Anaheim, Santa Ana, Riverside, Stockton, Chula Vista, Irvine",
       "importance": 0.9,
       "category": "geography",
       "timestamp": "2025-11-07T22:42:26.816244",
-      "usage_count": 33
+      "usage_count": 40
     },
     {
       "fact": "Top 15 biggest cities in Colorado: Denver, Colorado Springs, Aurora, Fort Collins, Lakewood, Thornton, Arvada, Westminster, Pueblo, Centennial, Boulder, Greeley, Longmont, Loveland, Grand Junction",
@@ -20,6 +20,167 @@
       "category": "geography",
       "timestamp": "2025-11-07T22:42:28.948823",
       "usage_count": 10
+    },
+    {
+      "fact": "Paris is the capital of France",
+      "importance": 0.9,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:14:44.703265",
+      "usage_count": 3
+    },
+    {
+      "fact": "The capital of Arizona is Phoenix",
+      "importance": 0.9,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:27.034481",
+      "usage_count": 3
+    },
+    {
+      "fact": "Phoenix is the capital of Arizona",
+      "importance": 0.9,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:27.037086",
+      "usage_count": 3
+    },
+    {
+      "fact": "The capital of Arizona is Phoenix",
+      "importance": 0.9,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:46.208906",
+      "usage_count": 3
+    },
+    {
+      "fact": "Phoenix is located in Arizona",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:27.035314",
+      "usage_count": 3
+    },
+    {
+      "fact": "Arizona is a state in the United States",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:27.036074",
+      "usage_count": 3
+    },
+    {
+      "fact": "Phoenix is located in Arizona",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:27.037854",
+      "usage_count": 3
+    },
+    {
+      "fact": "Arizona is a state in the United States",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:27.038725",
+      "usage_count": 3
+    },
+    {
+      "fact": "Phoenix is in Arizona",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:27.040169",
+      "usage_count": 3
+    },
+    {
+      "fact": "Phoenix is located in Arizona",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:27.041421",
+      "usage_count": 3
+    },
+    {
+      "fact": "Arizona is a state in the United States",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:27.042416",
+      "usage_count": 3
+    },
+    {
+      "fact": "Phoenix is located in Arizona",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:46.209988",
+      "usage_count": 3
+    },
+    {
+      "fact": "Arizona is a state in the United States",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:15:46.210774",
+      "usage_count": 3
+    },
+    {
+      "fact": "the capital city of Arizona is Phoenix",
+      "importance": 0.9,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:16:03.832636",
+      "usage_count": 2
+    },
+    {
+      "fact": "The square root of 2352 is approximately 47.96",
+      "importance": 0.7,
+      "category": "science",
+      "timestamp": "2025-11-08T01:15:27.043557",
+      "usage_count": 2
+    },
+    {
+      "fact": "Phoenix is located in Arizona",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:16:03.833991",
+      "usage_count": 2
+    },
+    {
+      "fact": "Arizona is a state in the United States",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:16:03.835059",
+      "usage_count": 2
+    },
+    {
+      "fact": "What is the capital of Arizona",
+      "importance": 0.8,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:16:03.849169",
+      "usage_count": 1
+    },
+    {
+      "fact": "Arizona is a state in the United States",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:16:03.850451",
+      "usage_count": 1
+    },
+    {
+      "fact": "The capital city of Arizona is Phoenix",
+      "importance": 0.9,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:16:21.174689",
+      "usage_count": 0
+    },
+    {
+      "fact": "Phoenix is located in Arizona",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:16:21.175962",
+      "usage_count": 0
+    },
+    {
+      "fact": "Arizona is a state in the United States",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T01:16:21.176987",
+      "usage_count": 0
+    },
+    {
+      "fact": "47.96 * 47.96 = 2300.1616",
+      "importance": 0.6,
+      "category": "science",
+      "timestamp": "2025-11-08T01:15:27.044739",
+      "usage_count": 0
     }
   ],
   "preferences": {},
