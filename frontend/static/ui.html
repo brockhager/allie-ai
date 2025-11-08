@@ -26,7 +26,9 @@
   .bubble.me{margin-left:auto;background:linear-gradient(90deg,var(--me),#1f7fe8);color:#021125;border-bottom-right-radius:6px}
   .bubble.them{margin-right:auto;background:#111827;border:1px solid rgba(255,255,255,0.02)}
   .meta{font-size:12px;color:var(--muted);margin-top:6px}
-  .learning-panel{margin-top:20px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05)}
+  .sidebar-status{margin-bottom:16px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05)}
+  .sidebar-status-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+  .sidebar-status-value{font-size:16px;color:var(--text);font-weight:500}
   .learning-status{font-size:12px;color:var(--muted);margin-bottom:8px}
   .learning-controls{display:flex;flex-direction:column;gap:6px}
   .learning-btn{background:var(--accent);color:#021125;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600}
@@ -38,6 +40,10 @@
 <div class="app" role="application" aria-label="Allie chat UI">
   <aside class="sidebar">
     <h3 style="margin:6px 4px;color:var(--accent);font-size:14px">Conversations</h3>
+    <div class="sidebar-status">
+      <div class="sidebar-status-label">Status</div>
+      <div class="sidebar-status-value" id="status">Initializing...</div>
+    </div>
     <div class="tabs" id="tabs"></div>
     <div class="tab-controls">
       <button id="newConv">New</button>
@@ -63,10 +69,6 @@
     <div class="header">
       <div style="font-weight:600" id="convTitle">Allie</div>
       <div style="flex:1"></div>
-      <div class="status-section">
-        <div class="status-label">Status</div>
-        <div class="status-value" id="status">Initializing...</div>
-      </div>
       <button id="exportAllBtn" class="secondary">Export All</button>
       <button id="exportBtn" class="secondary">Export</button>
       <input id="importAllFile" type="file" style="display:none" accept=".json"/>

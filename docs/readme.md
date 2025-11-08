@@ -10,6 +10,7 @@ Welcome to the Allie AI documentation! This repository contains a comprehensive 
 - **[Incremental Training System](./INCREMENTAL_TRAINING_SYSTEM.md)** - Progressive model improvement and adaptation
 - **[Learning Management API](./LEARNING_MANAGEMENT_API.md)** - API endpoints for learning system management
 - **[Learning Requirements](./LEARNING_REQUIREMENTS.md)** - Prerequisites and setup for learning systems
+- **[Memory Validation System](./MEMORY_VALIDATION_SYSTEM.md)** - Automatic fact validation against authoritative sources
 
 ### Recent Developments
 

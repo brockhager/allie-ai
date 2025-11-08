@@ -4,6 +4,8 @@ Allie AI is a full‑stack project that combines a FastAPI backend with a React 
 
 📚 **[Full Documentation](./docs/readme.md)** - Complete technical documentation, architecture details, and recent developments
 
+🧠 **[Memory Validation System](./docs/MEMORY_VALIDATION_SYSTEM.md)** - Automatic knowledge validation and accuracy maintenance
+
 # Features:
 
 FastAPI backend with endpoints for conversations and UI.

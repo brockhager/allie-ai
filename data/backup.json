@@ -296,5 +296,27 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-acaotua",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762584114983
+      },
+      {
+        "role": "me",
+        "text": "what is your name",
+        "timestamp": 1762584131545
+      },
+      {
+        "role": "them",
+        "text": "Your Name is a 2016 Japanese animated romantic fantasy film directed by Makoto Shinkai. It is the first installment in his \"disaster trilogy,\" which includes the films Your Name and Weathering With You, each inspired by the frequency of natural disasters in Japan. The film stars Ryunosuke Kamiki and Mone Kamishiraishi, with animation direction by Masashi Ando, character design by Masayoshi Tanaka, and its orchestral score and soundtrack composed by the rock band Radwimps. The",
+        "timestamp": 1762584172003
+      }
+    ],
+    "draft": ""
   }
 ]

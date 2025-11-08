@@ -5,21 +5,21 @@
       "importance": 0.9,
       "category": "geography",
       "timestamp": "2025-11-07T22:42:24.683159",
-      "usage_count": 6
+      "usage_count": 23
     },
     {
       "fact": "Top 15 biggest cities in California: Los Angeles, San Diego, San Jose, San Francisco, Fresno, Sacramento, Long Beach, Oakland, Bakersfield, Anaheim, Santa Ana, Riverside, Stockton, Chula Vista, Irvine",
       "importance": 0.9,
       "category": "geography",
       "timestamp": "2025-11-07T22:42:26.816244",
-      "usage_count": 6
+      "usage_count": 23
     },
     {
       "fact": "Top 15 biggest cities in Colorado: Denver, Colorado Springs, Aurora, Fort Collins, Lakewood, Thornton, Arvada, Westminster, Pueblo, Centennial, Boulder, Greeley, Longmont, Loveland, Grand Junction",
       "importance": 0.9,
       "category": "geography",
       "timestamp": "2025-11-07T22:42:28.948823",
-      "usage_count": 2
+      "usage_count": 6
     }
   ],
   "preferences": {},

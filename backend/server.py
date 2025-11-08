@@ -307,6 +307,69 @@ class AllieMemory:
 
 from automatic_learner import AutomaticLearner
 
+def extract_president_name(text):
+    """Extract president names from text"""
+    words = text.split()
+    
+    # First, try to find known president names anywhere in the text
+    known_presidents = ["biden", "trump", "obama", "bush", "clinton", "reagan", "carter", "ford", "nixon", "johnson", "kennedy"]
+    for word in words:
+        if word.lower() in known_presidents:
+            return word
+    
+    # If no known presidents found, look for capitalized words near "president"
+    for i, word in enumerate(words):
+        if "president" in word.lower():
+            # Look for capitalized words in a wider range around the keyword
+            candidates = []
+            search_range = range(max(0, i - 8), min(len(words), i + 6))
+            
+            for j in search_range:
+                if j == i:  # Skip the keyword itself
+                    continue
+                word_candidate = words[j]
+                if (word_candidate[0].isupper() and
+                    word_candidate.lower() not in ["the", "of", "and", "or", "but", "in", "on", "at", "to", "for", "with", "by", "states", "united", "is", "are", "was", "were", "has", "have"]):
+                    candidates.append(word_candidate)
+            
+            return candidates[-1] if candidates else None
+    
+    return None
+
+def extract_number_after_keyword(text, keyword):
+    """Extract numbers after keywords"""
+    import re
+    text_lower = text.lower()
+    
+    # Find keyword position
+    keyword_pos = text_lower.find(keyword)
+    if keyword_pos == -1:
+        return None
+    
+    # Extract text after keyword
+    after_keyword = text[keyword_pos + len(keyword):]
+    
+    # Find first number
+    numbers = re.findall(r'\d+(?:,\d+)*(?:\.\d+)?', after_keyword)
+    return numbers[0] if numbers else None
+
+def extract_info_after_keyword(text, keyword):
+    """Extract information after keywords"""
+    text_lower = text.lower()
+    words = text.split()
+    
+    for i, word in enumerate(words):
+        if keyword in word.lower():
+            # Extract next few significant words
+            result = []
+            for j in range(i + 1, min(i + 4, len(words))):
+                if words[j] not in ["the", "a", "an", "in", "on", "at"]:
+                    result.append(words[j])
+                    if len(result) >= 2:  # Get up to 2 significant words
+                        break
+            return " ".join(result) if result else None
+    return None
+
 # Initialize memory system
 MEMORY_FILE = DATA_DIR / "allie_memory.json"
 allie_memory = AllieMemory(MEMORY_FILE)
@@ -582,10 +645,82 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     relevant_facts = allie_memory.recall_facts(prompt)
     recent_context = allie_memory.get_recent_context()
 
+    # Step 2.5: Validate memory facts against Wikipedia if we have stored facts
+    memory_validation_updates = []
+    if relevant_facts and not is_self_referential:
+        # Search Wikipedia to validate stored facts
+        validation_wiki = await search_wikipedia(prompt)
+        if validation_wiki and validation_wiki.get("success") and validation_wiki.get("summary"):
+            wiki_text = validation_wiki["summary"]
+            
+            # Compare each memory fact with Wikipedia content
+            for fact in relevant_facts:
+                # Simple conflict detection: if fact contradicts Wikipedia
+                fact_lower = fact.lower()
+                wiki_lower = wiki_text.lower()
+                
+                # Check for obvious contradictions (this is a simplified approach)
+                conflicting_indicators = [
+                    ("was born in", "born in"),
+                    ("died in", "death"),
+                    ("located in", "located"),
+                    ("founded in", "founded"),
+                    ("created in", "created"),
+                    ("president", "president"),
+                    ("capital", "capital"),
+                    ("population", "population")
+                ]
+                
+                needs_update = False
+                conflict_type = None
+                
+                for indicator1, indicator2 in conflicting_indicators:
+                    if indicator1 in fact_lower and indicator2 in wiki_lower:
+                        # Extract the conflicting information
+                        if indicator1 == "president":
+                            fact_value = extract_president_name(fact)
+                            wiki_value = extract_president_name(wiki_text)
+                        elif indicator1 == "population":
+                            fact_value = extract_number_after_keyword(fact, "population")
+                            wiki_value = extract_number_after_keyword(wiki_text, "population")
+                        else:
+                            fact_value = extract_info_after_keyword(fact, indicator1.split()[0])
+                            wiki_value = extract_info_after_keyword(wiki_text, indicator2.split()[0])
+                        
+                        if fact_value and wiki_value and fact_value != wiki_value:
+                            needs_update = True
+                            conflict_type = indicator1
+                            break
+                
+                if needs_update:
+                    # Remove the old fact and extract new facts from Wikipedia
+                    allie_memory.remove_fact(fact)
+                    memory_validation_updates.append(f"Updated {conflict_type} fact: '{fact}' → validated against Wikipedia")
+                    
+                    # Extract new facts from Wikipedia content
+                    wiki_learning = auto_learner.process_message(wiki_text, "wikipedia_validation")
+                    if wiki_learning["learning_actions"]:
+                        validation_confirmations = auto_learner.generate_learning_response(wiki_learning["learning_actions"])
+                        memory_validation_updates.extend(validation_confirmations)
+
     # Step 3: Determine if external search is needed
-    search_keywords = ["current", "today", "latest", "news", "weather", "price", "stock", "score", "result", "update", "now", "what", "who", "where", "when", "how", "why"]
-    needs_web_search = any(keyword in prompt.lower() for keyword in search_keywords)
-    needs_wikipedia = any(word in prompt.lower() for word in ["history", "biography", "science", "geography", "technology", "definition", "explain"])
+    # First, check for self-referential questions that shouldn't trigger external searches
+    self_referential_patterns = [
+        "what is your name", "who are you", "what are you", "tell me about yourself",
+        "what's your name", "who is this", "introduce yourself", "what do you do",
+        "what is your purpose", "what are you called", "what should i call you"
+    ]
+    
+    is_self_referential = any(pattern in prompt.lower() for pattern in self_referential_patterns)
+    
+    if is_self_referential:
+        # Handle self-referential questions directly without external searches
+        needs_web_search = False
+        needs_wikipedia = False
+    else:
+        search_keywords = ["current", "today", "latest", "news", "weather", "price", "stock", "score", "result", "update", "now", "what", "who", "where", "when", "how", "why"]
+        needs_web_search = any(keyword in prompt.lower() for keyword in search_keywords)
+        needs_wikipedia = any(word in prompt.lower() for word in ["history", "biography", "science", "geography", "technology", "definition", "explain", "president", "politics", "government", "election", "political"])
 
     # Check if we have sufficient memory coverage
     has_good_memory_coverage = len(relevant_facts) >= 3
@@ -603,13 +738,15 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     # Step 5: Synthesize information from all sources
     context_parts = []
 
-    # Add memory information
-    if relevant_facts:
-        context_parts.append("From my memory:\n" + "\n".join(f"- {fact}" for fact in relevant_facts))
+    # For self-referential questions, don't include external memory/context
+    if not is_self_referential:
+        # Add memory information
+        if relevant_facts:
+            context_parts.append("From my memory:\n" + "\n".join(f"- {fact}" for fact in relevant_facts))
 
-    # Add recent context
-    if recent_context:
-        context_parts.append(f"Recent conversation context: {recent_context}")
+        # Add recent context
+        if recent_context:
+            context_parts.append(f"Recent conversation context: {recent_context}")
 
     # Add web search results
     if web_results and web_results.get("success") and web_results.get("results"):
@@ -639,13 +776,56 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
             external_learning_confirmations.extend(auto_learner.generate_learning_response(wiki_learning["learning_actions"]))
 
     # Build enhanced prompt
-    enhanced_prompt = prompt
-    if context_parts:
-        enhanced_prompt = f"{prompt}\n\nContext from multiple sources:\n" + "\n\n".join(context_parts)
+    if is_self_referential:
+        # For self-referential questions, use a direct prompt without external context
+        enhanced_prompt = f"""Please answer this question directly about yourself as Allie the AI assistant: {prompt}
+
+Remember: You are Allie, a helpful and friendly AI assistant created to answer questions and engage in natural conversation. Answer directly without referencing external sources or memory."""
+    else:
+        enhanced_prompt = prompt
+        if context_parts:
+            enhanced_prompt = f"{prompt}\n\nContext from multiple sources:\n" + "\n\n".join(context_parts)
+
+    # Build enhanced prompt
+    if is_self_referential:
+        # For self-referential questions, use a direct prompt without external context
+        enhanced_prompt = f"""Please answer this question directly about yourself as Allie the AI assistant: {prompt}
+
+Remember: You are Allie, a helpful and friendly AI assistant created to answer questions and engage in natural conversation. Answer directly without referencing external sources or memory."""
+    else:
+        enhanced_prompt = prompt
+        if context_parts:
+            enhanced_prompt = f"{prompt}\n\nContext from multiple sources:\n" + "\n\n".join(context_parts)
 
     # Step 7: Generate response using TinyLlama
     from datetime import datetime
     current_date = datetime.now().strftime("%B %d, %Y")
+    
+    # Handle common self-referential questions with direct responses
+    if is_self_referential:
+        direct_responses = {
+            "what is your name": "My name is Allie.",
+            "what's your name": "My name is Allie.",
+            "who are you": "I am Allie, a helpful and friendly AI assistant.",
+            "what are you": "I am Allie, a helpful and friendly AI assistant.",
+            "tell me about yourself": "I am Allie, a helpful and friendly AI assistant created in 2025. I'm here to answer your questions, provide information, and engage in natural conversation. I have access to various knowledge sources and can help with a wide range of topics.",
+            "what do you do": "I help people by answering questions, providing information, and engaging in natural conversations. I can search for current information, access my knowledge base, and assist with various tasks.",
+            "what is your purpose": "My purpose is to be a helpful and friendly AI assistant that can answer questions, provide accurate information, and engage in meaningful conversations with people.",
+            "introduce yourself": "Hi, I'm Allie! I'm a helpful and friendly AI assistant designed to answer your questions and engage in natural conversations.",
+            "what should i call you": "You can call me Allie.",
+            "what are you called": "I'm called Allie."
+        }
+        
+        # Check for exact matches first
+        prompt_lower = prompt.lower().strip()
+        if prompt_lower in direct_responses:
+            return {"text": direct_responses[prompt_lower]}
+        
+        # Check for partial matches
+        for key, response in direct_responses.items():
+            if key in prompt_lower:
+                return {"text": response}
+    
     system_content = f"""You are Allie, a helpful and friendly AI assistant. Today's date is {current_date}.
 
 You have access to:
@@ -655,6 +835,10 @@ You have access to:
 - Authoritative background information from Wikipedia
 
 Your primary role is to answer questions and engage in natural conversation. When someone asks you a question, provide a direct, helpful answer based on all available information. Do not rephrase sentences or perform text transformation tasks unless specifically asked.
+
+IMPORTANT: When someone asks about you personally (your name, who you are, what you do, your purpose, etc.), answer directly about yourself as Allie the AI assistant. Do not search external sources or use memory for these questions - introduce yourself naturally and accurately.
+
+I automatically validate my stored knowledge against authoritative sources like Wikipedia. If I find conflicting information, I update my memory to ensure accuracy. Wikipedia is considered the most authoritative source for factual information.
 
 Synthesize information from all available sources to provide comprehensive, accurate, and natural responses. If you learn something new and important from external sources, acknowledge that you're storing it for future conversations."""
 
@@ -674,12 +858,14 @@ Synthesize information from all available sources to provide comprehensive, accu
         assistant_confirmation = auto_learner.generate_learning_response(assistant_learning["learning_actions"])
         reply += "\n\n" + assistant_confirmation
 
-    # Step 9: Add all learning confirmations
+    # Step 9: Add all learning confirmations and memory updates
     final_reply = reply
     if learning_confirmation:
         final_reply += "\n\n" + learning_confirmation
     if external_learning_confirmations:
         final_reply += "\n\n" + "\n".join(external_learning_confirmations)
+    if memory_validation_updates:
+        final_reply += "\n\n" + "\n".join(memory_validation_updates)
 
     return {"text": final_reply}
 
