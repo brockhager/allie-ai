@@ -52,11 +52,11 @@
     </div>
 
     <div class="learning-panel">
-      <h4 style="margin:0 0 8px 0;color:var(--accent);font-size:13px">Learning System</h4>
+      <h4 style="margin:0 0 8px 0;color:var(--accent);font-size:13px">Learning System (Auto)</h4>
       <div id="learningStatus" class="learning-status">Initializing learning system...</div>
       <div class="learning-controls">
         <button id="checkLearningBtn" class="learning-btn secondary">Refresh Status</button>
-        <button id="startLearningBtn" class="learning-btn">Start Learning</button>
+        <button id="startLearningBtn" class="learning-btn" style="display:none">Manual Trigger</button>
         <button id="stopLearningBtn" class="learning-btn secondary" style="display:none">Stop Learning</button>
         <button id="viewHistoryBtn" class="learning-btn secondary">View History</button>
       </div>
@@ -429,7 +429,31 @@ function updateLearningStatus(status) {
   let statusText = '';
   let statusColor = '#9ca3af'; // default muted color
 
-  if (status.is_active) {
+  if (status.auto_learning) {
+    // Auto-learning is enabled
+    if (status.is_active) {
+      statusText = `Auto-learning active: ${status.current_episode?.status || 'running'}`;
+      statusColor = '#60a5fa'; // accent color
+      startLearningBtn.style.display = 'none';
+      stopLearningBtn.style.display = 'inline-block';
+      stopLearningBtn.disabled = false;
+    } else if (status.auto_triggered) {
+      statusText = `Auto-triggered: ${status.auto_triggered.reason}`;
+      statusColor = '#4ade80'; // green
+      startLearningBtn.style.display = 'none';
+      stopLearningBtn.style.display = 'none';
+    } else if (status.should_learn) {
+      statusText = '⚡ Auto-learning ready - ' + (status.reason || 'Conditions met');
+      statusColor = '#4ade80'; // green
+      startLearningBtn.style.display = 'none';
+      stopLearningBtn.style.display = 'none';
+    } else {
+      statusText = '⏳ Auto-learning enabled: ' + (status.reason || 'Waiting for conditions');
+      statusColor = '#9ca3af'; // muted
+      startLearningBtn.style.display = 'none';
+      stopLearningBtn.style.display = 'none';
+    }
+  } else if (status.is_active) {
     statusText = `Learning active: ${status.current_episode?.status || 'running'}`;
     statusColor = '#60a5fa'; // accent color
     startLearningBtn.style.display = 'none';

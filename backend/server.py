@@ -160,6 +160,35 @@ except json.JSONDecodeError:
 # -------------------------
 app = FastAPI(title="Allie")
 
+# Background task for automatic learning
+_auto_learning_task = None
+_last_learning_check = datetime.now()
+
+async def auto_learning_background_task():
+    """Background task that periodically checks and triggers learning"""
+    global _last_learning_check
+    while True:
+        try:
+            await asyncio.sleep(300)  # Check every 5 minutes
+            
+            # Check if enough time has passed since last check
+            if datetime.now() - _last_learning_check > timedelta(minutes=5):
+                _last_learning_check = datetime.now()
+                result = await check_and_trigger_auto_learning()
+                if result:
+                    logger.info(f"Background learning triggered: {result}")
+        except Exception as e:
+            logger.error(f"Error in auto-learning background task: {e}")
+            await asyncio.sleep(60)  # Wait a bit before retrying on error
+
+@app.on_event("startup")
+async def startup_event():
+    """Start background tasks on server startup"""
+    global _auto_learning_task
+    if LEARNING_ENABLED:
+        _auto_learning_task = asyncio.create_task(auto_learning_background_task())
+        logger.info("Auto-learning background task started")
+
 # mount static files and ui route
 if not STATIC_DIR.exists():
     STATIC_DIR.mkdir(parents=True, exist_ok=True)
@@ -818,6 +847,8 @@ async def search_wikipedia(query: str) -> Dict[str, Any]:
         }
         _set_cached_response(cache_key, result)
         return result
+
+@app.post("/api/conversations")
 async def create_conversation_api(payload: Dict[str, Any] = Body(...)):
     """Create a new conversation (for UI sync)"""
     conv = payload
@@ -832,6 +863,7 @@ async def create_conversation_api(payload: Dict[str, Any] = Body(...)):
 @app.put("/api/conversations/{conv_id}")
 async def update_conversation_api(conv_id: str, payload: Dict[str, Any] = Body(...)):
     """Update a conversation"""
+    global conversation_history
     for i, conv in enumerate(conversation_history):
         if conv.get("id") == conv_id:
             old_conv = conversation_history[i]
@@ -863,6 +895,11 @@ async def update_conversation_api(conv_id: str, payload: Dict[str, Any] = Body(.
             # Save to backup
             with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
                 json.dump(conversation_history, f, indent=2)
+            
+            # Check if we should trigger learning after conversation update
+            if LEARNING_ENABLED:
+                asyncio.create_task(check_and_trigger_auto_learning())
+            
             return payload
     raise HTTPException(status_code=404, detail="Conversation not found")
 
@@ -1217,20 +1254,6 @@ You have access to external information sources when needed."""
 
     return {"text": final_reply}
 
-@app.put("/api/conversations/{conv_id}")
-async def update_conversation(conv_id: str, payload: Dict[str, Any] = Body(...)):
-    # Dummy implementation - do nothing
-    return {"status": "ok"}
-
-@app.delete("/api/conversations/{conv_id}")
-async def delete_conversation(conv_id: str):
-    # Dummy implementation - do nothing
-    return {"status": "ok"}
-
-
-
-
-
 @app.post("/api/conversations/backup")
 async def backup_conversations():
     try:
@@ -1278,9 +1301,37 @@ async def remove_memory_fact(fact: str):
     else:
         raise HTTPException(status_code=404, detail="Fact not found in memory")
 
+async def check_and_trigger_auto_learning():
+    """Automatically trigger learning if conditions are met"""
+    if not LEARNING_ENABLED:
+        return None
+    
+    try:
+        import sys
+        scripts_dir = APP_ROOT.parent / "scripts"
+        sys.path.insert(0, str(scripts_dir))
+
+        from learning_orchestrator import IncrementalLearningOrchestrator
+
+        orchestrator = IncrementalLearningOrchestrator()
+        should_learn, reason = orchestrator.should_trigger_learning()
+
+        if should_learn:
+            # Check if there's already an active episode
+            status = orchestrator.get_status()
+            if not status.get("is_active", False):
+                logger.info(f"Auto-triggering learning episode: {reason}")
+                episode_id = orchestrator.start_learning_episode()
+                return {"auto_triggered": True, "episode_id": episode_id, "reason": reason}
+        
+        return None
+    except Exception as e:
+        logger.warning(f"Auto-learning check failed: {e}")
+        return None
+
 @app.get("/api/learning/status")
 async def get_learning_status():
-    """Get current learning system status"""
+    """Get current learning system status and auto-trigger if needed"""
     if not LEARNING_ENABLED:
         return {"enabled": False, "message": "Learning system not available"}
 
@@ -1295,20 +1346,29 @@ async def get_learning_status():
         # Create orchestrator instance and get status
         orchestrator = IncrementalLearningOrchestrator()
         status = orchestrator.get_status()
+        
+        # Auto-trigger learning if conditions are met
+        auto_trigger_result = await check_and_trigger_auto_learning()
 
-        return {
+        response = {
             "enabled": True,
             "is_active": status.get("is_active", False),
             "should_learn": status.get("learning_ready", False),
             "current_episode": status.get("current_episode"),
             "reason": "Ready for learning" if status.get("learning_ready") else "Learning conditions not met",
             "system_resources": status.get("system_resources", {}),
-            "data_stats": status.get("data_stats", {})
+            "data_stats": status.get("data_stats", {}),
+            "auto_learning": True  # Indicate that auto-learning is enabled
         }
+        
+        if auto_trigger_result:
+            response["auto_triggered"] = auto_trigger_result
+        
+        return response
 
     except Exception as e:
         logger.error(f"Error getting learning status: {e}")
-        return {"enabled": True, "error": str(e), "is_active": False, "should_learn": False}
+        return {"enabled": True, "error": str(e), "is_active": False, "should_learn": False, "auto_learning": True}
 
 @app.post("/api/learning/start")
 async def start_learning_episode():
