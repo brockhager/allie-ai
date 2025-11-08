@@ -77,6 +77,61 @@ SIMPLE_FACTS = {
     "current president": "As of my last knowledge, Joe Biden is the President of the United States.",
 }
 
+# Global model and tokenizer variables
+tokenizer = None
+model = None
+
+# Load real model for chat
+try:
+    from transformers import AutoTokenizer, AutoModelForCausalLM
+    from peft import PeftModel
+    import torch
+
+    model_name = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+    logger.info(f"Loading model: {model_name}")
+
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        torch_dtype=torch.float16,
+        device_map="auto",
+        local_files_only=False  # Allow downloading if not cached locally
+    )
+
+    # Load existing adapter if available
+    adapter_paths = [
+        Path("../allie_finetuned"),
+        Path("../allie_finetuned/checkpoint-150"),
+        Path("../allie_finetuned/checkpoint-100")
+    ]
+
+    for adapter_path in adapter_paths:
+        if adapter_path.exists():
+            logger.info(f"Loading adapter from {adapter_path}")
+            model = PeftModel.from_pretrained(model, str(adapter_path))
+            break
+
+    logger.info("Model loaded successfully")
+
+except Exception as e:
+    logger.warning(f"Failed to load real model: {e}. Using dummy model.")
+    # Dummy model for testing (fallback)
+    class DummyModel:
+        def generate(self, **kwargs):
+            return ["Dummy response from model"]
+
+    class DummyTokenizer:
+        def __call__(self, prompt, return_tensors=None):
+            return {"input_ids": [1, 2, 3]}
+        def decode(self, tokens, skip_special_tokens=None):
+            return "This is a dummy response for testing purposes."
+
+    tokenizer = DummyTokenizer()
+    model = DummyModel()
+
 # Import learning orchestrator
 try:
     import subprocess
@@ -658,6 +713,8 @@ async def delete_conversation_api(conv_id: str):
 # Keep the old generate endpoint as /api/generate
 @app.post("/api/generate")
 async def generate_response(payload: Dict[str, Any] = Body(...)):
+    global tokenizer, model  # Declare global variables
+    
     prompt = payload.get("prompt", "")
     max_tokens = payload.get("max_tokens", 200)
 
