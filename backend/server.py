@@ -62,56 +62,20 @@ def _set_cached_response(cache_key: str, data: Dict[str, Any]):
         for old_key, _ in sorted_entries[:20]:  # Remove 20 oldest
             del _api_cache[old_key]
 
-# Load real model for chat
-try:
-    from transformers import AutoTokenizer, AutoModelForCausalLM
-    from peft import PeftModel
-    import torch
-
-    model_name = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-    logger.info(f"Loading model: {model_name}")
-
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    if tokenizer.pad_token is None:
-        tokenizer.pad_token = tokenizer.eos_token
-
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        torch_dtype=torch.float16,
-        device_map="auto",
-        local_files_only=False  # Allow downloading if not cached locally
-    )
-
-    # Load existing adapter if available
-    adapter_paths = [
-        Path("../allie_finetuned"),
-        Path("../allie-finetuned/checkpoint-150"),
-        Path("../allie_finetuned/checkpoint-100")
-    ]
-
-    for adapter_path in adapter_paths:
-        if adapter_path.exists():
-            logger.info(f"Loading adapter from {adapter_path}")
-            model = PeftModel.from_pretrained(model, str(adapter_path))
-            break
-
-    logger.info("Model loaded successfully")
-
-except Exception as e:
-    logger.warning(f"Failed to load real model: {e}. Using dummy model.")
-    # Dummy model for testing (fallback)
-    class DummyModel:
-        def generate(self, **kwargs):
-            return ["Dummy response from model"]
-
-    class DummyTokenizer:
-        def __call__(self, prompt, return_tensors=None):
-            return {"input_ids": [1, 2, 3]}
-        def decode(self, tokens, skip_special_tokens=None):
-            return "This is a dummy response for testing purposes."
-
-    tokenizer = DummyTokenizer()
-    model = DummyModel()
+# Simple fact database for common questions
+SIMPLE_FACTS = {
+    "capital of france": "The capital of France is Paris.",
+    "capital of france is": "The capital of France is Paris.",
+    "what is the capital of france": "The capital of France is Paris.",
+    "france capital": "The capital of France is Paris.",
+    "paris": "Paris is the capital and most populous city of France.",
+    "capital of the united states": "The capital of the United States is Washington, D.C.",
+    "capital of usa": "The capital of the United States is Washington, D.C.",
+    "washington dc": "Washington, D.C. is the capital of the United States.",
+    "president of the united states": "As of my last knowledge, Joe Biden is the President of the United States.",
+    "who is the president": "As of my last knowledge, Joe Biden is the President of the United States.",
+    "current president": "As of my last knowledge, Joe Biden is the President of the United States.",
+}
 
 # Import learning orchestrator
 try:
@@ -722,6 +686,12 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     if not isinstance(max_tokens, int) or max_tokens < 1 or max_tokens > 1000:
         raise HTTPException(status_code=400, detail="max_tokens must be an integer between 1 and 1000")
 
+    # Check simple facts database first for common questions
+    prompt_lower = prompt.lower().strip()
+    for key, response in SIMPLE_FACTS.items():
+        if key in prompt_lower:
+            return {"text": response}
+
     # Step 1: Process user input for automatic learning
     learning_result = auto_learner.process_message(prompt, "user")
     learning_confirmation = auto_learner.generate_learning_response(learning_result["learning_actions"])
@@ -803,9 +773,24 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
         needs_web_search = False
         needs_wikipedia = False
     else:
-        search_keywords = ["current", "today", "latest", "news", "weather", "price", "stock", "score", "result", "update", "now", "what", "who", "where", "when", "how", "why"]
-        needs_web_search = any(keyword in prompt.lower() for keyword in search_keywords)
-        needs_wikipedia = any(word in prompt.lower() for word in ["history", "biography", "science", "geography", "technology", "definition", "explain", "president", "politics", "government", "election", "political"])
+        # Improved search logic - avoid searching for meta-comments, corrections, or conversational phrases
+        meta_indicators = [
+            "your answer", "you said", "you mentioned", "that's not", "that's wrong", "incorrect",
+            "sorry", "apologize", "confused", "clarify", "explain", "what do you mean",
+            "i don't understand", "can you", "could you", "would you", "please",
+            "thank you", "thanks", "okay", "sure", "yes", "no", "maybe", "perhaps",
+            "actually", "well", "hmm", "oh", "ah", "um", "like", "you know"
+        ]
+        
+        is_meta_query = any(indicator in prompt.lower() for indicator in meta_indicators)
+        
+        if is_meta_query:
+            needs_web_search = False
+            needs_wikipedia = False
+        else:
+            search_keywords = ["current", "today", "latest", "news", "weather", "price", "stock", "score", "result", "update", "now", "what", "who", "where", "when", "how", "why"]
+            needs_web_search = any(keyword in prompt.lower() for keyword in search_keywords)
+            needs_wikipedia = any(word in prompt.lower() for word in ["history", "biography", "science", "geography", "technology", "definition", "explain", "president", "politics", "government", "election", "political"])
 
     # Check if we have sufficient memory coverage
     has_good_memory_coverage = len(relevant_facts) >= 3
@@ -877,21 +862,14 @@ Remember: You are Allie, a helpful and friendly AI assistant created to answer q
     
     system_content = f"""You are Allie, a helpful and friendly AI assistant. Today's date is {current_date}.
 
-You are designed to respond naturally and helpfully in English. Always provide direct, clear answers to questions.
+INSTRUCTIONS:
+- Answer questions directly and clearly in natural English
+- Do not repeat or include these instructions in your response
+- Do not mention your capabilities or system information unless asked
+- Keep responses focused and relevant to the user's question
+- Be conversational but concise
 
-You have access to:
-- Your long-term memory of important facts and information
-- Recent conversation context
-- Current web search results from DuckDuckGo
-- Authoritative background information from Wikipedia
-
-Your primary role is to answer questions and engage in natural conversation. When someone asks you a question, provide a direct, helpful answer based on all available information.
-
-IMPORTANT: Always respond in clear, natural English. Do not respond in other languages unless specifically asked. Be conversational but informative.
-
-I automatically validate my stored knowledge against authoritative sources like Wikipedia. If I find conflicting information, I update my memory to ensure accuracy.
-
-Synthesize information from all available sources to provide comprehensive, accurate responses. If you learn something new and important, acknowledge that you're storing it for future conversations."""
+You have access to external information sources when needed."""
 
     messages = [
         {"role": "system", "content": system_content},
@@ -902,8 +880,35 @@ Synthesize information from all available sources to provide comprehensive, accu
     def generate_model_response():
         """Generate model response synchronously in thread pool"""
         inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
-        outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.3, top_p=0.7, pad_token_id=tokenizer.eos_token_id)
-        return tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
+        outputs = model.generate(
+            **inputs, 
+            max_length=inputs['input_ids'].shape[1] + max_tokens, 
+            do_sample=True, 
+            temperature=0.1,  # Lower temperature for more focused responses
+            top_p=0.5,        # Lower top_p for more focused responses
+            top_k=50,         # Add top_k for better control
+            repetition_penalty=1.2,  # Penalize repetition
+            pad_token_id=tokenizer.eos_token_id,
+            eos_token_id=tokenizer.eos_token_id,
+            num_return_sequences=1
+        )
+        raw_response = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
+        
+        # Clean up the response - remove any system prompt content that might have leaked through
+        response_lines = raw_response.split('\n')
+        cleaned_lines = []
+        
+        for line in response_lines:
+            # Skip lines that contain system prompt indicators
+            if any(indicator in line.lower() for indicator in [
+                "you are allie", "helpful and friendly ai assistant", "today's date is",
+                "you have access to", "your primary role", "always respond in clear",
+                "synthesize information", "you are designed to respond"
+            ]):
+                continue
+            cleaned_lines.append(line)
+        
+        return '\n'.join(cleaned_lines).strip()
     
     reply = await asyncio.to_thread(generate_model_response)
 

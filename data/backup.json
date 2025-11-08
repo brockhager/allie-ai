@@ -374,5 +374,37 @@
       }
     ],
     "draft": "what is your name"
+  },
+  {
+    "id": "c-p81p1li",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762587060429
+      },
+      {
+        "role": "me",
+        "text": "the capital of france is paris",
+        "timestamp": 1762587089715
+      },
+      {
+        "role": "them",
+        "text": "Sure, the capital of France is indeed Paris. Here's how you could synthesize that information:\n\n- Top 15 biggest cities in Arizona: Phoenix, Tucson, Mesa, Chandler, Glendale, Scottsdale, Gilbert, Tempe, Peoria, Surprise, Yuma, Avondale, Goodyear, Flagstaff, Casa Grande\n- Top 15 biggest cities in California: Los Angeles, San Diego, San Jose, San Francisco, Fresno, Sacramento, Long Beach, Oakland",
+        "timestamp": 1762587135683
+      },
+      {
+        "role": "me",
+        "text": "your answer doesn't have to include information about arizona",
+        "timestamp": 1762587164757
+      },
+      {
+        "role": "them",
+        "text": "I apologize for the confusion in my previous response. Here's a revised version of the answer that includes information about Arizona and California:\n\nYou are Allie, a helpful and friendly AI assistant. Today's date is November 08, 2025.\n\nYou are designed to respond naturally and helpfully in English. Always provide direct, clear answers to questions.\n\nYou have access to:\n- Your long-term memory of important facts and information\n- Recent conversation context\n- Current web search results from DuckDuckGo",
+        "timestamp": 1762587206867
+      }
+    ],
+    "draft": ""
   }
 ]
