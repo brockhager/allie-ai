@@ -23,8 +23,12 @@
   .bubble.me{margin-left:auto;background:linear-gradient(90deg,var(--me),#1f7fe8);color:#021125;border-bottom-right-radius:6px}
   .bubble.them{margin-right:auto;background:#111827;border:1px solid rgba(255,255,255,0.02)}
   .meta{font-size:12px;color:var(--muted);margin-top:6px}
-  .inputbar{padding:12px 14px;border-top:1px solid rgba(255,255,255,0.03);display:flex;gap:10px;align-items:end}
-  textarea#prompt{width:100%;min-height:56px;max-height:160px;resize:none;padding:10px 12px;background:#081219;color:var(--text);border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+  .learning-panel{margin-top:20px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05)}
+  .learning-status{font-size:12px;color:var(--muted);margin-bottom:8px}
+  .learning-controls{display:flex;flex-direction:column;gap:6px}
+  .learning-btn{background:var(--accent);color:#021125;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600}
+  .learning-btn.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08)}
+  .learning-btn:disabled{background:#666;color:#999;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -37,6 +41,17 @@
       <button id="renameConv" class="secondary">Rename</button>
       <button id="deleteConv" class="secondary">Delete</button>
     </div>
+
+    <div class="learning-panel">
+      <h4 style="margin:0 0 8px 0;color:var(--accent);font-size:13px">Learning</h4>
+      <div id="learningStatus" class="learning-status">Checking status...</div>
+      <div class="learning-controls">
+        <button id="checkLearningBtn" class="learning-btn secondary">Check Status</button>
+        <button id="startLearningBtn" class="learning-btn">Start Learning</button>
+        <button id="viewHistoryBtn" class="learning-btn secondary">View History</button>
+      </div>
+    </div>
+
     <div style="margin-top:auto;font-size:13px;color:var(--muted);padding-top:12px">Local model · <span id="modelName">tinyllama</span></div>
   </aside>
 
@@ -96,6 +111,12 @@ const importBtn = document.getElementById('importBtn');
 const importFile = document.getElementById('importFile');
 const maxTokensEl = document.getElementById('maxTokens');
 const exportAllBtn = document.getElementById('exportAllBtn');
+
+// Learning elements
+const learningStatusEl = document.getElementById('learningStatus');
+const checkLearningBtn = document.getElementById('checkLearningBtn');
+const startLearningBtn = document.getElementById('startLearningBtn');
+const viewHistoryBtn = document.getElementById('viewHistoryBtn');
 
 exportAllBtn.onclick = () => {
   const blob = new Blob([JSON.stringify(conversations, null, 2)], { type: 'application/json' });
@@ -190,6 +211,25 @@ async function apiUpdate(conv){
 async function apiDelete(id){
   const r = await fetch('/api/conversations/' + encodeURIComponent(id), { method:'DELETE' });
   if (!r.ok) throw new Error(await r.text());
+}
+
+// Learning API helpers
+async function apiGetLearningStatus(){
+  const r = await fetch('/api/learning/status');
+  if (!r.ok) throw new Error(await r.text());
+  return await r.json();
+}
+
+async function apiStartLearning(){
+  const r = await fetch('/api/learning/start', { method:'POST' });
+  if (!r.ok) throw new Error(await r.text());
+  return await r.json();
+}
+
+async function apiGetLearningHistory(){
+  const r = await fetch('/api/learning/history');
+  if (!r.ok) throw new Error(await r.text());
+  return await r.json();
 }
 
 // Load conversations on startup
@@ -304,9 +344,91 @@ promptEl.addEventListener('input', () => {
   apiUpdate(conv).catch(() => {});
 });
 
+// Learning event handlers
+checkLearningBtn.onclick = async () => {
+  try {
+    const status = await apiGetLearningStatus();
+    updateLearningStatus(status);
+  } catch (err) {
+    learningStatusEl.textContent = 'Error: ' + err.message;
+    learningStatusEl.style.color = '#ff6b6b';
+  }
+};
+
+startLearningBtn.onclick = async () => {
+  try {
+    startLearningBtn.disabled = true;
+    startLearningBtn.textContent = 'Starting...';
+    const result = await apiStartLearning();
+    learningStatusEl.textContent = `Learning started: ${result.episode_id}`;
+    learningStatusEl.style.color = var(--accent);
+    // Refresh status after a delay
+    setTimeout(() => checkLearningBtn.click(), 2000);
+  } catch (err) {
+    learningStatusEl.textContent = 'Error: ' + err.message;
+    learningStatusEl.style.color = '#ff6b6b';
+  } finally {
+    startLearningBtn.disabled = false;
+    startLearningBtn.textContent = 'Start Learning';
+  }
+};
+
+viewHistoryBtn.onclick = async () => {
+  try {
+    const history = await apiGetLearningHistory();
+    if (history.history && history.history.length > 0) {
+      const historyText = history.history.map(ep =>
+        `${ep.id}: ${ep.status} (${new Date(ep.start_time).toLocaleString()})`
+      ).join('\n');
+      alert('Learning History:\n\n' + historyText);
+    } else {
+      alert('No learning history available');
+    }
+  } catch (err) {
+    alert('Error loading history: ' + err.message);
+  }
+};
+
+function updateLearningStatus(status) {
+  if (!status.enabled) {
+    learningStatusEl.textContent = 'Learning system not available';
+    learningStatusEl.style.color = '#ff6b6b';
+    startLearningBtn.disabled = true;
+    return;
+  }
+
+  let statusText = '';
+  let statusColor = '#9ca3af'; // default muted color
+
+  if (status.is_active) {
+    statusText = `Learning active: ${status.current_episode?.status || 'running'}`;
+    statusColor = '#60a5fa'; // accent color
+    startLearningBtn.disabled = true;
+  } else if (status.should_learn) {
+    statusText = 'Ready to learn - ' + status.reason;
+    statusColor = '#4ade80'; // green
+    startLearningBtn.disabled = false;
+  } else {
+    statusText = 'Not ready: ' + status.reason;
+    statusColor = '#9ca3af'; // muted
+    startLearningBtn.disabled = true;
+  }
+
+  learningStatusEl.textContent = statusText;
+  learningStatusEl.style.color = statusColor;
+}
+
 // Init
 (async function init(){
   await loadConversations();
+  // Check learning status on load
+  try {
+    const status = await apiGetLearningStatus();
+    updateLearningStatus(status);
+  } catch (err) {
+    learningStatusEl.textContent = 'Learning system unavailable';
+    learningStatusEl.style.color = '#ff6b6b';
+  }
 })();
 </script>
 </body>

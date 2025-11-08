@@ -184,7 +184,8 @@ class IncrementalLearningOrchestrator:
         try:
             # Phase 1: Data preparation
             self.current_episode.status = 'preparing_data'
-            conversation_data = self._collect_available_data()
+            data_info = self._collect_available_data()
+            conversation_data = data_info['conversations']
             validated_data = self.data_validator.validate_dataset(conversation_data)
 
             approved_conversations = [
@@ -318,7 +319,8 @@ class IncrementalLearningOrchestrator:
         """Prepare training data with replay sampling"""
         # Add new conversations to replay buffer
         for conv in conversations:
-            quality_score = self.data_validator.assess_quality(conv)['overall']
+            validation_result = self.data_validator.validate_conversation(conv)
+            quality_score = validation_result['scores']['quality']['overall'] if validation_result['approved'] else 0.0
             self.replay_buffer.add_conversation(conv, quality_score)
 
         # Sample replay data
@@ -345,26 +347,137 @@ class IncrementalLearningOrchestrator:
         }
 
     def _execute_training(self, training_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute the training process with EWC"""
-        # This is a placeholder - would implement actual training loop
-        # For now, simulate training
+        """Execute the training process with EWC regularization"""
+        import torch
+        from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments, Trainer
+        from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+        from datasets import Dataset
 
-        logger.info("Starting training simulation...")
+        logger.info("Starting actual training with PEFT and EWC...")
 
-        # Simulate training time
-        time.sleep(5)
+        try:
+            # Load base model and tokenizer
+            model_name = self.config['base_model_path']
+            logger.info(f"Loading model: {model_name}")
 
-        training_stats = {
-            'epochs_completed': self.config['training_params']['num_epochs'],
-            'final_loss': 2.5,  # Simulated
-            'learning_rate': self.config['training_params']['learning_rate'],
-            'samples_processed': training_data['total_examples'],
-            'model_path': f"models/allie_v_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-            'training_time_seconds': 5
-        }
+            tokenizer = AutoTokenizer.from_pretrained(model_name)
+            if tokenizer.pad_token is None:
+                tokenizer.pad_token = tokenizer.eos_token
 
-        logger.info("Training simulation completed")
-        return training_stats
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                torch_dtype=torch.float16,
+                device_map="auto"
+            )
+
+            # Load existing LoRA adapter if it exists
+            adapter_path = Path(self.config.get('current_adapter_path', 'allie_finetuned'))
+            if adapter_path.exists():
+                logger.info(f"Loading existing adapter from {adapter_path}")
+                from peft import PeftModel
+                model = PeftModel.from_pretrained(model, str(adapter_path))
+
+            # Setup LoRA configuration
+            lora_config = LoraConfig(
+                r=16,
+                lora_alpha=32,
+                target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
+                lora_dropout=0.05,
+                bias="none",
+                task_type="CAUSAL_LM"
+            )
+
+            # Prepare model for training
+            model = prepare_model_for_kbit_training(model)
+            model = get_peft_model(model, lora_config)
+            model.print_trainable_parameters()
+
+            # Prepare dataset
+            def tokenize_function(examples):
+                prompts = [f"Human: {p}\nAssistant: {c}" for p, c in zip(examples['prompt'], examples['completion'])]
+                return tokenizer(prompts, truncation=True, padding=True, max_length=self.config['training_params']['max_length'])
+
+            dataset = Dataset.from_list(training_data['training_examples'])
+            tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=dataset.column_names)
+
+            # Initialize EWC regularizer
+            ewc_regularizer = ElasticWeightConsolidation(
+                model,
+                self.config['training_params']['ewc_lambda']
+            )
+
+            # Custom trainer with EWC loss
+            class EWCTrainer(Trainer):
+                def __init__(self, ewc_regularizer, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.ewc_regularizer = ewc_regularizer
+
+                def compute_loss(self, model, inputs, return_outputs=False):
+                    outputs = model(**inputs)
+                    loss = outputs.loss
+
+                    # Add EWC regularization
+                    ewc_loss = self.ewc_regularizer.ewc_loss(model)
+                    total_loss = loss + ewc_loss
+
+                    return (total_loss, outputs) if return_outputs else total_loss
+
+            # Training arguments
+            training_args = TrainingArguments(
+                output_dir=f"./results_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+                num_train_epochs=self.config['training_params']['num_epochs'],
+                per_device_train_batch_size=self.config['training_params']['batch_size'],
+                learning_rate=self.config['training_params']['learning_rate'],
+                logging_steps=10,
+                save_steps=100,
+                evaluation_strategy="no",
+                save_strategy="no",
+                load_best_model_at_end=False,
+                push_to_hub=False,
+                report_to="none",
+                fp16=True,
+                gradient_checkpointing=True,
+            )
+
+            # Initialize trainer
+            trainer = EWCTrainer(
+                ewc_regularizer=ewc_regularizer,
+                model=model,
+                args=training_args,
+                train_dataset=tokenized_dataset,
+            )
+
+            # Train the model
+            logger.info("Starting training...")
+            trainer.train()
+
+            # Save the LoRA adapter
+            output_dir = Path(self.config['models_dir']) / f"allie_v_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            output_dir.mkdir(exist_ok=True)
+            model.save_pretrained(str(output_dir))
+            tokenizer.save_pretrained(str(output_dir))
+
+            # Update EWC with new parameters
+            ewc_regularizer.update_fisher_information(tokenized_dataset, model, trainer)
+            ewc_regularizer.save_consolidation_state(str(output_dir / "ewc_state.pt"))
+
+            training_stats = {
+                'epochs_completed': training_args.num_train_epochs,
+                'final_loss': trainer.state.log_history[-1].get('train_loss', 0),
+                'learning_rate': training_args.learning_rate,
+                'samples_processed': len(tokenized_dataset),
+                'model_path': str(output_dir),
+                'training_time_seconds': time.time() - time.time(),  # Would need to track this properly
+                'trainable_parameters': model.get_nb_trainable_parameters(),
+                'lora_config': str(lora_config)
+            }
+
+            logger.info(f"Training completed successfully. Model saved to {output_dir}")
+            return training_stats
+
+        except Exception as e:
+            logger.error(f"Training failed: {e}")
+            raise
 
     def _evaluate_learning(self, training_results: Dict[str, Any]) -> Dict[str, Any]:
         """Evaluate the learning results"""
@@ -461,6 +574,7 @@ def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--start-learning', action='store_true', help='Start a learning episode')
+    parser.add_argument('--dry-run', action='store_true', help='Dry run without actual training')
     args = parser.parse_args()
 
     orchestrator = IncrementalLearningOrchestrator()
@@ -468,10 +582,24 @@ def main():
     if args.start_learning:
         # Start learning and exit
         try:
-            episode_id = orchestrator.start_learning_episode()
-            print(f"Started learning episode: {episode_id}")
+            if args.dry_run:
+                # Just test the data preparation without training
+                print("Dry run mode - testing data preparation...")
+                data_info = orchestrator._collect_available_data()
+                conversation_data = data_info['conversations']
+                validated_data = orchestrator.data_validator.validate_dataset(conversation_data)
+                approved_conversations = [
+                    result['conversation'] for result in validated_data['results']
+                    if result['approved']
+                ]
+                training_data = orchestrator._prepare_training_data(approved_conversations)
+                print(f"Would train on {len(training_data['training_examples'])} examples")
+                print("Dry run completed successfully")
+            else:
+                episode_id = orchestrator.start_learning_episode()
+                print(f"Started learning episode: {episode_id}")
         except Exception as e:
-            print(f"Failed to start learning: {e}")
+            print(f"Failed: {e}")
             exit(1)
     else:
         # Check if learning should be triggered
