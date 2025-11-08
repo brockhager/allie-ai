@@ -160,28 +160,67 @@ async def list_conversations_file():
 async def list_conversations_memory():
     return {"conversations": conversation_history}
 
+# ------------------------- Conversation Storage -------------------------
+
+@app.get("/api/conversations")
+async def list_conversations():
+    """List all conversations"""
+    return {"conversations": conversation_history}
+
 @app.post("/api/conversations")
-async def create_conversation(payload: Dict[str, Any] = Body(...)):
+async def create_conversation_api(payload: Dict[str, Any] = Body(...)):
+    """Create a new conversation (for UI sync)"""
+    conv = payload
+    if "id" not in conv:
+        conv["id"] = f"c-{len(conversation_history)}"
+    conversation_history.append(conv)
+    # Save to backup
+    with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
+        json.dump(conversation_history, f, indent=2)
+    return conv
+
+@app.put("/api/conversations/{conv_id}")
+async def update_conversation_api(conv_id: str, payload: Dict[str, Any] = Body(...)):
+    """Update a conversation"""
+    for i, conv in enumerate(conversation_history):
+        if conv.get("id") == conv_id:
+            conversation_history[i] = payload
+            # Save to backup
+            with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
+                json.dump(conversation_history, f, indent=2)
+            return payload
+    raise HTTPException(status_code=404, detail="Conversation not found")
+
+@app.delete("/api/conversations/{conv_id}")
+async def delete_conversation_api(conv_id: str):
+    """Delete a conversation"""
+    global conversation_history
+    conversation_history = [c for c in conversation_history if c.get("id") != conv_id]
+    # Save to backup
+    with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
+        json.dump(conversation_history, f, indent=2)
+    return {"status": "deleted"}
+
+# Keep the old generate endpoint as /api/generate
+@app.post("/api/generate")
+async def generate_response(payload: Dict[str, Any] = Body(...)):
     prompt = payload.get("prompt", "")
+    max_tokens = payload.get("max_tokens", 200)
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt is required")
 
-    # Format as chat message for TinyLlama
-    messages = [{"role": "user", "content": prompt}]
+    # Format as chat message for TinyLlama with system prompt
+    messages = [
+        {"role": "system", "content": "You are Allie, a helpful and friendly AI assistant. Respond naturally and helpfully to user questions."},
+        {"role": "user", "content": prompt}
+    ]
     formatted_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
     inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
-    outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + 200, do_sample=True, temperature=0.7, top_p=0.9)
+    outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.7, top_p=0.9, pad_token_id=tokenizer.eos_token_id)
     reply = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
 
-    # Store in memory
-    conversation_history.append({"prompt": prompt, "response": reply})
-
-    # ✅ Step 2: Persist to file
-    with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
-        json.dump(conversation_history, f, indent=2)
-
-    return {"response": reply}
+    return {"text": reply}
 
 
 
@@ -194,12 +233,15 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt is required")
 
-    # Format as chat message for TinyLlama
-    messages = [{"role": "user", "content": prompt}]
+    # Format as chat message for TinyLlama with system prompt
+    messages = [
+        {"role": "system", "content": "You are Allie, a helpful and friendly AI assistant. Respond naturally and helpfully to user questions."},
+        {"role": "user", "content": prompt}
+    ]
     formatted_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
     inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
-    outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.7, top_p=0.9)
+    outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.7, top_p=0.9, pad_token_id=tokenizer.eos_token_id)
     reply = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
 
     return {"text": reply}
@@ -249,13 +291,20 @@ async def get_learning_status():
         if result.returncode == 0:
             # Parse the output
             lines = result.stdout.strip().split('\n')
-            should_learn = "True" in lines[0]
-            current_status = "False" in lines[1]
+            should_learn_line = lines[0]
+            current_status_line = lines[1]
+            
+            should_learn = "True" in should_learn_line
+            is_active = "True" in current_status_line
+            
+            # Extract reason
+            reason = should_learn_line.split(' - ', 1)[1] if ' - ' in should_learn_line else should_learn_line
 
             return {
                 "enabled": True,
                 "should_learn": should_learn,
-                "is_active": current_status,
+                "is_active": is_active,
+                "reason": reason,
                 "message": "Status retrieved successfully"
             }
         else:
