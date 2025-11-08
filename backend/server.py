@@ -3,7 +3,8 @@ import json
 import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
+import asyncio
 
 import httpx
 from fastapi import FastAPI, Body, HTTPException
@@ -29,6 +30,37 @@ LLAMA_BACKOFF_BASE = float(os.environ.get("LLAMA_BACKOFF_BASE", "0.25"))
 
 logger = logging.getLogger("allie")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+
+# Cache for external API responses
+_api_cache = {}
+_CACHE_TTL_SECONDS = 300  # 5 minutes cache TTL
+
+def _get_cache_key(query: str, api_type: str) -> str:
+    """Generate a cache key for API responses"""
+    import hashlib
+    return hashlib.md5(f"{api_type}:{query}".encode()).hexdigest()
+
+def _get_cached_response(cache_key: str) -> Optional[Dict[str, Any]]:
+    """Get cached response if still valid"""
+    if cache_key in _api_cache:
+        cached_data, timestamp = _api_cache[cache_key]
+        if datetime.now() - timestamp < timedelta(seconds=_CACHE_TTL_SECONDS):
+            return cached_data
+        else:
+            # Remove expired cache entry
+            del _api_cache[cache_key]
+    return None
+
+def _set_cached_response(cache_key: str, data: Dict[str, Any]):
+    """Cache API response with timestamp"""
+    _api_cache[cache_key] = (data, datetime.now())
+
+    # Clean up old cache entries (keep cache size reasonable)
+    if len(_api_cache) > 100:
+        # Remove oldest entries
+        sorted_entries = sorted(_api_cache.items(), key=lambda x: x[1][1])
+        for old_key, _ in sorted_entries[:20]:  # Remove 20 oldest
+            del _api_cache[old_key]
 
 # Load real model for chat
 try:
@@ -381,6 +413,14 @@ auto_learner = AutomaticLearner(allie_memory)
 cleanup_all_folders()
 async def search_web(query: str) -> Dict[str, Any]:
     """Search the web using DuckDuckGo instant answers"""
+    # Check cache first
+    cache_key = _get_cache_key(query, "web")
+    cached_result = _get_cached_response(cache_key)
+    if cached_result:
+        logger.info(f"Web search cache hit for: {query}")
+        return cached_result
+
+    logger.info(f"Web search cache miss for: {query}")
     try:
         # Use DuckDuckGo instant answer API (no API key required)
         url = f"https://api.duckduckgo.com/?q={query}&format=json&no_html=1&skip_disambig=1"
@@ -424,29 +464,43 @@ async def search_web(query: str) -> Dict[str, Any]:
                                 "source": "DuckDuckGo Related Topics"
                             })
                 
-                return {
+                result = {
                     "query": query,
                     "results": results[:5],  # Limit to top 5
                     "success": True
                 }
+                _set_cached_response(cache_key, result)
+                return result
             else:
-                return {
+                result = {
                     "query": query,
                     "results": [],
                     "success": False,
                     "error": f"Search failed with status {response.status_code}"
                 }
+                _set_cached_response(cache_key, result)
+                return result
     except Exception as e:
         logger.warning(f"Web search failed: {e}")
-        return {
+        result = {
             "query": query,
             "results": [],
             "success": False,
             "error": str(e)
         }
+        _set_cached_response(cache_key, result)
+        return result
 
 async def search_wikipedia(query: str) -> Dict[str, Any]:
     """Search Wikipedia for authoritative background information"""
+    # Check cache first
+    cache_key = _get_cache_key(query, "wikipedia")
+    cached_result = _get_cached_response(cache_key)
+    if cached_result:
+        logger.info(f"Wikipedia search cache hit for: {query}")
+        return cached_result
+
+    logger.info(f"Wikipedia search cache miss for: {query}")
     try:
         # Use Wikipedia API for summary
         # First, search for the page title
@@ -455,13 +509,15 @@ async def search_wikipedia(query: str) -> Dict[str, Any]:
             response = await client.get(search_url)
             if response.status_code == 200:
                 data = response.json()
-                return {
+                result = {
                     "query": query,
                     "title": data.get("title", query),
                     "summary": data.get("extract", ""),
                     "url": data.get("content_urls", {}).get("desktop", {}).get("page", ""),
                     "success": True
                 }
+                _set_cached_response(cache_key, result)
+                return result
             else:
                 # Try search endpoint if direct page lookup fails
                 search_url = f"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={query}&format=json&utf8=1"
@@ -478,15 +534,17 @@ async def search_wikipedia(query: str) -> Dict[str, Any]:
                         summary_response = await client.get(summary_url)
                         if summary_response.status_code == 200:
                             summary_data = summary_response.json()
-                            return {
+                            result = {
                                 "query": query,
                                 "title": summary_data.get("title", page_title),
                                 "summary": summary_data.get("extract", ""),
                                 "url": summary_data.get("content_urls", {}).get("desktop", {}).get("page", ""),
                                 "success": True
                             }
+                            _set_cached_response(cache_key, result)
+                            return result
                 
-                return {
+                result = {
                     "query": query,
                     "title": query,
                     "summary": "",
@@ -494,9 +552,11 @@ async def search_wikipedia(query: str) -> Dict[str, Any]:
                     "success": False,
                     "error": "No Wikipedia page found"
                 }
+                _set_cached_response(cache_key, result)
+                return result
     except Exception as e:
         logger.warning(f"Wikipedia search failed: {e}")
-        return {
+        result = {
             "query": query,
             "title": query,
             "summary": "",
@@ -504,6 +564,8 @@ async def search_wikipedia(query: str) -> Dict[str, Any]:
             "success": False,
             "error": str(e)
         }
+        _set_cached_response(cache_key, result)
+        return result
 
 @app.post("/api/conversations")
 async def create_conversation_api(payload: Dict[str, Any] = Body(...)):
@@ -634,8 +696,31 @@ async def delete_conversation_api(conv_id: str):
 async def generate_response(payload: Dict[str, Any] = Body(...)):
     prompt = payload.get("prompt", "")
     max_tokens = payload.get("max_tokens", 200)
-    if not prompt:
-        raise HTTPException(status_code=400, detail="Prompt is required")
+
+    # Input validation
+    if not prompt or not isinstance(prompt, str):
+        raise HTTPException(status_code=400, detail="Prompt is required and must be a string")
+
+    if len(prompt) > 2000:
+        raise HTTPException(status_code=400, detail="Prompt too long (maximum 2000 characters)")
+
+    if len(prompt.strip()) == 0:
+        raise HTTPException(status_code=400, detail="Prompt cannot be empty or only whitespace")
+
+    # Basic content filtering - reject potentially harmful prompts
+    harmful_patterns = [
+        "how to hack", "how to exploit", "how to crack", "password cracking",
+        "sql injection", "xss attack", "ddos", "malware", "virus", "trojan",
+        "illegal", "drugs", "weapons", "bomb", "explosive"
+    ]
+
+    prompt_lower = prompt.lower()
+    for pattern in harmful_patterns:
+        if pattern in prompt_lower:
+            raise HTTPException(status_code=400, detail="Request contains inappropriate content")
+
+    if not isinstance(max_tokens, int) or max_tokens < 1 or max_tokens > 1000:
+        raise HTTPException(status_code=400, detail="max_tokens must be an integer between 1 and 1000")
 
     # Step 1: Process user input for automatic learning
     learning_result = auto_learner.process_message(prompt, "user")
@@ -786,97 +871,14 @@ Remember: You are Allie, a helpful and friendly AI assistant created to answer q
         if context_parts:
             enhanced_prompt = f"{prompt}\n\nContext from multiple sources:\n" + "\n\n".join(context_parts)
 
-    # Step 7: Generate response using TinyLlama
-    from datetime import datetime
-    current_date = datetime.now().strftime("%B %d, %Y")
+    # Step 7: Generate response using TinyLlama (moved to thread pool for async performance)
+    def generate_model_response():
+        """Generate model response synchronously in thread pool"""
+        inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
+        outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.3, top_p=0.7, pad_token_id=tokenizer.eos_token_id)
+        return tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
     
-    # Handle simple greetings and common phrases with direct responses
-    prompt_lower = prompt.lower().strip()
-    simple_responses = {
-        "hello": "Hello! How can I help you today?",
-        "hi": "Hi there! What can I do for you?",
-        "hey": "Hey! How's it going?",
-        "good morning": "Good morning! How can I assist you today?",
-        "good afternoon": "Good afternoon! What can I help you with?",
-        "good evening": "Good evening! How may I help you?",
-        "how are you": "I'm doing well, thank you! How can I help you today?",
-        "how's it going": "I'm doing great! What can I help you with?",
-        "what's up": "Not much! How can I assist you today?",
-        "thanks": "You're welcome!",
-        "thank you": "You're very welcome!",
-        "bye": "Goodbye! Have a great day!",
-        "goodbye": "Goodbye! Take care!",
-        "see you later": "See you later!",
-        "yes": "Great!",
-        "no": "Okay, understood.",
-        "okay": "Alright!",
-        "sure": "Of course!",
-        "maybe": "Let me know if you need help with anything else.",
-        "i don't know": "That's okay! Is there something I can help you figure out?",
-        "help": "I'm here to help! What do you need assistance with?",
-        "please": "Of course! How can I help you?"
-    }
-    
-    # Check for exact matches first
-    if prompt_lower in simple_responses:
-        return {"text": simple_responses[prompt_lower]}
-    
-    # Check for partial matches
-    for key, response in simple_responses.items():
-        if key in prompt_lower:
-            return {"text": response}
-    
-    # Handle common self-referential questions with direct responses
-    if is_self_referential:
-        direct_responses = {
-            "what is your name": "My name is Allie.",
-            "what's your name": "My name is Allie.",
-            "who are you": "I am Allie, a helpful and friendly AI assistant.",
-            "what are you": "I am Allie, a helpful and friendly AI assistant.",
-            "tell me about yourself": "I am Allie, a helpful and friendly AI assistant created in 2025. I'm here to answer your questions, provide information, and engage in natural conversation. I have access to various knowledge sources and can help with a wide range of topics.",
-            "what do you do": "I help people by answering questions, providing information, and engaging in natural conversations. I can search for current information, access my knowledge base, and assist with various tasks.",
-            "what is your purpose": "My purpose is to be a helpful and friendly AI assistant that can answer questions, provide accurate information, and engage in meaningful conversations with people.",
-            "introduce yourself": "Hi, I'm Allie! I'm a helpful and friendly AI assistant designed to answer your questions and engage in natural conversations.",
-            "what should i call you": "You can call me Allie.",
-            "what are you called": "I'm called Allie."
-        }
-        
-        # Check for exact matches first
-        if prompt_lower in direct_responses:
-            return {"text": direct_responses[prompt_lower]}
-        
-        # Check for partial matches
-        for key, response in direct_responses.items():
-            if key in prompt_lower:
-                return {"text": response}
-    
-    system_content = f"""You are Allie, a helpful and friendly AI assistant. Today's date is {current_date}.
-
-You are designed to respond naturally and helpfully in English. Always provide direct, clear answers to questions.
-
-You have access to:
-- Your long-term memory of important facts and information
-- Recent conversation context
-- Current web search results from DuckDuckGo
-- Authoritative background information from Wikipedia
-
-Your primary role is to answer questions and engage in natural conversation. When someone asks you a question, provide a direct, helpful answer based on all available information.
-
-IMPORTANT: Always respond in clear, natural English. Do not respond in other languages unless specifically asked. Be conversational but informative.
-
-I automatically validate my stored knowledge against authoritative sources like Wikipedia. If I find conflicting information, I update my memory to ensure accuracy.
-
-Synthesize information from all available sources to provide comprehensive, accurate responses. If you learn something new and important, acknowledge that you're storing it for future conversations."""
-
-    messages = [
-        {"role": "system", "content": system_content},
-        {"role": "user", "content": enhanced_prompt}
-    ]
-    formatted_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-
-    inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
-    outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.3, top_p=0.7, pad_token_id=tokenizer.eos_token_id)
-    reply = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
+    reply = await asyncio.to_thread(generate_model_response)
 
     # Step 8: Process assistant response for additional learning
     assistant_learning = auto_learner.process_message(reply, "assistant")
