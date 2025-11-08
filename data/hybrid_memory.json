@@ -1,23 +1,14 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T09:34:01.546934",
-  "fact_count": 2,
+  "saved_at": "2025-11-08T09:45:20.078695",
+  "fact_count": 1,
   "facts": [
     {
-      "fact": "What is the capital of the usa",
-      "timestamp": "2025-11-08T09:33:38.487519",
-      "category": "geography",
+      "fact": "Animals <B>are</B> multicellular eukaryotic organisms <B>that</B> form <B>the</B> biological kingdom Animalia. With few",
+      "timestamp": "2025-11-08T09:45:20.077044",
+      "category": "general",
       "confidence": 0.9,
-      "source": "automatic_learning",
-      "metadata": {},
-      "is_outdated": false
-    },
-    {
-      "fact": "capital city of the USA is Washington",
-      "timestamp": "2025-11-08T09:34:01.546512",
-      "category": "geography",
-      "confidence": 0.9,
-      "source": "automatic_learning",
+      "source": "dbpedia",
       "metadata": {},
       "is_outdated": false
     }

@@ -72,6 +72,14 @@ class HybridMemory:
         Returns:
             Dictionary with status and details
         """
+        # Defensive check - ensure fact is actually a string
+        if not isinstance(fact, str):
+            logger.error(f"add_fact received non-string fact: type={type(fact)}, value={fact}")
+            return {
+                "status": "error",
+                "message": f"Fact must be a string, got {type(fact)}"
+            }
+        
         # Check if this fact already exists
         existing_node = self.linked_list.find_by_fact(fact)
         if existing_node and not existing_node.is_outdated:
