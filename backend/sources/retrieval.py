@@ -35,12 +35,23 @@ async def search_all_sources(
     """
     logger.info(f"Starting multi-source search for: '{query}'")
     
+    # Clean query - remove question words for better search results
+    clean_query = query.lower()
+    for word in ["what", "how", "where", "when", "who", "why", "is", "are", "the"]:
+        clean_query = clean_query.replace(f"{word} ", "")
+    clean_query = clean_query.strip()
+    
+    if not clean_query:
+        clean_query = query  # Fallback to original if everything was removed
+    
+    logger.info(f"Cleaned query: '{clean_query}'")
+    
     # Search all sources in parallel
     tasks = [
-        search_duckduckgo(query, max_results_per_source),
-        search_wikidata(query, max_results_per_source),
-        search_dbpedia(query, max_results_per_source),
-        search_openlibrary(query, max_results_per_source)
+        search_duckduckgo(clean_query, max_results_per_source),
+        search_wikidata(clean_query, max_results_per_source),
+        search_dbpedia(clean_query, max_results_per_source),
+        search_openlibrary(clean_query, max_results_per_source)
     ]
     
     results = await asyncio.gather(*tasks, return_exceptions=True)
