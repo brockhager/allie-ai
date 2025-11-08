@@ -84,5 +84,47 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-viawyd1",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762578653568
+      },
+      {
+        "role": "me",
+        "text": "hello",
+        "timestamp": 1762578673294
+      },
+      {
+        "role": "them",
+        "text": "Hello! Please let me know if you have any questions or need any assistance.",
+        "timestamp": 1762578677050
+      },
+      {
+        "role": "me",
+        "text": "what is today's date",
+        "timestamp": 1762578684334
+      },
+      {
+        "role": "them",
+        "text": "Today's date is May 19, 2021.",
+        "timestamp": 1762578688283
+      },
+      {
+        "role": "me",
+        "text": "are you sure?",
+        "timestamp": 1762578731015
+      },
+      {
+        "role": "them",
+        "text": "I am a computer program designed to provide information and assistance. I am not a person and cannot make any promises or guarantees. You should always conduct your own research and seek professional advice before relying on the information provided by me.",
+        "timestamp": 1762578737400
+      }
+    ],
+    "draft": ""
   }
 ]
