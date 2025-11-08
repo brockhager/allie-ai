@@ -17,8 +17,9 @@ logger = logging.getLogger(__name__)
 class AutomaticLearner:
     """Handles automatic extraction and storage of factual information"""
 
-    def __init__(self, memory_system):
+    def __init__(self, memory_system, hybrid_memory=None):
         self.memory_system = memory_system
+        self.hybrid_memory = hybrid_memory  # Optional hybrid memory system
 
         # Knowledge expansion rules
         self.expansion_rules = {
@@ -85,13 +86,19 @@ class AutomaticLearner:
 
             # Only store high-confidence facts
             if confidence >= 0.6:
-                # Store the fact
+                # Store the fact in legacy memory
                 self.memory_system.add_fact(fact_text, importance=confidence, category=category)
+                
+                # Also store in hybrid memory if available
+                if self.hybrid_memory:
+                    self.hybrid_memory.add_fact(fact_text, category=category, confidence=confidence, source="automatic_learning")
 
                 # Generate related information
                 related_facts = self._expand_knowledge(fact_text, category)
                 for related_fact in related_facts:
                     self.memory_system.add_fact(related_fact, importance=0.7, category=category)
+                    if self.hybrid_memory:
+                        self.hybrid_memory.add_fact(related_fact, category=category, confidence=0.7, source="automatic_learning_expansion")
                     extracted_facts.append({
                         "fact": related_fact,
                         "category": category,

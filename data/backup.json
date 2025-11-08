@@ -622,5 +622,27 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-nnso2zt",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762591535918
+      },
+      {
+        "role": "me",
+        "text": "what is the capital city of utah",
+        "timestamp": 1762591560164
+      },
+      {
+        "role": "them",
+        "text": "The capital city of Utah is Salt Lake City.\n\n\n\n\u2713 Learned: The capital city of Utah is Salt Lake City (stored in geography)\n\n\n\n\u2713 Learned: What is the capital city of utah (stored in geography)",
+        "timestamp": 1762591581124
+      }
+    ],
+    "draft": ""
   }
 ]

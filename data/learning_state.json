@@ -139,6 +139,20 @@
       "training_stats": null,
       "evaluation_results": null,
       "error_message": "Cannot copy out of meta tensor; no data! Please use torch.nn.Module.to_empty() instead of torch.nn.Module.to() when moving module from meta to a different device."
+    },
+    {
+      "id": "learn_20251108_014544",
+      "status": "failed",
+      "start_time": "2025-11-08T01:45:44.132682",
+      "end_time": "2025-11-08T01:46:05.776993",
+      "data_stats": {
+        "total_conversations": 25,
+        "approved_conversations": 4,
+        "avg_quality": 0.74725
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "IncrementalLearningOrchestrator._execute_training.<locals>.EWCTrainer.compute_loss() got an unexpected keyword argument 'num_items_in_batch'"
     }
   ],
   "config": {
