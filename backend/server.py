@@ -645,6 +645,15 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     relevant_facts = allie_memory.recall_facts(prompt)
     recent_context = allie_memory.get_recent_context()
 
+    # Step 2.1: Check for self-referential questions that shouldn't trigger external searches
+    self_referential_patterns = [
+        "what is your name", "who are you", "what are you", "tell me about yourself",
+        "what's your name", "who is this", "introduce yourself", "what do you do",
+        "what is your purpose", "what are you called", "what should i call you"
+    ]
+    
+    is_self_referential = any(pattern in prompt.lower() for pattern in self_referential_patterns)
+
     # Step 2.5: Validate memory facts against Wikipedia if we have stored facts
     memory_validation_updates = []
     if relevant_facts and not is_self_referential:
@@ -704,15 +713,6 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
                         memory_validation_updates.extend(validation_confirmations)
 
     # Step 3: Determine if external search is needed
-    # First, check for self-referential questions that shouldn't trigger external searches
-    self_referential_patterns = [
-        "what is your name", "who are you", "what are you", "tell me about yourself",
-        "what's your name", "who is this", "introduce yourself", "what do you do",
-        "what is your purpose", "what are you called", "what should i call you"
-    ]
-    
-    is_self_referential = any(pattern in prompt.lower() for pattern in self_referential_patterns)
-    
     if is_self_referential:
         # Handle self-referential questions directly without external searches
         needs_web_search = False

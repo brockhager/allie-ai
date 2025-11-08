@@ -41,6 +41,20 @@
       "training_stats": null,
       "evaluation_results": null,
       "error_message": "TrainingArguments.__init__() got an unexpected keyword argument 'evaluation_strategy'"
+    },
+    {
+      "id": "learn_20251108_000057",
+      "status": "failed",
+      "start_time": "2025-11-08T00:00:57.132157",
+      "end_time": "2025-11-08T00:01:14.609774",
+      "data_stats": {
+        "total_conversations": 17,
+        "approved_conversations": 4,
+        "avg_quality": 0.74725
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "TrainingArguments.__init__() got an unexpected keyword argument 'evaluation_strategy'"
     }
   ],
   "config": {
