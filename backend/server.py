@@ -12,13 +12,16 @@ from fastapi import FastAPI, Body, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 
-# Add sources to path
-sys.path.insert(0, str(Path(__file__).parent))
+# Ensure project root is on sys.path so `import backend.*` works when running via uvicorn
+# Insert the parent directory of this backend package (the repository root)
+project_root = str(Path(__file__).parent.parent)
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 
-from sources.retrieval import search_with_memory_first, search_all_sources
-from sources.duckduckgo import search_duckduckgo
+from backend.sources.retrieval import search_with_memory_first, search_all_sources
+from backend.sources.duckduckgo import search_duckduckgo
 # Import lightweight context utils (pronoun resolution)
-from backend.context_utils import enhance_query_with_context
+from .context_utils import enhance_query_with_context
 
 conversation_history = []
 
@@ -423,7 +426,7 @@ class AllieMemory:
                 context += f"  • {point}\n"
         return context
 
-from automatic_learner import AutomaticLearner
+from backend.automatic_learner import AutomaticLearner
 
 def extract_president_name(text):
     """Extract president names from text"""

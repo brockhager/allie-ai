@@ -10,17 +10,17 @@ import logging
 from typing import Dict, Any, List, Optional
 import asyncio
 
-from sources.duckduckgo import search_duckduckgo
-from sources.wikipedia import search_wikipedia
-from sources.wikidata import search_wikidata
-from sources.dbpedia import search_dbpedia
-from sources.openlibrary import search_openlibrary
-from sources.conceptnet import search_conceptnet
-from sources.nominatim import search_nominatim
+from backend.sources.duckduckgo import search_duckduckgo
+from backend.sources.wikipedia import search_wikipedia
+from backend.sources.wikidata import search_wikidata
+from backend.sources.dbpedia import search_dbpedia
+from backend.sources.openlibrary import search_openlibrary
+from backend.sources.conceptnet import search_conceptnet
+from backend.sources.nominatim import search_nominatim
 # Optional sources (may require API keys or have limited availability)
-from sources.google_kg import search_google_kg
-from sources.yago import search_yago
-from sources.freebase import search_freebase
+from backend.sources.google_kg import search_google_kg
+from backend.sources.yago import search_yago
+from backend.sources.freebase import search_freebase
 
 logger = logging.getLogger("allie.retrieval")
 
