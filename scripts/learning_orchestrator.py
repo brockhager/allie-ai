@@ -429,9 +429,10 @@ class IncrementalLearningOrchestrator:
 
                     return (total_loss, outputs) if return_outputs else total_loss
 
-            # Training arguments
+            # Training arguments - use outputs dir to avoid cluttering backend/
+            output_dir = Path(__file__).parent.parent / "outputs" / f"results_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
             training_args = TrainingArguments(
-                output_dir=f"./results_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+                output_dir=str(output_dir),
                 num_train_epochs=self.config['training_params']['num_epochs'],
                 per_device_train_batch_size=self.config['training_params']['batch_size'],
                 learning_rate=self.config['training_params']['learning_rate'],
