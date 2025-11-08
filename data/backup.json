@@ -230,5 +230,37 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-i809i56",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762580231195
+      },
+      {
+        "role": "me",
+        "text": "what are the top 15 biggest cities in each state.  memorize that",
+        "timestamp": 1762580300662
+      },
+      {
+        "role": "them",
+        "text": "Top 15 biggest cities in each state:\n- Arizona: Phoenix, Tucson, Flagstaff, Sedona, Glendale, Mesa, Chandler, Scottsdale, Casa Grande, Tempe, Peoria, Yuma, Kingman, Prescott\n- California: Los Angeles, San Diego, Sacramento, Fresno, Santa Ana, Santa Barbara, Long Beach, Riverside, Bakersfield, San Francisco, Oakland, Stockton, Modesto\n- Colorado: Denver, Boulder, Colorado Springs",
+        "timestamp": 1762580337840
+      },
+      {
+        "role": "me",
+        "text": "you only named 3 states",
+        "timestamp": 1762580371720
+      },
+      {
+        "role": "them",
+        "text": "Sure, here's a revised version of the conversation with three messages:\n\nContext:\nRelevant information I remember:\n- User asked: \"I live in Yuma Arizona. Yuma is close to the Mexico border.\" - Allie responded: \"As you mentioned, Yuma is located on the Mexico border. Here's how you can use this information in your responses:\n\n- If you receive a message like \"my name is Brock. Please remember that,\" you can respond: \"Certainly! Here are the revised responses for the",
+        "timestamp": 1762580398594
+      }
+    ],
+    "draft": ""
   }
 ]

@@ -293,9 +293,14 @@ class AllieMemory:
                 context += f"  • {point}\n"
         return context
 
+from automatic_learner import AutomaticLearner
+
 # Initialize memory system
 MEMORY_FILE = DATA_DIR / "allie_memory.json"
 allie_memory = AllieMemory(MEMORY_FILE)
+
+# Initialize automatic learning system
+auto_learner = AutomaticLearner(allie_memory)
 
 # Initial cleanup on startup
 cleanup_all_folders()
@@ -347,6 +352,20 @@ async def update_conversation_api(conv_id: str, payload: Dict[str, Any] = Body(.
         if conv.get("id") == conv_id:
             old_conv = conversation_history[i]
             conversation_history[i] = payload
+
+            # Process new messages for automatic learning
+            if payload.get("messages"):
+                old_messages = old_conv.get("messages", [])
+                new_messages = payload["messages"]
+
+                # Find new user messages
+                for j, msg in enumerate(new_messages):
+                    if j >= len(old_messages) or msg != old_messages[j]:
+                        if msg.get("role") == "me" and msg.get("text"):
+                            # Process user message for learning
+                            learning_result = auto_learner.process_message(msg["text"], "user")
+                            if learning_result["learning_actions"]:
+                                logger.info(f"Learned {learning_result['total_facts_learned']} facts from user message")
 
             # Generate conversation summary if it has grown
             if payload.get("messages") and len(payload["messages"]) > len(old_conv.get("messages", [])):
@@ -411,6 +430,10 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt is required")
 
+    # Process user input for automatic learning
+    learning_result = auto_learner.process_message(prompt, "user")
+    learning_confirmation = auto_learner.generate_learning_response(learning_result["learning_actions"])
+
     # Get relevant memories and context
     relevant_facts = allie_memory.recall_facts(prompt)
     recent_context = allie_memory.get_recent_context()
@@ -458,17 +481,16 @@ Use this information naturally in your responses. If you learn something new and
     outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.7, top_p=0.9, pad_token_id=tokenizer.eos_token_id)
     reply = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
 
-    # Try to extract and store important information from the conversation
-    try:
-        # Simple heuristic: if response contains factual information, store it
-        if len(reply) > 20 and not reply.startswith(("I'm sorry", "I don't know", "I can't")):
-            # Store the user's question and Allie's answer as a fact
-            fact = f"User asked: '{prompt}' - Allie responded: '{reply[:200]}...'" if len(reply) > 200 else f"User asked: '{prompt}' - Allie responded: '{reply}'"
-            allie_memory.add_fact(fact, importance=0.3, category="conversation")
-    except Exception as e:
-        logger.warning(f"Failed to store memory: {e}")
+    # Process assistant response for additional learning
+    assistant_learning = auto_learner.process_message(reply, "assistant")
+    if assistant_learning["learning_actions"]:
+        assistant_confirmation = auto_learner.generate_learning_response(assistant_learning["learning_actions"])
+        reply += assistant_confirmation
 
-    return {"text": reply}
+    # Add learning confirmation to response
+    final_reply = reply + learning_confirmation
+
+    return {"text": final_reply}
 
 @app.put("/api/conversations/{conv_id}")
 async def update_conversation(conv_id: str, payload: Dict[str, Any] = Body(...)):
