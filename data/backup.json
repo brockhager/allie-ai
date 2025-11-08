@@ -772,5 +772,17 @@
       }
     ],
     "draft": "what is the capital of california"
+  },
+  {
+    "id": "c-ukgamia",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762594180840
+      }
+    ],
+    "draft": ""
   }
 ]
