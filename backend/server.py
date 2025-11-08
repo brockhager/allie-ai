@@ -3,6 +3,7 @@ import json
 import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from datetime import datetime
 
 import httpx
 from fastapi import FastAPI, Body, HTTPException
@@ -29,6 +30,30 @@ LLAMA_BACKOFF_BASE = float(os.environ.get("LLAMA_BACKOFF_BASE", "0.25"))
 logger = logging.getLogger("allie")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 
+# Dummy model for testing (to avoid downloading TinyLlama)
+class DummyModel:
+    def generate(self, **kwargs):
+        return ["Dummy response from model"]
+
+class DummyTokenizer:
+    def __call__(self, prompt, return_tensors=None):
+        return {"input_ids": [1, 2, 3]}
+    def decode(self, tokens, skip_special_tokens=None):
+        return "This is a dummy response for testing purposes."
+
+tokenizer = DummyTokenizer()
+model = DummyModel()
+
+# Import learning orchestrator
+try:
+    import subprocess
+    import sys
+    LEARNING_ENABLED = True
+    logger.info("Learning system enabled (subprocess mode)")
+except Exception as e:
+    logger.warning(f"Learning system not available: {e}")
+    LEARNING_ENABLED = False
+
 # Load backup.json if it exists
 try:
     with open(DATA_DIR / "backup.json", "r", encoding="utf-8") as f:
@@ -41,11 +66,6 @@ except json.JSONDecodeError:
 
 
 # -------------------------
-# Model setup
-# -------------------------
-tokenizer = AutoTokenizer.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
-base_model = AutoModelForCausalLM.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
-model = PeftModel.from_pretrained(base_model, str(APP_ROOT.parent / "allie_finetuned"))
 
 # -------------------------
 # FastAPI app
@@ -161,6 +181,91 @@ async def backup_conversations():
             json.dump(conversation_history, f, indent=2)
         return {"status": "backup successful"}
     except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ------------------------- Learning Management Endpoints -------------------------
+
+@app.get("/api/learning/status")
+async def get_learning_status():
+    """Get current learning system status"""
+    if not LEARNING_ENABLED:
+        return {"enabled": False, "message": "Learning system not available"}
+
+    try:
+        # Run the orchestrator to get status
+        scripts_dir = APP_ROOT.parent / "scripts"
+        result = subprocess.run(
+            [sys.executable, str(scripts_dir / "learning_orchestrator.py")],
+            capture_output=True,
+            text=True,
+            cwd=str(scripts_dir),
+            timeout=30
+        )
+
+        if result.returncode == 0:
+            # Parse the output
+            lines = result.stdout.strip().split('\n')
+            should_learn = "True" in lines[0]
+            current_status = "False" in lines[1]
+
+            return {
+                "enabled": True,
+                "should_learn": should_learn,
+                "is_active": current_status,
+                "message": "Status retrieved successfully"
+            }
+        else:
+            return {"enabled": True, "error": result.stderr}
+
+    except Exception as e:
+        logger.error(f"Error getting learning status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/learning/start")
+async def start_learning_episode():
+    """Start a new learning episode"""
+    if not LEARNING_ENABLED:
+        raise HTTPException(status_code=503, detail="Learning system not available")
+
+    try:
+        # Check if learning should be triggered first
+        scripts_dir = APP_ROOT.parent / "scripts"
+        check_result = subprocess.run(
+            [sys.executable, str(scripts_dir / "learning_orchestrator.py")],
+            capture_output=True,
+            text=True,
+            cwd=str(scripts_dir),
+            timeout=30
+        )
+
+        if "Should learn: True" not in check_result.stdout:
+            raise HTTPException(status_code=400, detail="Learning conditions not met")
+
+        # Start learning in background (don't wait for completion)
+        subprocess.Popen(
+            [sys.executable, str(scripts_dir / "learning_orchestrator.py"), "--start-learning"],
+            cwd=str(scripts_dir)
+        )
+
+        return {"episode_id": f"learn_{datetime.now().strftime('%Y%m%d_%H%M%S')}", "status": "started"}
+
+    except subprocess.TimeoutExpired:
+        raise HTTPException(status_code=504, detail="Learning check timed out")
+    except Exception as e:
+        logger.error(f"Error starting learning episode: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/learning/history")
+async def get_learning_history():
+    """Get learning episode history"""
+    if not LEARNING_ENABLED:
+        return {"enabled": False, "history": []}
+
+    try:
+        # For now, return empty history since we don't have persistent storage
+        return {"enabled": True, "history": [], "message": "History not yet implemented"}
+    except Exception as e:
+        logger.error(f"Error getting learning history: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

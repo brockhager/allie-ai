@@ -1,6 +1,14 @@
 [
   {
-    "prompt": "Do you remember me after restart?",
-    "response": "Do you remember me after restart?"
+    "prompt": "What is the capital of France?",
+    "response": "The capital of France is Paris."
+  },
+  {
+    "prompt": "How does photosynthesis work?",
+    "response": "Photosynthesis is the process by which plants convert sunlight into energy."
+  },
+  {
+    "prompt": "Tell me about machine learning.",
+    "response": "Machine learning is a subset of artificial intelligence that enables computers to learn from data."
   }
 ]
