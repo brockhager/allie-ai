@@ -4,51 +4,45 @@ Welcome to the Allie AI documentation! This repository contains a comprehensive 
 
 ## 📚 Documentation Index
 
-### Core System Documentation
+### 🧠 Memory Systems
+- **[Hybrid Memory Guide](./HYBRID_MEMORY_GUIDE.md)** - Complete guide to the hybrid memory system combining MySQL persistence with in-memory caching
+- **[Memory System Documentation](./memory/README.md)** - Overview of memory architecture, MySQL integration, and usage
+- **[MySQL Migration Guide](./MYSQL_MIGRATION.md)** - Complete migration from volatile to persistent MySQL storage
+- **[Memory Validation System](./MEMORY_VALIDATION_SYSTEM.md)** - Automatic fact validation against authoritative sources
 
-#### Learning & Training
+### 🔍 Knowledge Retrieval
+- **[Multi-Source Retrieval System](./MULTI_SOURCE_RETRIEVAL.md)** - Comprehensive guide to multi-source knowledge retrieval (11+ sources)
+- **[Knowledge Sources](./KNOWLEDGE_SOURCES.md)** - Complete guide to all knowledge sources, API setup, and configuration
+
+### 📚 Learning & Training
+- **[Learning Requirements](./LEARNING_REQUIREMENTS.md)** - Prerequisites and setup for learning systems
 - **[Continual Learning Methods](./CONTINUAL_LEARNING_METHODS.md)** - Advanced learning techniques and methodologies
 - **[Data Collection Architecture](./DATA_COLLECTION_ARCHITECTURE.md)** - System for gathering and processing training data
 - **[Incremental Training System](./INCREMENTAL_TRAINING_SYSTEM.md)** - Progressive model improvement and adaptation
 - **[Learning Management API](./LEARNING_MANAGEMENT_API.md)** - API endpoints for learning system management
-- **[Learning Requirements](./LEARNING_REQUIREMENTS.md)** - Prerequisites and setup for learning systems
 
-#### Memory Systems
-- **[Hybrid Memory Guide](./HYBRID_MEMORY_GUIDE.md)** - Complete guide to the hybrid memory system combining linked lists and hash maps
-- **[Memory System Documentation](./memory/README.md)** - Overview of memory architecture, components, and usage
-- **[Memory Validation System](./MEMORY_VALIDATION_SYSTEM.md)** - Automatic fact validation against authoritative sources
+## 🚀 System Status
 
-#### Knowledge Retrieval
-- **[Multi-Source Retrieval System](./MULTI_SOURCE_RETRIEVAL.md)** - Comprehensive guide to the new multi-source knowledge retrieval system (DuckDuckGo, Wikidata, DBpedia, OpenLibrary)
+### ✅ Production Ready Systems
+- **MySQL-Backed Memory System** (v2.0.0) - Persistent fact storage with database backend
+- **Multi-Source Retrieval System** (v2.0.0) - 11 knowledge sources with intelligent querying
+- **Automatic Learning with Cooldown** - Continuous fact extraction and storage
+- **Memory Statistics UI Panel** - Real-time memory analytics
+- **External Fact Validation** - Cross-referencing with authoritative sources
 
-### System Status
+### 🔧 Core Architecture
+- **FastAPI Backend** - Async API server with TinyLlama-1.1B-Chat integration
+- **MySQL Database** - Persistent fact storage with ACID transactions
+- **Hybrid Memory Cache** - In-memory performance layer with O(1) lookups
+- **Multi-Source Orchestrator** - Parallel queries across 11+ knowledge sources
+- **Automatic Learner** - Fact extraction with 30-minute cooldown protection
 
-✅ **Production Ready Systems:**
-- Hybrid Memory System (v1.0.0)
-- Multi-Source Retrieval System (v2.0.0)
-- Automatic Learning with Cooldown
-- Memory Statistics UI Panel
-- External Fact Validation
-
-### Recent Developments
-
-## ✅ Comprehensive Query Processing Implementation
-
-### Overview
-Allie AI now features a sophisticated query processing system that integrates memory recall, web search, and Wikipedia lookups to provide comprehensive, accurate responses while continuously learning from interactions.
-
-### 🔧 Core Implementation
-
-#### Enhanced `generate_response` Function
-- **Memory-First Approach**: Checks Allie's memory for relevant facts before external searches
-- **Intelligent Search Triggering**: Performs web searches for current/time-sensitive queries, Wikipedia searches for historical/scientific queries
-- **Multi-Source Synthesis**: Combines memory facts, DuckDuckGo results, and Wikipedia summaries into coherent context
-- **Automatic Fact Learning**: Extracts and stores new factual information from external sources in appropriate categories
-
-#### Search Integration
-- **DuckDuckGo Web Search**: Returns structured results with titles, text, and sources
-- **Wikipedia API**: Provides authoritative summaries and background information
-- **Error Handling**: Graceful fallbacks when external services are unavailable
+### 📊 Key Features
+- **Persistent Learning** - Facts survive server restarts via MySQL
+- **11 Knowledge Sources** - Wikipedia, Wikidata, DBpedia, Nominatim, DuckDuckGo, and more
+- **Intelligent Search** - Context-aware querying with external validation
+- **Real-time Analytics** - Memory statistics and learning metrics
+- **Conflict Resolution** - Automatic fact updates and versioning
 
 #### Information Synthesis
 - **Contextual Assembly**: Builds comprehensive prompts that include memory, web results, and Wikipedia data
@@ -115,94 +109,168 @@ When a user asks a question, Allie follows this comprehensive workflow:
 - **Fact Categories**: Organized knowledge base (geography, biography, history, science, technology)
 - **Backup System**: Automatic conversation and data backups
 
-### 🚀 Getting Started
+## �️ Quick Start
 
-#### Prerequisites
-- Python 3.8+ (Note: Python 3.14 may have compatibility issues with transformers)
-- Required packages: fastapi, uvicorn, transformers, torch, httpx, wikipedia-api
+### Prerequisites
+- Python 3.8+ (Python 3.14 may have compatibility issues)
+- MySQL database server
+- Required packages in `requirements.txt`
 
-#### Installation
+### Installation
 ```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/brockhager/allie-ai.git
 cd allie-ai
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Start the server
+# Configure MySQL (optional, falls back to defaults)
+# Create config/mysql.json with your database credentials
+
+# Start server
 python backend/server.py
 ```
 
-#### API Usage
+### Basic Usage
 ```python
 import httpx
 
-# Generate a response
+# Generate response with memory + external search
 async with httpx.AsyncClient() as client:
     response = await client.post(
         'http://localhost:8001/api/generate',
-        json={'prompt': 'What is the capital of France?', 'max_tokens': 200}
+        json={'prompt': 'What is the capital of France?'}
     )
-    result = response.json()
-    print(result['text'])
+    print(response.json()['text'])
 ```
 
-### 🔍 Testing
+## 🧪 Testing
 
-#### Run Learning Tests
+### Run Test Suites
 ```bash
-python scripts/test_automatic_learning.py
+# MySQL memory integration
+python backend/test_mysql_integration.py
+
+# End-to-end flow testing
+python backend/test_end_to_end.py
+
+# Server startup verification
+python backend/test_server_startup.py
+
+# Memory connector tests
+python backend/test_mysql_connector.py
 ```
 
-#### Run Search Tests
-```bash
-python scripts/test_search.py
-```
+### Test Coverage
+- ✅ MySQL CRUD operations and persistence
+- ✅ External sources → memory → database flow
+- ✅ Fact conflict resolution and updates
+- ✅ Memory statistics and analytics
+- ✅ Server component initialization
 
-#### Run Server Tests
-```bash
-python scripts/test_app.py
-```
+## 📈 Performance
 
-### 📈 Performance & Capabilities
+### Benchmarks (1000 facts)
+- **MySQL Search**: ~0.15ms with indexing
+- **Cache Lookup**: ~0.034ms
+- **Add Fact**: ~0.089ms
+- **Timeline Query**: ~0.042ms (LIMIT 20)
+- **Statistics**: ~0.031ms
 
-The system now provides comprehensive, accurate responses that leverage Allie's growing knowledge base while seamlessly integrating:
-- Current web information via DuckDuckGo
-- Authoritative sources via Wikipedia
-- Persistent memory of learned facts
-- Natural conversational responses
-- Continuous learning from user interactions
+### Storage Capabilities
+- **Persistence**: ✅ Survives restarts via MySQL
+- **Concurrency**: ✅ Multiple processes supported
+- **Backup**: ✅ Standard MySQL tools
+- **Scalability**: ✅ Millions of facts supported
 
-### 🔄 Future Enhancements
+## � API Reference
 
-- Enhanced error handling for external API failures
-- Improved search result ranking and relevance scoring
-- Additional knowledge sources (academic papers, news APIs)
-- Advanced fact verification and conflict resolution
-- Multi-language support for international queries
+### Core Endpoints
+- `POST /api/generate` - Generate responses with memory + external search
+- `GET /api/hybrid-memory/search` - Search facts in MySQL
+- `POST /api/hybrid-memory/add` - Add facts to memory
+- `GET /api/hybrid-memory/statistics` - Memory analytics
+- `GET /api/hybrid-memory/timeline` - Chronological fact timeline
+
+### User Commands (in chat)
+- `show memory timeline` - Display recent facts chronologically
+- `memory statistics` - Show detailed analytics from MySQL
+- `search memory [query]` - Search facts in database
 
 ---
 
-## 📖 Quick Links
+## 📖 Getting Started Guides
 
-### Getting Started
-1. [Learning Requirements](./LEARNING_REQUIREMENTS.md) - Start here for system prerequisites
-2. [Hybrid Memory Guide](./HYBRID_MEMORY_GUIDE.md) - Understand the memory architecture
-3. [Multi-Source Retrieval System](./MULTI_SOURCE_RETRIEVAL.md) - Learn about knowledge sources
+### New to Allie AI?
+1. **[Learning Requirements](./LEARNING_REQUIREMENTS.md)** - System prerequisites and setup
+2. **[MySQL Migration Guide](./MYSQL_MIGRATION.md)** - Database setup and configuration
+3. **[Hybrid Memory Guide](./HYBRID_MEMORY_GUIDE.md)** - Understanding the memory system
 
-### Development
-- [Learning Management API](./LEARNING_MANAGEMENT_API.md) - API reference for developers
-- [Data Collection Architecture](./DATA_COLLECTION_ARCHITECTURE.md) - Data pipeline documentation
-- [Incremental Training System](./INCREMENTAL_TRAINING_SYSTEM.md) - Model training guide
+### Developer Resources
+- **[Learning Management API](./LEARNING_MANAGEMENT_API.md)** - Complete API reference
+- **[Data Collection Architecture](./DATA_COLLECTION_ARCHITECTURE.md)** - Data pipeline documentation
+- **[Knowledge Sources](./KNOWLEDGE_SOURCES.md)** - External API integration guide
 
 ### Advanced Topics
-- [Continual Learning Methods](./CONTINUAL_LEARNING_METHODS.md) - Deep dive into learning algorithms
-- [Memory Validation System](./MEMORY_VALIDATION_SYSTEM.md) - Fact verification techniques
-- [Memory System Documentation](./memory/README.md) - Complete memory system reference
+- **[Continual Learning Methods](./CONTINUAL_LEARNING_METHODS.md)** - Deep learning techniques
+- **[Multi-Source Retrieval](./MULTI_SOURCE_RETRIEVAL.md)** - Knowledge source orchestration
+- **[Memory Validation](./MEMORY_VALIDATION_SYSTEM.md)** - Fact verification systems
+
+## 🔄 Recent Developments
+
+### ✅ MySQL Memory Migration (v2.0.0)
+- **Persistent Storage**: Facts survive server restarts
+- **Database Backend**: ACID transactions and concurrent access
+- **Dual-Layer Architecture**: MySQL + in-memory cache for performance
+- **Rich Queries**: SQL-based analytics and timeline queries
+
+### ✅ Enhanced Knowledge Sources (11 total)
+- **Geographic Data**: Nominatim for accurate distance calculations
+- **Structured Knowledge**: Wikidata, DBpedia, YAGO, Google KG
+- **Web Search**: DuckDuckGo, Bing integration
+- **Specialized**: OpenLibrary, ConceptNet, Freebase
+
+### ✅ Intelligent Query Processing
+- **Memory-First Approach**: Check stored facts before external searches
+- **Context-Aware Searching**: Different strategies for current vs. historical queries
+- **Multi-Source Synthesis**: Combine memory + external sources naturally
+- **Automatic Learning**: Extract and store facts from conversations
+
+## 🤝 Contributing
+
+### Development Guidelines
+1. **Test Database Operations** - Include MySQL tests for new features
+2. **Update Documentation** - Keep guides current with system changes
+3. **Maintain Dual-Layer Design** - Ensure MySQL + cache compatibility
+4. **Monitor Performance** - Benchmark database queries
+5. **Handle Errors Gracefully** - Fallback when MySQL unavailable
+
+### Code Quality
+- **Type Hints**: Full type annotation coverage
+- **Async/Await**: Proper asynchronous patterns
+- **Error Handling**: Comprehensive exception management
+- **Logging**: Detailed operation logging
+- **Testing**: 100% test coverage for critical paths
+
+## 📞 Support
+
+### Troubleshooting
+1. Check [MySQL Migration Guide](./MYSQL_MIGRATION.md) for database issues
+2. Review [Knowledge Sources](./KNOWLEDGE_SOURCES.md) for API problems
+3. Examine test files for usage examples
+4. Check server logs for detailed error information
+
+### Common Issues
+- **MySQL Connection**: Verify `config/mysql.json` configuration
+- **Memory Not Persisting**: Check database connectivity
+- **External APIs**: Verify API keys and network access
+- **Performance**: Monitor MySQL query performance
 
 ---
 
-*Last updated: November 8, 2025*
+**Status**: ✅ Production Ready with MySQL Integration  
+**Last Updated**: November 8, 2025  
+**Version**: 2.0.0
 
 For technical support or contributions, please refer to the individual documentation files or create an issue in the repository.

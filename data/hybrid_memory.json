@@ -1,14 +1,41 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T10:58:50.045909",
-  "fact_count": 1,
+  "saved_at": "2025-11-08T14:36:36.322516",
+  "fact_count": 4,
   "facts": [
     {
-      "fact": "This is a list of college football teams by the number of weeks they have been ranked number one in the AP poll since its inception in 1936 through November 2, 2025.\n\n† No longer a FBS school.\nBold: Team ranked number one in most recent poll.",
-      "timestamp": "2025-11-08T10:58:50.044688",
-      "category": "biography",
+      "fact": "The Eiffel Tower is a wrought-iron lattice tower in Paris",
+      "timestamp": "2025-11-08T14:36:36.312101",
+      "category": "landmarks",
       "confidence": 0.95,
       "source": "wikipedia",
+      "metadata": {},
+      "is_outdated": true
+    },
+    {
+      "fact": "The distance from San Diego to Yuma is approximately 172 miles",
+      "timestamp": "2025-11-08T14:36:36.312120",
+      "category": "geography",
+      "confidence": 0.99,
+      "source": "nominatim",
+      "metadata": {},
+      "is_outdated": false
+    },
+    {
+      "fact": "Python is a high-level programming language known for readability",
+      "timestamp": "2025-11-08T14:36:36.312130",
+      "category": "technology",
+      "confidence": 0.9,
+      "source": "duckduckgo",
+      "metadata": {},
+      "is_outdated": false
+    },
+    {
+      "fact": "The Eiffel Tower is a wrought-iron tower in Paris, France, standing 330 meters tall",
+      "timestamp": "2025-11-08T14:36:36.321436",
+      "category": "landmarks",
+      "confidence": 0.98,
+      "source": "wikipedia_updated",
       "metadata": {},
       "is_outdated": false
     }

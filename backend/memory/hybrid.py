@@ -13,6 +13,7 @@ from datetime import datetime
 
 from .linked_list import FactLinkedList, FactNode
 from .index import KeywordIndex
+from .db import MemoryDB
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +41,9 @@ class HybridMemory:
         self.linked_list = FactLinkedList()
         self.index = KeywordIndex()
         
+        # Initialize MySQL database connector
+        self.db = MemoryDB()
+        
         # Track fact topics for conflict detection
         self.fact_topics: Dict[str, FactNode] = {}  # topic -> latest fact node
         
@@ -48,8 +52,11 @@ class HybridMemory:
             storage_file = Path(__file__).parent.parent.parent / "data" / "hybrid_memory.json"
         self.storage_file = Path(storage_file)
         
-        # Load existing facts from disk
+        # Load existing facts from disk (legacy support)
         self.load_from_disk()
+        
+        # Load facts from MySQL into in-memory cache
+        self._sync_from_mysql()
     
     def add_fact(
         self,
@@ -80,27 +87,66 @@ class HybridMemory:
                 "message": f"Fact must be a string, got {type(fact)}"
             }
         
-        # Check if this fact already exists
+        # Extract topic for conflict detection and keyword indexing
+        topic = self._extract_topic(fact)
+        if not topic:
+            # Fallback: use first significant word from fact
+            import re
+            # First try to find proper nouns (capitalized words that aren't "The", "A", etc.)
+            words = fact.split()
+            proper_nouns = []
+            skip_words = {'the', 'a', 'an', 'this', 'that'}
+            
+            for i, word in enumerate(words):
+                cleaned = word.strip('.,!?;:')
+                # Look for capitals that aren't common articles
+                if cleaned and cleaned[0].isupper() and cleaned.lower() not in skip_words and len(cleaned) > 2:
+                    proper_nouns.append(cleaned.lower())
+            
+            if proper_nouns:
+                topic = proper_nouns[0]
+            else:
+                # Fallback: extract meaningful words (length >= 5)
+                words = re.findall(r'\b[a-z]{5,}\b', fact.lower())
+                common_words = {'about', 'after', 'before', 'could', 'should', 'would', 'there', 'where', 
+                              'their', 'which', 'these', 'those', 'because', 'during', 'through', 'between'}
+                words = [w for w in words if w not in common_words]
+                topic = words[0] if words else "general_fact"
+        
+        # Store in MySQL (authoritative source)
+        db_result = self.db.add_fact(
+            keyword=topic,
+            fact=fact,
+            source=source,
+            category=category,
+            confidence=confidence,
+            metadata=metadata
+        )
+        
+        # Check if MySQL operation succeeded
+        if db_result["status"] == "error":
+            logger.error(f"MySQL error: {db_result['message']}")
+            return db_result
+        
+        # Also add to in-memory cache for fast access
         existing_node = self.linked_list.find_by_fact(fact)
         if existing_node and not existing_node.is_outdated:
+            # Already in cache
             return {
                 "status": "duplicate",
                 "message": f"Fact already exists from {existing_node.timestamp}",
-                "node": existing_node
+                "node": existing_node,
+                "db_status": db_result["status"]
             }
         
-        # Extract topic for conflict detection
-        topic = self._extract_topic(fact)
-        
-        # Check if we have a conflicting fact about the same topic
+        # Check for conflicting facts
         old_node = None
         if topic and topic in self.fact_topics:
             old_node = self.fact_topics[topic]
             if old_node.fact != fact:
-                # This is an update/correction
                 logger.info(f"Updating fact about '{topic}': '{old_node.fact}' -> '{fact}'")
         
-        # Append to linked list
+        # Add to linked list cache
         new_node = self.linked_list.append(
             fact=fact,
             category=category,
@@ -115,25 +161,24 @@ class HybridMemory:
         # Update topic tracking
         if topic:
             if old_node:
-                # Mark old fact as outdated
                 old_node.mark_outdated(new_node)
                 self.index.update_node(old_node, new_node)
-                
             self.fact_topics[topic] = new_node
         
         result = {
-            "status": "added",
-            "message": f"Added fact to {category}",
+            "status": db_result["status"],  # "added" or "updated"
+            "message": db_result["message"],
             "node": new_node,
-            "fact": fact
+            "fact": fact,
+            "keyword": topic
         }
         
         if old_node:
             result["updated"] = True
             result["old_fact"] = old_node.fact
         
-        # Auto-save to disk after adding fact
-        self.save_to_disk()
+        # Auto-save to disk (legacy support - optional now that MySQL is primary)
+        # self.save_to_disk()  # Disabled: MySQL is now the authoritative source
         
         return result
     
@@ -164,8 +209,10 @@ class HybridMemory:
         if math_match:
             return f"square root of {math_match.group(1)}"
         
-        # Generic topic extraction (first significant noun phrase)
+        # Generic topic extraction (first significant noun phrase, skip articles)
         words = re.findall(r'\b[a-z]{3,}\b', fact_lower)
+        skip_words = {'the', 'and', 'for', 'are', 'this', 'that', 'with', 'from', 'have', 'been'}
+        words = [w for w in words if w not in skip_words]
         if words:
             return words[0]
         
@@ -182,7 +229,25 @@ class HybridMemory:
         Returns:
             List of fact dictionaries
         """
-        # Use index for O(1) lookup
+        # First, try MySQL search (authoritative source)
+        db_results = self.db.search_facts(query, limit=limit)
+        
+        if db_results:
+            # Convert MySQL results to expected format
+            results = []
+            for db_fact in db_results:
+                results.append({
+                    "fact": db_fact["fact"],
+                    "category": db_fact["category"] or "general",
+                    "confidence": db_fact["confidence"] or 0.8,
+                    "source": db_fact["source"] or "unknown",
+                    "timestamp": db_fact["updated_at"].isoformat() if db_fact["updated_at"] else None,
+                    "keywords_matched": 1,  # MySQL relevance
+                    "keyword": db_fact["keyword"]
+                })
+            return results
+        
+        # Fallback to in-memory index search (legacy support)
         matching_nodes = self.index.search(query, include_outdated=False)
         
         # Convert to dictionaries and limit results
@@ -342,6 +407,13 @@ class HybridMemory:
         Returns:
             Dictionary with memory statistics
         """
+        # Get statistics from MySQL (authoritative source)
+        db_stats = self.db.get_statistics()
+        
+        if db_stats:
+            return db_stats
+        
+        # Fallback to in-memory statistics (legacy)
         all_facts = list(self.linked_list.traverse(include_outdated=True))
         active_facts = [f for f in all_facts if not f.is_outdated]
         
@@ -469,6 +541,41 @@ class HybridMemory:
             
         except Exception as e:
             logger.error(f"Failed to load memory from disk: {e}")
+    
+    def _sync_from_mysql(self):
+        """Load facts from MySQL into in-memory cache on startup"""
+        try:
+            # Get all facts from MySQL timeline
+            db_facts = self.db.timeline(limit=1000)  # Load recent 1000 facts
+            
+            if not db_facts:
+                logger.info("No facts in MySQL database")
+                return
+            
+            logger.info(f"Syncing {len(db_facts)} facts from MySQL to memory cache...")
+            
+            for db_fact in db_facts:
+                # Add to linked list using proper parameters
+                node = self.linked_list.append(
+                    fact=db_fact["fact"],  # Pass string, not FactNode
+                    category=db_fact["category"] or "general",
+                    confidence=db_fact["confidence"] or 0.8,
+                    source=db_fact["source"] or "unknown",
+                    metadata=db_fact.get("metadata")
+                )
+                
+                # Add to index
+                self.index.add_node(node)
+                
+                # Track topics
+                topic = db_fact["keyword"]
+                if topic:
+                    self.fact_topics[topic] = node
+            
+            logger.info(f"Successfully synced {len(db_facts)} facts from MySQL")
+            
+        except Exception as e:
+            logger.error(f"Failed to sync from MySQL: {e}")
     
     def __repr__(self) -> str:
         return f"HybridMemory(facts={self.linked_list.size()}, keywords={self.index.size()})"
