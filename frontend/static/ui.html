@@ -361,7 +361,7 @@ startLearningBtn.onclick = async () => {
     startLearningBtn.textContent = 'Starting...';
     const result = await apiStartLearning();
     learningStatusEl.textContent = `Learning started: ${result.episode_id}`;
-    learningStatusEl.style.color = var(--accent);
+    learningStatusEl.style.color = '#60a5fa'; // accent color
     // Refresh status after a delay
     setTimeout(() => checkLearningBtn.click(), 2000);
   } catch (err) {
