@@ -20,7 +20,9 @@ backend/ contains the FastAPI server (server.py) and Python dependencies (requir
 
 frontend/static/ contains the HTML UI (ui.html)
 
-scripts/ contains training scripts (train_allie.py), test scripts (test_app.py), and batch files for running them
+scripts/ contains training scripts (train_allie.py), test scripts (test_app.py, test_automatic_learning.py, test_search.py), and batch files for running them (train_allie.bat, run_server.bat)
+
+Start Allie Server.bat - Quick server startup script (in root directory)
 
 data/ contains conversation data (conversations.json, backup.json, dataset.jsonl) and backups/
 

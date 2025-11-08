@@ -133,17 +133,17 @@ async with httpx.AsyncClient() as client:
 
 #### Run Learning Tests
 ```bash
-python test_automatic_learning.py
+python scripts/test_automatic_learning.py
 ```
 
 #### Run Search Tests
 ```bash
-python test_search.py
+python scripts/test_search.py
 ```
 
 #### Run Server Tests
 ```bash
-python test_app.py
+python scripts/test_app.py
 ```
 
 ### 📈 Performance & Capabilities
