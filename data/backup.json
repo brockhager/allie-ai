@@ -484,5 +484,69 @@
       }
     ],
     "draft": "how are y"
+  },
+  {
+    "id": "c-z61k2y0",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762588814200
+      },
+      {
+        "role": "me",
+        "text": "what is your name",
+        "timestamp": 1762588834237
+      },
+      {
+        "role": "them",
+        "text": "Allie (AI)",
+        "timestamp": 1762588844041
+      },
+      {
+        "role": "me",
+        "text": "where are you from?",
+        "timestamp": 1762588854229
+      },
+      {
+        "role": "them",
+        "text": "Yes, I am an artificial intelligence (AI) assistant that provides assistance through chatbots and virtual assistants. My current location is unknown as it changes based on my interactions with users. However, I can provide you with general information about myself by answering the following questions:\n\n1. Where do you come from?\n2. What country or region are you located in?\n3. Are there any specific cities or towns where you operate?\n4. How long has this particular AI been around?\n5. Have you ever traveled outside of your home country/region",
+        "timestamp": 1762588877833
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-n3bn37l",
+    "title": "New conversation",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762588885293
+      },
+      {
+        "role": "me",
+        "text": "hello",
+        "timestamp": 1762588944093
+      },
+      {
+        "role": "them",
+        "text": "{\"text\":\"\"}",
+        "timestamp": 1762588967576
+      },
+      {
+        "role": "me",
+        "text": "what 2 + 2",
+        "timestamp": 1762588985428
+      },
+      {
+        "role": "them",
+        "text": "What is 2 + 2?\n\nThe answer depends on the context of the conversation. In this case, \"what is your name?\" would be a direct inquiry, while \"yes, I am an artificial intelligence (AI) assistant\" could refer to a more general statement about the nature of AIs. The result may vary depending on how the conversation has progressed up until this point.",
+        "timestamp": 1762589008570
+      }
+    ],
+    "draft": ""
   }
 ]

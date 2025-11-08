@@ -1014,6 +1014,33 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     for key, response in SIMPLE_FACTS.items():
         if key in prompt_lower:
             return {"text": response}
+    
+    # Handle simple greetings
+    greetings = ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening"]
+    if prompt_lower in greetings or any(prompt_lower.startswith(g + " ") for g in greetings):
+        return {"text": "Hello! I'm Allie, your AI assistant. How can I help you today?"}
+    
+    # Handle simple math questions
+    math_patterns = [
+        (r"what\s+(?:is|are|does)\s+(\d+)\s*\+\s*(\d+)", lambda m: int(m.group(1)) + int(m.group(2))),
+        (r"(\d+)\s*\+\s*(\d+)", lambda m: int(m.group(1)) + int(m.group(2))),
+        (r"what\s+(?:is|are|does)\s+(\d+)\s*-\s*(\d+)", lambda m: int(m.group(1)) - int(m.group(2))),
+        (r"(\d+)\s*-\s*(\d+)", lambda m: int(m.group(1)) - int(m.group(2))),
+        (r"what\s+(?:is|are|does)\s+(\d+)\s*\*\s*(\d+)", lambda m: int(m.group(1)) * int(m.group(2))),
+        (r"(\d+)\s*\*\s*(\d+)", lambda m: int(m.group(1)) * int(m.group(2))),
+        (r"what\s+(?:is|are|does)\s+(\d+)\s*/\s*(\d+)", lambda m: int(m.group(1)) / int(m.group(2))),
+        (r"(\d+)\s*/\s*(\d+)", lambda m: int(m.group(1)) / int(m.group(2))),
+    ]
+    
+    import re
+    for pattern, calculator in math_patterns:
+        match = re.search(pattern, prompt_lower)
+        if match:
+            try:
+                result = calculator(match)
+                return {"text": f"{result}"}
+            except:
+                pass
 
     # Step 1: Process user input for automatic learning
     learning_result = auto_learner.process_message(prompt, "user")
@@ -1234,6 +1261,10 @@ You have access to external information sources when needed."""
         return '\n'.join(cleaned_lines).strip()
     
     reply = await asyncio.to_thread(generate_model_response)
+    
+    # If reply is empty or very short, provide a fallback
+    if not reply or len(reply.strip()) < 3:
+        reply = "I apologize, but I'm having trouble generating a response. Could you please rephrase your question?"
 
     # Step 8: Process assistant response for additional learning
     assistant_learning = auto_learner.process_message(reply, "assistant")
