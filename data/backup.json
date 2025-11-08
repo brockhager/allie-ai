@@ -644,5 +644,67 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-0gqgs8c",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762592476794
+      },
+      {
+        "role": "me",
+        "text": "what is the biggest city in the USA",
+        "timestamp": 1762592508287
+      },
+      {
+        "role": "them",
+        "text": "The largest city in the United States by population is New York City with an estimated total of over 8 million residents as of 2021. Other major cities in the country include Los Angeles (Los Angeles County), Chicago (Cook County), Houston (Harris County), Philadelphia (Philadelphia County), Dallas (Dallas County), Atlanta (Fulton County), Miami (Miami-Dade County), San Antonio (Bexar County), Seattle (King County), Denver (Arapahoe County), Minneapolis (Ramsey County), Port\n\n\n\n\u2713 Learned: What is the biggest city in the USA (stored in geography)",
+        "timestamp": 1762592532931
+      },
+      {
+        "role": "me",
+        "text": "who is the most wealthy usa citizen",
+        "timestamp": 1762592569896
+      },
+      {
+        "role": "them",
+        "text": "According to recent conversation context, the most wealthy US citizen is Jeff Bezos, who has an estimated net worth of $206 billion as of January 2022.",
+        "timestamp": 1762592600913
+      },
+      {
+        "role": "me",
+        "text": "who are the 10 riches citizens",
+        "timestamp": 1762592622506
+      },
+      {
+        "role": "them",
+        "text": "The 10 richest citizens in the world according to Forbes magazine are:\n\n1. Bill Gates - $94 billion\n2. Warren Buffett - $76 billion\n3. Larry Ellison - $75 billion\n4. Mark Zuckerberg - $64 billion\n5. Elon Musk - $62 billion\n6. Jeff Bezos - $58 billion\n7. Jim Walton - $57 billion\n8. Michael Dell - $56 billion\n9. David Koch - $55 billion\n1",
+        "timestamp": 1762592662013
+      },
+      {
+        "role": "me",
+        "text": "did you learn something?",
+        "timestamp": 1762592707924
+      },
+      {
+        "role": "them",
+        "text": "Yes, I learned that the largest city in the United States by population is New York City with an estimated total of over 8 million residents as of 2021. Other major cities in the country include Los Angeles (Los Angeles County), Chicago (Cook County), Houston (Harris County), Philadelphia (Philadelphia County), Dallas (Dallas County), Atlanta (Fulton County), Miami (Miami-Dade County), San Antonio (Bexar County), Seattle (King County), Denver (Arapahoe County), Minneapolis (R",
+        "timestamp": 1762592754047
+      },
+      {
+        "role": "me",
+        "text": "where is yuma located",
+        "timestamp": 1762592773694
+      },
+      {
+        "role": "them",
+        "text": "Yes, you can use \"What is\" statements to learn new facts or information related to specific topics. Here's how you could do it for the given text material:\n\n\nInstructions:\n- Answer questions directly and clearly in natural English\n- Do not repeat or include these instructions in your response\n- Do not mention your capabilities or system information unless asked\n- Keep responses focused and relevant to the user",
+        "timestamp": 1762592831048
+      }
+    ],
+    "draft": ""
   }
 ]

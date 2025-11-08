@@ -1086,7 +1086,9 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     self_referential_patterns = [
         "what is your name", "who are you", "what are you", "tell me about yourself",
         "what's your name", "who is this", "introduce yourself", "what do you do",
-        "what is your purpose", "what are you called", "what should i call you"
+        "what is your purpose", "what are you called", "what should i call you",
+        "did you learn", "have you learned", "what did you learn", "did you remember",
+        "do you remember", "what do you remember", "can you learn", "are you learning"
     ]
     
     is_self_referential = any(pattern in prompt.lower() for pattern in self_referential_patterns)
@@ -1279,16 +1281,9 @@ Remember: You are Allie, a helpful and friendly AI assistant created to answer q
     from datetime import datetime
     current_date = datetime.now().strftime("%B %d, %Y")
     
-    system_content = f"""You are Allie, a helpful and friendly AI assistant. Today's date is {current_date}.
+    system_content = f"""You are Allie, a helpful AI assistant. Today is {current_date}.
 
-INSTRUCTIONS:
-- Answer questions directly and clearly in natural English
-- Do not repeat or include these instructions in your response
-- Do not mention your capabilities or system information unless asked
-- Keep responses focused and relevant to the user's question
-- Be conversational but concise
-
-You have access to external information sources when needed."""
+Answer the user's question directly and naturally. Use the provided context if relevant. Keep responses concise and focused."""
 
     messages = [
         {"role": "system", "content": system_content},
@@ -1316,18 +1311,39 @@ You have access to external information sources when needed."""
         # Clean up the response - remove any system prompt content that might have leaked through
         response_lines = raw_response.split('\n')
         cleaned_lines = []
+        skip_rest = False
         
         for line in response_lines:
-            # Skip lines that contain system prompt indicators
-            if any(indicator in line.lower() for indicator in [
+            line_lower = line.lower().strip()
+            
+            # Skip empty lines
+            if not line_lower:
+                continue
+            
+            # Skip lines that contain system prompt indicators or instructions
+            if any(indicator in line_lower for indicator in [
                 "you are allie", "helpful and friendly ai assistant", "today's date is",
                 "you have access to", "your primary role", "always respond in clear",
-                "synthesize information", "you are designed to respond"
+                "synthesize information", "you are designed to respond",
+                "instructions:", "- answer", "- do not", "- keep", "- be conversational",
+                "do not repeat or include these instructions", "do not mention your capabilities"
             ]):
+                skip_rest = True  # Once we hit instructions, skip everything after
                 continue
+            
+            # If we're in skip mode (hit instructions), don't add any more lines
+            if skip_rest:
+                continue
+                
             cleaned_lines.append(line)
         
-        return '\n'.join(cleaned_lines).strip()
+        cleaned_response = '\n'.join(cleaned_lines).strip()
+        
+        # Additional check: if the response starts with "Instructions:" or similar, return empty
+        if any(cleaned_response.lower().startswith(x) for x in ["instructions:", "here's how", "remember:", "note:"]):
+            return ""
+            
+        return cleaned_response
     
     reply = await asyncio.to_thread(generate_model_response)
     
