@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from datetime import datetime, timedelta
 import asyncio
+import sys
 
 import httpx
 from fastapi import FastAPI, Body, HTTPException
@@ -12,6 +13,13 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
+
+# Add sources to path
+sys.path.insert(0, str(Path(__file__).parent))
+
+from sources.retrieval import search_with_memory_first, search_all_sources
+from sources.duckduckgo import search_duckduckgo
+
 conversation_history = []
 
 # -------------------------
@@ -778,72 +786,46 @@ async def search_dbpedia(query: str) -> Dict[str, Any]:
         _set_cached_response(cache_key, result)
         return result
 
+# DEPRECATED: Wikipedia API now returns 403 errors
+# Replaced with multi-source retrieval system
 async def search_wikipedia(query: str) -> Dict[str, Any]:
-    """Search Wikipedia for authoritative background information"""
-    # Check cache first
-    cache_key = _get_cache_key(query, "wikipedia")
-    cached_result = _get_cached_response(cache_key)
-    if cached_result:
-        logger.info(f"Wikipedia search cache hit for: {query}")
-        return cached_result
-
-    logger.info(f"Wikipedia search cache miss for: {query}")
+    """
+    Legacy wrapper for Wikipedia search - now uses multi-source retrieval
+    Returns results in Wikipedia-compatible format for backward compatibility
+    """
+    logger.warning(f"search_wikipedia called for '{query}' - using multi-source retrieval instead")
+    
+    # Use new retrieval system
     try:
-        # Use Wikipedia API for summary
-        # First, search for the page title
-        search_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query.replace(' ', '_')}"
-        async with httpx.AsyncClient(timeout=10.0) as client:
-            response = await client.get(search_url)
-            if response.status_code == 200:
-                data = response.json()
-                result = {
-                    "query": query,
-                    "title": data.get("title", query),
-                    "summary": data.get("extract", ""),
-                    "url": data.get("content_urls", {}).get("desktop", {}).get("page", ""),
-                    "success": True
-                }
-                _set_cached_response(cache_key, result)
-                return result
-            else:
-                # Try search endpoint if direct page lookup fails
-                search_url = f"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={query}&format=json&utf8=1"
-                response = await client.get(search_url)
-                if response.status_code == 200:
-                    data = response.json()
-                    if data.get("query", {}).get("search"):
-                        # Get the top result
-                        top_result = data["query"]["search"][0]
-                        page_title = top_result["title"]
-                        
-                        # Get summary for the top result
-                        summary_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{page_title.replace(' ', '_')}"
-                        summary_response = await client.get(summary_url)
-                        if summary_response.status_code == 200:
-                            summary_data = summary_response.json()
-                            result = {
-                                "query": query,
-                                "title": summary_data.get("title", page_title),
-                                "summary": summary_data.get("extract", ""),
-                                "url": summary_data.get("content_urls", {}).get("desktop", {}).get("page", ""),
-                                "success": True
-                            }
-                            _set_cached_response(cache_key, result)
-                            return result
-                
-                result = {
-                    "query": query,
-                    "title": query,
-                    "summary": "",
-                    "url": "",
-                    "success": False,
-                    "error": "No Wikipedia page found"
-                }
-                _set_cached_response(cache_key, result)
-                return result
+        # Quick search using DuckDuckGo only (fastest)
+        ddg_result = await search_duckduckgo(query, max_results=3)
+        
+        if ddg_result.get("success") and ddg_result.get("results"):
+            # Format as Wikipedia-compatible response
+            first_result = ddg_result["results"][0]
+            text = first_result.get("text", "")
+            
+            return {
+                "query": query,
+                "title": first_result.get("title", query),
+                "summary": text,
+                "url": first_result.get("url", ""),
+                "success": True,
+                "source": "duckduckgo"  # Note the real source
+            }
+        else:
+            return {
+                "query": query,
+                "title": query,
+                "summary": "",
+                "url": "",
+                "success": False,
+                "error": "No results found",
+                "source": "duckduckgo"
+            }
     except Exception as e:
-        logger.warning(f"Wikipedia search failed: {e}")
-        result = {
+        logger.error(f"Legacy Wikipedia wrapper error: {e}")
+        return {
             "query": query,
             "title": query,
             "summary": "",
@@ -851,8 +833,6 @@ async def search_wikipedia(query: str) -> Dict[str, Any]:
             "success": False,
             "error": str(e)
         }
-        _set_cached_response(cache_key, result)
-        return result
 
 @app.post("/api/conversations")
 async def create_conversation_api(payload: Dict[str, Any] = Body(...)):
@@ -1207,15 +1187,38 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     # Check if we have sufficient memory coverage
     has_good_memory_coverage = len(relevant_facts) >= 3
 
-    # Step 4: Perform external searches if needed
+    # Step 4: Perform external searches using new multi-source retrieval
     web_results = None
     wiki_results = None
+    multi_source_results = None
 
-    if needs_web_search and not has_good_memory_coverage:
-        web_results = await search_web(prompt)
-
-    if needs_wikipedia:
-        wiki_results = await search_wikipedia(prompt)
+    if (needs_web_search or needs_wikipedia) and not has_good_memory_coverage:
+        logger.info(f"Triggering multi-source search for: '{prompt}'")
+        
+        # Use new retrieval system that searches all sources
+        multi_source_results = await search_all_sources(
+            query=prompt,
+            memory_results=relevant_facts,
+            max_results_per_source=3
+        )
+        
+        # Store facts from multi-source results
+        if multi_source_results.get("success") and multi_source_results.get("facts_to_store"):
+            for fact_data in multi_source_results["facts_to_store"]:
+                # Add to hybrid memory
+                hybrid_memory.add_fact(
+                    fact_data["fact"],
+                    category=fact_data.get("category", "general"),
+                    confidence=fact_data.get("confidence", 0.8),
+                    source=fact_data.get("source", "external")
+                )
+                logger.info(f"Stored fact from {fact_data.get('source')}: {fact_data['fact'][:100]}...")
+        
+        # For backward compatibility, set web_results if DuckDuckGo succeeded
+        if multi_source_results and "duckduckgo" in multi_source_results.get("sources_used", []):
+            ddg_data = multi_source_results["all_results"].get("duckduckgo", {})
+            if ddg_data.get("success"):
+                web_results = ddg_data
 
     # Step 5: Synthesize information from all sources
     context_parts = []
@@ -1230,32 +1233,36 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
         if recent_context:
             context_parts.append(f"Recent conversation context: {recent_context}")
 
-    # Add web search results
-    if web_results and web_results.get("success") and web_results.get("results"):
+    # Add multi-source synthesized results
+    if multi_source_results and multi_source_results.get("success"):
+        sources_used = ", ".join(multi_source_results.get("sources_used", []))
+        synthesized_text = multi_source_results.get("synthesized_text", "")
+        
+        if synthesized_text:
+            context_parts.append(f"Information from {sources_used}:\n{synthesized_text}")
+    # Fallback to old web results format
+    elif web_results and web_results.get("success") and web_results.get("results"):
         web_info = []
         for result in web_results["results"][:3]:  # Limit to top 3
             web_info.append(f"- {result.get('text', '')} (Source: {result.get('source', 'Web')})")
         if web_info:
             context_parts.append("Current information from web search:\n" + "\n".join(web_info))
 
-    # Add Wikipedia results
+    # Note: Wikipedia results now come through multi_source_results, but keep this for compatibility
     if wiki_results and wiki_results.get("success") and wiki_results.get("summary"):
-        context_parts.append(f"Wikipedia background: {wiki_results['summary'][:500]}...")
+        context_parts.append(f"Background: {wiki_results['summary'][:500]}...")
 
-    # Step 6: Store new facts from external sources
+    # Step 6: External learning handled above in multi-source section
     external_learning_confirmations = []
-    if web_results and web_results.get("success"):
+    
+    # Legacy: Process any remaining web/wiki results not handled by multi-source
+    if web_results and web_results.get("success") and not multi_source_results:
         for result in web_results.get("results", []):
             text = result.get("text", "")
-            if text and len(text) > 10:  # Only process substantial facts
+            if text and len(text) > 10:
                 web_learning = auto_learner.process_message(text, "external_web")
                 if web_learning["learning_actions"]:
                     external_learning_confirmations.extend(auto_learner.generate_learning_response(web_learning["learning_actions"]))
-
-    if wiki_results and wiki_results.get("success") and wiki_results.get("summary"):
-        wiki_learning = auto_learner.process_message(wiki_results["summary"], "external_wikipedia")
-        if wiki_learning["learning_actions"]:
-            external_learning_confirmations.extend(auto_learner.generate_learning_response(wiki_learning["learning_actions"]))
 
     # Build enhanced prompt
     if is_self_referential:
@@ -1524,18 +1531,22 @@ async def check_and_trigger_auto_learning():
             # Check if there's already an active episode
             status = orchestrator.get_status()
             if not status.get("is_active", False):
-                # Check for recent failures in episode history
-                history = orchestrator.episode_history
-                if history:
-                    # Get last 3 episodes
-                    recent_episodes = sorted(history, key=lambda x: x.get('start_time', 0), reverse=True)[:3]
-                    recent_failures = [ep for ep in recent_episodes if ep.get('status') == 'failed']
-                    
-                    # If we have 2+ recent failures, wait longer before trying again
-                    if len(recent_failures) >= 2:
-                        logger.warning(f"Skipping auto-learning: {len(recent_failures)} recent failures detected")
-                        _last_learning_trigger = datetime.now()  # Reset cooldown
-                        return None
+                # Check for recent failures in episode history (if available)
+                try:
+                    history = getattr(orchestrator, 'episode_history', [])
+                    if history:
+                        # Get last 3 episodes
+                        recent_episodes = sorted(history, key=lambda x: x.get('start_time', 0), reverse=True)[:3]
+                        recent_failures = [ep for ep in recent_episodes if ep.get('status') == 'failed']
+                        
+                        # If we have 2+ recent failures, wait longer before trying again
+                        if len(recent_failures) >= 2:
+                            logger.warning(f"Skipping auto-learning: {len(recent_failures)} recent failures detected")
+                            _last_learning_trigger = datetime.now()  # Reset cooldown
+                            return None
+                except AttributeError:
+                    # episode_history not available, continue anyway
+                    logger.debug("episode_history not available on orchestrator")
                 
                 logger.info(f"Auto-triggering learning episode: {reason}")
                 episode_id = orchestrator.start_learning_episode()

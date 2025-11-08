@@ -42,8 +42,10 @@
   .memory-stat-label{font-size:12px;color:var(--muted)}
   .memory-stat-value{font-size:14px;color:var(--text);font-weight:600}
   .memory-category-item{display:flex;justify-content:space-between;font-size:11px;padding:4px 0;color:var(--muted)}
-  .memory-refresh-btn{background:transparent;color:var(--accent);border:1px solid rgba(96,165,250,0.3);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;width:100%;margin-top:8px}
-  .memory-refresh-btn:hover{background:rgba(96,165,250,0.1)}
+  .memory-refresh-btn{background:transparent;color:var(--accent);border:1px solid rgba(96,165,250,0.3);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;width:100%;margin-top:8px;font-weight:600;transition:all 0.2s}
+  .memory-refresh-btn:hover{background:rgba(96,165,250,0.1);border-color:var(--accent)}
+  .memory-refresh-btn:active{transform:scale(0.95)}
+  .memory-refresh-btn.refreshing{opacity:0.5;pointer-events:none}
 </style>
 </head>
 <body>
@@ -205,9 +207,15 @@ const memRefreshBtn = document.getElementById('memRefreshBtn');
 // Fetch and update memory statistics
 async function updateMemoryStats() {
   try {
+    // Add visual feedback
+    memRefreshBtn.classList.add('refreshing');
+    memRefreshBtn.textContent = '⟳ Refreshing...';
+    
     const resp = await fetch('/api/hybrid-memory/statistics');
     if (!resp.ok) {
       console.error('Failed to fetch memory stats:', resp.status);
+      memRefreshBtn.classList.remove('refreshing');
+      memRefreshBtn.textContent = '↻ Refresh';
       return;
     }
     
@@ -246,12 +254,20 @@ async function updateMemoryStats() {
     const now = new Date();
     memLastUpdate.textContent = now.toLocaleTimeString();
     
+    // Remove visual feedback
+    memRefreshBtn.classList.remove('refreshing');
+    memRefreshBtn.textContent = '↻ Refresh';
+    
   } catch (err) {
     console.error('Error updating memory stats:', err);
     memTotalFacts.textContent = 'Error';
     memActiveFacts.textContent = '-';
     memOutdatedFacts.textContent = '-';
     memKeywords.textContent = '-';
+    
+    // Remove visual feedback on error
+    memRefreshBtn.classList.remove('refreshing');
+    memRefreshBtn.textContent = '↻ Refresh';
   }
 }
 

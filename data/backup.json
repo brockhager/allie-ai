@@ -590,5 +590,37 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-qv5izx9",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762590766303
+      },
+      {
+        "role": "me",
+        "text": "what is the capital of arizona",
+        "timestamp": 1762590790307
+      },
+      {
+        "role": "them",
+        "text": "The capital city of Arizona is Phoenix, as mentioned by several sources including \"Top 15 biggest cities in Arizona\" and \"Top 15 biggest cities in California\".\n\n\n\n\u2713 Learned: The capital city of Arizona is Phoenix (stored in geography)\n\n\n\n\u2713 Learned: What is the capital of arizona (stored in geography)",
+        "timestamp": 1762590811826
+      },
+      {
+        "role": "me",
+        "text": "is there a city bigger than phoenix in arizona?",
+        "timestamp": 1762590838597
+      },
+      {
+        "role": "them",
+        "text": "Yes, according to recent conversations, the capital city of Arizona is Phoenix.\n\n\n\n\u2713 Learned: the capital city of Arizona is Phoenix (stored in geography)",
+        "timestamp": 1762590863434
+      }
+    ],
+    "draft": ""
   }
 ]

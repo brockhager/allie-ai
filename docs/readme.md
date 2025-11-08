@@ -5,12 +5,30 @@ Welcome to the Allie AI documentation! This repository contains a comprehensive 
 ## 📚 Documentation Index
 
 ### Core System Documentation
+
+#### Learning & Training
 - **[Continual Learning Methods](./CONTINUAL_LEARNING_METHODS.md)** - Advanced learning techniques and methodologies
 - **[Data Collection Architecture](./DATA_COLLECTION_ARCHITECTURE.md)** - System for gathering and processing training data
 - **[Incremental Training System](./INCREMENTAL_TRAINING_SYSTEM.md)** - Progressive model improvement and adaptation
 - **[Learning Management API](./LEARNING_MANAGEMENT_API.md)** - API endpoints for learning system management
 - **[Learning Requirements](./LEARNING_REQUIREMENTS.md)** - Prerequisites and setup for learning systems
+
+#### Memory Systems
+- **[Hybrid Memory Guide](./HYBRID_MEMORY_GUIDE.md)** - Complete guide to the hybrid memory system combining linked lists and hash maps
+- **[Memory System Documentation](./memory/README.md)** - Overview of memory architecture, components, and usage
 - **[Memory Validation System](./MEMORY_VALIDATION_SYSTEM.md)** - Automatic fact validation against authoritative sources
+
+#### Knowledge Retrieval
+- **[Multi-Source Retrieval System](./MULTI_SOURCE_RETRIEVAL.md)** - Comprehensive guide to the new multi-source knowledge retrieval system (DuckDuckGo, Wikidata, DBpedia, OpenLibrary)
+
+### System Status
+
+✅ **Production Ready Systems:**
+- Hybrid Memory System (v1.0.0)
+- Multi-Source Retrieval System (v2.0.0)
+- Automatic Learning with Cooldown
+- Memory Statistics UI Panel
+- External Fact Validation
 
 ### Recent Developments
 
@@ -166,6 +184,25 @@ The system now provides comprehensive, accurate responses that leverage Allie's 
 
 ---
 
-*Last updated: November 7, 2025*
+## 📖 Quick Links
+
+### Getting Started
+1. [Learning Requirements](./LEARNING_REQUIREMENTS.md) - Start here for system prerequisites
+2. [Hybrid Memory Guide](./HYBRID_MEMORY_GUIDE.md) - Understand the memory architecture
+3. [Multi-Source Retrieval System](./MULTI_SOURCE_RETRIEVAL.md) - Learn about knowledge sources
+
+### Development
+- [Learning Management API](./LEARNING_MANAGEMENT_API.md) - API reference for developers
+- [Data Collection Architecture](./DATA_COLLECTION_ARCHITECTURE.md) - Data pipeline documentation
+- [Incremental Training System](./INCREMENTAL_TRAINING_SYSTEM.md) - Model training guide
+
+### Advanced Topics
+- [Continual Learning Methods](./CONTINUAL_LEARNING_METHODS.md) - Deep dive into learning algorithms
+- [Memory Validation System](./MEMORY_VALIDATION_SYSTEM.md) - Fact verification techniques
+- [Memory System Documentation](./memory/README.md) - Complete memory system reference
+
+---
+
+*Last updated: November 8, 2025*
 
 For technical support or contributions, please refer to the individual documentation files or create an issue in the repository.
