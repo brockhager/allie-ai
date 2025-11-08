@@ -2,6 +2,8 @@
 
 Allie AI is a full‑stack project that combines a FastAPI backend with a React frontend to create a persistent chat interface. The backend handles storing conversations and generating responses, while the frontend provides a simple chat box for interacting with Allie.
 
+📚 **[Full Documentation](./docs/readme.md)** - Complete technical documentation, architecture details, and recent developments
+
 # Features:
 
 FastAPI backend with endpoints for conversations and UI.

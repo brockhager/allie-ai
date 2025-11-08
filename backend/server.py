@@ -250,7 +250,17 @@ class AllieMemory:
 
         self.save_memory()
 
-    def recall_facts(self, query: str, limit: int = 5) -> List[str]:
+    def remove_fact(self, fact_text: str) -> bool:
+        """Remove a fact from memory by exact text match"""
+        original_count = len(self.knowledge_base["facts"])
+        self.knowledge_base["facts"] = [
+            f for f in self.knowledge_base["facts"] 
+            if f["fact"].strip().lower() != fact_text.strip().lower()
+        ]
+        removed = len(self.knowledge_base["facts"]) < original_count
+        if removed:
+            self.save_memory()
+        return removed
         """Recall relevant facts based on query"""
         relevant_facts = []
         query_lower = query.lower()
@@ -304,7 +314,7 @@ auto_learner = AutomaticLearner(allie_memory)
 
 # Initial cleanup on startup
 cleanup_all_folders()
-async def search_web(query: str) -> str:
+async def search_web(query: str) -> Dict[str, Any]:
     """Search the web using DuckDuckGo instant answers"""
     try:
         # Use DuckDuckGo instant answer API (no API key required)
@@ -313,25 +323,122 @@ async def search_web(query: str) -> str:
             response = await client.get(url)
             if response.status_code == 200:
                 data = response.json()
-                # Extract useful information
-                result = ""
-                if data.get("AbstractText"):
-                    result += data["AbstractText"] + "\n"
+                results = []
+                
+                # Extract instant answer
                 if data.get("Answer"):
-                    result += data["Answer"] + "\n"
+                    results.append({
+                        "title": "Instant Answer",
+                        "text": data["Answer"],
+                        "source": "DuckDuckGo Instant Answer"
+                    })
+                
+                # Extract abstract
+                if data.get("AbstractText"):
+                    results.append({
+                        "title": data.get("Heading", "Abstract"),
+                        "text": data["AbstractText"],
+                        "source": "DuckDuckGo Abstract"
+                    })
+                
+                # Extract definition
                 if data.get("Definition"):
-                    result += data["Definition"] + "\n"
-                if not result and data.get("RelatedTopics"):
-                    # Fallback to related topics
-                    for topic in data["RelatedTopics"][:2]:  # Limit to first 2
+                    results.append({
+                        "title": "Definition",
+                        "text": data["Definition"],
+                        "source": "DuckDuckGo Definition"
+                    })
+                
+                # Extract related topics (limit to 3-5)
+                if not results and data.get("RelatedTopics"):
+                    for topic in data["RelatedTopics"][:5]:
                         if topic.get("Text"):
-                            result += topic["Text"] + "\n"
-                return result.strip() or f"I searched for '{query}' but couldn't find specific information."
+                            results.append({
+                                "title": topic.get("FirstURL", "Related Topic"),
+                                "text": topic["Text"],
+                                "source": "DuckDuckGo Related Topics"
+                            })
+                
+                return {
+                    "query": query,
+                    "results": results[:5],  # Limit to top 5
+                    "success": True
+                }
             else:
-                return f"Search failed for '{query}'."
+                return {
+                    "query": query,
+                    "results": [],
+                    "success": False,
+                    "error": f"Search failed with status {response.status_code}"
+                }
     except Exception as e:
         logger.warning(f"Web search failed: {e}")
-        return f"I couldn't access the internet to search for '{query}' right now."
+        return {
+            "query": query,
+            "results": [],
+            "success": False,
+            "error": str(e)
+        }
+
+async def search_wikipedia(query: str) -> Dict[str, Any]:
+    """Search Wikipedia for authoritative background information"""
+    try:
+        # Use Wikipedia API for summary
+        # First, search for the page title
+        search_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query.replace(' ', '_')}"
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(search_url)
+            if response.status_code == 200:
+                data = response.json()
+                return {
+                    "query": query,
+                    "title": data.get("title", query),
+                    "summary": data.get("extract", ""),
+                    "url": data.get("content_urls", {}).get("desktop", {}).get("page", ""),
+                    "success": True
+                }
+            else:
+                # Try search endpoint if direct page lookup fails
+                search_url = f"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={query}&format=json&utf8=1"
+                response = await client.get(search_url)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("query", {}).get("search"):
+                        # Get the top result
+                        top_result = data["query"]["search"][0]
+                        page_title = top_result["title"]
+                        
+                        # Get summary for the top result
+                        summary_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{page_title.replace(' ', '_')}"
+                        summary_response = await client.get(summary_url)
+                        if summary_response.status_code == 200:
+                            summary_data = summary_response.json()
+                            return {
+                                "query": query,
+                                "title": summary_data.get("title", page_title),
+                                "summary": summary_data.get("extract", ""),
+                                "url": summary_data.get("content_urls", {}).get("desktop", {}).get("page", ""),
+                                "success": True
+                            }
+                
+                return {
+                    "query": query,
+                    "title": query,
+                    "summary": "",
+                    "url": "",
+                    "success": False,
+                    "error": "No Wikipedia page found"
+                }
+    except Exception as e:
+        logger.warning(f"Wikipedia search failed: {e}")
+        return {
+            "query": query,
+            "title": query,
+            "summary": "",
+            "url": "",
+            "success": False,
+            "error": str(e)
+        }
 
 @app.post("/api/conversations")
 async def create_conversation_api(payload: Dict[str, Any] = Body(...)):
@@ -430,36 +537,76 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     if not prompt:
         raise HTTPException(status_code=400, detail="Prompt is required")
 
-    # Process user input for automatic learning
+    # Step 1: Process user input for automatic learning
     learning_result = auto_learner.process_message(prompt, "user")
     learning_confirmation = auto_learner.generate_learning_response(learning_result["learning_actions"])
 
-    # Get relevant memories and context
+    # Step 2: Check memory for relevant facts
     relevant_facts = allie_memory.recall_facts(prompt)
     recent_context = allie_memory.get_recent_context()
 
-    # Check if this query might need web search
-    search_keywords = ["current", "today", "latest", "news", "weather", "price", "stock", "score", "result", "update", "now"]
-    needs_search = any(keyword in prompt.lower() for keyword in search_keywords)
+    # Step 3: Determine if external search is needed
+    search_keywords = ["current", "today", "latest", "news", "weather", "price", "stock", "score", "result", "update", "now", "what", "who", "where", "when", "how", "why"]
+    needs_web_search = any(keyword in prompt.lower() for keyword in search_keywords)
+    needs_wikipedia = any(word in prompt.lower() for word in ["history", "biography", "science", "geography", "technology", "definition", "explain"])
 
-    search_results = ""
-    if needs_search:
-        search_results = await search_web(prompt)
+    # Check if we have sufficient memory coverage
+    has_good_memory_coverage = len(relevant_facts) >= 3
 
-    # Build enhanced context
+    # Step 4: Perform external searches if needed
+    web_results = None
+    wiki_results = None
+
+    if needs_web_search and not has_good_memory_coverage:
+        web_results = await search_web(prompt)
+
+    if needs_wikipedia:
+        wiki_results = await search_wikipedia(prompt)
+
+    # Step 5: Synthesize information from all sources
     context_parts = []
-    if relevant_facts:
-        context_parts.append("Relevant information I remember:\n" + "\n".join(f"- {fact}" for fact in relevant_facts))
-    if recent_context:
-        context_parts.append(recent_context)
-    if search_results:
-        context_parts.append(f"Current web search results: {search_results}")
 
+    # Add memory information
+    if relevant_facts:
+        context_parts.append("From my memory:\n" + "\n".join(f"- {fact}" for fact in relevant_facts))
+
+    # Add recent context
+    if recent_context:
+        context_parts.append(f"Recent conversation context: {recent_context}")
+
+    # Add web search results
+    if web_results and web_results.get("success") and web_results.get("results"):
+        web_info = []
+        for result in web_results["results"][:3]:  # Limit to top 3
+            web_info.append(f"- {result.get('text', '')} (Source: {result.get('source', 'Web')})")
+        if web_info:
+            context_parts.append("Current information from web search:\n" + "\n".join(web_info))
+
+    # Add Wikipedia results
+    if wiki_results and wiki_results.get("success") and wiki_results.get("summary"):
+        context_parts.append(f"Wikipedia background: {wiki_results['summary'][:500]}...")
+
+    # Step 6: Store new facts from external sources
+    external_learning_confirmations = []
+    if web_results and web_results.get("success"):
+        for result in web_results.get("results", []):
+            text = result.get("text", "")
+            if text and len(text) > 10:  # Only process substantial facts
+                web_learning = auto_learner.process_message(text, "external_web")
+                if web_learning["learning_actions"]:
+                    external_learning_confirmations.extend(auto_learner.generate_learning_response(web_learning["learning_actions"]))
+
+    if wiki_results and wiki_results.get("success") and wiki_results.get("summary"):
+        wiki_learning = auto_learner.process_message(wiki_results["summary"], "external_wikipedia")
+        if wiki_learning["learning_actions"]:
+            external_learning_confirmations.extend(auto_learner.generate_learning_response(wiki_learning["learning_actions"]))
+
+    # Build enhanced prompt
     enhanced_prompt = prompt
     if context_parts:
-        enhanced_prompt = f"{prompt}\n\nContext:\n" + "\n\n".join(context_parts)
+        enhanced_prompt = f"{prompt}\n\nContext from multiple sources:\n" + "\n\n".join(context_parts)
 
-    # Format as chat message for TinyLlama with system prompt
+    # Step 7: Generate response using TinyLlama
     from datetime import datetime
     current_date = datetime.now().strftime("%B %d, %Y")
     system_content = f"""You are Allie, a helpful and friendly AI assistant. Today's date is {current_date}.
@@ -467,9 +614,10 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
 You have access to:
 - Your long-term memory of important facts and information
 - Recent conversation context
-- Current web search results when needed
+- Current web search results from DuckDuckGo
+- Authoritative background information from Wikipedia
 
-Use this information naturally in your responses. If you learn something new and important, remember it for future conversations."""
+Synthesize information from all available sources to provide comprehensive, accurate, and natural responses. If you learn something new and important from external sources, acknowledge that you're storing it for future conversations."""
 
     messages = [
         {"role": "system", "content": system_content},
@@ -481,14 +629,18 @@ Use this information naturally in your responses. If you learn something new and
     outputs = model.generate(**inputs, max_length=inputs['input_ids'].shape[1] + max_tokens, do_sample=True, temperature=0.7, top_p=0.9, pad_token_id=tokenizer.eos_token_id)
     reply = tokenizer.decode(outputs[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
 
-    # Process assistant response for additional learning
+    # Step 8: Process assistant response for additional learning
     assistant_learning = auto_learner.process_message(reply, "assistant")
     if assistant_learning["learning_actions"]:
         assistant_confirmation = auto_learner.generate_learning_response(assistant_learning["learning_actions"])
-        reply += assistant_confirmation
+        reply += "\n\n" + assistant_confirmation
 
-    # Add learning confirmation to response
-    final_reply = reply + learning_confirmation
+    # Step 9: Add all learning confirmations
+    final_reply = reply
+    if learning_confirmation:
+        final_reply += "\n\n" + learning_confirmation
+    if external_learning_confirmations:
+        final_reply += "\n\n" + "\n".join(external_learning_confirmations)
 
     return {"text": final_reply}
 
@@ -541,15 +693,17 @@ async def recall_memory(query: str = "", limit: int = 5):
     facts = allie_memory.recall_facts(query, limit)
     return {"query": query, "facts": facts}
 
-@app.get("/api/memory/stats")
-async def memory_stats():
-    """Get memory statistics"""
-    facts = allie_memory.knowledge_base.get("facts", [])
-    return {
-        "total_facts": len(facts),
-        "categories": list(set(f["category"] for f in facts if "category" in f)),
-        "most_used": sorted(facts, key=lambda x: x.get("usage_count", 0), reverse=True)[:3]
-    }
+@app.delete("/api/memory/fact")
+async def remove_memory_fact(fact: str):
+    """Remove a specific fact from Allie's memory"""
+    if not fact:
+        raise HTTPException(status_code=400, detail="Fact text is required")
+    
+    removed = allie_memory.remove_fact(fact)
+    if removed:
+        return {"status": "fact_removed", "fact": fact}
+    else:
+        raise HTTPException(status_code=404, detail="Fact not found in memory")
 
 @app.get("/api/learning/status")
 async def get_learning_status():

@@ -34,7 +34,7 @@ class AutomaticLearner:
             "geography": [
                 r"(Paris is the capital of France)",
                 r"(Tokyo is the largest city in Japan)",
-                r"([A-Z][a-z]+ has about [\d,]+(?:\.\d+)? million people(?: living there\.)?)",
+                r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)* has about [\d,]+(?:\.\d+)? million people(?: living there\.)?)",
                 r"(Mount Everest is the highest mountain in the world at [\d,]+ feet)",
             ],
             "biography": [
@@ -146,21 +146,6 @@ class AutomaticLearner:
                 for pattern in patterns:
                     matches = re.findall(pattern, clause, re.IGNORECASE)
                     for match in matches:
-                        if isinstance(match, tuple) and len(match) >= 1:
-                            # For patterns with capture groups, the first group should be the complete fact
-                            fact_text = match[0].strip()
-                        else:
-                            # Handle single matches (complete fact)
-                            fact_text = match.strip()
-
-                        if fact_text and len(fact_text) > 10:  # Minimum length check
-                            confidence = self._calculate_confidence(fact_text, category, clause)
-                            facts.append({
-                                "fact": fact_text,
-                                "category": category,
-                                "confidence": confidence,
-                                "source": "pattern_match"
-                            })
                         if isinstance(match, tuple) and len(match) >= 1:
                             # For patterns with capture groups, the first group should be the complete fact
                             fact_text = match[0].strip()
@@ -319,11 +304,6 @@ class AutomaticLearner:
             return "\n\n" + "\n".join(responses)
         return ""
 
-    def verify_recall(self, category: str, limit: int = 3) -> List[str]:
-        """Test recall of stored facts"""
-        facts = self.memory_system.knowledge_base.get("facts", [])
-        category_facts = [f for f in facts if f.get("category") == category]
-
-        # Return most recently learned facts
-        recent_facts = sorted(category_facts, key=lambda x: x.get("timestamp", ""), reverse=True)
-        return [f["fact"] for f in recent_facts[:limit]]
+    def remove_fact(self, fact_text: str) -> bool:
+        """Remove a fact from memory by exact text match"""
+        return self.memory_system.remove_fact(fact_text)

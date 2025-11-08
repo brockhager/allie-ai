@@ -81,17 +81,18 @@ def test_automatic_learning():
     print(f"Total facts learned: {total_facts_learned}")
     print(f"Total facts stored: {len(memory_system.facts_added)}")
 
-    # Test recall
     print(f"\nTesting recall functionality:")
-    geography_facts = learner.verify_recall("geography")
+    # Test geography facts
+    geography_facts = [f for f in memory_system.facts_added if f.get('category') == 'geography']
     print(f"Geography facts: {len(geography_facts)}")
     for fact in geography_facts[:3]:
-        print(f"  - {fact}")
+        print(f"  - {fact['fact']}")
 
-    biography_facts = learner.verify_recall("biography")
+    # Test biography facts
+    biography_facts = [f for f in memory_system.facts_added if f.get('category') == 'biography']
     print(f"Biography facts: {len(biography_facts)}")
     for fact in biography_facts[:3]:
-        print(f"  - {fact}")
+        print(f"  - {fact['fact']}")
 
 if __name__ == "__main__":
     test_automatic_learning()
