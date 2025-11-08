@@ -1096,72 +1096,73 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     is_self_referential = any(pattern in prompt.lower() for pattern in self_referential_patterns)
 
     # Step 2.5: Validate memory facts against Wikipedia if we have stored facts
+    # DISABLED - This was causing unnecessary web searches even when memory had good coverage
     memory_validation_updates = []
-    if relevant_facts and not is_self_referential:
-        # Search Wikipedia to validate stored facts
-        validation_wiki = await search_wikipedia(prompt)
-        if validation_wiki and validation_wiki.get("success") and validation_wiki.get("summary"):
-            wiki_text = validation_wiki["summary"]
-            
-            # Compare each memory fact with Wikipedia content
-            for fact in relevant_facts:
-                # Simple conflict detection: if fact contradicts Wikipedia
-                fact_lower = fact.lower()
-                wiki_lower = wiki_text.lower()
-                
-                # Check for obvious contradictions (this is a simplified approach)
-                conflicting_indicators = [
-                    ("was born in", "born in"),
-                    ("died in", "death"),
-                    ("located in", "located"),
-                    ("founded in", "founded"),
-                    ("created in", "created"),
-                    ("president", "president"),
-                    ("capital", "capital"),
-                    ("population", "population")
-                ]
-                
-                needs_update = False
-                conflict_type = None
-                
-                for indicator1, indicator2 in conflicting_indicators:
-                    if indicator1 in fact_lower and indicator2 in wiki_lower:
-                        # Extract the conflicting information
-                        if indicator1 == "president":
-                            fact_value = extract_president_name(fact)
-                            wiki_value = extract_president_name(wiki_text)
-                        elif indicator1 == "population":
-                            fact_value = extract_number_after_keyword(fact, "population")
-                            wiki_value = extract_number_after_keyword(wiki_text, "population")
-                        else:
-                            fact_value = extract_info_after_keyword(fact, indicator1.split()[0])
-                            wiki_value = extract_info_after_keyword(wiki_text, indicator2.split()[0])
-                        
-                        if fact_value and wiki_value and fact_value != wiki_value:
-                            needs_update = True
-                            conflict_type = indicator1
-                            break
-                
-                if needs_update:
-                    # Remove from legacy memory and update hybrid memory
-                    allie_memory.remove_fact(fact)
-                    memory_validation_updates.append(f"Updated {conflict_type} fact: '{fact}' → validated against Wikipedia")
-                    
-                    # Extract new facts from Wikipedia content
-                    wiki_learning = auto_learner.process_message(wiki_text, "wikipedia_validation")
-                    if wiki_learning["learning_actions"]:
-                        validation_confirmations = auto_learner.generate_learning_response(wiki_learning["learning_actions"])
-                        memory_validation_updates.extend(validation_confirmations)
-                        
-                        # Add validated facts to hybrid memory
-                        for action in wiki_learning["learning_actions"]:
-                            if action.get("action") == "stored_fact":
-                                hybrid_memory.add_fact(
-                                    action["fact"],
-                                    category=action.get("category", "general"),
-                                    confidence=0.9,  # High confidence from Wikipedia
-                                    source="wikipedia_validation"
-                                )
+    # if relevant_facts and not is_self_referential:
+    #     # Search Wikipedia to validate stored facts
+    #     validation_wiki = await search_wikipedia(prompt)
+    #     if validation_wiki and validation_wiki.get("success") and validation_wiki.get("summary"):
+    #         wiki_text = validation_wiki["summary"]
+    #         
+    #         # Compare each memory fact with Wikipedia content
+    #         for fact in relevant_facts:
+    #             # Simple conflict detection: if fact contradicts Wikipedia
+    #             fact_lower = fact.lower()
+    #             wiki_lower = wiki_text.lower()
+    #             
+    #             # Check for obvious contradictions (this is a simplified approach)
+    #             conflicting_indicators = [
+    #                 ("was born in", "born in"),
+    #                 ("died in", "death"),
+    #                 ("located in", "located"),
+    #                 ("founded in", "founded"),
+    #                 ("created in", "created"),
+    #                 ("president", "president"),
+    #                 ("capital", "capital"),
+    #                 ("population", "population")
+    #             ]
+    #             
+    #             needs_update = False
+    #             conflict_type = None
+    #             
+    #             for indicator1, indicator2 in conflicting_indicators:
+    #                 if indicator1 in fact_lower and indicator2 in wiki_lower:
+    #                     # Extract the conflicting information
+    #                     if indicator1 == "president":
+    #                         fact_value = extract_president_name(fact)
+    #                         wiki_value = extract_president_name(wiki_text)
+    #                     elif indicator1 == "population":
+    #                         fact_value = extract_number_after_keyword(fact, "population")
+    #                         wiki_value = extract_number_after_keyword(wiki_text, "population")
+    #                     else:
+    #                         fact_value = extract_info_after_keyword(fact, indicator1.split()[0])
+    #                         wiki_value = extract_info_after_keyword(wiki_text, indicator2.split()[0])
+    #                     
+    #                     if fact_value and wiki_value and fact_value != wiki_value:
+    #                         needs_update = True
+    #                         conflict_type = indicator1
+    #                         break
+    #             
+    #             if needs_update:
+    #                 # Remove from legacy memory and update hybrid memory
+    #                 allie_memory.remove_fact(fact)
+    #                 memory_validation_updates.append(f"Updated {conflict_type} fact: '{fact}' → validated against Wikipedia")
+    #                 
+    #                 # Extract new facts from Wikipedia content
+    #                 wiki_learning = auto_learner.process_message(wiki_text, "wikipedia_validation")
+    #                 if wiki_learning["learning_actions"]:
+    #                     validation_confirmations = auto_learner.generate_learning_response(wiki_learning["learning_actions"])
+    #                     memory_validation_updates.extend(validation_confirmations)
+    #                     
+    #                     # Add validated facts to hybrid memory
+    #                     for action in wiki_learning["learning_actions"]:
+    #                         if action.get("action") == "stored_fact":
+    #                             hybrid_memory.add_fact(
+    #                                 action["fact"],
+    #                                 category=action.get("category", "general"),
+    #                                 confidence=0.9,  # High confidence from Wikipedia
+    #                                 source="wikipedia_validation"
+    #                             )
 
     # Step 3: Determine if external search is needed
     if is_self_referential:
