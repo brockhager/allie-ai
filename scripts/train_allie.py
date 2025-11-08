@@ -19,11 +19,11 @@ lora_config = LoraConfig(
 model = get_peft_model(base_model, lora_config)
 
 # Step 3: Load your dataset (replace with your JSONL or dataset path)
-dataset = load_dataset("json", data_files="dataset.jsonl")
+dataset = load_dataset("json", data_files="../data/dataset.jsonl")
 
 # Step 4: Training setup
 training_args = TrainingArguments(
-    output_dir="./outputs",
+    output_dir="../outputs",
     per_device_train_batch_size=2,
     num_train_epochs=1,
     logging_steps=10,
@@ -58,4 +58,4 @@ trainer = Trainer(
 
 # Step 6: Train + save adapter
 trainer.train()
-model.save_pretrained("allie_finetuned")
+model.save_pretrained("../allie_finetuned")

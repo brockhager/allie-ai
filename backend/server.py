@@ -12,9 +12,26 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
 conversation_history = []
 
+# -------------------------
+# Config / logging
+# -------------------------
+APP_ROOT = Path(__file__).parent
+STATIC_DIR = APP_ROOT.parent / "frontend" / "static"
+DATA_DIR = APP_ROOT.parent / "data"
+DATA_DIR.mkdir(exist_ok=True)
+_CONV_FILE = DATA_DIR / "conversations.json"
+
+LLAMA_URL = os.environ.get("LLAMA_URL", "http://127.0.0.1:8080/completion")
+LLAMA_TIMEOUT_SECONDS = float(os.environ.get("LLAMA_TIMEOUT_SECONDS", "10.0"))
+LLAMA_MAX_RETRIES = int(os.environ.get("LLAMA_MAX_RETRIES", "4"))
+LLAMA_BACKOFF_BASE = float(os.environ.get("LLAMA_BACKOFF_BASE", "0.25"))
+
+logger = logging.getLogger("allie")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+
 # Load backup.json if it exists
 try:
-    with open("backup.json", "r", encoding="utf-8") as f:
+    with open(DATA_DIR / "backup.json", "r", encoding="utf-8") as f:
         conversation_history = json.load(f)
 except FileNotFoundError:
     conversation_history = []
@@ -28,26 +45,7 @@ except json.JSONDecodeError:
 # -------------------------
 tokenizer = AutoTokenizer.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
 base_model = AutoModelForCausalLM.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
-model = PeftModel.from_pretrained(base_model, "allie_finetuned")
-
-
-
-# -------------------------
-# Config / logging
-# -------------------------
-APP_ROOT = Path(__file__).parent
-STATIC_DIR = APP_ROOT / "static"
-DATA_DIR = APP_ROOT / "data"
-DATA_DIR.mkdir(exist_ok=True)
-_CONV_FILE = DATA_DIR / "conversations.json"
-
-LLAMA_URL = os.environ.get("LLAMA_URL", "http://127.0.0.1:8080/completion")
-LLAMA_TIMEOUT_SECONDS = float(os.environ.get("LLAMA_TIMEOUT_SECONDS", "10.0"))
-LLAMA_MAX_RETRIES = int(os.environ.get("LLAMA_MAX_RETRIES", "4"))
-LLAMA_BACKOFF_BASE = float(os.environ.get("LLAMA_BACKOFF_BASE", "0.25"))
-
-logger = logging.getLogger("allie")
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+model = PeftModel.from_pretrained(base_model, str(APP_ROOT.parent / "allie_finetuned"))
 
 # -------------------------
 # FastAPI app
@@ -119,7 +117,7 @@ async def create_conversation(payload: Dict[str, Any] = Body(...)):
     conversation_history.append({"prompt": prompt, "response": reply})
 
     # ✅ Step 2: Persist to file
-    with open("backup.json", "w", encoding="utf-8") as f:
+    with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
         json.dump(conversation_history, f, indent=2)
 
     return {"response": reply}
@@ -131,7 +129,7 @@ async def create_conversation(payload: Dict[str, Any] = Body(...)):
 @app.post("/api/conversations/backup")
 async def backup_conversations():
     try:
-        with open("backup.json", "w", encoding="utf-8") as f:
+        with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
             json.dump(conversation_history, f, indent=2)
         return {"status": "backup successful"}
     except Exception as e:
@@ -157,12 +155,12 @@ async def _shutdown_event():
 
 import shutil, time, os
 
-BACKUP_DIR = "data/backups"
+BACKUP_DIR = str(DATA_DIR / "backups")
 MAX_BACKUPS = 10
 
 def backup_conversations():
     timestamp = time.strftime("%Y%m%d-%H%M%S")
-    src = "data/conversations.json"
+    src = str(_CONV_FILE)
     dst = os.path.join(BACKUP_DIR, f"conversations-{timestamp}.json")
     try:
         shutil.copy(src, dst)

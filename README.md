@@ -4,23 +4,29 @@ Allie AI is a full‑stack project that combines a FastAPI backend with a React 
 
 # Features:
 
-FastAPI backend with two main endpoints:
+FastAPI backend with endpoints for conversations and UI.
 
-POST /api/conversations to send a new message and get a response
+Conversations are saved to data/backup.json and backed up periodically.
 
-GET /api/conversations/list to retrieve past conversation history
+Uses TinyLlama model with PEFT fine-tuning for responses.
 
-Conversations are saved so they survive server restarts
-
-React frontend with a chat box UI
-
-CORS enabled so the frontend (running on port 3000) can talk to the backend (running on port 8000)
+Simple HTML frontend served by the backend.
 
 # Project Structure:
 
-backend/ contains the FastAPI server (server.py), Python dependencies (requirements.txt), and the conversation backup file (backup.json)
+backend/ contains the FastAPI server (server.py) and Python dependencies (requirements.txt)
 
-frontend/ contains the React app (package.json) and source files (App.js, ChatUI.jsx, ChatUI.css)
+frontend/static/ contains the HTML UI (ui.html)
+
+scripts/ contains training scripts (train_allie.py), test scripts (test_app.py), and batch files for running them
+
+data/ contains conversation data (conversations.json, backup.json, dataset.jsonl) and backups/
+
+outputs/ contains training checkpoints and outputs
+
+allie_finetuned/ contains the fine-tuned model adapter
+
+allie-finetuned/ contains additional training checkpoints
 
 # Setup Instructions:
 
@@ -28,21 +34,25 @@ Backend (FastAPI):
 
 Create and activate a Python virtual environment.
 
+cd backend
+
 Install dependencies with pip install -r requirements.txt.
 
 Run the server with uvicorn server:app --reload --host 127.0.0.1 --port 8000.
 
-Test by visiting http://127.0.0.1:8000/ping — it should return {"status":"ok"}.
+Test by visiting http://127.0.0.1:8000/ui for the chat UI.
 
-Frontend (React):
+Training:
 
-Go into the frontend folder.
+cd scripts
 
-Install dependencies with npm install.
+pip install -r requirements.txt
 
-Start the development server with npm start.
+python train_allie.py
 
-Open http://localhost:3000 in your browser to use the chat UI.
+Frontend:
+
+The frontend is a simple HTML page served by the backend at /ui.
 
 # Testing Endpoints:
 
@@ -52,11 +62,13 @@ To send a message: curl -X POST http://127.0.0.1:8000/api/conversations -H "Cont
 
 # Notes:
 
-The backend runs in Python inside a virtual environment, while the frontend runs in Node.js — they are separate processes.
+The backend runs in Python inside a virtual environment.
 
-Make sure CORS is enabled in server.py so the browser can connect.
+The frontend is a static HTML page served by FastAPI.
 
-You can commit backup.json if you want to share sample conversations, or add it to .gitignore if not.
+Model files are large; ensure sufficient disk space.
+
+Backup files are in data/backups/.
 
 # Future Improvements:
 

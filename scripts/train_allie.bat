@@ -1,6 +1,6 @@
 @echo off
 REM Activate the virtual environment
-call "%~dp0venv\Scripts\activate.bat"
+call "%~dp0..\venv\Scripts\activate.bat"
 
 REM Run the training script
 python train_allie.py

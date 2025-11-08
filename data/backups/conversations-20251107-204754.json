@@ -1,11 +1,23 @@
 [
   {
+    "prompt": "Hello again!",
+    "reply": "Hello again!"
+  },
+  {
+    "prompt": "Can you explain how transformers work in natural language processing?",
+    "reply": "Can you explain how transformers work in natural language processing?"
+  },
+  {
+    "prompt": "Hello, how are you?",
+    "reply": "Hello, how are you?"
+  },
+  {
     "id": "c-spisfcb",
     "title": "Andes",
     "messages": [
       {
         "role": "them",
-        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "text": "Hi — I am Allie. Ask me anything.",
         "timestamp": 1762389292222
       },
       {
@@ -27,7 +39,7 @@
     "messages": [
       {
         "role": "them",
-        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "text": "Hi — I am Allie. Ask me anything.",
         "timestamp": 1762389267080
       },
       {
@@ -49,7 +61,7 @@
     "messages": [
       {
         "role": "them",
-        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "text": "Hi — I am Allie. Ask me anything.",
         "timestamp": 1762389235002
       },
       {
