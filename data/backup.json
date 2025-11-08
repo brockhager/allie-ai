@@ -274,5 +274,27 @@
       }
     ],
     "draft": "hello"
+  },
+  {
+    "id": "c-z2zusce",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762583785587
+      },
+      {
+        "role": "me",
+        "text": "what is your name",
+        "timestamp": 1762583814311
+      },
+      {
+        "role": "them",
+        "text": "Assuming the given context, the sentence \"my name is Brock. Please remember that\" can be rephrased as follows:\n\n\"Please remember that my name is Brock.\"",
+        "timestamp": 1762583842652
+      }
+    ],
+    "draft": ""
   }
 ]

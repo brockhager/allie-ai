@@ -507,17 +507,52 @@ async def generate_conversation_summary(conversation: Dict[str, Any]) -> str:
     return f"Discussion about: {first_user[:50]}... Result: {last_assistant}"
 
 def extract_key_points(conversation: Dict[str, Any]) -> List[str]:
-    """Extract key points from conversation"""
+    """Extract factual key points from conversation"""
     messages = conversation.get("messages", [])
     key_points = []
 
-    # Look for important information in responses
+    # Look for important information in responses, but filter out non-factual content
     for msg in messages:
         if msg.get("role") == "them" and len(msg.get("text", "")) > 20:
             text = msg["text"]
-            # Extract sentences that might contain facts
+            
+            # Skip responses that appear to be rephrasing or transformation tasks
+            skip_indicators = [
+                "rephrased as follows",
+                "assuming the given context",
+                "can be rephrased",
+                "here are the revised responses",
+                "here's how you can use this information",
+                "user asked:",
+                "allie responded:"
+            ]
+            
+            if any(indicator in text.lower() for indicator in skip_indicators):
+                continue
+            
+            # Extract sentences that might contain facts, but filter out obvious non-facts
             sentences = [s.strip() for s in text.split('.') if len(s.strip()) > 10]
-            key_points.extend(sentences[:2])  # Take first 2 substantial sentences
+            
+            for sentence in sentences[:2]:  # Take first 2 substantial sentences
+                # Skip sentences that are clearly not factual
+                non_factual_indicators = [
+                    "here are the",
+                    "i can help",
+                    "let me",
+                    "certainly",
+                    "sure thing",
+                    "as you mentioned",
+                    "that's great",
+                    "i understand",
+                    "would you like",
+                    "can you",
+                    "do you"
+                ]
+                
+                if not any(indicator in sentence.lower() for indicator in non_factual_indicators):
+                    # Only include sentences that look like they contain factual information
+                    if any(word in sentence.lower() for word in ["is", "are", "was", "were", "has", "have", "located", "born", "created", "developed", "invented"]):
+                        key_points.append(sentence)
 
     return key_points[:5]  # Limit to 5 key points
 
@@ -618,6 +653,8 @@ You have access to:
 - Recent conversation context
 - Current web search results from DuckDuckGo
 - Authoritative background information from Wikipedia
+
+Your primary role is to answer questions and engage in natural conversation. When someone asks you a question, provide a direct, helpful answer based on all available information. Do not rephrase sentences or perform text transformation tasks unless specifically asked.
 
 Synthesize information from all available sources to provide comprehensive, accurate, and natural responses. If you learn something new and important from external sources, acknowledge that you're storing it for future conversations."""
 

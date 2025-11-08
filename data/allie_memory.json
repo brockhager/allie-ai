@@ -5,14 +5,14 @@
       "importance": 0.9,
       "category": "geography",
       "timestamp": "2025-11-07T22:42:24.683159",
-      "usage_count": 2
+      "usage_count": 6
     },
     {
       "fact": "Top 15 biggest cities in California: Los Angeles, San Diego, San Jose, San Francisco, Fresno, Sacramento, Long Beach, Oakland, Bakersfield, Anaheim, Santa Ana, Riverside, Stockton, Chula Vista, Irvine",
       "importance": 0.9,
       "category": "geography",
       "timestamp": "2025-11-07T22:42:26.816244",
-      "usage_count": 2
+      "usage_count": 6
     },
     {
       "fact": "Top 15 biggest cities in Colorado: Denver, Colorado Springs, Aurora, Fort Collins, Lakewood, Thornton, Arvada, Westminster, Pueblo, Centennial, Boulder, Greeley, Longmont, Loveland, Grand Junction",
@@ -20,48 +20,6 @@
       "category": "geography",
       "timestamp": "2025-11-07T22:42:28.948823",
       "usage_count": 2
-    },
-    {
-      "fact": "User asked: 'I live in Yuma Arizona.  Yuma is close to the Mexico border' - Allie responded: 'As you mentioned, Yuma is located on the Mexico border. Here's how you can use this information in your responses:\n\n- If you receive a message like \"my name is Brock. Please remember that,\" you can re...'",
-      "importance": 0.3,
-      "category": "conversation",
-      "timestamp": "2025-11-07T22:28:04.816781",
-      "usage_count": 5
-    },
-    {
-      "fact": "User asked: 'my name is Brock.  Please remember that' - Allie responded: 'Assuming the given context, the sentence \"my name is Brock. Please remember that\" can be rephrased as follows:\n\n\"Please remember that my name is Brock.\"'",
-      "importance": 0.3,
-      "category": "conversation",
-      "timestamp": "2025-11-07T22:27:21.739091",
-      "usage_count": 4
-    },
-    {
-      "fact": "User asked: 'can you look up the 10 biggest cities in arizona' - Allie responded: 'Certainly! Here are the revised responses for the given context:\n\n- User: \"My name is Brock. Please remember that I live in Yuma, Arizona.\"\n- Allie: \"As you mentioned, Yuma is located on the Mexico bo...'",
-      "importance": 0.3,
-      "category": "conversation",
-      "timestamp": "2025-11-07T22:29:41.159272",
-      "usage_count": 4
-    },
-    {
-      "fact": "User asked: 'what are the top 15 biggest cities in each state.  memorize that' - Allie responded: 'Top 15 biggest cities in each state:\n- Arizona: Phoenix, Tucson, Flagstaff, Sedona, Glendale, Mesa, Chandler, Scottsdale, Casa Grande, Tempe, Peoria, Yuma, Kingman, Prescott\n- California: Los Angeles,...'",
-      "importance": 0.3,
-      "category": "conversation",
-      "timestamp": "2025-11-07T22:38:57.833046",
-      "usage_count": 2
-    },
-    {
-      "fact": "User asked: 'you only named 3 states' - Allie responded: 'Sure, here's a revised version of the conversation with three messages:\n\nContext:\nRelevant information I remember:\n- User asked: \"I live in Yuma Arizona. Yuma is close to the Mexico border.\" - Allie r...'",
-      "importance": 0.3,
-      "category": "conversation",
-      "timestamp": "2025-11-07T22:39:58.587664",
-      "usage_count": 2
-    },
-    {
-      "fact": "User asked: 'What are the biggest cities in Arizona?' - Allie responded: 'Yes, the biggest cities in Arizona are:\n\n1. Phoenix\n2. Tucson\n3. Mesa\n4. Chandler\n5. Glendale\n6. Scottsdale\n7. Gilbert\n8. Tempe\n9. Peoria\n10. Surprise\n11. Yuma\n12. Avondale\n13. Goodyear\n14. Flagstaff\n...'",
-      "importance": 0.3,
-      "category": "conversation",
-      "timestamp": "2025-11-07T22:43:17.893452",
-      "usage_count": 0
     }
   ],
   "preferences": {},
