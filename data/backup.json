@@ -418,5 +418,49 @@
       }
     ],
     "draft": "what day is it"
+  },
+  {
+    "id": "c-lvhqjsw",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762587581200
+      },
+      {
+        "role": "me",
+        "text": "what day is it",
+        "timestamp": 1762587593700
+      },
+      {
+        "role": "them",
+        "text": "Yes, it is currently Thursday, November 08, 2025.",
+        "timestamp": 1762587611794
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-jvyu1aq",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762587682581
+      },
+      {
+        "role": "me",
+        "text": "how big is space",
+        "timestamp": 1762587722528
+      },
+      {
+        "role": "them",
+        "text": "Yes, I can provide you with an estimate of how big Space is based on the given text material. The top 15 largest cities in Arizona are Phoenix, Tucson, Mesa, Chandler, Glendale, Scottsdale, Gilbert, Tempe, Peoria, Surprise, Yuma, Avondale, Goodyear, Flagstaff, Casa Grande, while the top 15 largest cities in California are Los Angeles, San Diego, San Jose, San Francisco, Fresno, Sacramento, Long Beach, Oakland, Bakers",
+        "timestamp": 1762587750817
+      }
+    ],
+    "draft": ""
   }
 ]

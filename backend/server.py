@@ -510,6 +510,239 @@ async def search_web(query: str) -> Dict[str, Any]:
         _set_cached_response(cache_key, result)
         return result
 
+async def search_wikidata(query: str) -> Dict[str, Any]:
+    """Search Wikidata for structured factual data"""
+    # Check cache first
+    cache_key = _get_cache_key(query, "wikidata")
+    cached_result = _get_cached_response(cache_key)
+    if cached_result:
+        logger.info(f"Wikidata search cache hit for: {query}")
+        return cached_result
+
+    logger.info(f"Wikidata search cache miss for: {query}")
+    try:
+        # Use Wikidata API for structured data
+        # First, search for entities
+        search_url = f"https://www.wikidata.org/w/api.php?action=wbsearchentities&search={query}&language=en&format=json&limit=5"
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(search_url)
+            if response.status_code == 200:
+                data = response.json()
+                results = []
+                
+                if data.get("search"):
+                    for entity in data["search"][:3]:  # Limit to top 3
+                        entity_id = entity.get("id")
+                        if entity_id:
+                            # Get detailed information for each entity
+                            detail_url = f"https://www.wikidata.org/wiki/Special:EntityData/{entity_id}.json"
+                            detail_response = await client.get(detail_url)
+                            if detail_response.status_code == 200:
+                                detail_data = detail_response.json()
+                                entities = detail_data.get("entities", {})
+                                if entity_id in entities:
+                                    entity_data = entities[entity_id]
+                                    claims = entity_data.get("claims", {})
+                                    
+                                    # Extract key properties
+                                    extracted_info = {
+                                        "label": entity.get("label", ""),
+                                        "description": entity.get("description", ""),
+                                        "id": entity_id,
+                                        "properties": {}
+                                    }
+                                    
+                                    # Extract common properties
+                                    property_map = {
+                                        "P17": "country",  # country
+                                        "P19": "place_of_birth",  # place of birth
+                                        "P20": "place_of_death",  # place of death
+                                        "P27": "citizenship",  # citizenship
+                                        "P31": "instance_of",  # instance of
+                                        "P36": "capital",  # capital
+                                        "P50": "author",  # author
+                                        "P57": "director",  # director
+                                        "P69": "educated_at",  # educated at
+                                        "P106": "occupation",  # occupation
+                                        "P108": "employer",  # employer
+                                        "P119": "place_of_burial",  # place of burial
+                                        "P131": "located_in",  # located in
+                                        "P136": "genre",  # genre
+                                        "P144": "based_on",  # based on
+                                        "P161": "cast_member",  # cast member
+                                        "P166": "award_received",  # award received
+                                        "P569": "date_of_birth",  # date of birth
+                                        "P570": "date_of_death",  # date of death
+                                        "P577": "publication_date",  # publication date
+                                        "P580": "start_time",  # start time
+                                        "P582": "end_time",  # end time
+                                        "P625": "coordinate_location",  # coordinate location
+                                        "P856": "official_website",  # official website
+                                        "P910": "topic_main_category",  # topic's main category
+                                        "P921": "main_subject",  # main subject
+                                        "P973": "described_at_url",  # described at URL
+                                        "P1014": "Getty_AAT_ID",  # Art & Architecture Thesaurus ID
+                                        "P214": "VIAF_ID",  # VIAF ID
+                                        "P244": "LCAuth_ID",  # Library of Congress authority ID
+                                        "P345": "IMDb_ID",  # IMDb ID
+                                        "P496": "ORCID_iD",  # ORCID iD
+                                        "P818": "arXiv_ID",  # arXiv ID
+                                        "P846": "GBIF_taxon_ID",  # GBIF taxon ID
+                                        "P850": "WoRMS_ID",  # World Register of Marine Species ID
+                                    }
+                                    
+                                    for prop_id, prop_name in property_map.items():
+                                        if prop_id in claims:
+                                            prop_claims = claims[prop_id]
+                                            if prop_claims:
+                                                # Take the first/main value
+                                                main_value = prop_claims[0].get("mainsnak", {}).get("datavalue", {})
+                                                if main_value:
+                                                    if main_value.get("type") == "string":
+                                                        extracted_info["properties"][prop_name] = main_value.get("value", "")
+                                                    elif main_value.get("type") == "wikibase-entityid":
+                                                        entity_id = main_value.get("value", {}).get("id")
+                                                        if entity_id:
+                                                            # Try to get the label for this entity
+                                                            extracted_info["properties"][prop_name] = f"Q{entity_id}"
+                                    
+                                    results.append(extracted_info)
+                
+                result = {
+                    "query": query,
+                    "results": results,
+                    "success": True
+                }
+                _set_cached_response(cache_key, result)
+                return result
+            else:
+                result = {
+                    "query": query,
+                    "results": [],
+                    "success": False,
+                    "error": f"Wikidata search failed with status {response.status_code}"
+                }
+                _set_cached_response(cache_key, result)
+                return result
+    except Exception as e:
+        logger.warning(f"Wikidata search failed: {e}")
+        result = {
+            "query": query,
+            "results": [],
+            "success": False,
+            "error": str(e)
+        }
+        _set_cached_response(cache_key, result)
+        return result
+
+async def search_dbpedia(query: str) -> Dict[str, Any]:
+    """Search DBpedia for structured factual data"""
+    # Check cache first
+    cache_key = _get_cache_key(query, "dbpedia")
+    cached_result = _get_cached_response(cache_key)
+    if cached_result:
+        logger.info(f"DBpedia search cache hit for: {query}")
+        return cached_result
+
+    logger.info(f"DBpedia search cache miss for: {query}")
+    try:
+        # Use DBpedia Spotlight for entity extraction and linking
+        spotlight_url = f"https://api.dbpedia-spotlight.org/en/annotate?text={query}&confidence=0.5&support=20"
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(spotlight_url, headers={"Accept": "application/json"})
+            if response.status_code == 200:
+                data = response.json()
+                results = []
+                
+                if "Resources" in data:
+                    for resource in data["Resources"][:3]:  # Limit to top 3
+                        # Get additional information from DBpedia
+                        dbpedia_uri = resource.get("@URI", "")
+                        if dbpedia_uri:
+                            # Extract DBpedia resource name
+                            resource_name = dbpedia_uri.split("/")[-1]
+                            
+                            # Query for basic properties
+                            sparql_url = "https://dbpedia.org/sparql"
+                            sparql_query = f"""
+                            SELECT ?property ?value WHERE {{
+                                <{dbpedia_uri}> ?property ?value .
+                                FILTER(LANG(?value) = "" || LANGMATCHES(LANG(?value), "en"))
+                            }} LIMIT 20
+                            """
+                            
+                            sparql_response = await client.get(
+                                sparql_url, 
+                                params={"query": sparql_query, "format": "json"}
+                            )
+                            
+                            properties = {}
+                            if sparql_response.status_code == 200:
+                                sparql_data = sparql_response.json()
+                                bindings = sparql_data.get("results", {}).get("bindings", [])
+                                
+                                for binding in bindings:
+                                    prop_uri = binding.get("property", {}).get("value", "")
+                                    value = binding.get("value", {}).get("value", "")
+                                    
+                                    if prop_uri and value:
+                                        # Extract property name from URI
+                                        prop_name = prop_uri.split("/")[-1] if "/" in prop_uri else prop_uri
+                                        prop_name = prop_name.split("#")[-1] if "#" in prop_name else prop_name
+                                        
+                                        # Clean up common properties
+                                        if "birthDate" in prop_name or "birth_date" in prop_name:
+                                            properties["birth_date"] = value
+                                        elif "deathDate" in prop_name or "death_date" in prop_name:
+                                            properties["death_date"] = value
+                                        elif "birthPlace" in prop_name or "birth_place" in prop_name:
+                                            properties["birth_place"] = value
+                                        elif "deathPlace" in prop_name or "death_place" in prop_name:
+                                            properties["death_place"] = value
+                                        elif "occupation" in prop_name:
+                                            properties["occupation"] = value
+                                        elif "country" in prop_name:
+                                            properties["country"] = value
+                                        elif "capital" in prop_name:
+                                            properties["capital"] = value
+                            
+                            result = {
+                                "label": resource.get("@surfaceForm", ""),
+                                "uri": dbpedia_uri,
+                                "confidence": float(resource.get("@similarityScore", 0)),
+                                "support": int(resource.get("@support", 0)),
+                                "types": resource.get("@types", "").split(",") if resource.get("@types") else [],
+                                "properties": properties
+                            }
+                            results.append(result)
+                
+                result = {
+                    "query": query,
+                    "results": results,
+                    "success": True
+                }
+                _set_cached_response(cache_key, result)
+                return result
+            else:
+                result = {
+                    "query": query,
+                    "results": [],
+                    "success": False,
+                    "error": f"DBpedia search failed with status {response.status_code}"
+                }
+                _set_cached_response(cache_key, result)
+                return result
+    except Exception as e:
+        logger.warning(f"DBpedia search failed: {e}")
+        result = {
+            "query": query,
+            "results": [],
+            "success": False,
+            "error": str(e)
+        }
+        _set_cached_response(cache_key, result)
+        return result
+
 async def search_wikipedia(query: str) -> Dict[str, Any]:
     """Search Wikipedia for authoritative background information"""
     # Check cache first
@@ -585,8 +818,6 @@ async def search_wikipedia(query: str) -> Dict[str, Any]:
         }
         _set_cached_response(cache_key, result)
         return result
-
-@app.post("/api/conversations")
 async def create_conversation_api(payload: Dict[str, Any] = Body(...)):
     """Create a new conversation (for UI sync)"""
     conv = payload
