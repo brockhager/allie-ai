@@ -872,6 +872,33 @@ Remember: You are Allie, a helpful and friendly AI assistant created to answer q
             enhanced_prompt = f"{prompt}\n\nContext from multiple sources:\n" + "\n\n".join(context_parts)
 
     # Step 7: Generate response using TinyLlama (moved to thread pool for async performance)
+    from datetime import datetime
+    current_date = datetime.now().strftime("%B %d, %Y")
+    
+    system_content = f"""You are Allie, a helpful and friendly AI assistant. Today's date is {current_date}.
+
+You are designed to respond naturally and helpfully in English. Always provide direct, clear answers to questions.
+
+You have access to:
+- Your long-term memory of important facts and information
+- Recent conversation context
+- Current web search results from DuckDuckGo
+- Authoritative background information from Wikipedia
+
+Your primary role is to answer questions and engage in natural conversation. When someone asks you a question, provide a direct, helpful answer based on all available information.
+
+IMPORTANT: Always respond in clear, natural English. Do not respond in other languages unless specifically asked. Be conversational but informative.
+
+I automatically validate my stored knowledge against authoritative sources like Wikipedia. If I find conflicting information, I update my memory to ensure accuracy.
+
+Synthesize information from all available sources to provide comprehensive, accurate responses. If you learn something new and important, acknowledge that you're storing it for future conversations."""
+
+    messages = [
+        {"role": "system", "content": system_content},
+        {"role": "user", "content": enhanced_prompt}
+    ]
+    formatted_prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+
     def generate_model_response():
         """Generate model response synchronously in thread pool"""
         inputs = tokenizer(formatted_prompt, return_tensors="pt").to(model.device)
