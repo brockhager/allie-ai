@@ -1,22 +1,32 @@
 [
   {
-    "id": "c-pduszlp",
+    "id": "c-q1meexp",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762730512746
+        "timestamp": 1762730882243
       },
       {
         "role": "me",
         "text": "where is peru",
-        "timestamp": 1762730587336
+        "timestamp": 1762730952166
       },
       {
         "role": "them",
-        "text": "This is a dummy response for testing purposes.\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Peru\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Peru",
-        "timestamp": 1762730607198
+        "text": "Yes, today is November 09, 2025. Peruvian citizens can find out more about their government's policies through DuckDuckGo, Wikipedia, Wikidata, DBPedia, and OpenLibrary. The official name of Peru is \"Rep\u00fablica de Per\u00fa,\" which means \"Republic of Peru.\" Its borders include Ecuador to the north, Brazil to the east, Bolivia to the south, and the Pacific Ocean to the west. Peruvian culture includes a variety of influences from diverse regions such as the Andean highlands,\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Peru\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Peru",
+        "timestamp": 1762731007507
+      },
+      {
+        "role": "me",
+        "text": "what religion is in peru?",
+        "timestamp": 1762731126999
+      },
+      {
+        "role": "them",
+        "text": "According to DuckDuckGo, Christianity is the most commonly practiced religion in Peru, followed closely by Catholicism. Regarding the second part of your query about whether there is any irreligion in Peru, according to OpenLibrary, there has been a slight decline in religions other than Catholicism since the Spanish Conquest, with Protestant churches of various denominations having gained significant ground. While judaism and buddhism exist at low levels, both hindusim and islam are less common. Article 2 of the Peruvian constitution states that\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Religion_in_Peru\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Religion_in_Peru",
+        "timestamp": 1762731171648
       }
     ],
     "draft": ""

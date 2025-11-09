@@ -59,6 +59,72 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
 
+        .search-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.3em;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .search-results-info {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
         .filter-row {
             display: flex;
             gap: 20px;
@@ -368,6 +434,21 @@
             <!-- Stats will be populated by JavaScript -->
         </div>
 
+        <div class="search-box">
+            <h3>🔍 Search Facts</h3>
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    class="search-input" 
+                    placeholder="Search for key terms in facts (e.g., 'capital', 'president', 'population')..."
+                    onkeypress="handleSearchKeyPress(event)"
+                />
+                <button class="search-btn" onclick="searchFacts()">Search</button>
+            </div>
+            <div class="search-results-info" id="search-results-info"></div>
+        </div>
+
         <div class="filters">
             <div class="filter-row">
                 <div class="filter-group">
@@ -382,15 +463,11 @@
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="keyword-filter">Keyword Search:</label>
-                    <input type="text" id="keyword-filter" placeholder="Search keywords...">
-                </div>
-                <div class="filter-group">
                     <label for="confidence-filter">Min Confidence:</label>
                     <input type="number" id="confidence-filter" min="0" max="100" placeholder="0-100">
                 </div>
                 <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
-                <button class="btn btn-secondary" onclick="clearFilters()">Clear</button>
+                <button class="btn btn-secondary" onclick="clearFilters()">Clear All</button>
             </div>
         </div>
 
@@ -443,6 +520,7 @@
         let currentFilters = {};
         let allFacts = [];
         let selectedFacts = new Set();
+        let currentSearchTerm = '';
 
         // Load facts on page load
         document.addEventListener('DOMContentLoaded', function() {
@@ -450,9 +528,61 @@
             loadStats();
         });
 
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                searchFacts();
+            }
+        }
+
+        async function searchFacts() {
+            const searchTerm = document.getElementById('search-input').value.trim();
+            
+            if (!searchTerm) {
+                showError('Please enter a search term');
+                return;
+            }
+
+            currentSearchTerm = searchTerm;
+            document.getElementById('search-results-info').innerHTML = `<em>Searching for "${searchTerm}"...</em>`;
+
+            try {
+                // Using hybrid memory search endpoint which returns results in 'facts' array
+                const response = await fetch(`/api/hybrid-memory/search?query=${encodeURIComponent(searchTerm)}&limit=100`);
+                
+                if (!response.ok) {
+                    throw new Error(`Search failed with status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Hybrid memory returns data in {query, count, facts} format
+                const facts = data.facts || [];
+                
+                allFacts = facts;
+                renderFactsTable(facts);
+                
+                const resultsInfo = facts.length > 0 
+                    ? `Found ${facts.length} fact(s) containing "${searchTerm}"`
+                    : `No facts found containing "${searchTerm}"`;
+                
+                document.getElementById('search-results-info').innerHTML = resultsInfo;
+                
+                // Hide pagination for search results
+                document.getElementById('pagination').style.display = 'none';
+                
+            } catch (error) {
+                console.error('Error searching facts:', error);
+                showError('Error searching facts: ' + error.message);
+                document.getElementById('search-results-info').innerHTML = '';
+            }
+        }
+
         async function loadFacts(page = 1, filters = {}) {
             currentPage = page;
             currentFilters = filters;
+            currentSearchTerm = '';
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results-info').innerHTML = '';
 
             const params = new URLSearchParams({
                 limit: 50,
@@ -467,7 +597,8 @@
                 if (data.status === 'success') {
                     allFacts = data.facts;
                     renderFactsTable(data.facts);
-                    renderPagination(Math.ceil(data.total / 50));
+                    renderPagination(Math.ceil((data.total || data.facts.length) / 50));
+                    document.getElementById('pagination').style.display = 'flex';
                 } else {
                     showError('Failed to load facts');
                 }
@@ -537,31 +668,48 @@
             facts.forEach(fact => {
                 const statusClass = `status-${fact.status}`;
                 const statusText = fact.status.replace('_', ' ').toUpperCase();
-                const updatedDate = new Date(fact.updated_at).toLocaleDateString();
+                const updatedDate = new Date(fact.updated_at || fact.timestamp || Date.now()).toLocaleDateString();
+                
+                // Handle different fact formats (hybrid memory vs advanced memory)
+                const factId = fact.id || fact.fact_id || Math.random();
+                const keyword = fact.keyword || fact.key || 'N/A';
+                const factText = fact.fact || fact.text || fact.content || 'N/A';
+                const source = fact.source || fact.origin || 'Unknown';
+                const status = fact.status || 'not_verified';
+                const confidence = fact.confidence_score || fact.confidence || 50;
+                
+                // Highlight search term in fact text if searching
+                let highlightedFactText = factText;
+                let highlightedKeyword = keyword;
+                if (currentSearchTerm) {
+                    const regex = new RegExp(`(${currentSearchTerm})`, 'gi');
+                    highlightedFactText = highlightedFactText.replace(regex, '<span class="highlight">$1</span>');
+                    highlightedKeyword = highlightedKeyword.replace(regex, '<span class="highlight">$1</span>');
+                }
 
                 html += `
                     <tr>
-                        <td><input type="checkbox" value="${fact.id}" onchange="toggleSelection(${fact.id})"></td>
-                        <td class="keyword">${fact.keyword}</td>
-                        <td class="fact-text">${fact.fact}</td>
-                        <td><a href="#" class="source-link" onclick="showFactDetails(${fact.id})">${fact.source}</a></td>
+                        <td><input type="checkbox" value="${factId}" onchange="toggleSelection(${factId})"></td>
+                        <td class="keyword">${highlightedKeyword}</td>
+                        <td class="fact-text">${highlightedFactText}</td>
+                        <td><a href="#" class="source-link" onclick="showFactDetails(${factId}); return false;">${source}</a></td>
                         <td class="updated-at">${updatedDate}</td>
                         <td>
-                            <select class="status-select" onchange="updateFactStatus(${fact.id}, this.value)">
-                                <option value="true" ${fact.status === 'true' ? 'selected' : ''}>✅ True</option>
-                                <option value="false" ${fact.status === 'false' ? 'selected' : ''}>❌ False</option>
-                                <option value="not_verified" ${fact.status === 'not_verified' ? 'selected' : ''}>❓ Not Verified</option>
-                                <option value="needs_review" ${fact.status === 'needs_review' ? 'selected' : ''}>⚠️ Needs Review</option>
-                                <option value="experimental" ${fact.status === 'experimental' ? 'selected' : ''}>🧪 Experimental</option>
+                            <select class="status-select" onchange="updateFactStatus(${factId}, this.value)">
+                                <option value="true" ${status === 'true' ? 'selected' : ''}>✅ True</option>
+                                <option value="false" ${status === 'false' ? 'selected' : ''}>❌ False</option>
+                                <option value="not_verified" ${status === 'not_verified' ? 'selected' : ''}>❓ Not Verified</option>
+                                <option value="needs_review" ${status === 'needs_review' ? 'selected' : ''}>⚠️ Needs Review</option>
+                                <option value="experimental" ${status === 'experimental' ? 'selected' : ''}>🧪 Experimental</option>
                             </select>
                         </td>
                         <td>
                             <input type="number" class="confidence-input" min="0" max="100"
-                                   value="${fact.confidence_score || 50}"
-                                   onchange="updateConfidence(${fact.id}, this.value)">
+                                   value="${confidence}"
+                                   onchange="updateConfidence(${factId}, this.value)">
                         </td>
                         <td class="actions">
-                            <button class="btn btn-secondary" onclick="showFactDetails(${fact.id})">View</button>
+                            <button class="btn btn-secondary" onclick="showFactDetails(${factId})">View</button>
                         </td>
                     </tr>
                 `;
@@ -689,7 +837,6 @@
         function applyFilters() {
             const filters = {
                 status: document.getElementById('status-filter').value,
-                keyword: document.getElementById('keyword-filter').value,
                 confidence_score_min: document.getElementById('confidence-filter').value
             };
 
@@ -703,8 +850,10 @@
 
         function clearFilters() {
             document.getElementById('status-filter').value = '';
-            document.getElementById('keyword-filter').value = '';
             document.getElementById('confidence-filter').value = '';
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results-info').innerHTML = '';
+            currentSearchTerm = '';
             loadFacts(1, {});
         }
 

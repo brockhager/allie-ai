@@ -1,8 +1,108 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T16:23:27.176183",
-  "fact_count": 618,
+  "saved_at": "2025-11-09T16:32:24.978016",
+  "fact_count": 628,
   "facts": [
+    {
+      "fact": "The Bridge of San Luis Rey: by Thornton Wilder, T. Wilder, Wilder T. (1927) Subjects: Accident victims, Accidents, American fiction",
+      "timestamp": "2025-11-09T16:32:24.977087",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The statistics for Islam in Peru estimate a total Muslim population of 2,600 largely based in the capital city Lima; this represents 0.015% out of total population of 32,555,000 inhabitants.",
+      "timestamp": "2025-11-09T16:32:24.968961",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Religion in Peru Category",
+      "timestamp": "2025-11-09T16:32:24.961276",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Christianity is the most widely professed religion in Peru, with Catholicism being its largest denomination. Religion in Peru is traditionally related to religious syncretism originating from Catholicism with the ancient Inca religion after the Spanish Conquest. However, Protestant churches of various denominations have developed considerably in the popular sectors over the past 30 years. There has been a slow but consistent advance of irreligion especially among young people in urban areas. Religions such as Judaism and Buddhism, and more recently Hinduism and Islam, are present due to immigration. According to article 2 of the Peruvian Constitution: \"Everyone has the right to freedom of conscience and religion, individually or in association. There is no persecution for reasons of ideas or beliefs. There is no crime of opinion. The public exercise of all confessions are free, as long as they do not offend morals or disturb public order.\"",
+      "timestamp": "2025-11-09T16:32:24.950495",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "El túnel: by Ernesto Sabato (1948) Subjects: Spanish fiction, Spanish language, Spanish language books",
+      "timestamp": "2025-11-09T16:29:33.021959",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Peru</B> ( (); Spanish: <B>Perú</B> [<B>peˈɾu</B>]; Quechua: Piruw Republika [pʰɪɾʊw]; Aymara: Piruw Suyu [pɪɾʊw",
+      "timestamp": "2025-11-09T16:29:33.013901",
+      "category": "geography",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Peru: instance_of = ['Q3624078', 'Q6256']",
+      "timestamp": "2025-11-09T16:29:33.006047",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Peru, officially the Republic of Peru, is a country in western South America. It is bordered to the north by Ecuador and Colombia, to the east by Brazil, to the southeast by Bolivia, to the south by Chile, and to the south and west by the Pacific Ocean. Peru is a megadiverse country, with habitats r...",
+      "timestamp": "2025-11-09T16:29:32.997710",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Peru Category",
+      "timestamp": "2025-11-09T16:29:32.989448",
+      "category": "geography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Peru, officially the Republic of Peru, is a country in western South America. It is bordered to the north by Ecuador and Colombia, to the east by Brazil, to the southeast by Bolivia, to the south by Chile, and to the south and west by the Pacific Ocean. Peru is a megadiverse country, with habitats ranging from the arid plains of the Pacific coastal region in the west, to the peaks of the Andes mountains extending from the north to the southeast of the country, to the tropical Amazon basin rainforest in the east with the Amazon River. Peru has a population of over 32 million, and its capital and largest city is Lima. At 1,285,216 km², Peru is the 19th largest country in the world, and the third largest in South America.",
+      "timestamp": "2025-11-09T16:29:32.980329",
+      "category": "geography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
     {
       "fact": "El túnel: by Ernesto Sabato (1948) Subjects: Spanish fiction, Spanish language, Spanish language books",
       "timestamp": "2025-11-09T16:23:27.175146",
@@ -41,7 +141,7 @@
       "source": "wikipedia",
       "status": "not_verified",
       "confidence_score": 95,
-      "is_outdated": false
+      "is_outdated": true
     },
     {
       "fact": "Peru Category",
