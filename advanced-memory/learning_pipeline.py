@@ -409,7 +409,7 @@ class LearningPipeline:
             }
         
         if action == 'add':
-            result = self.memory_db.add_fact(keyword, fact, source, confidence, category)
+            result = self.memory_db.add_fact(keyword, fact, source, confidence, category, 'not_verified')
             return {
                 'stage': 'confirm',
                 'status': 'added',

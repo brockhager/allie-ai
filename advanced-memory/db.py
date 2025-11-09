@@ -75,6 +75,14 @@ class AllieMemoryDB:
             cursor.execute("ALTER TABLE facts ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
             logger.info("Added created_at column to facts table")
         
+        if 'status' not in columns:
+            cursor.execute("ALTER TABLE facts ADD COLUMN status ENUM('true', 'false', 'not_verified', 'needs_review', 'experimental') DEFAULT 'not_verified'")
+            logger.info("Added status column to facts table")
+        
+        if 'confidence_score' not in columns:
+            cursor.execute("ALTER TABLE facts ADD COLUMN confidence_score INT DEFAULT 50")
+            logger.info("Added confidence_score column to facts table")
+        
         # Add indexes
         try:
             cursor.execute("CREATE INDEX idx_keyword ON facts(keyword)")
@@ -88,6 +96,16 @@ class AllieMemoryDB:
         
         try:
             cursor.execute("CREATE INDEX idx_updated ON facts(updated_at)")
+        except:
+            pass
+        
+        try:
+            cursor.execute("CREATE INDEX idx_status ON facts(status)")
+        except:
+            pass
+        
+        try:
+            cursor.execute("CREATE INDEX idx_confidence_score ON facts(confidence_score)")
         except:
             pass
         
@@ -152,7 +170,8 @@ class AllieMemoryDB:
         logger.info("Database tables initialized successfully")
     
     def add_fact(self, keyword: str, fact: str, source: str, 
-                 confidence: float = 0.8, category: str = 'general') -> Dict:
+                 confidence: float = 0.8, category: str = 'general',
+                 status: str = 'not_verified', confidence_score: int = 50) -> Dict:
         """
         Add a new fact to memory
         
@@ -162,6 +181,8 @@ class AllieMemoryDB:
             source: Where the fact came from
             confidence: Confidence score (0.0-1.0)
             category: Category/domain of the fact
+            status: Verification status ('true', 'false', 'not_verified', 'needs_review', 'experimental')
+            confidence_score: Confidence score (0-100)
             
         Returns:
             Dict with status and fact_id
@@ -186,9 +207,9 @@ class AllieMemoryDB:
             
             # Insert new fact
             cursor.execute("""
-                INSERT INTO facts (keyword, fact, source, confidence, category)
-                VALUES (%s, %s, %s, %s, %s)
-            """, (keyword, fact, source, confidence, category))
+                INSERT INTO facts (keyword, fact, source, confidence, category, status, confidence_score)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """, (keyword, fact, source, confidence, category, status, confidence_score))
             
             fact_id = cursor.lastrowid
             
@@ -220,7 +241,7 @@ class AllieMemoryDB:
         try:
             cursor = self.connection.cursor(dictionary=True)
             cursor.execute("""
-                SELECT id, keyword, fact, source, confidence, category, 
+                SELECT id, keyword, fact, source, confidence, category, status, confidence_score,
                        created_at, updated_at
                 FROM facts
                 WHERE keyword = %s
@@ -254,7 +275,7 @@ class AllieMemoryDB:
             # Search in both keyword and fact content
             search_term = f"%{query}%"
             cursor.execute("""
-                SELECT id, keyword, fact, source, confidence, category,
+                SELECT id, keyword, fact, source, confidence, category, status, confidence_score,
                        created_at, updated_at
                 FROM facts
                 WHERE keyword LIKE %s OR fact LIKE %s
@@ -272,7 +293,7 @@ class AllieMemoryDB:
             return []
     
     def update_fact(self, keyword: str, new_fact: str, source: str,
-                    confidence: float = 0.8) -> Dict:
+                    confidence: float = 0.8, status: str = None, confidence_score: int = None) -> Dict:
         """
         Update an existing fact
         
@@ -300,6 +321,12 @@ class AllieMemoryDB:
                     SET fact = %s, source = %s, confidence = %s, updated_at = CURRENT_TIMESTAMP
                     WHERE keyword = %s
                 """, (new_fact, source, confidence, keyword))
+                
+                # Update status and confidence_score if provided
+                if status is not None:
+                    cursor.execute("UPDATE facts SET status = %s WHERE keyword = %s", (status, keyword))
+                if confidence_score is not None:
+                    cursor.execute("UPDATE facts SET confidence_score = %s WHERE keyword = %s", (confidence_score, keyword))
                 
                 # Log the update
                 cursor.execute("""
@@ -387,7 +414,7 @@ class AllieMemoryDB:
             else:
                 # Only current facts
                 cursor.execute("""
-                    SELECT id, keyword, fact, source, confidence, category,
+                    SELECT id, keyword, fact, source, confidence, category, status, confidence_score,
                            created_at, updated_at
                     FROM facts
                     ORDER BY updated_at DESC
@@ -402,6 +429,133 @@ class AllieMemoryDB:
         except Error as e:
             logger.error(f"Error getting timeline: {e}")
             return []
+    
+    def get_all_facts(self, status_filter: str = None, category_filter: str = None, 
+                     limit: int = 100, offset: int = 0) -> List[Dict]:
+        """
+        Get all facts with optional filtering and pagination
+        
+        Args:
+            status_filter: Filter by status ('true', 'false', 'not_verified', etc.)
+            category_filter: Filter by category
+            limit: Maximum number of results
+            offset: Pagination offset
+            
+        Returns:
+            List of facts
+        """
+        try:
+            cursor = self.connection.cursor(dictionary=True)
+            
+            query = """
+                SELECT id, keyword, fact, source, confidence, category, status, confidence_score,
+                       created_at, updated_at
+                FROM facts
+                WHERE 1=1
+            """
+            params = []
+            
+            if status_filter:
+                query += " AND status = %s"
+                params.append(status_filter)
+            
+            if category_filter:
+                query += " AND category = %s"
+                params.append(category_filter)
+            
+            query += " ORDER BY updated_at DESC LIMIT %s OFFSET %s"
+            params.extend([limit, offset])
+            
+            cursor.execute(query, params)
+            results = cursor.fetchall()
+            cursor.close()
+            
+            return results
+            
+        except Error as e:
+            logger.error(f"Error getting all facts: {e}")
+            return []
+    
+    def update_fact_status(self, fact_id: int, status: str, confidence_score: int = None) -> Dict:
+        """
+        Update a fact's verification status and confidence score
+        
+        Args:
+            fact_id: ID of the fact to update
+            status: New status ('true', 'false', 'not_verified', 'needs_review', 'experimental')
+            confidence_score: New confidence score (0-100)
+            
+        Returns:
+            Dict with status
+        """
+        try:
+            cursor = self.connection.cursor()
+            
+            # Get current fact for logging
+            cursor.execute("SELECT keyword, fact, status, confidence_score FROM facts WHERE id = %s", (fact_id,))
+            result = cursor.fetchone()
+            
+            if not result:
+                return {"status": "not_found", "fact_id": fact_id}
+            
+            old_keyword, old_fact, old_status, old_confidence_score = result
+            
+            # Update the fact
+            update_fields = ["status = %s"]
+            params = [status]
+            
+            if confidence_score is not None:
+                update_fields.append("confidence_score = %s")
+                params.append(confidence_score)
+            
+            params.append(fact_id)
+            update_query = f"UPDATE facts SET {', '.join(update_fields)}, updated_at = CURRENT_TIMESTAMP WHERE id = %s"
+            
+            cursor.execute(update_query, params)
+            
+            # Log the change
+            cursor.execute("""
+                INSERT INTO learning_log (keyword, old_fact, new_fact, source, confidence, change_type)
+                VALUES (%s, %s, %s, %s, %s, 'validate')
+            """, (old_keyword, f"Status: {old_status} -> {status}, Confidence: {old_confidence_score} -> {confidence_score or old_confidence_score}", 
+                  old_fact, "manual_verification", confidence_score/100.0 if confidence_score else old_confidence_score/100.0))
+            
+            cursor.close()
+            logger.info(f"Updated fact {fact_id} status to {status}")
+            
+            return {"status": "updated", "fact_id": fact_id, "new_status": status, "new_confidence_score": confidence_score}
+            
+        except Error as e:
+            logger.error(f"Error updating fact status: {e}")
+            return {"status": "error", "message": str(e)}
+    
+    def get_fact_by_id(self, fact_id: int) -> Optional[Dict]:
+        """
+        Get a fact by its ID
+        
+        Args:
+            fact_id: The fact ID
+            
+        Returns:
+            Dict with fact details or None if not found
+        """
+        try:
+            cursor = self.connection.cursor(dictionary=True)
+            cursor.execute("""
+                SELECT id, keyword, fact, source, confidence, category, status, confidence_score,
+                       created_at, updated_at
+                FROM facts
+                WHERE id = %s
+            """, (fact_id,))
+            
+            result = cursor.fetchone()
+            cursor.close()
+            
+            return result
+            
+        except Error as e:
+            logger.error(f"Error retrieving fact by ID: {e}")
+            return None
     
     def add_to_learning_queue(self, keyword: str, fact: str, source: str,
                               confidence: float = 0.5, category: str = 'general') -> Dict:

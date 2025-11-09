@@ -39,6 +39,8 @@ class HybridMemory:
 						obj.setdefault("category", obj.get("category", "general"))
 						obj.setdefault("source", obj.get("source", "external"))
 						obj.setdefault("confidence", float(obj.get("confidence", 0.9)))
+						obj.setdefault("status", obj.get("status", "not_verified"))
+						obj.setdefault("confidence_score", obj.get("confidence_score", int(obj.get("confidence", 0.9) * 100)))
 						obj.setdefault("is_outdated", bool(obj.get("is_outdated", False)))
 						out.append(obj)
 					self.facts = out
@@ -55,12 +57,16 @@ class HybridMemory:
 		except Exception:
 			pass
 
-	def add_fact(self, fact: str, category: str = "general", confidence: float = 0.9, source: str = "user") -> Dict[str, Any]:
+	def add_fact(self, fact: str, category: str = "general", confidence: float = 0.9, source: str = "user", status: str = "not_verified", confidence_score: int = None) -> Dict[str, Any]:
 		"""Add a fact. If a closely matching fact exists, mark it outdated and
 		return an update report.
 		"""
 		now = datetime.now().isoformat()
 		normalized = fact.strip()
+
+		# Calculate confidence_score from confidence if not provided
+		if confidence_score is None:
+			confidence_score = int(confidence * 100)
 
 		# Detect potential duplicates / corrections by comparing normalized prefixes
 		def prefix_key(s: str):
@@ -83,6 +89,8 @@ class HybridMemory:
 			"category": category,
 			"confidence": float(confidence),
 			"source": source,
+			"status": status,
+			"confidence_score": confidence_score,
 			"is_outdated": False,
 		}
 
@@ -105,9 +113,23 @@ class HybridMemory:
 			text = (entry.get("fact") or "").lower()
 			if q in text and not entry.get("is_outdated", False):
 				hits.append(entry)
-			if len(hits) >= limit:
-				break
-		return hits
+
+		# Sort by status priority and confidence
+		status_priority = {
+			'true': 5,           # Highest priority - verified true facts
+			'experimental': 4,   # Experimental facts
+			'not_verified': 3,   # Default status
+			'needs_review': 2,   # Needs human review
+			'false': 1           # Lowest priority - avoid if possible
+		}
+
+		hits.sort(key=lambda x: (
+			status_priority.get(x.get('status', 'not_verified'), 3),  # Status priority
+			x.get('confidence_score', x.get('confidence', 0.5) * 100),  # Confidence score (0-100)
+			x.get('timestamp', ''),  # Most recent first
+		), reverse=True)
+
+		return hits[:limit]
 
 	def get_timeline(self, include_outdated: bool = False) -> List[Dict[str, Any]]:
 		if include_outdated:

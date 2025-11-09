@@ -232,12 +232,31 @@ if not STATIC_DIR.exists():
 
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
+@app.get("/", response_class=HTMLResponse)
+async def root():
+    """Serve the main tabbed interface"""
+    index_path = STATIC_DIR / "index.html"
+    if index_path.exists():
+        return index_path.read_text(encoding="utf-8")
+    else:
+        return HTMLResponse(content="<h1>Allie - AI Assistant</h1><p>Main interface not found</p>", status_code=404)
+
 @app.get("/ui", response_class=HTMLResponse)
-async def ui_index():
+async def get_ui():
+    """Serve the Allie UI page (for iframe embedding)"""
     ui_path = STATIC_DIR / "ui.html"
-    if not ui_path.exists():
-        return HTMLResponse("<html><body><h3>UI not installed</h3></body></html>", status_code=404)
-    return HTMLResponse(ui_path.read_text(encoding="utf-8"))
+    if ui_path.exists():
+        return ui_path.read_text(encoding="utf-8")
+    else:
+        return HTMLResponse(content="<h1>Allie UI</h1><p>UI file not found</p>", status_code=404)
+
+@app.get("/fact-check", response_class=HTMLResponse)
+async def fact_check_ui():
+    """Serve the fact-check UI page"""
+    fact_check_path = STATIC_DIR / "fact-check.html"
+    if not fact_check_path.exists():
+        return HTMLResponse("<html><body><h3>Fact Check UI not installed</h3></body></html>", status_code=404)
+    return HTMLResponse(fact_check_path.read_text(encoding="utf-8"))
 
 
 # -------------------------
@@ -1327,12 +1346,8 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
             # If we have both, mention memory briefly for context
             context_parts.append(f"(I also have {len(relevant_facts)} related fact(s) in memory)")
 
-        # Skip recent context - it often pollutes responses with irrelevant information
-        # if recent_context:
-        #     context_parts.append(f"Recent conversation context: {recent_context}")
-            context_parts.append(f"Information from {sources_used}:\n{synthesized_text}")
     # Fallback to old web results format
-    elif web_results and web_results.get("success") and web_results.get("results"):
+    if web_results and web_results.get("success") and web_results.get("results"):
         web_info = []
         for result in web_results["results"][:3]:  # Limit to top 3
             web_info.append(f"- {result.get('text', '')} (Source: {result.get('source', 'Web')})")
@@ -2121,6 +2136,118 @@ async def get_cluster_facts(cluster_name: str):
     except Exception as e:
         logger.error(f"Error getting cluster facts: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+# -------------------------
+# Fact-Check Endpoints
+# -------------------------
+
+@app.get("/api/facts")
+async def get_facts(status: str = None, category: str = None, limit: int = 50, offset: int = 0):
+    """Get facts for manual verification with filtering and pagination"""
+    try:
+        facts = advanced_memory.get_all_facts(
+            status_filter=status,
+            category_filter=category,
+            limit=limit,
+            offset=offset
+        )
+        return {
+            "status": "success",
+            "facts": facts,
+            "count": len(facts),
+            "filters": {
+                "status": status,
+                "category": category,
+                "limit": limit,
+                "offset": offset
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error getting facts: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.patch("/api/facts/{fact_id}")
+async def update_fact_status(fact_id: int, payload: Dict[str, Any] = Body(...)):
+    """Update a fact's verification status and confidence score"""
+    status = payload.get("status")
+    confidence_score = payload.get("confidence_score")
+    
+    if not status:
+        raise HTTPException(status_code=400, detail="status is required")
+    
+    valid_statuses = ['true', 'false', 'not_verified', 'needs_review', 'experimental']
+    if status not in valid_statuses:
+        raise HTTPException(status_code=400, detail=f"Invalid status. Must be one of: {', '.join(valid_statuses)}")
+    
+    if confidence_score is not None and (confidence_score < 0 or confidence_score > 100):
+        raise HTTPException(status_code=400, detail="confidence_score must be between 0 and 100")
+    
+    try:
+        result = advanced_memory.update_fact_status(fact_id, status, confidence_score)
+        if result["status"] == "not_found":
+            raise HTTPException(status_code=404, detail=f"Fact with ID {fact_id} not found")
+        
+        return {
+            "status": "success",
+            "result": result
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating fact status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/facts/{fact_id}")
+async def get_fact_by_id(fact_id: int):
+    """Get a specific fact by ID"""
+    try:
+        fact = advanced_memory.get_fact_by_id(fact_id)
+        if not fact:
+            raise HTTPException(status_code=404, detail=f"Fact with ID {fact_id} not found")
+        
+        return {
+            "status": "success",
+            "fact": fact
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting fact by ID: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/facts/bulk-update")
+async def bulk_update_facts(payload: Dict[str, Any] = Body(...)):
+    """Bulk update multiple facts' status"""
+    updates = payload.get("updates", [])
+    
+    if not updates:
+        raise HTTPException(status_code=400, detail="updates list is required")
+    
+    results = []
+    errors = []
+    
+    for update in updates:
+        fact_id = update.get("fact_id")
+        status = update.get("status")
+        confidence_score = update.get("confidence_score")
+        
+        if not fact_id or not status:
+            errors.append({"fact_id": fact_id, "error": "fact_id and status are required"})
+            continue
+        
+        try:
+            result = advanced_memory.update_fact_status(fact_id, status, confidence_score)
+            results.append(result)
+        except Exception as e:
+            errors.append({"fact_id": fact_id, "error": str(e)})
+    
+    return {
+        "status": "success",
+        "results": results,
+        "errors": errors,
+        "total_processed": len(results),
+        "total_errors": len(errors)
+    }
 
 # -------------------------
 # Graceful shutdown - close httpx client
