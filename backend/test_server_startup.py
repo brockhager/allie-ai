@@ -13,7 +13,7 @@ def test_server_startup():
     print("=" * 60)
     
     print("\n1. Testing HybridMemory initialization...")
-    from memory.hybrid import HybridMemory
+    from hybrid import HybridMemory
     try:
         memory = HybridMemory()
         print(f"   ✓ HybridMemory initialized: {memory}")
@@ -44,7 +44,7 @@ def test_server_startup():
         return False
     
     print("\n4. Verifying MySQL connection...")
-    from memory.db import MemoryDB
+    from db import MemoryDB
     try:
         db = MemoryDB()
         if db.connection:

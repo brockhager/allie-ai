@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
+import sys
+from pathlib import Path
+
+# Add advanced-memory to path
+sys.path.insert(0, str(Path(__file__).parent.parent / "advanced-memory"))
+
+
 """Simple persistence test"""
-from memory.hybrid import HybridMemory
+from hybrid import HybridMemory
 from pathlib import Path
 
 # Clean start

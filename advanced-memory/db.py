@@ -343,10 +343,10 @@ class AllieMemoryDB:
                 # Delete the fact
                 cursor.execute("DELETE FROM facts WHERE keyword = %s", (keyword,))
                 
-                # Log the deletion
+                # Log the deletion (use empty string instead of NULL for new_fact)
                 cursor.execute("""
                     INSERT INTO learning_log (keyword, old_fact, new_fact, source, change_type)
-                    VALUES (%s, %s, NULL, %s, 'delete')
+                    VALUES (%s, %s, '', %s, 'delete')
                 """, (keyword, old_fact, old_source))
                 
                 cursor.close()

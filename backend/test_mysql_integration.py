@@ -6,8 +6,8 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from memory.hybrid import HybridMemory
-from memory.db import MemoryDB
+from hybrid import HybridMemory
+from db import MemoryDB
 
 def test_mysql_integration():
     """Test complete MySQL integration with hybrid memory"""

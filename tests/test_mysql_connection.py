@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """Quick test of MySQL memory connection"""
 
-from memory.db import MemoryDB
+import sys
+from pathlib import Path
+
+# Add advanced-memory to path
+sys.path.insert(0, str(Path(__file__).parent.parent / "advanced-memory"))
+
+from db import MemoryDB
 
 try:
     # Connect to your existing database

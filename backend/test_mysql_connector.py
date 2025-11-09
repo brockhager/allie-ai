@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from memory.db import MemoryDB
+from db import MemoryDB
 
 def test_connection():
     """Test database connection and basic operations"""

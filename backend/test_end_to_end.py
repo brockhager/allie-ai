@@ -6,8 +6,8 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from memory.hybrid import HybridMemory
-from memory.db import MemoryDB
+import sys; from pathlib import Path; sys.path.insert(0, str(Path(__file__).parent.parent / "advanced-memory")); from hybrid import HybridMemory
+from db import MemoryDB
 
 def test_end_to_end():
     """Test complete flow from external sources to MySQL storage"""

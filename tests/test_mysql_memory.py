@@ -10,11 +10,12 @@ import sys
 from pathlib import Path
 
 # Add project root to path
-project_root = Path(__file__).parent
+project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
+sys.path.insert(0, str(project_root / "advanced-memory"))
 
-from memory.db import AllieMemoryDB
-from memory.learning_pipeline import LearningPipeline
+from db import AllieMemoryDB
+from learning_pipeline import LearningPipeline
 
 # Mock external sources for testing
 async def mock_wikipedia(keyword):

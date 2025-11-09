@@ -5,6 +5,8 @@ Welcome to the Allie AI documentation! This repository contains a comprehensive 
 ## 📚 Documentation Index
 
 ### 🧠 Memory Systems
+- **[Advanced Memory System](./advanced-memory/MIGRATION_COMPLETE.md)** - Complete overview of the new advanced MySQL memory system with learning pipeline
+- **[Memory Migration Guide](./advanced-memory/MEMORY_MIGRATION.md)** - Details of the migration from old memory module to advanced-memory
 - **[Hybrid Memory Guide](./HYBRID_MEMORY_GUIDE.md)** - Complete guide to the hybrid memory system combining MySQL persistence with in-memory caching
 - **[Memory System Documentation](./memory/README.md)** - Overview of memory architecture, MySQL integration, and usage
 - **[MySQL Migration Guide](./MYSQL_MIGRATION.md)** - Complete migration from volatile to persistent MySQL storage

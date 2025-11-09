@@ -8,7 +8,7 @@ from pathlib import Path
 # Add backend to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from memory.hybrid import HybridMemory
+from hybrid import HybridMemory
 
 def test_basic_functionality():
     """Test basic hybrid memory functionality"""

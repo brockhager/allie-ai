@@ -491,16 +491,24 @@ def extract_info_after_keyword(text, keyword):
             return " ".join(result) if result else None
     return None
 
-# Initialize hybrid memory system
-from memory.hybrid import HybridMemory
-hybrid_memory = HybridMemory()
+# Initialize advanced memory system
+sys.path.insert(0, str(APP_ROOT.parent / "advanced-memory"))
+from db import AllieMemoryDB
+from learning_pipeline import LearningPipeline
+from hybrid import HybridMemory as AdvancedHybridMemory
+
+advanced_memory = AllieMemoryDB()
+learning_pipeline = LearningPipeline(advanced_memory)
+
+# Use hybrid memory from advanced-memory (new version)
+hybrid_memory = AdvancedHybridMemory()
 
 # Initialize legacy memory system for backward compatibility
 MEMORY_FILE = DATA_DIR / "allie_memory.json"
 allie_memory = AllieMemory(MEMORY_FILE)
 
-# Initialize automatic learning system
-auto_learner = AutomaticLearner(allie_memory, hybrid_memory)
+# Initialize automatic learner with advanced memory
+auto_learner = AutomaticLearner(allie_memory, advanced_memory)
 
 # Initial cleanup on startup
 cleanup_all_folders()
@@ -1526,22 +1534,43 @@ async def add_memory(payload: Dict[str, Any] = Body(...)):
     if not fact:
         raise HTTPException(status_code=400, detail="Fact is required")
 
-    # Add to both legacy and hybrid memory systems
-    allie_memory.add_fact(fact, importance, category)
-    hybrid_memory.add_fact(fact, category=category, confidence=importance, source="user")
+    # Process through advanced memory pipeline
+    # Extract keyword from fact
+    words = fact.split()[:5]
+    keyword = ' '.join(words).strip('.,!?;:')
     
-    return {"status": "fact_added", "fact": fact}
+    result = learning_pipeline.process_fact(
+        keyword=keyword,
+        fact=fact,
+        source="user",
+        base_confidence=importance,
+        category=category,
+        auto_resolve=True
+    )
+    
+    # Also add to legacy memory for backward compatibility
+    allie_memory.add_fact(fact, importance, category)
+    
+    return {
+        "status": "fact_added", 
+        "fact": fact,
+        "pipeline_status": result.get("final_status"),
+        "confidence": result.get("confidence")
+    }
 
 @app.get("/api/memory/recall")
 async def recall_memory(query: str = "", limit: int = 5):
-    """Recall relevant facts from memory"""
+    """Recall relevant facts from advanced memory"""
     if not query:
-        # Return all facts if no query
-        facts = allie_memory.knowledge_base.get("facts", [])[:limit]
-        return {"facts": [f["fact"] for f in facts]}
+        # Return recent facts if no query
+        timeline = advanced_memory.timeline(limit=limit)
+        return {"facts": [f["fact"] for f in timeline]}
 
-    facts = allie_memory.recall_facts(query, limit)
-    return {"query": query, "facts": facts}
+    # Search advanced memory
+    results = advanced_memory.search_facts(query, limit=limit)
+    facts = [f["fact"] for f in results]
+    
+    return {"query": query, "facts": facts, "count": len(facts)}
 
 @app.delete("/api/memory/fact")
 async def remove_memory_fact(fact: str):
@@ -1822,19 +1851,29 @@ async def bulk_learn(payload: Dict[str, Any] = Body(...)):
     }
     
     try:
-        # Process direct facts
+        # Process direct facts through learning pipeline
         if facts:
+            prepared_facts = []
             for fact in facts:
                 if isinstance(fact, str) and fact.strip():
-                    # Store in hybrid memory
-                    result = hybrid_memory.add_fact(
-                        fact.strip(),
-                        category="bulk_learning",
-                        confidence=0.8,
-                        source="bulk_learn"
-                    )
-                    results["facts_learned"] += 1
-                    results["details"].append(f"Learned: {fact[:100]}...")
+                    # Extract keyword from fact
+                    fact_text = fact.strip()
+                    words = fact_text.split()[:5]
+                    keyword = ' '.join(words).strip('.,!?;:')
+                    
+                    prepared_facts.append({
+                        'keyword': keyword,
+                        'fact': fact_text,
+                        'source': 'bulk_learn',
+                        'confidence': 0.9,  # User-provided facts have high confidence
+                        'category': 'bulk_learning'
+                    })
+            
+            # Process batch through pipeline
+            if prepared_facts:
+                pipeline_result = learning_pipeline.process_batch(prepared_facts, auto_resolve=True)
+                results["facts_learned"] = pipeline_result['added'] + pipeline_result['updated']
+                results["details"].append(f"Processed {len(prepared_facts)} facts: {pipeline_result['added']} added, {pipeline_result['updated']} updated")
         
         # Research topics using multi-source retrieval
         if topics:
@@ -1850,20 +1889,27 @@ async def bulk_learn(payload: Dict[str, Any] = Body(...)):
                     )
                     
                     if search_results.get("success") and search_results.get("facts_to_store"):
-                        topic_facts = 0
+                        topic_facts = []
                         for fact_data in search_results["facts_to_store"]:
                             fact = fact_data.get("fact", "")
                             if fact and isinstance(fact, str):
-                                hybrid_memory.add_fact(
-                                    fact,
-                                    category=fact_data.get("category", "research"),
-                                    confidence=fact_data.get("confidence", 0.8),
-                                    source=fact_data.get("source", "bulk_research")
-                                )
-                                topic_facts += 1
+                                # Extract keyword from fact
+                                words = fact.split()[:5]
+                                keyword = ' '.join(words).strip('.,!?;:')
+                                
+                                topic_facts.append({
+                                    'keyword': keyword,
+                                    'fact': fact,
+                                    'source': fact_data.get("source", "bulk_research"),
+                                    'confidence': fact_data.get("confidence", 0.8),
+                                    'category': fact_data.get("category", "research")
+                                })
                         
-                        results["topics_researched"] += 1
-                        results["details"].append(f"Researched '{topic}': learned {topic_facts} facts")
+                        if topic_facts:
+                            pipeline_result = learning_pipeline.process_batch(topic_facts, auto_resolve=True)
+                            learned = pipeline_result['added'] + pipeline_result['updated']
+                            results["topics_researched"] += 1
+                            results["details"].append(f"Researched '{topic}': learned {learned} facts")
                     else:
                         results["details"].append(f"No information found for topic: {topic}")
         
@@ -1962,6 +2008,119 @@ async def quick_topic_learning(payload: Dict[str, Any] = Body(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+
+# -------------------------
+# Advanced Memory Management Endpoints
+# -------------------------
+
+@app.get("/api/memory/stats")
+async def get_memory_statistics():
+    """Get comprehensive memory statistics from advanced system"""
+    try:
+        stats = learning_pipeline.get_pipeline_stats()
+        return {
+            "status": "success",
+            "statistics": stats
+        }
+    except Exception as e:
+        logger.error(f"Error getting memory stats: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/memory/queue")
+async def get_learning_queue(status: str = "pending", limit: int = 50):
+    """Get items from the learning queue"""
+    try:
+        queue_items = advanced_memory.get_learning_queue(status=status, limit=limit)
+        return {
+            "status": "success",
+            "queue": queue_items,
+            "count": len(queue_items)
+        }
+    except Exception as e:
+        logger.error(f"Error getting learning queue: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/memory/queue/{queue_id}/process")
+async def process_queue_item(queue_id: int, action: str = Body(..., embed=True)):
+    """
+    Process a queued fact
+    
+    Actions: 'validate', 'reject', 'process'
+    """
+    if action not in ['validate', 'reject', 'process']:
+        raise HTTPException(status_code=400, detail="Invalid action. Must be 'validate', 'reject', or 'process'")
+    
+    try:
+        result = advanced_memory.process_queue_item(queue_id, action)
+        return {
+            "status": "success",
+            "result": result
+        }
+    except Exception as e:
+        logger.error(f"Error processing queue item: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/memory/search")
+async def search_memory(query: str, limit: int = 10):
+    """Search facts in advanced memory"""
+    try:
+        results = advanced_memory.search_facts(query, limit=limit)
+        return {
+            "status": "success",
+            "results": results,
+            "count": len(results)
+        }
+    except Exception as e:
+        logger.error(f"Error searching memory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/memory/timeline")
+async def get_memory_timeline(limit: int = 50, include_deleted: bool = False):
+    """Get memory timeline"""
+    try:
+        timeline = advanced_memory.timeline(limit=limit, include_deleted=include_deleted)
+        return {
+            "status": "success",
+            "timeline": timeline,
+            "count": len(timeline)
+        }
+    except Exception as e:
+        logger.error(f"Error getting timeline: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/memory/cluster")
+async def create_cluster(payload: Dict[str, Any] = Body(...)):
+    """Create a fact cluster"""
+    cluster_name = payload.get("cluster_name")
+    description = payload.get("description", "")
+    
+    if not cluster_name:
+        raise HTTPException(status_code=400, detail="cluster_name is required")
+    
+    try:
+        result = advanced_memory.create_cluster(cluster_name, description)
+        return {
+            "status": "success",
+            "result": result
+        }
+    except Exception as e:
+        logger.error(f"Error creating cluster: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/memory/cluster/{cluster_name}")
+async def get_cluster_facts(cluster_name: str):
+    """Get all facts in a cluster"""
+    try:
+        facts = advanced_memory.get_cluster_facts(cluster_name)
+        return {
+            "status": "success",
+            "cluster_name": cluster_name,
+            "facts": facts,
+            "count": len(facts)
+        }
+    except Exception as e:
+        logger.error(f"Error getting cluster facts: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 # -------------------------
 # Graceful shutdown - close httpx client
