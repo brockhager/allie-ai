@@ -1,8 +1,16 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T16:09:52.575178",
-  "fact_count": 16,
+  "saved_at": "2025-11-08T21:35:42.806178",
+  "fact_count": 17,
   "facts": [
+    {
+      "fact": "Hands Across America was a public fundraising event held on Sunday, May 25, 1986, Memorial Day weekend, which attempted to create a continuous human chain of people holding hands across the contiguous United States. While approximately 5 million people participated, the chain was broken in many plac...",
+      "timestamp": "2025-11-08T21:35:42.805873",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
     {
       "fact": "2025 (MMXXV) is the current year, and is a common year starting on Wednesday of the Gregorian calendar, the 2025th year of the Common Era (CE) and Anno Domini (AD) designations, the 25th  year of the 3rd millennium and the 21st century, and the  6th   year of the 2020s decade.  \nSo far, the year has...",
       "timestamp": "2025-11-08T16:09:52.575129",
