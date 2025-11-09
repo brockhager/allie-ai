@@ -1,14 +1,24 @@
 [
   {
-    "id": "c-6ml3euc",
+    "id": "c-pduszlp",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762730307947
+        "timestamp": 1762730512746
+      },
+      {
+        "role": "me",
+        "text": "where is peru",
+        "timestamp": 1762730587336
+      },
+      {
+        "role": "them",
+        "text": "This is a dummy response for testing purposes.\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Peru\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Peru",
+        "timestamp": 1762730607198
       }
     ],
-    "draft": "where is peru"
+    "draft": ""
   }
 ]

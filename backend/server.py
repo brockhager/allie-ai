@@ -93,76 +93,102 @@ tokenizer = None
 model = None
 
 # Load real model for chat
-# For testing: Use dummy model immediately to avoid download issues
-logger.warning("Using dummy model for testing - skipping real model download")
-# Dummy model for testing (fallback)
-class DummyModel:
-    def __init__(self):
-        self.device = "cpu"
+try:
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    import torch
     
-    def generate(self, **kwargs):
-        # Return tensor-like object with shape attribute
-        class DummyOutput:
-            def __init__(self):
-                self.shape = [1, 10]  # batch_size=1, seq_len=10
-            def __getitem__(self, idx):
-                return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Dummy token IDs
+    logger.info("Loading TinyLlama model...")
+    model_name = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+    
+    # Load tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    
+    # Load model with appropriate device
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    logger.info(f"Using device: {device}")
+    
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
+        device_map="auto" if device == "cuda" else None,
+        low_cpu_mem_usage=True
+    )
+    
+    if device == "cpu":
+        model = model.to(device)
+    
+    logger.info("TinyLlama model loaded successfully")
+    
+except Exception as e:
+    logger.warning(f"Failed to load real model, using dummy model: {e}")
+    # Dummy model for testing (fallback)
+    class DummyModel:
+        def __init__(self):
+            self.device = "cpu"
         
-        return [DummyOutput()]
+        def generate(self, **kwargs):
+            # Return tensor-like object with shape attribute
+            class DummyOutput:
+                def __init__(self):
+                    self.shape = [1, 10]  # batch_size=1, seq_len=10
+                def __getitem__(self, idx):
+                    return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Dummy token IDs
+            
+            return [DummyOutput()]
 
-class DummyTokenizer:
-    def __init__(self):
-        self.eos_token_id = 2
-    
-    def __call__(self, prompt, return_tensors=None):
-        # Return object with .to() method to match real tokenizer behavior
-        class DummyTensor:
-            """Mock tensor with shape attribute"""
-            def __init__(self, data):
-                self.data = data
-                # Calculate shape: (batch_size, sequence_length)
-                if isinstance(data, list) and len(data) > 0:
-                    self.shape = (len(data), len(data[0]) if isinstance(data[0], list) else 1)
-                else:
-                    self.shape = (1, 1)
-            
-            def __getitem__(self, key):
-                return self.data[key]
+    class DummyTokenizer:
+        def __init__(self):
+            self.eos_token_id = 2
         
-        class TokenizerOutput:
-            def __init__(self):
-                self.data = {"input_ids": DummyTensor([[1, 2, 3]])}
+        def __call__(self, prompt, return_tensors=None):
+            # Return object with .to() method to match real tokenizer behavior
+            class DummyTensor:
+                """Mock tensor with shape attribute"""
+                def __init__(self, data):
+                    self.data = data
+                    # Calculate shape: (batch_size, sequence_length)
+                    if isinstance(data, list) and len(data) > 0:
+                        self.shape = (len(data), len(data[0]) if isinstance(data[0], list) else 1)
+                    else:
+                        self.shape = (1, 1)
+                
+                def __getitem__(self, key):
+                    return self.data[key]
             
-            def to(self, device):
-                # Return self to support chaining
-                return self
+            class TokenizerOutput:
+                def __init__(self):
+                    self.data = {"input_ids": DummyTensor([[1, 2, 3]])}
+                
+                def to(self, device):
+                    # Return self to support chaining
+                    return self
+                
+                def __getitem__(self, key):
+                    return self.data[key]
+                
+                def keys(self):
+                    return self.data.keys()
+                
+                def values(self):
+                    return self.data.values()
+                
+                def items(self):
+                    return self.data.items()
             
-            def __getitem__(self, key):
-                return self.data[key]
-            
-            def keys(self):
-                return self.data.keys()
-            
-            def values(self):
-                return self.data.values()
-            
-            def items(self):
-                return self.data.items()
+            output = TokenizerOutput()
+            # Make it subscriptable like a dict and add tensor as attribute
+            output.input_ids = output.data["input_ids"]
+            return output
         
-        output = TokenizerOutput()
-        # Make it subscriptable like a dict and add tensor as attribute
-        output.input_ids = output.data["input_ids"]
-        return output
-    
-    def decode(self, tokens, skip_special_tokens=None):
-        return "This is a dummy response for testing purposes."
-    
-    def apply_chat_template(self, messages, tokenize=False, add_generation_prompt=True):
-        # Simple template for testing
-        return "Test prompt"
+        def decode(self, tokens, skip_special_tokens=None):
+            return "This is a dummy response for testing purposes."
+        
+        def apply_chat_template(self, messages, tokenize=False, add_generation_prompt=True):
+            # Simple template for testing
+            return "Test prompt"
 
-tokenizer = DummyTokenizer()
-model = DummyModel()
+    tokenizer = DummyTokenizer()
+    model = DummyModel()
 
 # Import learning orchestrator
 try:
