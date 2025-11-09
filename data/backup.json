@@ -1,12 +1,72 @@
 [
   {
-    "id": "c-pxxtxw9",
+    "id": "c-syfmpuo",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762732083051
+        "timestamp": 1762732266603
+      },
+      {
+        "role": "me",
+        "text": "what is 222* 342534",
+        "timestamp": 1762732348576
+      },
+      {
+        "role": "them",
+        "text": "76042548",
+        "timestamp": 1762732348583
+      },
+      {
+        "role": "me",
+        "text": "4564816 / 45",
+        "timestamp": 1762732377392
+      },
+      {
+        "role": "them",
+        "text": "101440.3556",
+        "timestamp": 1762732377396
+      },
+      {
+        "role": "me",
+        "text": "101440.3556 * 45",
+        "timestamp": 1762732391928
+      },
+      {
+        "role": "them",
+        "text": "4564816.002",
+        "timestamp": 1762732391933
+      },
+      {
+        "role": "me",
+        "text": "what are wolves",
+        "timestamp": 1762732426529
+      },
+      {
+        "role": "them",
+        "text": "As per current knowledge, the wolf is a large canine native to Eurasia and North America. As for the specific breed of wolves identified, there are over 30 subspecies with the Grey wolf being one of them. However, the term \"wolf\" refers to both wild and domesticated animals of the genus Canis. In terms of their appearance and behavior, these dogs vary widely depending on where they live and how they interact with humans. The Warrington Wolves, a professional rugby league team in Warrington, UK, is primarily made up\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/Wolf\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/Wolverhampton_Wanderers_F.C.",
+        "timestamp": 1762732484607
+      },
+      {
+        "role": "me",
+        "text": "who makes dr pepper",
+        "timestamp": 1762732539557
+      },
+      {
+        "role": "them",
+        "text": "According to Wikipedia, the Dublin Dr Pepper brand is associated with the Dr. Pepper connoisseur named Gavyn Ray. The Dublin Dr Pepper style is believed to be his creation, as it was named after him. Therefore, today's answer would be \"Dr Pepper.\"\n\n---\n**Source:** External_Sources\n**Confidence:** 85%",
+        "timestamp": 1762732569254
+      },
+      {
+        "role": "me",
+        "text": "Dr Pepper is made by Keurig Dr Pepper, a leading beverage company in the United States. While Keurig Dr Pepper owns the brand, it doesn't have its own bottling facilities for Dr Pepper. Instead, it contracts with different bottlers, including those who also bottle Coca-Cola and Pepsi products, to produce and distribute the drink depending on the region.",
+        "timestamp": 1762732625706
+      },
+      {
+        "role": "them",
+        "text": "As you well know, Dr Pepper is one of the most iconic brands worldwide known for its refreshing taste that has been loved since its inception over 137 years ago. The beverage was first created back then by Samuel Colt & Sons Company in Pennsylvania, USA as an addition to their lineup of nonalcoholic soft drinks. However, despite being popular globally, it wasn\u2019t until the early 1980s when Keurig Dr Pepper acquired the brand and brought it into the market. This acquisition\n\n---\n**Source:** Model\n**Confidence:** 60%\n**URLs:**\n\ud83e\udd16 AI Model: Generated response",
+        "timestamp": 1762732679284
       }
     ],
     "draft": ""

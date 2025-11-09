@@ -1,8 +1,78 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T16:32:24.978016",
-  "fact_count": 628,
+  "saved_at": "2025-11-09T16:55:57.524765",
+  "fact_count": 635,
   "facts": [
+    {
+      "fact": "Dublin Dr Pepper is the popular name for a style of Dr Pepper soft drink made by the Dublin Dr Pepper Bottling Company in Dublin, Texas, US. This style of Dr. Pepper is attributed to Gavyn Ray, a Dr. Pepper connoisseur.",
+      "timestamp": "2025-11-09T16:55:57.523108",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Julie of the Wolves: by Jean Craighead George (1972) Subjects: Juvenile fiction, Eskimos, Wolves",
+      "timestamp": "2025-11-09T16:54:07.085035",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Warrington <B>Wolves</B> are a professional rugby league club in Warrington, England, that competes in the",
+      "timestamp": "2025-11-09T16:54:07.077067",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Wolverhampton Wanderers F.C.: instance_of = ['Q476028', 'Q103229495', 'Q20639856']",
+      "timestamp": "2025-11-09T16:54:07.067503",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The wolf (Canis lupus; pl.: wolves), also known as the grey wolf or gray wolf, is a canine native to Eurasia and North America. More than thirty subspecies of Canis lupus have been recognized, including the dog and dingo, though grey wolves, as popularly understood, include only naturally-occurring ...",
+      "timestamp": "2025-11-09T16:54:07.056917",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Wolverhampton Wanderers F.C. A professional football club based in Wolverhampton, England.",
+      "timestamp": "2025-11-09T16:54:07.045654",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Wolf A canine native to Eurasia and North America.",
+      "timestamp": "2025-11-09T16:54:07.036085",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "The Bridge of San Luis Rey: by Thornton Wilder, T. Wilder, Wilder T. (1927) Subjects: Accident victims, Accidents, American fiction",
       "timestamp": "2025-11-09T16:32:24.977087",

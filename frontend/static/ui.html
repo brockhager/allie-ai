@@ -14,6 +14,32 @@
   .tab.active{background:rgba(255,255,255,0.05);color:var(--text);border-color:rgba(255,255,255,0.07)}
   .tab-controls{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
   button{background:var(--accent);color:#021125;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+  /* Larger chat input and send button adjustments */
+  /* Make the main prompt textarea ~3x taller for easier typing */
+  #prompt{
+    height:120px; /* ~3x typical single-line input height */
+    padding:14px;
+    font-size:16px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.04);
+    background:transparent;
+    color:var(--text);
+    resize:vertical;
+    min-height:84px;
+    max-height:320px;
+  }
+
+  /* Make the SEND button visually and interactively larger (approx 3x) */
+  #sendBtn{
+    padding:24px 36px;
+    font-size:18px;
+    border-radius:10px;
+    transform-origin:center;
+  }
+
+  /* Ensure the inputbar layout accommodates larger controls */
+  .inputbar{display:flex;gap:16px;padding:12px}
+  .inputbar > div{display:flex;flex-direction:column;align-items:flex-end}
   button.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08)}
   .main{flex:1;display:flex;flex-direction:column;min-height:0}
   .header{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px}
