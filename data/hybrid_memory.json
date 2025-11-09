@@ -1,8 +1,624 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T23:02:47.387353",
-  "fact_count": 417,
+  "saved_at": "2025-11-08T23:34:19.759238",
+  "fact_count": 494,
   "facts": [
+    {
+      "fact": "The Lockheed WP-3D Orion is a highly modified P-3 Orion used by the Aircraft Operations Center division of the National Oceanic and Atmospheric Administration (NOAA). The aircraft are operated by officers of the NOAA Commissioned Officer Corps. Only two of these aircraft exist, each incorporating nu...",
+      "timestamp": "2025-11-08T23:34:19.758123",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Coast Guard: by Tom Beard (2004) Subjects: Naval history, History, United States. Coast Guard",
+      "timestamp": "2025-11-08T23:25:17.691705",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "The United States Coast Guard (USCG) is the maritime security, search and rescue, and law enforcement service branch of the United States Armed Forces. It is one of the country's eight uniformed services. The service is a maritime, military, multi-mission service unique among the United States milit...",
+      "timestamp": "2025-11-08T23:25:17.686611",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Border guard - A border guard of a country is a national security agency that ensures border security. Some of the national border guard agencies also perform coast guard and rescue service duties.",
+      "timestamp": "2025-11-08T23:25:17.681362",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "A coast guard or coastguard is a maritime security organization of a particular country. The term embraces wide range of responsibilities in different countries, from being a heavily armed military force with customs and security duties to being a volunteer organization tasked with search and rescue without law enforcement authority. In most countries, a typical coast guard's functions are distinct from those of the navy and the transit police, while in certain countries they have similarities to both.",
+      "timestamp": "2025-11-08T23:25:17.675732",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "NASA/DoD aerospace knowledge diffusion research project: by Thomas E. Pinelli (1990) Subjects: Aeronautical engineering, Aeronautics, Aerospace engineering",
+      "timestamp": "2025-11-08T23:25:14.359285",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Ministry of Defence (MOD or MoD) is the British government department responsible for implementing the defence policy set by Her Majesty's Government and is the headquarters of the British Armed F...",
+      "timestamp": "2025-11-08T23:25:14.354256",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Dod: instance_of = Q101352",
+      "timestamp": "2025-11-08T23:25:14.348649",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "DOD, Dod and DoD may refer to:",
+      "timestamp": "2025-11-08T23:25:14.343148",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Day of Defeat A class-based multiplayer first-person shooter video game set in the European theatre of World...",
+      "timestamp": "2025-11-08T23:25:14.337934",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Data-oriented design A program optimization approach motivated by efficient usage of the CPU cache, often used in...",
+      "timestamp": "2025-11-08T23:25:14.332862",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "On the Beach: by Nevil Shute (1957) Subjects: Atomic Bomb, English Science fiction, Fiction",
+      "timestamp": "2025-11-08T23:25:14.326781",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "The United States <B>Navy</B> (USN) is the <B>naval</B> warfare service branch of the United States Armed Forces",
+      "timestamp": "2025-11-08T23:25:14.321747",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "navy: instance_of = Q781132",
+      "timestamp": "2025-11-08T23:25:14.316381",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "A navy, naval force, military maritime fleet, war navy, or maritime force is the branch of a state's armed forces principally designated for naval and amphibious warfare; namely, lake-borne, riverine, littoral, or ocean-borne combat operations and related functions. It includes anything conducted by...",
+      "timestamp": "2025-11-08T23:25:14.308942",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Blue-water navy - A blue-water navy is a maritime force capable of operating globally, essentially across the deep waters of open oceans. While definitions of what actually constitutes such a force vary, there is a requirement for the ability to exercise sea control at long range.",
+      "timestamp": "2025-11-08T23:25:14.303525",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "A navy, naval force, military maritime fleet, war navy, or maritime force is the branch of a state's armed forces principally designated for naval and amphibious warfare; namely, lake-borne, riverine, littoral, or ocean-borne combat operations and related functions. It includes anything conducted by surface ships, amphibious ships, submarines, and seaborne aviation, as well as ancillary support, communications, training, and other fields. The strategic offensive role of a navy is projection of force into areas beyond a country's shores. The strategic defensive purpose of a navy is to frustrate seaborne projection-of-force by enemies. The strategic task of a navy also may incorporate nuclear deterrence by use of submarine-launched ballistic missiles. Naval operations can be broadly divided between riverine and littoral applications, open-ocean applications, and something in between, although these distinctions are more about strategic scope than tactical or operational division.",
+      "timestamp": "2025-11-08T23:25:14.297893",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": true
+    },
+    {
+      "fact": "Financial Management: by United States. General Accounting Office (1987) Subjects: United States, Accounting, Evaluation",
+      "timestamp": "2025-11-08T23:25:14.288154",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "The United States <B>Army</B> (USA) is the land warfare service branch of the United States <B>Armed</B> Forces",
+      "timestamp": "2025-11-08T23:25:14.279839",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "military: instance_of = Q17149090",
+      "timestamp": "2025-11-08T23:25:14.271497",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "An army, ground force or land force is an armed force that fights primarily on land. In the broadest sense, it is the land-based military branch, service branch or armed service of a nation or country. It may also include aviation assets by possessing an army aviation component.",
+      "timestamp": "2025-11-08T23:25:14.264781",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Lists of armies - Lists of armies include: • List of armies by country • List of numbered armies • List of formations of the United States Army • List of British armies in the First World War • List of French armies in World War I • List of Russian armies in World War I • List of Soviet armies • List of Italian...",
+      "timestamp": "2025-11-08T23:25:14.259041",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "An army, ground force or land force is an armed force that fights primarily on land. In the broadest sense, it is the land-based military branch, service branch or armed service of a nation or country. It may also include aviation assets by possessing an army aviation component. Within a national military force, the word army may also mean a field army.",
+      "timestamp": "2025-11-08T23:25:14.253257",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": true
+    },
+    {
+      "fact": "Financial Management: by United States. General Accounting Office (1987) Subjects: United States, Accounting, Evaluation",
+      "timestamp": "2025-11-08T23:25:13.352230",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "air force: instance_of = Q781132",
+      "timestamp": "2025-11-08T23:25:13.347234",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Royal Air Force (RAF) is the air and space force of the United Kingdom, British Overseas Territories and Crown Dependencies. It was formed towards the end of the First World War on 1 April 1918, on the merger of the Royal Flying Corps (RFC) and the Royal Naval Air Service (RNAS). Following the A...",
+      "timestamp": "2025-11-08T23:25:13.341500",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Aerial warfare - Aerial warfare is the use of military aircraft and other flying machines in warfare.",
+      "timestamp": "2025-11-08T23:25:13.335787",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "An air force in the broadest sense is the national military branch that primarily conducts aerial warfare. More specifically, it is the branch of a nation's armed services that is responsible for aerial warfare as distinct from an army aviation or naval aviation units. Typically, air forces are responsible for gaining control of the air, carrying out strategic and tactical bombing missions, and providing support to land and naval forces often in the form of aerial reconnaissance and close air support. The term air force may also refer to a tactical air force or numbered air force, which is an operational formation either within a national air force or comprising several air components from allied nations. Air forces typically consist of a combination of fighters, bombers, helicopters, transport planes and other aircraft.",
+      "timestamp": "2025-11-08T23:25:13.330021",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "The  black arrow: by Robert Louis Stevenson (1888) Subjects: Knights and knighthood, War stories, Adventure stories",
+      "timestamp": "2025-11-08T23:25:13.322699",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "Call of Duty: Black Ops: instance_of = ['Q7889', 'Q112144412']",
+      "timestamp": "2025-11-08T23:25:13.317712",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "Call of Duty: Black Ops is a 2010 first-person shooter game developed by Treyarch and published by Activision. It was released worldwide in November 2010 for Microsoft Windows, the PlayStation 3, Wii, and Xbox 360, with a separate version for Nintendo DS developed by n-Space. Aspyr later ported the ...",
+      "timestamp": "2025-11-08T23:25:13.312462",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Call of Duty: Black Ops Cold War A 2020 first-person shooter game co-developed by Treyarch and Raven Software and published by...",
+      "timestamp": "2025-11-08T23:25:13.306904",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Black Ops A kind of covert operation. Black Ops may also refer to...",
+      "timestamp": "2025-11-08T23:25:13.301735",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Discipline and Punish: by Michel Foucault, mechil foucault, Simon Prebble (1975) Subjects: Prison discipline, Punishment, Prisons",
+      "timestamp": "2025-11-08T23:24:56.913978",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Surveillance</B> is the monitoring of behavior, activities, or information for the purpose of",
+      "timestamp": "2025-11-08T23:24:56.907751",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Cuaderno: by Cool Libreta (2020)",
+      "timestamp": "2025-11-08T23:24:56.736678",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "FC <B>NSA</B> Sofia (Bulgarian: ФК НCА София) is the women's football club of the Vasil Levski National",
+      "timestamp": "2025-11-08T23:24:56.731864",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "National Security Agency: instance_of = Q47913",
+      "timestamp": "2025-11-08T23:24:56.726877",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "The National Security Agency (NSA) is an intelligence agency of the United States Department of Defense, under the authority of the director of national intelligence (DNI). The NSA is responsible for global monitoring, collection, and processing of information and data for global intelligence and co...",
+      "timestamp": "2025-11-08T23:24:56.722105",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Non-state actor A non-state actor are organizations and/or individuals that are not affiliated with, directed by...",
+      "timestamp": "2025-11-08T23:24:56.717137",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "NSA A national-level intelligence agency of the United States Department of Defense, under the...",
+      "timestamp": "2025-11-08T23:24:56.711963",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "À rebours: by Joris-Karl Huysmans (1884) Subjects: Aesthetics, Fiction, Fiction, general",
+      "timestamp": "2025-11-08T23:24:56.706760",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Central Intelligence Agency (<B>CIA</B>) is a civilian foreign intelligence service of the federal",
+      "timestamp": "2025-11-08T23:24:56.701878",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Central Intelligence Agency: instance_of = ['Q125577386', 'Q1752939']",
+      "timestamp": "2025-11-08T23:24:56.696841",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Central Intelligence Agency (CIA ) is a civilian foreign intelligence service of the federal government of the United States tasked with advancing national security through collecting and analyzing intelligence from around the world and conducting covert operations. The agency is headquartered i...",
+      "timestamp": "2025-11-08T23:24:56.691796",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Central Intelligence Agency is a civilian foreign intelligence service of the federal government of the United States, tasked with gathering, processing, and analyzing national security information from around the world, primarily through the use of human intelligence. As one of the principal members of the United States Intelligence Community, the CIA reports to the Director of National Intelligence and is primarily focused on providing intelligence for the President and Cabinet of the United States. Unlike the Federal Bureau of Investigation, which is a domestic security service, the CIA has no law enforcement function and is mainly focused on overseas intelligence gathering, with only limited domestic intelligence collection. Though it is not the only agency of the federal government of the United States specializing in HUMINT, the CIA serves as the national manager for coordination of HUMINT activities across the U.S. intelligence community.",
+      "timestamp": "2025-11-08T23:24:56.686347",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Nineteen Eighty-Four: by George Orwell (1949) Subjects: futurology, censorship, surveillance",
+      "timestamp": "2025-11-08T23:24:55.941549",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "Normal Accidents: Living with High-Risk Technologies is a 1984 book by Yale sociologist Charles Perrow, which analyses complex systems from a sociological perspective. Perrow argues that multiple and unexpected failures are built into society's complex and tightly coupled systems, and that accidents...",
+      "timestamp": "2025-11-08T23:24:55.936425",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Little House in the Big Woods: by Laura Ingalls Wilder, Garth Williams (1932) Subjects: Juvenile fiction, Ficción juvenil, Frontier and pioneer life",
+      "timestamp": "2025-11-08T23:24:55.801916",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "Big Brother: instance_of = ['Q15416', 'Q196600']",
+      "timestamp": "2025-11-08T23:24:55.796983",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "Big Brother is a reality competition television franchise created by John de Mol Jr., first broadcast in the Netherlands in 1999 and subsequently syndicated internationally beginning in 2000. The show features contestants called \"housemates\" or \"HouseGuests\" who live together in a specially construc...",
+      "timestamp": "2025-11-08T23:24:55.791865",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Big Brother (American TV series) An American reality competition television show based on the Dutch show of the same name created...",
+      "timestamp": "2025-11-08T23:24:55.787156",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Big Brother (British TV series) The British version of the international reality television franchise Big Brother created by...",
+      "timestamp": "2025-11-08T23:24:55.782161",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Bleak House: by Charles Dickens (1850) Subjects: Fiction, Guardian and ward, Young women",
+      "timestamp": "2025-11-08T23:23:53.479278",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Church of Scientology has been involved in numerous court disputes across the world. In some cases, when the Church has initiated the dispute, questions have been raised as to its motives. The Church of Scientology says that its use of the legal system is necessary to protect its intellectual pr...",
+      "timestamp": "2025-11-08T23:23:53.474219",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Street Lawyer: by John Grisham (1989) Subjects: Fiction, Legal stories, Lawyers",
+      "timestamp": "2025-11-08T23:23:53.000831",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "advance the interests of those who hire <B>lawyers</B> to perform legal services. The role of the <B>lawyer</B> varies greatly across different legal jurisdictions.",
+      "timestamp": "2025-11-08T23:23:52.995489",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "lawyer: instance_of = ['Q15987302', 'Q108300140', 'Q189533']",
+      "timestamp": "2025-11-08T23:23:52.989936",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "A lawyer is a person who is qualified to offer advice about the law, draft legal documents, or represent individuals in legal matters.\nThe exact nature of a lawyer's work varies depending on the legal jurisdiction and the legal system, as well as the lawyer's area of practice. In many jurisdictions,...",
+      "timestamp": "2025-11-08T23:23:52.985240",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Lawyer A monthly British magazine for commercial lawyers and in-house counsel, first published in 1987.",
+      "timestamp": "2025-11-08T23:23:52.980040",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Lawyer A person who practices law, as an advocate, barrister, attorney, counselor, solicitor, not as a...",
+      "timestamp": "2025-11-08T23:23:52.974268",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Bleak House: by Charles Dickens (1850) Subjects: Fiction, Guardian and ward, Young women",
+      "timestamp": "2025-11-08T23:23:52.964134",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": ", counsellor, solicitor, <B>legal</B> executive, or public servant preparing, interpreting and applying law",
+      "timestamp": "2025-11-08T23:23:52.957832",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "jurist: instance_of = ['Q15987302', 'Q189533']",
+      "timestamp": "2025-11-08T23:23:52.953296",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "Boston Legal  is an American legal comedy drama television series created by former lawyer and Boston native David E. Kelley, produced in association with 20th Century Fox Television for ABC. The series aired from October 3, 2004, to December 8, 2008. The series stars James Spader, William Shatner a...",
+      "timestamp": "2025-11-08T23:23:52.948768",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Legal education The education of individuals in the principles, practices, and theory of law.",
+      "timestamp": "2025-11-08T23:23:52.943975",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Legal A set of rules that are created and are enforceable by social or governmental institutions to...",
+      "timestamp": "2025-11-08T23:23:52.938758",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "P.S.A. Pillai's criminal law: by P. S. Atchuthen Pillai (2008) Subjects: Criminal law",
+      "timestamp": "2025-11-08T23:23:52.776913",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "criminal law: instance_of = ['Q1756157', 'Q63718619']",
+      "timestamp": "2025-11-08T23:23:52.772182",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "In ordinary language, a crime is an unlawful act punishable by a state or other authority. The term crime does not, in modern criminal law, have any simple and universally accepted definition, though statutory definitions have been provided for certain purposes. The most popular view is that crime i...",
+      "timestamp": "2025-11-08T23:23:52.767526",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Criminal law Category",
+      "timestamp": "2025-11-08T23:23:52.762730",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Criminal law is the body of law that relates to crime. It proscribes conduct perceived as threatening, harmful, or otherwise endangering to the property, health, safety, and welfare of people inclusive of one's self. Most criminal law is established by statute, which is to say that the laws are enacted by a legislature. Criminal law includes the punishment and rehabilitation of people who violate such laws. Criminal law varies according to jurisdiction, and differs from civil law, where emphasis is more on dispute resolutions or victim compensation, rather than on punishment or rehabilitation. Criminal procedure is a formalized official activity that authenticates the fact of commission of a crime and authorizes punitive or rehabilitative treatment of the offender.",
+      "timestamp": "2025-11-08T23:23:52.757637",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Canterbury Tales: by Geoffrey Chaucer, John E. Cunningham, Peter Ackroyd, Ted Stearn, V. A. Kolve, Glending Olson (1478) Subjects: Death, English Narrative poetry, Juvenile poetry",
+      "timestamp": "2025-11-08T23:23:52.752513",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "civil law: instance_of = ['Q1756157', 'Q63718619']",
+      "timestamp": "2025-11-08T23:23:52.747722",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "Civil law may refer to:",
+      "timestamp": "2025-11-08T23:23:52.742334",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Criminal law The body of law that relates to crime.",
+      "timestamp": "2025-11-08T23:23:52.737666",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Civil law (legal system) A legal system originating in mainland Europe and adopted in much of the world.",
+      "timestamp": "2025-11-08T23:23:52.732059",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
     {
       "fact": "Faust: by Johann Wolfgang von Goethe (1800) Subjects: Good and evil, Drama, Redemption",
       "timestamp": "2025-11-08T23:02:47.385997",
