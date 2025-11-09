@@ -112,6 +112,16 @@ class DummyTokenizer:
 tokenizer = DummyTokenizer()
 model = DummyModel()
 
+# Import learning orchestrator
+try:
+    import subprocess
+    import sys
+    LEARNING_ENABLED = True
+    logger.info("Learning system enabled")
+except Exception as e:
+    logger.warning(f"Learning system not available: {e}")
+    LEARNING_ENABLED = False
+
 
 
 # -------------------------
@@ -125,24 +135,30 @@ app = FastAPI(title="Allie")
 _auto_learning_task = None
 _last_learning_check = datetime.now()
 _last_learning_trigger = None
-_learning_cooldown_minutes = 30  # Wait 30 minutes between auto-triggers
+_learning_cooldown_minutes = 5  # Reduced cooldown to 5 minutes to allow faster learning cycles
 
 async def auto_learning_background_task():
-    """Background task that periodically checks and triggers learning"""
+    """Background task that periodically checks and triggers learning.
+
+    Frequency reduced to allow faster learning cycles while keeping a small backoff
+    on error. The cooldown controlling actual episode starts is still managed by
+    `_learning_cooldown_minutes` to avoid excessive episodes.
+    """
     global _last_learning_check
     while True:
         try:
-            await asyncio.sleep(300)  # Check every 5 minutes
-            
-            # Check if enough time has passed since last check
-            if datetime.now() - _last_learning_check > timedelta(minutes=5):
+            # Check every 60 seconds so we can detect learning opportunities faster
+            await asyncio.sleep(60)
+
+            # Throttle actual check frequency slightly using _last_learning_check
+            if datetime.now() - _last_learning_check > timedelta(minutes=1):
                 _last_learning_check = datetime.now()
                 result = await check_and_trigger_auto_learning()
                 if result:
                     logger.info(f"Background learning triggered: {result}")
         except Exception as e:
             logger.error(f"Error in auto-learning background task: {e}")
-            await asyncio.sleep(60)  # Wait a bit before retrying on error
+            await asyncio.sleep(10)  # Shorter retry on error to recover faster
 
 @app.on_event("startup")
 async def startup_event():

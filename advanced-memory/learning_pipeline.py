@@ -15,6 +15,12 @@ import re
 
 logger = logging.getLogger(__name__)
 
+# Pipeline tuning defaults - can be overridden by passing settings to LearningPipeline
+PIPELINE_DEFAULTS = {
+    'min_confidence_to_store': 0.60,  # Minimum adjusted confidence required to auto-add a fact
+    'batch_workers': 6,               # Number of worker threads for batch processing
+}
+
 
 class SourceCredibility:
     """Manages credibility scores for different sources with enhanced validation"""
@@ -558,7 +564,7 @@ class LearningPipeline:
     5. Confirm - Apply changes to memory
     """
     
-    def __init__(self, memory_db):
+    def __init__(self, memory_db, settings: Dict = None):
         """
         Initialize pipeline
         
@@ -568,6 +574,14 @@ class LearningPipeline:
         self.memory_db = memory_db
         self.validator = FactValidator()
         self.resolver = ConflictResolver()
+
+        # Load settings
+        if settings is None:
+            settings = {}
+        self.settings = {**PIPELINE_DEFAULTS, **settings}
+
+        self.min_confidence_to_store = float(self.settings.get('min_confidence_to_store', PIPELINE_DEFAULTS['min_confidence_to_store']))
+        self.batch_workers = int(self.settings.get('batch_workers', PIPELINE_DEFAULTS['batch_workers']))
     
     def process_fact(self, keyword: str, fact: str, source: str,
                     base_confidence: float = 0.7, category: str = 'general',
@@ -757,6 +771,15 @@ class LearningPipeline:
             }
         
         if action == 'add':
+            # Don't auto-store facts below min_confidence_to_store; queue them for review
+            if confidence < self.min_confidence_to_store:
+                queue_result = self.memory_db.add_to_learning_queue(keyword, fact, source, confidence)
+                return {
+                    'stage': 'confirm',
+                    'status': 'queued_low_confidence',
+                    'queue_id': queue_result.get('queue_id')
+                }
+
             result = self.memory_db.add_fact(keyword, fact, source, confidence, category, 'not_verified')
             return {
                 'stage': 'confirm',
@@ -811,34 +834,49 @@ class LearningPipeline:
             'details': []
         }
         
-        for fact_data in facts:
-            result = self.process_fact(
-                keyword=fact_data.get('keyword', ''),
-                fact=fact_data.get('fact', ''),
-                source=fact_data.get('source', 'batch_import'),
-                base_confidence=fact_data.get('confidence', 0.7),
-                category=fact_data.get('category', 'general'),
+        # Parallelize batch processing using a thread pool to speed up ingestion
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+
+        def _process_one(fd):
+            return self.process_fact(
+                keyword=fd.get('keyword', ''),
+                fact=fd.get('fact', ''),
+                source=fd.get('source', 'batch_import'),
+                base_confidence=fd.get('confidence', 0.7),
+                category=fd.get('category', 'general'),
                 auto_resolve=auto_resolve
             )
-            
-            # Count results
-            status = result['final_status']
-            if 'rejected' in status:
-                results['rejected'] += 1
-            elif status == 'queued_for_review':
-                results['queued'] += 1
-            elif 'added' in result['stages'].get('confirm', {}).get('status', ''):
-                results['added'] += 1
-            elif 'updated' in result['stages'].get('confirm', {}).get('status', ''):
-                results['updated'] += 1
-            else:
-                results['skipped'] += 1
-            
-            results['details'].append({
-                'keyword': fact_data.get('keyword'),
-                'status': status,
-                'confidence': result.get('confidence')
-            })
+
+        with ThreadPoolExecutor(max_workers=self.batch_workers) as ex:
+            future_to_fact = {ex.submit(_process_one, fd): fd for fd in facts}
+            for fut in as_completed(future_to_fact):
+                fact_data = future_to_fact[fut]
+                try:
+                    result = fut.result()
+                except Exception as e:
+                    results['rejected'] += 1
+                    results['details'].append({'keyword': fact_data.get('keyword'), 'status': 'error', 'error': str(e)})
+                    continue
+
+                status = result['final_status']
+                if not status:
+                    results['skipped'] += 1
+                elif 'rejected' in status:
+                    results['rejected'] += 1
+                elif status == 'queued_for_review' or status == 'queued_low_confidence':
+                    results['queued'] += 1
+                elif 'added' in result['stages'].get('confirm', {}).get('status', ''):
+                    results['added'] += 1
+                elif 'updated' in result['stages'].get('confirm', {}).get('status', ''):
+                    results['updated'] += 1
+                else:
+                    results['skipped'] += 1
+
+                results['details'].append({
+                    'keyword': fact_data.get('keyword'),
+                    'status': status,
+                    'confidence': result.get('confidence')
+                })
         
         return results
     

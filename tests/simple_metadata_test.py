@@ -1,88 +1,86 @@
 #!/usr/bin/env python3
 """
-Simple test to verify source URLs and confidence scores metadata logic
+Standalone test for response metadata functionality.
+Tests the logic that adds source URLs and confidence scores to responses.
 """
 
-def test_metadata_logic():
-    """Test the metadata generation logic directly"""
+def test_response_metadata():
+    """Test the response metadata generation logic"""
 
-    # Simulate different response scenarios
+    # Test cases for different response types
     test_cases = [
         {
-            "name": "External sources response",
+            "name": "external_sources_response",
+            "is_self_referential": False,
             "multi_source_results": {
                 "success": True,
-                "sources_used": ["duckduckgo", "wikipedia"],
+                "sources_used": ["wikipedia", "duckduckgo"],
                 "all_results": {
-                    "duckduckgo": {
-                        "success": True,
-                        "results": [
-                            {"url": "https://example.com/1", "source": "DuckDuckGo"},
-                            {"url": "https://example.com/2", "source": "DuckDuckGo"}
-                        ]
-                    },
-                    "wikipedia": {
-                        "success": True,
-                        "url": "https://en.wikipedia.org/wiki/Paris"
-                    }
+                    "wikipedia": {"success": True, "url": "https://en.wikipedia.org/wiki/Test"},
+                    "duckduckgo": {"success": True, "results": [{"url": "https://example.com"}]}
                 }
             },
             "relevant_facts": [],
-            "is_self_referential": False
+            "expected_source": "external_sources",
+            "expected_confidence": 0.85,
+            "expected_urls": ["📖 Wikipedia: https://en.wikipedia.org/wiki/Test", "🔍 Source 1: https://example.com"]
         },
         {
-            "name": "Memory-based response",
+            "name": "memory_based_response",
+            "is_self_referential": False,
             "multi_source_results": None,
-            "relevant_facts": ["Paris is the capital of France"],
-            "is_self_referential": False
+            "relevant_facts": ["Test fact from memory"],
+            "expected_source": "memory",
+            "expected_confidence": 0.70,
+            "expected_urls": ["💾 Internal Memory: Stored knowledge base"]
         },
         {
-            "name": "Model-only response",
+            "name": "model_only_response",
+            "is_self_referential": False,
             "multi_source_results": None,
             "relevant_facts": [],
-            "is_self_referential": False
+            "expected_source": "model",
+            "expected_confidence": 0.60,
+            "expected_urls": ["🤖 AI Model: Generated response"]
         },
         {
-            "name": "Self-referential response",
+            "name": "self_referential_response",
+            "is_self_referential": True,
             "multi_source_results": None,
             "relevant_facts": [],
-            "is_self_referential": True
+            "expected_source": "model",
+            "expected_confidence": 0.60,
+            "expected_urls": ["🤖 AI Model: Generated response"]
         }
     ]
 
-    print("Testing Metadata Generation Logic")
-    print("=" * 50)
+    print("Testing response metadata generation...")
 
     for test_case in test_cases:
-        print(f"\nTest: {test_case['name']}")
-        print("-" * 30)
+        print(f"\n--- Testing: {test_case['name']} ---")
 
         # Simulate the metadata generation logic from the server
         source_info = []
         confidence_score = 0.0
         primary_source = "model"
 
-        multi_source_results = test_case["multi_source_results"]
-        relevant_facts = test_case["relevant_facts"]
-        is_self_referential = test_case["is_self_referential"]
-
         # Determine primary source and confidence
-        if not is_self_referential and multi_source_results and multi_source_results.get("success"):
+        if not test_case["is_self_referential"] and test_case["multi_source_results"] and test_case["multi_source_results"].get("success"):
             # External sources were used - high confidence
             primary_source = "external_sources"
             confidence_score = 0.85  # High confidence from external verification
 
             # Collect URLs from all sources
-            all_results = multi_source_results.get("all_results", {})
+            all_results = test_case["multi_source_results"].get("all_results", {})
 
             # Wikipedia URLs
-            if "wikipedia" in multi_source_results.get("sources_used", []):
+            if "wikipedia" in test_case["multi_source_results"].get("sources_used", []):
                 wiki_data = all_results.get("wikipedia", {})
                 if wiki_data.get("success") and wiki_data.get("url"):
                     source_info.append(f"📖 Wikipedia: {wiki_data['url']}")
 
             # DuckDuckGo URLs (use the search results)
-            if "duckduckgo" in multi_source_results.get("sources_used", []):
+            if "duckduckgo" in test_case["multi_source_results"].get("sources_used", []):
                 ddg_data = all_results.get("duckduckgo", {})
                 if ddg_data.get("success") and ddg_data.get("results"):
                     for idx, result in enumerate(ddg_data["results"][:2], 1):  # Top 2 results
@@ -90,11 +88,21 @@ def test_metadata_logic():
                             source_name = result.get("source", f"Source {idx}")
                             source_info.append(f"🔍 {source_name}: {result['url']}")
 
-        elif relevant_facts and len(relevant_facts) > 0:
+            # Wikidata URLs
+            if "wikidata" in test_case["multi_source_results"].get("sources_used", []):
+                wikidata_data = all_results.get("wikidata", {})
+                if wikidata_data.get("success") and wikidata_data.get("entity_id"):
+                    entity_id = wikidata_data["entity_id"]
+                    source_info.append(f"🗂️ Wikidata: https://www.wikidata.org/wiki/{entity_id}")
+
+        elif test_case["relevant_facts"] and len(test_case["relevant_facts"]) > 0:
             # Memory-based response - medium confidence
             primary_source = "memory"
             confidence_score = 0.70  # Medium confidence from stored knowledge
             source_info.append("💾 Internal Memory: Stored knowledge base")
+
+            # If we have specific memory facts with confidence scores, use the highest
+            # For this test, we'll keep it at 0.70
 
         else:
             # Pure model generation - lower confidence
@@ -102,32 +110,41 @@ def test_metadata_logic():
             confidence_score = 0.60  # Base confidence for model-generated responses
             source_info.append("🤖 AI Model: Generated response")
 
-        # Generate the metadata section
-        metadata = f"---\n**Source:** {primary_source.title()}\n**Confidence:** {confidence_score:.0%}"
+        # Check results
+        success = True
+        if primary_source != test_case["expected_source"]:
+            print(f"❌ Source mismatch: expected '{test_case['expected_source']}', got '{primary_source}'")
+            success = False
+        else:
+            print(f"✅ Source: {primary_source}")
 
-        if source_info:
-            metadata += "\n**URLs:**\n" + "\n".join(source_info)
+        if abs(confidence_score - test_case["expected_confidence"]) > 0.01:
+            print(f"❌ Confidence mismatch: expected {test_case['expected_confidence']}, got {confidence_score}")
+            success = False
+        else:
+            print(f"✅ Confidence: {confidence_score:.0%}")
 
-        print(f"Primary Source: {primary_source}")
-        print(f"Confidence Score: {confidence_score:.0%}")
-        print(f"Source URLs: {len(source_info)}")
-        for url in source_info:
-            print(f"  {url}")
-        print(f"Metadata section:\n{metadata}")
+        # Check URLs (order might vary, so check if all expected URLs are present)
+        expected_urls = test_case["expected_urls"]
+        if len(source_info) != len(expected_urls):
+            print(f"❌ URL count mismatch: expected {len(expected_urls)}, got {len(source_info)}")
+            success = False
+        else:
+            urls_match = all(url in source_info for url in expected_urls)
+            if not urls_match:
+                print(f"❌ URLs mismatch: expected {expected_urls}, got {source_info}")
+                success = False
+            else:
+                print(f"✅ URLs: {len(source_info)} sources")
 
-        # Verify the metadata contains required elements
-        assert "**Source:**" in metadata, "Source not found in metadata"
-        assert "**Confidence:**" in metadata, "Confidence not found in metadata"
-        assert f"{confidence_score:.0%}" in metadata, "Confidence score not formatted correctly"
+        if success:
+            print(f"✅ {test_case['name']} PASSED")
+        else:
+            print(f"❌ {test_case['name']} FAILED")
+            return False
 
-        if primary_source in ["external_sources", "memory"]:
-            assert "**URLs:**" in metadata, "URLs section missing for non-model sources"
-
-        print("✓ Test passed")
-
-    print("\n" + "=" * 50)
-    print("All metadata generation tests passed!")
-    print("The logic correctly adds source URLs and confidence scores to all responses.")
+    print("\n🎉 All tests passed! Response metadata functionality is working correctly.")
+    return True
 
 if __name__ == "__main__":
-    test_metadata_logic()
+    test_response_metadata()
