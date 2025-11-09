@@ -48,9 +48,9 @@ async def fact_check_ui():
 
 if __name__ == "__main__":
     import uvicorn
-    print("Starting minimal test server on http://localhost:8001")
+    print("Starting minimal test server on http://localhost:8002")
     print("Press Ctrl+C to stop")
     try:
-        uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info", access_log=False)
+        uvicorn.run(app, host="127.0.0.1", port=8002, log_level="info", access_log=False)
     except KeyboardInterrupt:
         print("Server stopped")
