@@ -22,7 +22,7 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 @app.get("/", response_class=HTMLResponse)
 async def root():
     """Serve the main tabbed interface"""
-    index_path = STATIC_DIR / "index_test.html"
+    index_path = STATIC_DIR / "index.html"
     if index_path.exists():
         return index_path.read_text(encoding="utf-8")
     else:
