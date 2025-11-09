@@ -1460,5 +1460,83 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-hv3pj0l",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762726555954
+      },
+      {
+        "role": "me",
+        "text": "when was the peru independence day",
+        "timestamp": 1762726630406
+      },
+      {
+        "role": "them",
+        "text": "Yes, the Peruvian Independence Day falls on November 16th every year. It marks the date in 1824 when Peru officially gained its independence from Spain. The country has been independent since then.",
+        "timestamp": 1762726662470
+      },
+      {
+        "role": "me",
+        "text": "when was the french revolution",
+        "timestamp": 1762726837274
+      },
+      {
+        "role": "them",
+        "text": "The French Revolution took place between November 1789 and October 1799.",
+        "timestamp": 1762726869895
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-udayn43",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762727144915
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-sibfn8p",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762727642245
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-jxlg08d",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762727673883
+      },
+      {
+        "role": "me",
+        "text": "what is basketball",
+        "timestamp": 1762727687858
+      },
+      {
+        "role": "them",
+        "text": "Yes, that's correct! Basketball is a team sport played by two teams of five players each who aim to score by attempting to dribble their basketball towards the other team's hoop, where they must then make contact with the rim (hoop) to earn points for their respective team. There are several variations of the game such as three-on-three, four-on-four, and pickup games.\n\n---\n**Sources:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Basketball\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Basketball",
+        "timestamp": 1762727723201
+      }
+    ],
+    "draft": ""
   }
 ]

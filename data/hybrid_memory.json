@@ -1,8 +1,698 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T23:50:06.955284",
-  "fact_count": 495,
+  "saved_at": "2025-11-09T15:34:52.112928",
+  "fact_count": 564,
   "facts": [
+    {
+      "fact": "Unicorn Coloring Book: by kids M. shop notebook (2019)",
+      "timestamp": "2025-11-09T15:34:52.111937",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>basketball</B> game. The center is normally the tallest player on the team, and often has a great deal",
+      "timestamp": "2025-11-09T15:34:52.105295",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "basketball: instance_of = ['Q31629', 'Q212434', 'Q47728']",
+      "timestamp": "2025-11-09T15:34:52.098187",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Basketball is a team sport in which two teams of five players each (excluding subs), opposing one another on a rectangular court, compete with the primary objective of shooting a basketball (approximately 9.4 inches (24 cm) in diameter) through the defender's hoop (a basket 18 inches (46 cm) in diam...",
+      "timestamp": "2025-11-09T15:34:52.088968",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Basketball Category",
+      "timestamp": "2025-11-09T15:34:52.080933",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Basketball is a team sport in which two teams of five players each, opposing one another on a rectangular court, compete with the primary objective of shooting a basketball through the defender's hoop. Teams alternate between offense, when they attempt to score, and defense, when they try to prevent the opposing side from scoring. A field goal is worth two points, unless made from behind the three-point line, when it is worth three. After a foul, timed play stops and the player fouled or designated to shoot a technical foul is given one, two or three one-point free throws. The team with the most points at the end of the game wins, but if regulation play expires with the score tied, an additional period of play is mandated. However, if the additional period still results in a tied score, yet another additional period is mandated. This goes on until the score is not tied anymore.",
+      "timestamp": "2025-11-09T15:34:52.073140",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
+    {
+      "fact": "The Periodic Table: by Adrian Dingle (2007) Subjects: Tables, Chemical elements, Juvenile literature",
+      "timestamp": "2025-11-09T15:29:30.333046",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The periodic table, also known as the periodic table of the elements, is an ordered arrangement of the chemical elements into rows (\"periods\") and columns (\"groups\"). An icon of chemistry, the periodic table is widely used in physics and other sciences. It is a depiction of the periodic law, which s...",
+      "timestamp": "2025-11-09T15:29:30.325836",
+      "category": "science",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Periodic table Category",
+      "timestamp": "2025-11-09T15:29:30.319206",
+      "category": "science",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "The periodic table, also known as the periodic table of the elements, is an ordered arrangement of the chemical elements into rows and columns. An icon of chemistry, the periodic table is widely used in physics and other sciences. It is a depiction of the periodic law, which states that when the elements are arranged in order of their atomic numbers an approximate recurrence of their properties is evident. The table is divided into four roughly rectangular areas called blocks. Elements in the same group tend to show similar chemical characteristics. Vertical, horizontal and diagonal trends characterize the periodic table. Metallic character increases going down a group and from right to left across a period. Nonmetallic character increases going from the bottom left of the periodic table to the top right.",
+      "timestamp": "2025-11-09T15:29:30.312406",
+      "category": "science",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
+    {
+      "fact": "Little Women: by Louisa May Alcott (1848) Subjects: Romans, Jeunes filles, Soeurs",
+      "timestamp": "2025-11-09T15:29:30.304302",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "This is a list of national capitals, including capitals of territories and dependencies, non-sovereign states including associated states and entities whose sovereignty is disputed.\nThe capitals included on this list are those associated with states or territories listed by the international standar...",
+      "timestamp": "2025-11-09T15:29:30.296505",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Famous scientists: by - (1974)",
+      "timestamp": "2025-11-09T15:29:30.271058",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Famous Scientists: instance_of = Q13442814",
+      "timestamp": "2025-11-09T15:29:30.264376",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Famous Five is a series of children's adventure novels and short stories written by English author Enid Blyton. The first book, Five on a Treasure Island, was published in 1942. The novels feature the adventures of a group of young children – Julian, Dick, Anne, George and their dog Timmy.",
+      "timestamp": "2025-11-09T15:29:30.257021",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Atlas of human anatomy: by Frank H. Netter (1989) Subjects: Atlases, Anatomy, Human, Anatomy",
+      "timestamp": "2025-11-09T15:29:30.246103",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The human brain is the central organ of the nervous system, and with the spinal cord, comprises the central nervous system. It consists of the cerebrum, the brainstem and the cerebellum. The brain controls most of the activities of the body, processing, integrating, and coordinating the information ...",
+      "timestamp": "2025-11-09T15:29:30.239356",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Constitution of the United States and related documents: by United States (1787) Subjects: Constitutions, united states, Constitutions, United States",
+      "timestamp": "2025-11-09T15:29:30.232581",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "United States Presidents (NAID 134606994): instance_of = Q18593264",
+      "timestamp": "2025-11-09T15:29:30.225420",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The president of the United States (POTUS) is the head of state and head of government of the United States. The president directs the executive branch of the federal government and is the commander-in-chief of the United States Armed Forces.\nThe power of the presidency has grown since the first pre...",
+      "timestamp": "2025-11-09T15:29:30.217973",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Caine mutiny: by Herman Wouk (1951) Subjects: World War, 1939-1945, Fiction, American Naval operations",
+      "timestamp": "2025-11-09T15:29:01.809389",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "World War II: instance_of = ['Q103495', 'Q11514315']",
+      "timestamp": "2025-11-09T15:29:01.797383",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "World War II or the Second World War (1 September 1939 – 2 September 1945) was a global conflict between two coalitions: the Allies and the Axis powers. Nearly all of the world's countries participated, with many nations mobilising all resources in pursuit of total war. Tanks and aircraft played maj...",
+      "timestamp": "2025-11-09T15:29:01.783827",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "World War II Category",
+      "timestamp": "2025-11-09T15:29:01.772283",
+      "category": "history",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "World War II or the Second World War was a global conflict between two coalitions: the Allies and the Axis powers. Nearly all of the world's countries participated, with many nations mobilising all resources in pursuit of total war. Tanks and aircraft played major roles, enabling the strategic bombing of cities and delivery of the first and only nuclear weapons ever used in war. World War II is the deadliest conflict in history, causing the death of 70 to 85 million people, more than half of whom were civilians. Millions died in genocides, including the Holocaust, and by massacres, starvation, and disease. After the Allied victory, Germany, Austria, Japan, and Korea were occupied, and German and Japanese leaders were tried for war crimes. The causes of World War II included unresolved tensions in the aftermath of World War I, the rise of fascism in Europe and militarism in Japan.",
+      "timestamp": "2025-11-09T15:29:01.763666",
+      "category": "history",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
+    {
+      "fact": "Artificial intelligence: by Stuart J. Russell, Peter Norvig (1994) Subjects: problem solving, constraint satisfaction, knowledge",
+      "timestamp": "2025-11-09T15:29:01.752551",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "artificial intelligence: instance_of = ['Q268592', 'Q112057532', 'Q123370638', 'Q125161275']",
+      "timestamp": "2025-11-09T15:29:01.743619",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Artificial intelligence (AI) is the capability of computational systems to perform tasks typically associated with human intelligence, such as learning, reasoning, problem-solving, perception, and decision-making. It is a field of research in computer science that develops and studies methods and so...",
+      "timestamp": "2025-11-09T15:29:01.736522",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Artificial intelligence Category",
+      "timestamp": "2025-11-09T15:29:01.729283",
+      "category": "cultural",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Artificial intelligence is the capability of computational systems to perform tasks typically associated with human intelligence, such as learning, reasoning, problem-solving, perception, and decision-making. It is a field of research in computer science that develops and studies methods and software that enable machines to perceive their environment and use learning and intelligence to take actions that maximize their chances of achieving defined goals. High-profile applications of AI include advanced web search engines; recommendation systems; virtual assistants; autonomous vehicles; generative and creative tools; and superhuman play and analysis in strategy games. However, many AI applications are not perceived as AI: \"A lot of cutting edge AI has filtered into general applications, often without being called AI because once something becomes useful enough and common enough it's not labeled AI anymore.\"",
+      "timestamp": "2025-11-09T15:29:01.721019",
+      "category": "cultural",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Climate change: by Arthur Gillard (2011) Subjects: Climatic changes, Nature, Social aspects",
+      "timestamp": "2025-11-09T15:29:01.713362",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "climate change: instance_of = ['Q2629720', 'Q574376']",
+      "timestamp": "2025-11-09T15:29:01.706333",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Present-day climate change includes both global warming—the ongoing increase in global average temperature—and its wider effects on Earth's climate system. Climate change in a broader sense also includes previous long-term changes to Earth's climate. The current rise in global temperatures is driven...",
+      "timestamp": "2025-11-09T15:29:01.699909",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Climate change Category",
+      "timestamp": "2025-11-09T15:29:01.691844",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Present-day climate change includes both global warming—the ongoing increase in global average temperature—and its wider effects on Earth's climate system. Climate change in a broader sense also includes previous long-term changes to Earth's climate. The current rise in global temperatures is driven by human activities, especially fossil fuel burning since the Industrial Revolution. Fossil fuel use, deforestation, and some agricultural and industrial practices release greenhouse gases. These gases absorb some of the heat that the Earth radiates after it warms from sunlight, warming the lower atmosphere. Carbon dioxide, the primary gas driving global warming, has increased in concentration by about 50% since the pre-industrial era to levels not seen for millions of years. Climate change has an increasingly large impact on the environment. Deserts are expanding, while heat waves and wildfires are becoming more common.",
+      "timestamp": "2025-11-09T15:29:01.683735",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
+    {
+      "fact": "Solar system: by Kendrick Frazier, Time-Life Books (1920)",
+      "timestamp": "2025-11-09T15:29:01.674384",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Solar system planets observed with Suzaku: instance_of = Q13442814",
+      "timestamp": "2025-11-09T15:29:01.667362",
+      "category": "science",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Solar System consists of the Sun and the objects that orbit it. The name comes from Sōl, the Latin name for the Sun. It formed about 4.6 billion years ago when a dense region of a molecular cloud collapsed, creating the Sun and a protoplanetary disc from which the orbiting bodies assembled.",
+      "timestamp": "2025-11-09T15:29:01.660096",
+      "category": "science",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Python Programming Language: by Bradley N. Miller, David L. Ranum (2006) Subjects: Python (computer program language), Python (Computer program language), Scripting languages",
+      "timestamp": "2025-11-09T15:29:01.653271",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Python: inception = +1991-02-20T00:00:00Z",
+      "timestamp": "2025-11-09T15:29:01.645713",
+      "category": "technology",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Python: instance_of = ['Q899523', 'Q1268980', 'Q3839507', 'Q187432', 'Q12772052', 'Q21562092', 'Q1993334', 'Q211496', 'Q9143', 'Q1004415', 'Q50843083', 'Q28923017', 'Q1130645', 'Q7397']",
+      "timestamp": "2025-11-09T15:29:01.638566",
+      "category": "technology",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Python is a high-level, general-purpose programming language. Its design philosophy emphasizes code readability with the use of significant indentation. Python is dynamically type-checked and garbage-collected.",
+      "timestamp": "2025-11-09T15:29:01.631940",
+      "category": "technology",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Python (programming language) Category",
+      "timestamp": "2025-11-09T15:29:01.624212",
+      "category": "technology",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Python is a high-level, general-purpose programming language. Its design philosophy emphasizes code readability with the use of significant indentation. Python is dynamically type-checked and garbage-collected. It supports multiple programming paradigms, including structured, object-oriented and functional programming. Guido van Rossum began working on Python in the late 1980s as a successor to the ABC programming language. Python 3.0, released in 2008, was a major revision and not completely backward-compatible with earlier versions. Beginning with Python 3.5, capabilities and keywords for typing were added to language, allowing optional static typing. Currently only versions in the 3.x series are supported. Python has gained widespread use in the machine learning community. It is widely taught as an introductory programming language.",
+      "timestamp": "2025-11-09T15:29:01.617206",
+      "category": "technology",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
+    {
+      "fact": "Capitol Unrest: by Julien Rocher (2022)",
+      "timestamp": "2025-11-09T15:28:06.557476",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "January 6 United States Capitol attack: instance_of = ['Q175331', 'Q104708121', 'Q25906438', 'Q1323212', 'Q124734', 'Q30314106']",
+      "timestamp": "2025-11-09T15:28:06.551174",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "On January 6, 2021, the United States Capitol in Washington, D.C., was attacked by a mob of supporters of President Donald Trump in an attempted self-coup, two months after his defeat in the 2020 presidential election. They sought to keep him in power by preventing a joint session of Congress from c...",
+      "timestamp": "2025-11-09T15:28:06.544353",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Ronnie Gene Blevins (born June 20, 1977) is an American character actor. He is best known for his role as small-time criminal Willie Russell in the 2013 film Joe, directed by David Gordon Green.",
+      "timestamp": "2025-11-09T15:28:06.449823",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Xin xi Taiwan zou shang jie tou: (2008) Subjects: Presidents, Assassination, Election",
+      "timestamp": "2025-11-09T15:27:45.808384",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Justice and Truth Alliance (originally in Romanian: Alianța Dreptate și Adevăr; or D.A. for short, meaning \"yes\" in Romanian) was a political alliance comprising two political parties in Romania, namely the centre-right liberal National Liberal Party (PNL) and the initially left-wing Democratic ...",
+      "timestamp": "2025-11-09T15:27:45.801113",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Rockland Coaches Inc., formerly known as The Red and Tan Lines, and locally shortened to Red and Tan, is a commuter coach company owned by Coach USA based in Westwood, New Jersey, that operates commuter bus service between New York City and points in Bergen County, New Jersey, and Rockland County, N...",
+      "timestamp": "2025-11-09T15:27:45.792948",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Strange Case of Dr. Jekyll and Mr. Hyde: by Robert Louis Stevenson (1875) Subjects: Fiction, Physicians, Physicians in fiction",
+      "timestamp": "2025-11-09T15:27:45.786188",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Elections were held in the United States on November 5, 2024. In the presidential election, former Republican President Donald Trump, seeking a non-consecutive second term, defeated the incumbent Democratic Vice President Kamala Harris. Republicans also gained control of the Senate and held narrow c...",
+      "timestamp": "2025-11-09T15:27:45.776386",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Buffalo Creek disaster: by Gerald M. Stern (1976) Subjects: Floods, Negligence, Pittston Company",
+      "timestamp": "2025-11-09T15:27:45.748556",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "A lawsuit is a proceeding by one or more parties (the plaintiff or claimant) against one or more parties (the defendant) in a civil court of law. The archaic term \"suit in law\" is found in only a small number of laws still in effect today. The term \"lawsuit\" is used with respect to a civil action br...",
+      "timestamp": "2025-11-09T15:27:45.740565",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Lawsuit (opera) A comic opera in one act by composer Svetlana Nesterova.",
+      "timestamp": "2025-11-09T15:27:45.733508",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Lawsuit A proceeding by a party or parties against another in the civil court of law.",
+      "timestamp": "2025-11-09T15:27:45.726251",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Election fraud: by R. Michael Alvarez, Thad E. Hall, Susan D. Hyde (2008) Subjects: Case studies, Ballot, Corrupt practices",
+      "timestamp": "2025-11-09T15:27:45.719062",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Electoral fraud, sometimes referred to as election manipulation, voter fraud, or vote rigging, involves illegal interference with the process of an election, either by increasing the vote share of a favored candidate, depressing the vote share of rival candidates, or both. It differs from but often ...",
+      "timestamp": "2025-11-09T15:27:45.711322",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Electoral fraud Category",
+      "timestamp": "2025-11-09T15:27:45.704753",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Electoral fraud, sometimes referred to as election manipulation, voter fraud, or vote rigging, involves illegal interference with the process of an election, either by increasing the vote share of a favored candidate, depressing the vote share of rival candidates, or both. It differs from but often goes hand-in-hand with voter suppression. What exactly constitutes electoral fraud varies from country to country, though the goal is often election subversion. Electoral legislation outlaws many kinds of election fraud, but other practices violate general laws, such as those banning assault, harassment or libel. Although technically the term \"electoral fraud\" covers only those acts which are illegal, the term is sometimes used to describe acts which are legal, but considered morally unacceptable, outside the spirit of an election or in violation of the principles of democracy.",
+      "timestamp": "2025-11-09T15:27:45.697359",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
+    {
+      "fact": "A Tale of Two Cities: by Charles Dickens (1800) Subjects: British, British and irish fiction (fictional works by one author), Children's fiction",
+      "timestamp": "2025-11-09T15:20:57.501245",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The French Revolution was a period of political and societal change in France that began with the Estates General of 1789 and ended with the Coup of 18 Brumaire on 9 November 1799. Many of the revolution's ideas are considered fundamental principles of liberal democracy, and its values remain centra...",
+      "timestamp": "2025-11-09T15:20:57.494190",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The  French Revolution: by Thomas Carlyle (1837) Subjects: History, France, history, revolution, 1789-1799, Louis xvi, king of france, 1754-1793",
+      "timestamp": "2025-11-09T15:20:06.938251",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "French Revolution: instance_of = ['Q13418847', 'Q10931']",
+      "timestamp": "2025-11-09T15:20:06.932041",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The French Revolution was a period of political and societal change in France that began with the Estates General of 1789 and ended with the Coup of 18 Brumaire on 9 November 1799. Many of the revolution's ideas are considered fundamental principles of liberal democracy, and its values remain centra...",
+      "timestamp": "2025-11-09T15:20:06.925711",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "French Revolution Category",
+      "timestamp": "2025-11-09T15:20:06.919287",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "The French Revolution was a period of political and societal change in France that began with the Estates General of 1789 and ended with the Coup of 18 Brumaire on 9 November 1799. Many of the revolution's ideas are considered fundamental principles of liberal democracy, and its values remain central to modern French political discourse. It was caused by a combination of social, political, and economic factors which the existing regime proved unable to manage. Financial crisis and widespread social distress led to the convocation of the Estates General in May 1789, its first meeting since 1614. The representatives of the Third Estate broke away and re-constituted themselves as a National Assembly in June. The Storming of the Bastille in Paris on 14 July led to a series of radical measures by the Assembly, including the abolition of feudalism, state control over the Catholic Church in France, and issuing the Declaration of the Rights of Man and of the Citizen.",
+      "timestamp": "2025-11-09T15:20:06.907707",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
+    {
+      "fact": "An independence day is an annual event commemorating the anniversary of a nation's independence or statehood, usually after ceasing to be a group or part of another nation or state, or after the end of a military occupation, or after a major change in government. Many countries commemorate their ind...",
+      "timestamp": "2025-11-09T15:17:28.715308",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "Test fact for verification system",
       "timestamp": "2025-11-08T23:50:06.954442",
@@ -1559,7 +2249,7 @@
       "category": "science",
       "confidence": 0.95,
       "source": "wikipedia",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 95
     },
@@ -1749,7 +2439,7 @@
       "category": "technology",
       "confidence": 0.95,
       "source": "wikipedia",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 95
     },
@@ -1819,7 +2509,7 @@
       "category": "general",
       "confidence": 0.8,
       "source": "duckduckgo",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 80
     },
@@ -1879,7 +2569,7 @@
       "category": "history",
       "confidence": 0.95,
       "source": "wikipedia",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 95
     },
@@ -2669,7 +3359,7 @@
       "category": "general",
       "confidence": 0.8,
       "source": "duckduckgo",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 80
     },
@@ -3099,7 +3789,7 @@
       "category": "general",
       "confidence": 0.8,
       "source": "duckduckgo",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 80
     },
@@ -4779,7 +5469,7 @@
       "category": "general",
       "confidence": 0.95,
       "source": "wikipedia",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 95
     },

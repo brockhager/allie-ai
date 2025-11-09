@@ -234,12 +234,9 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 async def root():
-    """Serve the main tabbed interface"""
-    index_path = STATIC_DIR / "index.html"
-    if index_path.exists():
-        return index_path.read_text(encoding="utf-8")
-    else:
-        return HTMLResponse(content="<h1>Allie - AI Assistant</h1><p>Main interface not found</p>", status_code=404)
+    """Redirect root to /UI page"""
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/ui", status_code=302)
 
 @app.get("/ui", response_class=HTMLResponse)
 async def get_ui():
