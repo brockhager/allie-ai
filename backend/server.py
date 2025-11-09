@@ -1471,6 +1471,38 @@ Give clear, direct answers. Be conversational and natural."""
     if memory_validation_updates:
         final_reply += "\n\n" + "\n".join(memory_validation_updates)
 
+    # Step 10: Add source URLs if external sources were used
+    source_urls = []
+    if not is_self_referential and multi_source_results and multi_source_results.get("success"):
+        # Collect URLs from all sources
+        all_results = multi_source_results.get("all_results", {})
+        
+        # Wikipedia URLs
+        if "wikipedia" in multi_source_results.get("sources_used", []):
+            wiki_data = all_results.get("wikipedia", {})
+            if wiki_data.get("success") and wiki_data.get("url"):
+                source_urls.append(f"📖 Wikipedia: {wiki_data['url']}")
+        
+        # DuckDuckGo URLs (use the search results)
+        if "duckduckgo" in multi_source_results.get("sources_used", []):
+            ddg_data = all_results.get("duckduckgo", {})
+            if ddg_data.get("success") and ddg_data.get("results"):
+                for idx, result in enumerate(ddg_data["results"][:2], 1):  # Top 2 results
+                    if result.get("url"):
+                        source_name = result.get("source", f"Source {idx}")
+                        source_urls.append(f"🔍 {source_name}: {result['url']}")
+        
+        # Wikidata URLs
+        if "wikidata" in multi_source_results.get("sources_used", []):
+            wikidata_data = all_results.get("wikidata", {})
+            if wikidata_data.get("success") and wikidata_data.get("entity_id"):
+                entity_id = wikidata_data["entity_id"]
+                source_urls.append(f"🗂️ Wikidata: https://www.wikidata.org/wiki/{entity_id}")
+        
+        # Add sources section if we have URLs
+        if source_urls:
+            final_reply += "\n\n---\n**Sources:**\n" + "\n".join(source_urls)
+    
     return {"text": final_reply}
 
 @app.post("/api/conversations/backup")
@@ -1763,6 +1795,170 @@ async def get_learning_history():
         return {"enabled": True, "history": [], "message": "History not yet implemented"}
     except Exception as e:
         logger.error(f"Error getting learning history: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/learning/bulk-learn")
+async def bulk_learn(payload: Dict[str, Any] = Body(...)):
+    """
+    Bulk learning endpoint - allows Allie to learn from multiple facts or topics quickly
+    
+    Accepts:
+    - facts: List[str] - Direct facts to learn
+    - topics: List[str] - Topics to research and learn about
+    - urls: List[str] - URLs to scrape and learn from
+    """
+    facts = payload.get("facts", [])
+    topics = payload.get("topics", [])
+    urls = payload.get("urls", [])
+    
+    if not (facts or topics or urls):
+        raise HTTPException(status_code=400, detail="Must provide facts, topics, or urls")
+    
+    results = {
+        "facts_learned": 0,
+        "topics_researched": 0,
+        "urls_processed": 0,
+        "details": []
+    }
+    
+    try:
+        # Process direct facts
+        if facts:
+            for fact in facts:
+                if isinstance(fact, str) and fact.strip():
+                    # Store in hybrid memory
+                    result = hybrid_memory.add_fact(
+                        fact.strip(),
+                        category="bulk_learning",
+                        confidence=0.8,
+                        source="bulk_learn"
+                    )
+                    results["facts_learned"] += 1
+                    results["details"].append(f"Learned: {fact[:100]}...")
+        
+        # Research topics using multi-source retrieval
+        if topics:
+            for topic in topics:
+                if isinstance(topic, str) and topic.strip():
+                    logger.info(f"Researching topic: {topic}")
+                    
+                    # Use multi-source search to gather information
+                    search_results = await search_all_sources(
+                        query=topic,
+                        memory_results=[],
+                        max_results_per_source=5
+                    )
+                    
+                    if search_results.get("success") and search_results.get("facts_to_store"):
+                        topic_facts = 0
+                        for fact_data in search_results["facts_to_store"]:
+                            fact = fact_data.get("fact", "")
+                            if fact and isinstance(fact, str):
+                                hybrid_memory.add_fact(
+                                    fact,
+                                    category=fact_data.get("category", "research"),
+                                    confidence=fact_data.get("confidence", 0.8),
+                                    source=fact_data.get("source", "bulk_research")
+                                )
+                                topic_facts += 1
+                        
+                        results["topics_researched"] += 1
+                        results["details"].append(f"Researched '{topic}': learned {topic_facts} facts")
+                    else:
+                        results["details"].append(f"No information found for topic: {topic}")
+        
+        # Process URLs (if provided)
+        if urls:
+            for url in urls:
+                if isinstance(url, str) and url.strip():
+                    # For now, just note that URL processing would happen here
+                    # Full implementation would fetch and parse the URL
+                    results["details"].append(f"URL processing not yet implemented: {url}")
+                    results["urls_processed"] += 1
+        
+        return {
+            "status": "success",
+            "results": results,
+            "message": f"Learned {results['facts_learned']} facts, researched {results['topics_researched']} topics"
+        }
+    
+    except Exception as e:
+        logger.error(f"Error in bulk learning: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/learning/quick-topics")
+async def quick_topic_learning(payload: Dict[str, Any] = Body(...)):
+    """
+    Quick learning about common knowledge topics
+    Researches a list of topics in parallel for faster learning
+    """
+    topics = payload.get("topics", [])
+    
+    if not topics:
+        raise HTTPException(status_code=400, detail="Must provide topics list")
+    
+    if len(topics) > 20:
+        raise HTTPException(status_code=400, detail="Maximum 20 topics at once")
+    
+    results = []
+    
+    try:
+        # Process topics in parallel (up to 5 at a time to avoid overwhelming APIs)
+        import asyncio
+        
+        async def research_topic(topic: str):
+            try:
+                search_results = await search_all_sources(
+                    query=topic,
+                    memory_results=[],
+                    max_results_per_source=3
+                )
+                
+                facts_learned = 0
+                if search_results.get("success") and search_results.get("facts_to_store"):
+                    for fact_data in search_results["facts_to_store"]:
+                        fact = fact_data.get("fact", "")
+                        if fact and isinstance(fact, str):
+                            hybrid_memory.add_fact(
+                                fact,
+                                category=fact_data.get("category", "quick_learn"),
+                                confidence=fact_data.get("confidence", 0.8),
+                                source=fact_data.get("source", "quick_research")
+                            )
+                            facts_learned += 1
+                
+                return {
+                    "topic": topic,
+                    "success": True,
+                    "facts_learned": facts_learned
+                }
+            except Exception as e:
+                logger.error(f"Error researching topic {topic}: {e}")
+                return {
+                    "topic": topic,
+                    "success": False,
+                    "error": str(e)
+                }
+        
+        # Process in batches of 5
+        for i in range(0, len(topics), 5):
+            batch = topics[i:i+5]
+            batch_results = await asyncio.gather(*[research_topic(t) for t in batch])
+            results.extend(batch_results)
+        
+        total_facts = sum(r.get("facts_learned", 0) for r in results)
+        successful = sum(1 for r in results if r.get("success"))
+        
+        return {
+            "status": "success",
+            "topics_processed": len(topics),
+            "successful": successful,
+            "total_facts_learned": total_facts,
+            "results": results
+        }
+    
+    except Exception as e:
+        logger.error(f"Error in quick topic learning: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

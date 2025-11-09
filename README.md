@@ -6,6 +6,10 @@ Allie AI is a full‑stack project that combines a FastAPI backend with a React 
 
 🧠 **[Memory Validation System](./docs/MEMORY_VALIDATION_SYSTEM.md)** - Automatic knowledge validation and accuracy maintenance
 
+�️ **[MySQL Memory System](./docs/MYSQL_MEMORY_SYSTEM.md)** - Persistent, self-correcting memory architecture with learning pipeline
+
+�🚀 **[Quick Teach - Fast Learning System](./quick-teach/README.md)** - Teach Allie multiple topics quickly with bulk learning tools
+
 # Features:
 
 FastAPI backend with endpoints for conversations and UI.

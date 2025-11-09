@@ -340,7 +340,19 @@ function renderActive(){
 
 function appendMessage(text, who = 'them', time = new Date()){
   const row = document.createElement('div'); row.className = 'row';
-  const bubble = document.createElement('div'); bubble.className = 'bubble ' + (who === 'me' ? 'me' : 'them'); bubble.textContent = text;
+  const bubble = document.createElement('div'); bubble.className = 'bubble ' + (who === 'me' ? 'me' : 'them');
+  
+  // Convert URLs to clickable links and preserve formatting
+  const formattedText = text
+    // Convert URLs to clickable links
+    .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #4a9eff; text-decoration: underline;">$1</a>')
+    // Convert markdown bold to HTML
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    // Convert newlines to <br>
+    .replace(/\n/g, '<br>');
+  
+  bubble.innerHTML = formattedText;
+  
   const meta = document.createElement('div'); meta.className = 'meta'; meta.textContent = time.toLocaleTimeString();
   row.appendChild(bubble); row.appendChild(meta); messagesEl.appendChild(row);
   messagesEl.scrollTop = messagesEl.scrollHeight;

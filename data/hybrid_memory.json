@@ -1,8 +1,120 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T21:48:24.027550",
-  "fact_count": 33,
+  "saved_at": "2025-11-08T22:24:04.018693",
+  "fact_count": 47,
   "facts": [
+    {
+      "fact": "Into Thin Air: by Jon Krakauer (1996) Subjects: History, Adventure Consultants. Guided Expedition (1996 : Mount Everest), Adventure Consultants Guided Expedition (1996 : Mount Everest)",
+      "timestamp": "2025-11-08T22:24:04.018513",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "Mount Everest: instance_of = Q8502",
+      "timestamp": "2025-11-08T22:24:04.017058",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "Mount Everest (known locally as Sagarmāthā in Nepal and Qomolangma in Tibet) is Earth's highest mountain above sea level. It lies in the Mahalangur Himal sub-range of the Himalayas and marks part of the China–Nepal border at its summit. Its height was most recently measured in 2020 by Chinese and Ne...",
+      "timestamp": "2025-11-08T22:24:04.015418",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Mount Everest Category",
+      "timestamp": "2025-11-08T22:24:04.014029",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Mount Everest is Earth's highest mountain above sea level. It lies in the Mahalangur Himal sub-range of the Himalayas and marks part of the China–Nepal border at its summit. Its height was most recently measured in 2020 by Chinese and Nepali authorities as 8,848.86 m. Mount Everest attracts many climbers, including highly experienced mountaineers. There are two main climbing routes, one approaching the summit from the southeast in Nepal and the other from the north in Tibet. While not posing substantial technical climbing challenges on the standard route, Everest presents dangers such as altitude sickness, weather, and wind, as well as hazards from avalanches and the Khumbu Icefall. As of May 2024, 340 people have died on Everest. Over 200 bodies remain on the mountain and have not been removed due to the dangerous conditions. Climbers typically ascend only part of Mount Everest's elevation, as the mountain's full elevation is measured from the geoid, which approximates sea level.",
+      "timestamp": "2025-11-08T22:24:04.012542",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Eiffel Tower: by Charles Rickard (1985)",
+      "timestamp": "2025-11-08T22:24:03.983204",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "Eiffel Tower: instance_of = ['Q1440476', 'Q1440300', 'Q570116', 'Q2319498']",
+      "timestamp": "2025-11-08T22:24:03.982125",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Eiffel Tower (  EYE-fəl; French: Tour Eiffel [tuʁ ɛfɛl] ) is a wrought-iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower from 1887 to 1889.\nLocally nicknamed \"La dame de fer\" (French for \"Iron Lady\"...",
+      "timestamp": "2025-11-08T22:24:03.980937",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Eiffel Tower Category",
+      "timestamp": "2025-11-08T22:24:03.979951",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower from 1887 to 1889. Locally nicknamed \"La dame de fer\", it was constructed as the centrepiece of the 1889 World's Fair, and to crown the centennial anniversary of the French Revolution. Although initially criticised by some of France's leading artists and intellectuals for its design, it has since become a global cultural icon of France and one of the most recognisable structures in the world. The tower received 5,889,000 visitors in 2022. The Eiffel Tower is the most visited monument with an entrance fee in the world: 6.91 million people ascended it in 2015. It was designated a monument historique in 1964, and was named part of a UNESCO World Heritage Site in 1991. The tower is 330 metres tall, about the same height as an 81-storey building, and the tallest structure in Paris.",
+      "timestamp": "2025-11-08T22:24:03.978053",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "How Do Elections Work?: by Leslie Harper (2012)",
+      "timestamp": "2025-11-08T22:15:32.161278",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "Election Day in the United States is the annual day for general elections of federal, state and local public officials. With respect to federal elections, it is statutorily set by the U.S. government as \"the Tuesday next after the first Monday in November\" of even-numbered years (i.e., the Tuesday t...",
+      "timestamp": "2025-11-08T22:15:32.156098",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Die Leiden des jungen Werthers: by Johann Wolfgang von Goethe (1779) Subjects: Translations into English, Travel, German fiction",
+      "timestamp": "2025-11-08T21:57:07.419741",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Hatch Act of 1939, An Act to Prevent Pernicious Political Activities, is a United States federal law that prohibits civil service employees in the executive branch of the federal government, except the president and vice president, from engaging in some forms of political activity. It became law...",
+      "timestamp": "2025-11-08T21:57:07.417409",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
     {
       "fact": "By the King: by King James VI and I (1603) Subjects: Administration of Justice, Agriculture, Anti-Catholicism",
       "timestamp": "2025-11-08T21:48:24.027480",
@@ -269,7 +381,7 @@
       "confidence": 0.98,
       "source": "wikipedia_updated",
       "metadata": {},
-      "is_outdated": false
+      "is_outdated": true
     }
   ]
 }
