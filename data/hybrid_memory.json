@@ -1,8 +1,136 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T21:35:42.806178",
-  "fact_count": 17,
+  "saved_at": "2025-11-08T21:48:24.027550",
+  "fact_count": 33,
   "facts": [
+    {
+      "fact": "By the King: by King James VI and I (1603) Subjects: Administration of Justice, Agriculture, Anti-Catholicism",
+      "timestamp": "2025-11-08T21:48:24.027480",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "A legal voting age is the minimum age that a person is allowed to vote in a democratic process. Most nations use 18 years of age as their voting age, but for other countries their voting age ranges between 16 and 21 (with the sole exception of the United Arab Emirates where the voting age is 25). A ...",
+      "timestamp": "2025-11-08T21:48:24.026369",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Houghton Mifflin Reading Leveled Readers California: by Houghton Mifflin Company Staff (2009)",
+      "timestamp": "2025-11-08T21:47:37.678978",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "A hobo is a migrant worker in the United States. Hoboes, tramps, and bums are generally regarded as related, but distinct: a hobo travels and is willing to work; a tramp travels, but avoids work if possible; a bum neither travels nor works.",
+      "timestamp": "2025-11-08T21:47:37.677867",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Анна Каренина: by Лев Толстой (1876) Subjects: Fiction, Adultery, Married women",
+      "timestamp": "2025-11-08T21:46:31.333236",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "PL/I (Programming Language One, pronounced  and sometimes written PL/1) is a procedural, imperative computer programming language initially developed by IBM. It is designed for scientific, engineering, business and system programming. It has been in continuous use by  academic, commercial and indust...",
+      "timestamp": "2025-11-08T21:46:31.332111",
+      "category": "technology",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Pride and Prejudice: by Jane Austen (1813) Subjects: Fiction, Romance, Historical, Regency, British and Irish fiction (fictional works by one author), Brothers and sisters",
+      "timestamp": "2025-11-08T21:45:29.360557",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "New Mexico is a landlocked state in the Southwestern region of the United States. It is one of the Mountain States of the southern Rocky Mountains, sharing the Four Corners region with Utah, Colorado, and Arizona. It also borders the state of Texas to the east and southeast, Oklahoma to the northeas...",
+      "timestamp": "2025-11-08T21:45:29.359113",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Love and Freindship: by Jane Austen (1995) Subjects: Fiction, classics, English literature, Fiction, short stories (single author)",
+      "timestamp": "2025-11-08T21:44:38.993236",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "Terry <B>Date</B> (born January 31, 1956) is an American record producer and engineer, specializing in the",
+      "timestamp": "2025-11-08T21:44:38.992374",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Date or dates  may refer to:",
+      "timestamp": "2025-11-08T21:44:38.991461",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Calendar date A reference to a particular day, represented within a calendar system, enabling a specific day to...",
+      "timestamp": "2025-11-08T21:44:38.990484",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Dating A stage of romantic relationships in which individuals engage in activity together, often with...",
+      "timestamp": "2025-11-08T21:44:38.989474",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "is_outdated": false
+    },
+    {
+      "fact": "Driving is the controlled operation and movement of a land vehicle, including cars, taxis, ambulances, fire engines, tanks, vans, trucks and buses. A driver's permission to drive on public highways is granted based on a set of conditions being met, and drivers are required to follow the established ...",
+      "timestamp": "2025-11-08T21:43:50.742056",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Unicorn Coloring Book: by kids M. shop notebook (2019)",
+      "timestamp": "2025-11-08T21:42:56.499402",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "Basketball is a team sport in which two teams of five players each (excluding subs), opposing one another on a rectangular court, compete with the primary objective of shooting a basketball (approximately 9.4 inches (24 cm) in diameter) through the defender's hoop (a basket 18 inches (46 cm) in diam...",
+      "timestamp": "2025-11-08T21:42:56.496683",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
     {
       "fact": "Hands Across America was a public fundraising event held on Sunday, May 25, 1986, Memorial Day weekend, which attempted to create a continuous human chain of people holding hands across the contiguous United States. While approximately 5 million people participated, the chain was broken in many plac...",
       "timestamp": "2025-11-08T21:35:42.805873",

@@ -999,7 +999,7 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     global tokenizer, model  # Declare global variables
     
     prompt = payload.get("prompt", "")
-    max_tokens = payload.get("max_tokens", 200)
+    max_tokens = payload.get("max_tokens", 512)  # Increased from 200 to allow fuller responses
     conversation_context = payload.get("conversation_context", [])  # New parameter
 
     # Input validation
@@ -1350,22 +1350,37 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     # Build enhanced prompt
     if is_self_referential:
         # For self-referential questions, use a direct prompt without external context
-        enhanced_prompt = f"""Please answer this question directly about yourself as Allie the AI assistant: {prompt}
+        enhanced_prompt = f"""Answer this question about yourself as Allie: {prompt}
 
-Remember: You are Allie, a helpful and friendly AI assistant created to answer questions and engage in natural conversation. Answer directly without referencing external sources or memory."""
+You are Allie, a helpful AI assistant."""
     else:
-        # Build prompt with only the most relevant context
+        # PRIORITY: External sources first, memory as supplement only
         enhanced_prompt = prompt
-        
-        # Only add external source results if available - they're more reliable than memory
+
+        # Always prefer external sources for factual accuracy
         if multi_source_results and multi_source_results.get("success"):
             sources_used = ", ".join(multi_source_results.get("sources_used", []))
             synthesized_text = multi_source_results.get("synthesized_text", "")
-            if synthesized_text:
-                enhanced_prompt = f"Question: {prompt}\n\nAnswer based on this information: {synthesized_text}"
-        # Fallback to memory only if no external results
-        elif relevant_facts:
-            enhanced_prompt = f"Question: {prompt}\n\nAnswer based on what you know: {relevant_facts[0]}"
+            if synthesized_text and len(synthesized_text.strip()) > 10:
+                # Use external sources as the primary information
+                enhanced_prompt = f"""Question: {prompt}
+
+Current information from {sources_used}:
+{synthesized_text}
+
+Answer the question using this information."""
+            else:
+                # No good external results, use memory sparingly
+                if relevant_facts and len(relevant_facts) > 0:
+                    # Only use the most relevant memory fact
+                    enhanced_prompt = f"""Question: {prompt}
+
+What I know: {relevant_facts[0]}"""
+        elif relevant_facts and len(relevant_facts) > 0:
+            # No external sources available, use memory with caution
+            enhanced_prompt = f"""Question: {prompt}
+
+From memory: {relevant_facts[0]}"""
 
     # Step 7: Generate response using TinyLlama (moved to thread pool for async performance)
     from datetime import datetime
@@ -1373,7 +1388,7 @@ Remember: You are Allie, a helpful and friendly AI assistant created to answer q
     
     system_content = f"""You are Allie, a helpful AI assistant. Today is {current_date}.
 
-Answer the user's question directly and naturally. Use the provided context if relevant. Keep responses concise and focused."""
+Give clear, direct answers. Be conversational and natural."""
 
     messages = [
         {"role": "system", "content": system_content},
@@ -1388,10 +1403,10 @@ Answer the user's question directly and naturally. Use the provided context if r
             **inputs, 
             max_length=inputs['input_ids'].shape[1] + max_tokens, 
             do_sample=True, 
-            temperature=0.05,  # Very low temperature to reduce hallucinations
-            top_p=0.3,         # Very low top_p for focused responses  
-            top_k=40,          # Reduced top_k for better control
-            repetition_penalty=1.3,  # Higher penalty to avoid repetition
+            temperature=0.7,   # Balanced temperature for natural responses
+            top_p=0.9,         # Higher top_p for more diverse vocabulary  
+            top_k=50,          # Standard top_k value
+            repetition_penalty=1.2,  # Moderate penalty to avoid repetition
             pad_token_id=tokenizer.eos_token_id,
             eos_token_id=tokenizer.eos_token_id,
             num_return_sequences=1
