@@ -665,18 +665,36 @@
                     <tbody>
             `;
 
-            facts.forEach(fact => {
+            facts.forEach((fact, index) => {
                 const statusClass = `status-${fact.status}`;
                 const statusText = fact.status.replace('_', ' ').toUpperCase();
                 const updatedDate = new Date(fact.updated_at || fact.timestamp || Date.now()).toLocaleDateString();
                 
                 // Handle different fact formats (hybrid memory vs advanced memory)
-                const factId = fact.id || fact.fact_id || Math.random();
-                const keyword = fact.keyword || fact.key || 'N/A';
-                const factText = fact.fact || fact.text || fact.content || 'N/A';
-                const source = fact.source || fact.origin || 'Unknown';
+                // Use index as fallback if no valid ID is found
+                const factId = fact.id || fact.fact_id || null;
+                const hasValidId = factId !== null && typeof factId === 'number';
+                const factText = fact.fact || fact.text || fact.content || '';
+                
+                // Skip facts with no actual content
+                if (!factText || factText === 'N/A') {
+                    return;
+                }
+                
+                // Extract keyword from fact text if not provided
+                let keyword = fact.keyword || fact.key;
+                if (!keyword || keyword === 'N/A' || keyword === 'general') {
+                    // Extract first 3-5 meaningful words from the fact
+                    const words = factText.split(/\s+/).filter(w => w.length > 2).slice(0, 5);
+                    keyword = words.join(' ').substring(0, 50);
+                    if (!keyword) {
+                        keyword = factText.substring(0, 50); // Use first 50 chars as fallback
+                    }
+                }
+                
+                const source = fact.source || fact.origin || 'user';
                 const status = fact.status || 'not_verified';
-                const confidence = fact.confidence_score || fact.confidence || 50;
+                const confidence = fact.confidence_score || (fact.confidence ? Math.round(fact.confidence * 100) : 50);
                 
                 // Highlight search term in fact text if searching
                 let highlightedFactText = factText;
@@ -686,16 +704,20 @@
                     highlightedFactText = highlightedFactText.replace(regex, '<span class="highlight">$1</span>');
                     highlightedKeyword = highlightedKeyword.replace(regex, '<span class="highlight">$1</span>');
                 }
+                
+                // Disable editing for facts without valid IDs
+                const disabledAttr = hasValidId ? '' : 'disabled title="This fact cannot be edited (no valid ID)"';
+                const checkboxValue = hasValidId ? factId : `invalid_${index}`;
 
                 html += `
-                    <tr>
-                        <td><input type="checkbox" value="${factId}" onchange="toggleSelection(${factId})"></td>
+                    <tr ${!hasValidId ? 'style="opacity: 0.6;"' : ''}>
+                        <td><input type="checkbox" value="${checkboxValue}" ${disabledAttr} onchange="toggleSelection(${checkboxValue})"></td>
                         <td class="keyword">${highlightedKeyword}</td>
                         <td class="fact-text">${highlightedFactText}</td>
-                        <td><a href="#" class="source-link" onclick="showFactDetails(${factId}); return false;">${source}</a></td>
+                        <td><a href="#" class="source-link" onclick="showFactDetails(${index}); return false;">${source}</a></td>
                         <td class="updated-at">${updatedDate}</td>
                         <td>
-                            <select class="status-select" onchange="updateFactStatus(${factId}, this.value)">
+                            <select class="status-select" ${disabledAttr} onchange="updateFactStatus(${factId}, this.value)">
                                 <option value="true" ${status === 'true' ? 'selected' : ''}>✅ True</option>
                                 <option value="false" ${status === 'false' ? 'selected' : ''}>❌ False</option>
                                 <option value="not_verified" ${status === 'not_verified' ? 'selected' : ''}>❓ Not Verified</option>
@@ -705,11 +727,11 @@
                         </td>
                         <td>
                             <input type="number" class="confidence-input" min="0" max="100"
-                                   value="${confidence}"
+                                   value="${confidence}" ${disabledAttr}
                                    onchange="updateConfidence(${factId}, this.value)">
                         </td>
                         <td class="actions">
-                            <button class="btn btn-secondary" onclick="showFactDetails(${factId})">View</button>
+                            <button class="btn btn-secondary" onclick="showFactDetails(${index})">View</button>
                         </td>
                     </tr>
                 `;
@@ -736,6 +758,12 @@
         }
 
         async function updateFactStatus(factId, status) {
+            // Validate fact ID
+            if (!factId || typeof factId !== 'number' || factId === null) {
+                showError('Cannot update fact: invalid ID');
+                return;
+            }
+            
             try {
                 const response = await fetch(`/api/facts/${factId}`, {
                     method: 'PATCH',
@@ -760,6 +788,12 @@
         }
 
         async function updateConfidence(factId, confidence) {
+            // Validate fact ID
+            if (!factId || typeof factId !== 'number' || factId === null) {
+                showError('Cannot update fact: invalid ID');
+                return;
+            }
+            
             const confidenceNum = parseInt(confidence);
             if (isNaN(confidenceNum) || confidenceNum < 0 || confidenceNum > 100) {
                 showError('Confidence must be between 0 and 100');
@@ -881,16 +915,28 @@
             });
         }
 
-        function showFactDetails(factId) {
-            const fact = allFacts.find(f => f.id === factId);
-            if (!fact) return;
+        function showFactDetails(factIndex) {
+            // Use array index instead of fact ID
+            const fact = allFacts[factIndex];
+            if (!fact) {
+                console.error('Fact not found at index:', factIndex);
+                return;
+            }
 
-            document.getElementById('modal-keyword').textContent = fact.keyword;
-            document.getElementById('modal-fact').textContent = fact.fact;
-            document.getElementById('modal-source').textContent = fact.source;
-            document.getElementById('modal-status').textContent = fact.status.replace('_', ' ').toUpperCase();
-            document.getElementById('modal-confidence').textContent = fact.confidence_score || 'N/A';
-            document.getElementById('modal-updated').textContent = new Date(fact.updated_at).toLocaleString();
+            // Handle different fact formats
+            const keyword = fact.keyword || fact.key || 'N/A';
+            const factText = fact.fact || fact.text || fact.content || 'N/A';
+            const source = fact.source || fact.origin || 'Unknown';
+            const status = fact.status || 'not_verified';
+            const confidence = fact.confidence_score || fact.confidence || 'N/A';
+            const updatedAt = fact.updated_at || fact.timestamp || Date.now();
+
+            document.getElementById('modal-keyword').textContent = keyword;
+            document.getElementById('modal-fact').textContent = factText;
+            document.getElementById('modal-source').textContent = source;
+            document.getElementById('modal-status').textContent = status.replace('_', ' ').toUpperCase();
+            document.getElementById('modal-confidence').textContent = confidence;
+            document.getElementById('modal-updated').textContent = new Date(updatedAt).toLocaleString();
 
             document.getElementById('fact-modal').style.display = 'block';
         }

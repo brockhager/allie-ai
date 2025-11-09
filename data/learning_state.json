@@ -741,6 +741,20 @@
       "training_stats": null,
       "evaluation_results": null,
       "error_message": "tensor(): argument 'device' must be torch.device, not float"
+    },
+    {
+      "id": "learn_20251109_163901",
+      "status": "failed",
+      "start_time": "2025-11-09T16:39:01.021384",
+      "end_time": "2025-11-09T16:39:32.840328",
+      "data_stats": {
+        "total_conversations": 7,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "tensor(): argument 'device' must be torch.device, not float"
     }
   ],
   "config": {
