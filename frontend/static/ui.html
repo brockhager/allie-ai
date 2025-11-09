@@ -72,6 +72,14 @@
         <button id="stopLearningBtn" class="learning-btn secondary" style="display:none">Stop Learning</button>
         <button id="viewHistoryBtn" class="learning-btn secondary">View History</button>
       </div>
+
+      <!-- Learning Activity Feed -->
+      <div class="learning-activity" style="margin-top:12px;">
+        <h5 style="margin:0 0 6px 0;color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:0.5px">Recent Activity</h5>
+        <div id="learningActivityFeed" class="learning-activity-feed" style="max-height:120px;overflow-y:auto;font-size:11px;color:var(--muted);background:rgba(255,255,255,0.02);border-radius:6px;padding:8px;">
+          <div style="text-align:center;padding:8px;">Loading activity...</div>
+        </div>
+      </div>
     </div>
 
     <div style="margin-top:auto;font-size:13px;color:var(--muted);padding-top:12px">Local model · <span id="modelName">tinyllama</span></div>
@@ -193,6 +201,7 @@ const checkLearningBtn = document.getElementById('checkLearningBtn');
 const startLearningBtn = document.getElementById('startLearningBtn');
 const stopLearningBtn = document.getElementById('stopLearningBtn');
 const viewHistoryBtn = document.getElementById('viewHistoryBtn');
+const learningActivityFeed = document.getElementById('learningActivityFeed');
 
 // Memory statistics elements
 const memTotalFacts = document.getElementById('memTotalFacts');
@@ -253,6 +262,12 @@ async function updateMemoryStats() {
     // Update last update time
     const now = new Date();
     memLastUpdate.textContent = now.toLocaleTimeString();
+    
+    // Add learning activity for memory stats update
+    const totalFacts = stats.total_facts || 0;
+    if (totalFacts > 0) {
+      addLearningActivity(`Memory updated: ${totalFacts} facts, ${stats.active_facts || 0} active`, 'info');
+    }
     
     // Remove visual feedback
     memRefreshBtn.classList.remove('refreshing');
@@ -507,6 +522,8 @@ sendBtn.onclick = async () => {
       statusEl.textContent = 'Ready'; 
       // Update memory stats after message
       updateMemoryStats().catch(err => console.warn('Failed to update memory stats:', err));
+      // Add learning activity for conversation processing
+      addLearningActivity('Processed conversation message', 'info');
     } catch { 
       statusEl.textContent = 'Saved locally'; 
     }
@@ -586,6 +603,71 @@ viewHistoryBtn.onclick = async () => {
   }
 };
 
+// Learning activity tracking
+let lastLearningStatus = null;
+let learningActivities = [];
+
+function addLearningActivity(message, type = 'info') {
+  const timestamp = new Date();
+  const timeStr = timestamp.toLocaleTimeString();
+  
+  learningActivities.unshift({
+    message,
+    type,
+    timestamp: timeStr,
+    time: timestamp
+  });
+  
+  // Keep only last 20 activities
+  if (learningActivities.length > 20) {
+    learningActivities = learningActivities.slice(0, 20);
+  }
+  
+  updateLearningActivityFeed();
+}
+
+function updateLearningActivityFeed() {
+  if (learningActivities.length === 0) {
+    learningActivityFeed.innerHTML = '<div style="text-align:center;padding:8px;">No recent activity</div>';
+    return;
+  }
+  
+  const activitiesHtml = learningActivities.map(activity => {
+    let icon = '📝';
+    let color = 'var(--muted)';
+    
+    switch (activity.type) {
+      case 'learning':
+        icon = '🧠';
+        color = '#60a5fa';
+        break;
+      case 'success':
+        icon = '✅';
+        color = '#4ade80';
+        break;
+      case 'warning':
+        icon = '⚠️';
+        color = '#f59e0b';
+        break;
+      case 'error':
+        icon = '❌';
+        color = '#ff6b6b';
+        break;
+      default:
+        icon = '📝';
+        color = 'var(--muted)';
+    }
+    
+    return `<div style="margin-bottom:4px;padding:4px;border-radius:3px;background:rgba(255,255,255,0.01);">
+      <span style="color:${color};margin-right:4px;">${icon}</span>
+      <span style="color:var(--text);font-size:10px;">${activity.timeStr}</span>
+      <div style="margin-top:2px;color:var(--muted);">${activity.message}</div>
+    </div>`;
+  }).join('');
+  
+  learningActivityFeed.innerHTML = activitiesHtml;
+}
+
 function updateLearningStatus(status) {
   if (!status.enabled) {
     learningStatusEl.textContent = 'Learning system not available';
@@ -593,11 +675,23 @@ function updateLearningStatus(status) {
     startLearningBtn.disabled = true;
     startLearningBtn.style.display = 'inline-block';
     stopLearningBtn.style.display = 'none';
+    
+    // Track status changes
+    if (lastLearningStatus?.enabled !== false) {
+      addLearningActivity('Learning system became unavailable', 'error');
+    }
+    lastLearningStatus = { enabled: false };
     return;
   }
 
   let statusText = '';
   let statusColor = '#9ca3af'; // default muted color
+  let currentState = {
+    is_active: status.is_active,
+    should_learn: status.should_learn,
+    auto_learning: status.auto_learning,
+    auto_triggered: !!status.auto_triggered
+  };
 
   if (status.auto_learning) {
     // Auto-learning is enabled
@@ -607,16 +701,31 @@ function updateLearningStatus(status) {
       startLearningBtn.style.display = 'none';
       stopLearningBtn.style.display = 'inline-block';
       stopLearningBtn.disabled = false;
+      
+      // Check if learning just started
+      if (!lastLearningStatus?.is_active) {
+        addLearningActivity(`Auto-learning episode started (${status.current_episode?.id || 'unknown'})`, 'learning');
+      }
     } else if (status.auto_triggered) {
       statusText = `Auto-triggered: ${status.auto_triggered.reason}`;
       statusColor = '#4ade80'; // green
       startLearningBtn.style.display = 'none';
       stopLearningBtn.style.display = 'none';
+      
+      // Check if auto-trigger just happened
+      if (!lastLearningStatus?.auto_triggered) {
+        addLearningActivity(`Auto-learning triggered: ${status.auto_triggered.reason}`, 'success');
+      }
     } else if (status.should_learn) {
       statusText = '⚡ Auto-learning ready - ' + (status.reason || 'Conditions met');
       statusColor = '#4ade80'; // green
       startLearningBtn.style.display = 'none';
       stopLearningBtn.style.display = 'none';
+      
+      // Check if conditions just became met
+      if (!lastLearningStatus?.should_learn) {
+        addLearningActivity('Learning conditions met - ready to learn', 'success');
+      }
     } else {
       statusText = '⏳ Auto-learning enabled: ' + (status.reason || 'Waiting for conditions');
       statusColor = '#9ca3af'; // muted
@@ -629,12 +738,22 @@ function updateLearningStatus(status) {
     startLearningBtn.style.display = 'none';
     stopLearningBtn.style.display = 'inline-block';
     stopLearningBtn.disabled = false;
+    
+    // Check if learning just started
+    if (!lastLearningStatus?.is_active) {
+      addLearningActivity(`Manual learning episode started (${status.current_episode?.id || 'unknown'})`, 'learning');
+    }
   } else if (status.should_learn) {
     statusText = 'Ready to learn - ' + (status.reason || 'Conditions met');
     statusColor = '#4ade80'; // green
     startLearningBtn.style.display = 'inline-block';
     startLearningBtn.disabled = false;
     stopLearningBtn.style.display = 'none';
+    
+    // Check if conditions just became met
+    if (!lastLearningStatus?.should_learn) {
+      addLearningActivity('Learning conditions met - ready to learn', 'success');
+    }
   } else {
     statusText = 'Not ready: ' + (status.reason || 'Conditions not met');
     statusColor = '#9ca3af'; // muted
@@ -654,6 +773,9 @@ function updateLearningStatus(status) {
 
   learningStatusEl.textContent = statusText;
   learningStatusEl.style.color = statusColor;
+  
+  // Store current state for next comparison
+  lastLearningStatus = currentState;
 }
 
 // Init
@@ -661,13 +783,19 @@ function updateLearningStatus(status) {
   await loadConversations();
   statusEl.textContent = 'Initializing...';
 
+  // Add initial learning activities
+  addLearningActivity('Allie AI interface loaded', 'info');
+  addLearningActivity('Initializing conversation system', 'info');
+
   // Check learning status on load
   try {
     const status = await apiGetLearningStatus();
     updateLearningStatus(status);
+    addLearningActivity('Learning system status checked', 'info');
   } catch (err) {
     learningStatusEl.textContent = 'Learning system unavailable';
     learningStatusEl.style.color = '#ff6b6b';
+    addLearningActivity('Learning system unavailable', 'error');
   }
 
   // Load memory statistics on init
@@ -694,6 +822,7 @@ function updateLearningStatus(status) {
   }, 60000); // Update every 60 seconds
 
   statusEl.textContent = 'Ready';
+  addLearningActivity('System ready and monitoring active', 'success');
 })();
 </script>
 </body>
