@@ -1,8 +1,368 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T15:34:52.112928",
-  "fact_count": 564,
+  "saved_at": "2025-11-09T15:46:33.912509",
+  "fact_count": 600,
   "facts": [
+    {
+      "fact": "The Buffalo Creek disaster: by Gerald M. Stern (1976) Subjects: Floods, Negligence, Pittston Company",
+      "timestamp": "2025-11-09T15:46:33.911553",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "A lawsuit is a proceeding by one or more parties (the plaintiff or claimant) against one or more parties (the defendant) in a civil court of law. The archaic term \"suit in law\" is found in only a small number of laws still in effect today. The term \"lawsuit\" is used with respect to a civil action br...",
+      "timestamp": "2025-11-09T15:46:33.903976",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Lawsuit (opera) A comic opera in one act by composer Svetlana Nesterova.",
+      "timestamp": "2025-11-09T15:46:33.896834",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Lawsuit A proceeding by a party or parties against another in the civil court of law.",
+      "timestamp": "2025-11-09T15:46:33.889223",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Street Lawyer: by John Grisham (1989) Subjects: Fiction, Legal stories, Lawyers",
+      "timestamp": "2025-11-09T15:46:33.881749",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "advance the interests of those who hire <B>lawyers</B> to perform legal services. The role of the <B>lawyer</B> varies greatly across different legal jurisdictions.",
+      "timestamp": "2025-11-09T15:46:33.873938",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "lawyer: instance_of = ['Q15987302', 'Q108300140', 'Q189533']",
+      "timestamp": "2025-11-09T15:46:33.865436",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A lawyer is a person who is qualified to offer advice about the law, draft legal documents, or represent individuals in legal matters.\nThe exact nature of a lawyer's work varies depending on the legal jurisdiction and the legal system, as well as the lawyer's area of practice. In many jurisdictions,...",
+      "timestamp": "2025-11-09T15:46:33.857302",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Lawyer A monthly British magazine for commercial lawyers and in-house counsel, first published in 1987.",
+      "timestamp": "2025-11-09T15:46:33.849680",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Lawyer A person who practices law, as an advocate, barrister, attorney, counselor, solicitor, not as a...",
+      "timestamp": "2025-11-09T15:46:33.841874",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bleak House: by Charles Dickens (1850) Subjects: Fiction, Guardian and ward, Young women",
+      "timestamp": "2025-11-09T15:46:33.815826",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": ", counsellor, solicitor, <B>legal</B> executive, or public servant preparing, interpreting and applying law",
+      "timestamp": "2025-11-09T15:46:33.807775",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "jurist: instance_of = ['Q15987302', 'Q189533']",
+      "timestamp": "2025-11-09T15:46:33.800758",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Boston Legal  is an American legal comedy drama television series created by former lawyer and Boston native David E. Kelley, produced in association with 20th Century Fox Television for ABC. The series aired from October 3, 2004, to December 8, 2008. The series stars James Spader, William Shatner a...",
+      "timestamp": "2025-11-09T15:46:33.793578",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Legal education The education of individuals in the principles, practices, and theory of law.",
+      "timestamp": "2025-11-09T15:46:33.786111",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Legal A set of rules that are created and are enforceable by social or governmental institutions to...",
+      "timestamp": "2025-11-09T15:46:33.778442",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Woman in White: by Wilkie Collins (1860) Subjects: Fiction, mystery & detective, general",
+      "timestamp": "2025-11-09T15:46:08.378248",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "In law, <B>fraud</B> is intentional deception to secure unfair or unlawful gain, or to deprive a victim of",
+      "timestamp": "2025-11-09T15:46:08.369946",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "fraud: instance_of = ['Q20820018', 'Q27949697', 'Q130583773', 'Q101208084']",
+      "timestamp": "2025-11-09T15:46:08.362541",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "In law, fraud is intentional deception to deprive a victim of a legal right or to gain from a victim unlawfully or unfairly. Fraud can violate civil law (e.g., a fraud victim may sue the fraud perpetrator to thwart the fraud or recover monetary compensation) or criminal law (e.g., a fraud perpetrato...",
+      "timestamp": "2025-11-09T15:46:08.354942",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Fraud Category",
+      "timestamp": "2025-11-09T15:46:08.347429",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "In law, fraud is intentional deception to deprive a victim of a legal right or to gain from a victim unlawfully or unfairly. Fraud can violate civil law or criminal law, or it may be an element of another civil or criminal wrong despite itself causing no loss of money, property, or legal right. The purpose of fraud may be monetary gain or other benefits, such as obtaining a passport, travel document, or driver's licence. In cases of mortgage fraud, the perpetrator attempts to qualify for a mortgage by way of false statements.",
+      "timestamp": "2025-11-09T15:46:08.339903",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
+    {
+      "fact": "The Strange Case of Dr. Jekyll and Mr. Hyde: by Robert Louis Stevenson (1875) Subjects: Fiction, Physicians, Physicians in fiction",
+      "timestamp": "2025-11-09T15:46:08.332747",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Elections were held in the United States on November 5, 2024. In the presidential election, former Republican President Donald Trump, seeking a non-consecutive second term, defeated the incumbent Democratic Vice President Kamala Harris. Republicans also gained control of the Senate and held narrow c...",
+      "timestamp": "2025-11-09T15:46:08.325434",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Huntsville, Alabama: by Elfriede Richter-Haaser (1985) Subjects: Pictorial works",
+      "timestamp": "2025-11-09T15:46:08.317299",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Huntsville is the most populous city in the U.S. state of Alabama. The population was 215,006 at the 2020 census, making it the 100th-most populous city in the U.S., while the Huntsville metropolitan area has an estimated 542,000 residents and is the second-most populous metropolitan area in the sta...",
+      "timestamp": "2025-11-09T15:46:08.308797",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Huntsville, Alabama Category",
+      "timestamp": "2025-11-09T15:46:08.301260",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Huntsville is the most populous city in the U.S. state of Alabama. The population was 215,006 at the 2020 census, making it the 100th-most populous city in the U.S., while the Huntsville metropolitan area has an estimated 542,000 residents and is the second-most populous metropolitan area in the state. As of July 1, 2025, the city's population was estimated to be 249,102 – a 15.9% increase since the 2020 Census. This makes it among the top 20 fastest growing cities in the US. Huntsville is the county seat of Madison County, with portions extending into Limestone County, Marshall County, and Morgan County. Huntsville is located in the Appalachian region of northern Alabama, south of the state of Tennessee. It was founded within the Mississippi Territory in 1805 and became an incorporated town in 1811. When Alabama was admitted as a state in 1819, Huntsville was designated for a year as the first capital, before the state capitol was moved to more central settlements.",
+      "timestamp": "2025-11-09T15:46:08.293524",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
+    {
+      "fact": "Una truffa coi baffi: by Elisabetta Dami (2007) Subjects: Detective and mystery stories, Shopping, Shopping - Fiction",
+      "timestamp": "2025-11-09T15:46:08.286198",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "An advance-fee <B>scam</B> is a form of fraud and one of the most common types of confidence tricks. The",
+      "timestamp": "2025-11-09T15:46:08.278923",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Scams: instance_of = ['Q399811', 'Q5398426']",
+      "timestamp": "2025-11-09T15:46:08.271468",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "An advance-fee scam is a form of fraud and is a common scam. The scam works by promising the victim a large sum of money in return for a small upfront payment, which the fraudster claims will be used to obtain the large sum. If a victim makes the payment, the fraudster either invents a series of fur...",
+      "timestamp": "2025-11-09T15:46:08.263981",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "\"Scam 1992 \" An Indian Hindi-language biographical financial thriller streaming television series on SonyLIV...",
+      "timestamp": "2025-11-09T15:46:08.256683",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Scam An attempt to defraud a person or group after first gaining their trust.",
+      "timestamp": "2025-11-09T15:46:08.249053",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Мы: by Евгений Иванович Замятин, Gary Kern, Alejandro Ariel González, Tavo Montañez, Sergio Hernández-Ranera Sánchez, Gregory Zilboorg, Alexander Glinka (1924) Subjects: Literature: Texts, Untranslated Fiction - General, Literature - Classics / Criticism",
+      "timestamp": "2025-11-09T15:46:08.240338",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Political corruption is the use of powers by government officials or their network contacts for illegitimate private gain. Forms of corruption vary but can include bribery, lobbying, extortion, cronyism, nepotism, parochialism, patronage, influence peddling, graft, and embezzlement. Corruption may f...",
+      "timestamp": "2025-11-09T15:46:08.231984",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "Unicorn Coloring Book: by kids M. shop notebook (2019)",
       "timestamp": "2025-11-09T15:34:52.111937",
@@ -2189,7 +2549,7 @@
       "category": "general",
       "confidence": 0.95,
       "source": "wikipedia",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 95
     },

@@ -37,26 +37,59 @@ class AutomaticLearner:
                 r"((?:the )?capital (?:of|city of) [A-Z][a-z]+(?:\s+[A-Z][a-z]+)* is [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
                 r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)* is (?:in|located in) [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
                 r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)* is the (?:largest|biggest|smallest) city in [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
-                r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)* has (?:about|approximately|around) [\d,]+(?:\.\d+)? million (?:people|residents))",
+                r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)* has (?:about|approximately|around) [\d,]+(?:\.\d+)? million (?:people|residents|inhabitants))",
                 r"(Mount [A-Z][a-z]+ is the (?:highest|tallest) mountain (?:in the world|on Earth))",
+                r"([A-Z][a-z]+ is (?:north|south|east|west) of [A-Z][a-z]+)",
+                r"(The [A-Z][a-z]+ River (?:flows through|runs through) [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
             ],
             "biography": [
-                r"([A-Z][a-z]+ [A-Z][a-z]+ was born in [A-Z][a-z]+)",
-                r"([A-Z][a-z]+ [A-Z][a-z]+ (?:developed|created|invented|discovered) (?:the )?[\w\s]+)",
-                r"((?:the )?[\w\s]+ was (?:invented|created|developed|discovered) by [A-Z][a-z]+ [A-Z][a-z]+)",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ was born (?:on )?(?:\d{1,2} \w+ \d{4}|in \d{4}) in [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ (?:developed|created|invented|discovered) (?:the )?[\w\s]+ in \d{4})",
+                r"((?:the )?[\w\s]+ was (?:invented|created|developed|discovered) by [A-Z][a-z]+ [A-Z][a-z]+ in \d{4})",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ served as (?:president|prime minister|governor|mayor) (?:of [A-Z][a-z]+(?:\s+[A-Z][a-z]+)* )?from \d{4} to \d{4})",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ died (?:on )?(?:\d{1,2} \w+ \d{4}|in \d{4}) in [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
             ],
             "history": [
-                r"([\w\s]+ (?:ended|began|started|occurred) in \d{4})",
+                r"([\w\s]+ (?:ended|began|started|occurred) (?:on )?(?:\d{1,2} \w+ \d{4}|in \d{4}))",
                 r"([\w\s]+ (?:lasted|continued) from \d{4} to \d{4})",
+                r"(World War (?:I|II|One|Two) (?:ended|began|started) in \d{4})",
+                r"(The [A-Z][a-z]+ Revolution (?:occurred|began|ended) in \d{4})",
             ],
             "science": [
                 r"([\w\s]+ is (?:the process (?:by which|of)|a (?:chemical|physical|biological) process)[\w\s]+)",
                 r"(the (?:square root|cube root) of \d+(?:\.\d+)? is (?:approximately |about )?\d+(?:\.\d+)?)",
                 r"(\d+(?:\.\d+)? (?:\+|\-|\*|×|÷|/) \d+(?:\.\d+)? (?:equals|is|=) \d+(?:\.\d+)?)",
+                r"(Water (?:boils|freezes) at \d+(?:\.\d+)? degrees (?:Celsius|Fahrenheit))",
+                r"(The speed of light is \d+(?:\.\d+)? (?:million |billion |trillion )?(?:meters|kilometers|miles) per second)",
+                r"(DNA stands for deoxyribonucleic acid)",
             ],
             "technology": [
                 r"(the [A-Z][\w\s]+ was (?:released|launched|introduced) (?:by )?[A-Z][\w\s]+ in \d{4})",
                 r"([A-Z][\w]+ is a (?:programming language|software|operating system|platform)[\w\s]*)",
+                r"(Python was created by Guido van Rossum in \d{4})",
+                r"(JavaScript was (?:created|developed) by Brendan Eich (?:in|during) \d{4})",
+                r"(Linux was created by Linus Torvalds in \d{4})",
+            ]
+        }
+
+        # Quality filters to reject low-quality facts
+        self.quality_filters = {
+            "min_length": 10,  # Minimum fact length
+            "max_length": 500,  # Maximum fact length
+            "reject_patterns": [
+                r'\b(i|we|you|they) (don\'t|do not) know\b',
+                r'\b(not sure|uncertain|maybe|perhaps|possibly)\b',
+                r'\b(i think|i believe|i feel)\b',
+                r'\b(according to|based on|from what i)\b',
+                r'\b(let me|can you|would you)\b',
+                r'\b(example|for instance|such as)\b',
+                r'\b(many|some|few|several)\b',
+                r'\b(approximately|about|around|roughly)\b',
+            ],
+            "require_verbs": [
+                'is', 'was', 'are', 'were', 'has', 'have', 'had', 'developed', 'created',
+                'invented', 'discovered', 'served', 'died', 'born', 'located', 'flows',
+                'boils', 'freezes', 'stands'
             ]
         }
 
@@ -120,97 +153,116 @@ class AutomaticLearner:
         }
 
     def _extract_facts(self, message: str) -> List[Dict[str, Any]]:
-        """Extract factual information from a message"""
+        """Extract factual information from a message with improved quality control"""
         facts = []
 
-        # Split message into clauses to handle compound sentences
-        clauses = re.split(r'\s+(and|but|or)\s+', message)
-        
-        # Process each clause separately, carrying subject context forward
-        current_subject = None
-        for i, clause in enumerate(clauses):
-            clause = clause.strip()
-            if not clause or clause.lower() in ['and', 'but', 'or']:
+        # Skip messages that are clearly not factual
+        message_lower = message.lower()
+        if any(phrase in message_lower for phrase in [
+            "i think", "i believe", "i feel", "in my opinion", "i'm not sure",
+            "maybe", "perhaps", "possibly", "i don't know", "not sure",
+            "let me check", "i'll look it up", "can you tell me"
+        ]):
+            return facts
+
+        # Split message into sentences for better processing
+        sentences = re.split(r'[.!?]+', message)
+        sentences = [s.strip() for s in sentences if s.strip() and len(s.strip()) > 5]
+
+        for sentence in sentences:
+            sentence = sentence.strip()
+            if not sentence:
                 continue
-            
-            # Capitalize first letter if needed
-            if clause and not clause[0].isupper():
-                clause = clause[0].upper() + clause[1:]
-            
-            # Try to extract subject from this clause - look for proper nouns, not just capitalized words
-            subject_match = re.search(r'^([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)(?:\s+(is|was|has|have|developed|invented|pumps|released|are|were)\b)', clause)
-            if subject_match:
-                current_subject = subject_match.group(1)
-            
-            # If this clause doesn't have a subject but we have one from previous clause,
-            # and the clause seems to be continuing a fact about the same subject
-            if not subject_match and current_subject and not clause.startswith(('The ', 'A ', 'An ')):
-                # Prepend the subject to make it a complete clause
-                test_clause = f"{current_subject} {clause.lower()}"
-                # Check if this makes sense by looking for verb patterns
-                if re.search(r'\b(is|was|has|have|developed|invented|pumps|released|are|were)\b', test_clause, re.IGNORECASE):
-                    # Prepend subject and fix capitalization
-                    clause = f"{current_subject} {clause[0].lower() + clause[1:]}"
-            
-            # Check each category's patterns against this clause
+
+            # Apply quality filters first
+            if not self._passes_quality_filters(sentence):
+                continue
+
+            # Try to match against fact patterns
             for category, patterns in self.fact_patterns.items():
                 for pattern in patterns:
-                    matches = re.findall(pattern, clause, re.IGNORECASE)
+                    matches = re.findall(pattern, sentence, re.IGNORECASE)
                     for match in matches:
-                        if isinstance(match, tuple) and len(match) >= 1:
-                            # For patterns with capture groups, the first group should be the complete fact
-                            fact_text = match[0].strip()
-                        else:
-                            # Handle single matches (complete fact)
-                            fact_text = match.strip()
+                        fact_text = match.strip()
+                        if fact_text and self._passes_quality_filters(fact_text):
+                            # Calculate confidence based on pattern specificity and fact completeness
+                            confidence = self._calculate_fact_confidence(fact_text, category, pattern)
 
-                        if fact_text and len(fact_text) > 10:  # Minimum length check
-                            confidence = self._calculate_confidence(fact_text, category, clause)
-                            facts.append({
-                                "fact": fact_text,
-                                "category": category,
-                                "confidence": confidence,
-                                "source": "pattern_match"
-                            })
+                            if confidence >= 0.7:  # Only accept high-confidence facts
+                                facts.append({
+                                    "fact": fact_text,
+                                    "category": category,
+                                    "confidence": confidence,
+                                    "source_sentence": sentence
+                                })
+                                break  # Take the first good match for this sentence
 
-        # Remove duplicates and sort by confidence
-        unique_facts = []
-        seen = set()
-        for fact in sorted(facts, key=lambda x: x["confidence"], reverse=True):
-            fact_key = fact["fact"].lower()
-            if fact_key not in seen:
-                unique_facts.append(fact)
-                seen.add(fact_key)
+        return facts
 
-        return unique_facts[:5]  # Limit to top 5 facts per message
+    def _passes_quality_filters(self, text: str) -> bool:
+        """Check if text passes quality filters"""
+        # Length checks
+        if len(text) < self.quality_filters["min_length"] or len(text) > self.quality_filters["max_length"]:
+            return False
 
-    def _format_fact(self, match_groups: Tuple, category: str) -> str:
-        """Format extracted match groups into a coherent fact"""
-        # Since we're now capturing complete facts, just join the groups
-        return " ".join(match_groups).strip()
+        # Reject patterns
+        text_lower = text.lower()
+        for pattern in self.quality_filters["reject_patterns"]:
+            if re.search(pattern, text_lower):
+                return False
 
-    def _calculate_confidence(self, fact: str, category: str, original_message: str) -> float:
+        # Must contain at least one factual verb
+        has_factual_verb = any(verb in text_lower for verb in self.quality_filters["require_verbs"])
+        if not has_factual_verb:
+            return False
+
+        # Must have some structure (subject-verb-object like)
+        words = text.split()
+        if len(words) < 4:  # Too short to be a proper fact
+            return False
+
+        # Check for proper nouns (indicating specific entities)
+        proper_nouns = [w for w in words if w[0].isupper() and w[0].isalpha()]
+        if len(proper_nouns) < 1:  # Facts should reference specific things
+            return False
+
+        return True
+
+    def _calculate_fact_confidence(self, fact: str, category: str, pattern: str) -> float:
         """Calculate confidence score for a fact"""
         confidence = 0.5  # Base confidence
 
-        # Length bonus
-        if len(fact) > 20:
+        # Pattern specificity bonus
+        if 'born' in pattern or 'died' in pattern:
+            confidence += 0.2  # Biographical facts with dates are reliable
+        elif 'capital' in pattern or 'located' in pattern:
+            confidence += 0.15  # Geographic facts are usually stable
+        elif any(word in pattern for word in ['invented', 'created', 'discovered']):
+            confidence += 0.1  # Attribution facts are important
+
+        # Fact completeness bonus
+        words = fact.split()
+        if len(words) > 6:
+            confidence += 0.1  # Longer facts tend to be more complete
+
+        # Contains numbers/dates (more specific)
+        if re.search(r'\d{4}', fact):  # Year
+            confidence += 0.1
+        if re.search(r'\d{1,2} \w+ \d{4}', fact):  # Full date
             confidence += 0.1
 
-        # Category-specific bonuses
-        if category == "geography" and any(word in fact.lower() for word in ["city", "state", "country", "capital"]):
-            confidence += 0.2
-
-        # Question context penalty (facts in questions are less reliable)
-        if "?" in original_message:
-            confidence -= 0.1
-
-        # Certainty indicators
-        certainty_words = ["is", "are", "was", "were", "has", "have", "located", "born"]
-        if any(word in fact.lower() for word in certainty_words):
+        # Multiple proper nouns (more specific)
+        proper_nouns = [w for w in words if w[0].isupper() and w[0].isalpha()]
+        if len(proper_nouns) >= 2:
             confidence += 0.1
 
-        return min(confidence, 1.0)
+        # Category-specific adjustments
+        if category == "science":
+            confidence += 0.05  # Science facts are generally reliable
+        elif category == "history":
+            confidence += 0.05  # Historical facts are generally reliable
+
+        return min(confidence, 1.0)  # Cap at 1.0
 
     def _expand_knowledge(self, fact: str, category: str) -> List[str]:
         """Expand knowledge by adding related facts"""
