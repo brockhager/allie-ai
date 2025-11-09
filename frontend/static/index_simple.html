@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allie - AI Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-tab {
+            padding: 16px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: #666;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .nav-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .content-area {
+            padding: 20px;
+            background: white;
+            min-height: calc(100vh - 60px);
+        }
+
+        .content-frame {
+            display: none;
+        }
+
+        .content-frame.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <div class="nav-tabs">
+                <a href="#allie" class="nav-tab active" data-route="allie">
+                    <span>💬</span>
+                    <span>Allie UI</span>
+                </a>
+                <a href="#fact-check" class="nav-tab" data-route="fact-check">
+                    <span>✅</span>
+                    <span>Fact Checking</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div class="content-area">
+        <div id="allie-frame" class="content-frame active">
+            <h2>Allie UI</h2>
+            <p>This is the Allie chat interface. The iframe would load here.</p>
+        </div>
+        <div id="fact-check-frame" class="content-frame">
+            <h2>Fact Checking</h2>
+            <p>This is the fact checking interface. The iframe would load here.</p>
+        </div>
+    </div>
+
+    <script>
+        // Simple tab switching without iframes
+        const tabs = document.querySelectorAll('.nav-tab');
+        const frames = {
+            'allie': document.getElementById('allie-frame'),
+            'fact-check': document.getElementById('fact-check-frame')
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const route = tab.dataset.route;
+
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Show corresponding content
+                Object.values(frames).forEach(f => f.classList.remove('active'));
+                frames[route].classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

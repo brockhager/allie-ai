@@ -258,8 +258,16 @@
             </div>
 
             <!-- Content Frames -->
-            <iframe id="allie-frame" class="content-frame active" src="/ui" title="Allie UI"></iframe>
-            <iframe id="fact-check-frame" class="content-frame" src="/fact-check" title="Fact Check"></iframe>
+            <!-- <iframe id="allie-frame" class="content-frame active" src="/ui" title="Allie UI"></iframe> -->
+            <!-- <iframe id="fact-check-frame" class="content-frame" src="/fact-check" title="Fact Check"></iframe> -->
+            <div id="allie-frame" class="content-frame active" style="padding: 20px; background: white;">
+                <h2>Allie UI</h2>
+                <p>This is the Allie chat interface. The iframe would load here.</p>
+            </div>
+            <div id="fact-check-frame" class="content-frame" style="padding: 20px; background: white;">
+                <h2>Fact Checking</h2>
+                <p>This is the fact checking interface. The iframe would load here.</p>
+            </div>
         </div>
     </div>
 
@@ -300,24 +308,15 @@
                     this.navigate(hash, false);
                 }
 
-                // Handle iframe load events
-                Object.values(this.frames).forEach(frame => {
-                    frame.addEventListener('load', () => {
-                        console.log('Iframe loaded:', frame.id);
-                        this.hideLoading();
-                    });
+                // Remember last active tab
+                const savedRoute = localStorage.getItem('allie-active-tab');
+                if (savedRoute && ['allie', 'fact-check'].includes(savedRoute)) {
+                    this.navigate(savedRoute, false);
+                }
 
-                    frame.addEventListener('error', () => {
-                        console.error('Iframe failed to load:', frame.id);
-                        this.showError();
-                    });
-                });
-
-                // Fallback: hide loading after 3 seconds if iframes don't load
-                setTimeout(() => {
-                    console.log('Hiding loading due to timeout');
-                    this.hideLoading();
-                }, 3000);
+                // Hide loading immediately since we're not using iframes
+                this.hideLoading();
+            }
 
                 // Remember last active tab
                 const savedRoute = localStorage.getItem('allie-active-tab');

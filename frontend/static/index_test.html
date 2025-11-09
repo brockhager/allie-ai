@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Allie Tabs Test</title>
+    <style>
+        .nav-tab { padding: 10px; margin: 5px; background: #eee; display: inline-block; cursor: pointer; }
+        .nav-tab.active { background: #667eea; color: white; }
+        .content { padding: 20px; }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="nav-tab active" onclick="showTab('allie')">💬 Allie UI</div>
+        <div class="nav-tab" onclick="showTab('fact')">✅ Fact Checking</div>
+    </div>
+    <div class="content">
+        <div id="allie" style="display:block;">Allie UI Content</div>
+        <div id="fact" style="display:none;">Fact Checking Content</div>
+    </div>
+    <script>
+        function showTab(tab) {
+            document.getElementById('allie').style.display = tab === 'allie' ? 'block' : 'none';
+            document.getElementById('fact').style.display = tab === 'fact' ? 'block' : 'none';
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

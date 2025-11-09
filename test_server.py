@@ -22,7 +22,7 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 @app.get("/", response_class=HTMLResponse)
 async def root():
     """Serve the main tabbed interface"""
-    index_path = STATIC_DIR / "index.html"
+    index_path = STATIC_DIR / "index_test.html"
     if index_path.exists():
         return index_path.read_text(encoding="utf-8")
     else:
@@ -48,6 +48,9 @@ async def fact_check_ui():
 
 if __name__ == "__main__":
     import uvicorn
-    print("Starting minimal test server on http://localhost:8002")
+    print("Starting minimal test server on http://localhost:8001")
     print("Press Ctrl+C to stop")
-    uvicorn.run(app, host="0.0.0.0", port=8002)
+    try:
+        uvicorn.run(app, host="127.0.0.1", port=8001, log_level="info", access_log=False)
+    except KeyboardInterrupt:
+        print("Server stopped")
