@@ -1,0 +1,48 @@
+{
+  "facts": [
+    {
+      "fact": "What is the capital of colorado",
+      "importance": 0.9,
+      "category": "geography",
+      "timestamp": "2025-11-08T16:07:15.795149",
+      "usage_count": 0
+    },
+    {
+      "fact": "The capital of Coloradan is Denver",
+      "importance": 0.9,
+      "category": "geography",
+      "timestamp": "2025-11-08T16:07:42.628519",
+      "usage_count": 0
+    },
+    {
+      "fact": "What is the capital of colorado",
+      "importance": 0.9,
+      "category": "geography",
+      "timestamp": "2025-11-08T16:07:42.647963",
+      "usage_count": 0
+    },
+    {
+      "fact": "Colorado is a state in the United States",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T16:07:15.797805",
+      "usage_count": 0
+    },
+    {
+      "fact": "Denver is located in Colorado",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T16:07:42.630575",
+      "usage_count": 0
+    },
+    {
+      "fact": "Colorado is a state in the United States",
+      "importance": 0.7,
+      "category": "geography",
+      "timestamp": "2025-11-08T16:07:42.649956",
+      "usage_count": 0
+    }
+  ],
+  "preferences": {},
+  "learned_concepts": []
+}

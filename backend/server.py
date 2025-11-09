@@ -21,7 +21,7 @@ if project_root not in sys.path:
 from backend.sources.retrieval import search_with_memory_first, search_all_sources
 from backend.sources.duckduckgo import search_duckduckgo
 # Import lightweight context utils (pronoun resolution)
-from .context_utils import enhance_query_with_context
+from backend.context_utils import enhance_query_with_context
 
 conversation_history = []
 

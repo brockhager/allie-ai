@@ -1,8 +1,96 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-08T15:37:35.214366",
-  "fact_count": 5,
+  "saved_at": "2025-11-08T16:09:52.575178",
+  "fact_count": 16,
   "facts": [
+    {
+      "fact": "2025 (MMXXV) is the current year, and is a common year starting on Wednesday of the Gregorian calendar, the 2025th year of the Common Era (CE) and Anno Domini (AD) designations, the 25th  year of the 3rd millennium and the 21st century, and the  6th   year of the 2020s decade.  \nSo far, the year has...",
+      "timestamp": "2025-11-08T16:09:52.575129",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Colorado is a state in the United States",
+      "timestamp": "2025-11-08T16:07:42.651130",
+      "category": "geography",
+      "confidence": 0.7,
+      "source": "automatic_learning_expansion",
+      "is_outdated": false
+    },
+    {
+      "fact": "What is the capital of colorado",
+      "timestamp": "2025-11-08T16:07:42.649215",
+      "category": "geography",
+      "confidence": 0.9,
+      "source": "automatic_learning",
+      "is_outdated": false
+    },
+    {
+      "fact": "Denver is located in Colorado",
+      "timestamp": "2025-11-08T16:07:42.631586",
+      "category": "geography",
+      "confidence": 0.7,
+      "source": "automatic_learning_expansion",
+      "is_outdated": false
+    },
+    {
+      "fact": "The capital of Coloradan is Denver",
+      "timestamp": "2025-11-08T16:07:42.629863",
+      "category": "geography",
+      "confidence": 0.9,
+      "source": "automatic_learning",
+      "is_outdated": false
+    },
+    {
+      "fact": "Extradition laws and treaties, United States: by United States (1795) Subjects: Treaties, Foreign relations, Relations extérieures",
+      "timestamp": "2025-11-08T16:07:20.295593",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "Denver  (  DEN-vər) is the capital and most populous city of the U.S. state of Colorado. Officially a consolidated city and county, it is located in the South Platte River valley on the western edge of the High Plains, and is just east of the Front Range of the Rocky Mountains. Denver is the 19th-mo...",
+      "timestamp": "2025-11-08T16:07:20.294768",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
+    {
+      "fact": "Colorado is a state in the United States",
+      "timestamp": "2025-11-08T16:07:15.798688",
+      "category": "geography",
+      "confidence": 0.7,
+      "source": "automatic_learning_expansion",
+      "is_outdated": false
+    },
+    {
+      "fact": "What is the capital of colorado",
+      "timestamp": "2025-11-08T16:07:15.796980",
+      "category": "geography",
+      "confidence": 0.9,
+      "source": "automatic_learning",
+      "is_outdated": false
+    },
+    {
+      "fact": "With Kit Carson In The Rockies: by Everett McNeil (1909)",
+      "timestamp": "2025-11-08T16:06:29.261532",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "is_outdated": false
+    },
+    {
+      "fact": "The Lost Boys are characters from J. M. Barrie's 1904 play Peter Pan, or The Boy Who Wouldn't Grow Up and later adaptations and extensions to the story. They are boys \"who fall out of their prams when the nurse is looking the other way and if they are not claimed in seven days, they are sent far awa...",
+      "timestamp": "2025-11-08T16:06:29.259895",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "is_outdated": false
+    },
     {
       "fact": "Paris is the capital of France",
       "timestamp": "2025-11-08T15:37:35.214353",

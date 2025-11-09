@@ -1058,5 +1058,87 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-zi61pwb",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762643149244
+      },
+      {
+        "role": "me",
+        "text": "how tall is the rockys",
+        "timestamp": 1762643183947
+      },
+      {
+        "role": "them",
+        "text": "The height of the Rocky Mountains varies depending on location and elevation. However, according to historical records, some areas may be as high as over 7,630 feet above sea level. This means that the average height for these mountains would likely range between about 6,000-7,000 feet.",
+        "timestamp": 1762643206786
+      },
+      {
+        "role": "me",
+        "text": "what is the capital of colorado",
+        "timestamp": 1762643235792
+      },
+      {
+        "role": "them",
+        "text": "The capital of Coloradan is Denver, which lies at the mouth of the South Platte river valley along the eastern border with Wyoming. The official name for the city is \"Denver\" but its popular nickname is simply \"DEN.\" It has been designated as both an unincorporated area and a consolidated city/county since being incorporated in 1863. As such, there isn't one specific location that holds all legal authority over the city. Instead, various extraterritorial jurisdictions have their own governing bodies\n\n\n\n\u2713 Learned: The capital of Coloradan is Denver (stored in geography)\n\n\n\n\u2713 Learned: What is the capital of colorado (stored in geography)",
+        "timestamp": 1762643262634
+      },
+      {
+        "role": "me",
+        "text": "who is the president",
+        "timestamp": 1762643318433
+      },
+      {
+        "role": "them",
+        "text": "As of my last knowledge, Joe Biden is the President of the United States.",
+        "timestamp": 1762643330465
+      },
+      {
+        "role": "me",
+        "text": "there was a new president elected on Jan 20, 2025",
+        "timestamp": 1762643388666
+      },
+      {
+        "role": "them",
+        "text": "Based on the given information, it can be inferred that the newly-elected President in 2025 will have been inaugurated as such by January 20, 2025. Therefore, the answer to your question would be \"Yes,\" since we know for certain that an inauguration took place during that time period.",
+        "timestamp": 1762643409310
+      },
+      {
+        "role": "me",
+        "text": "do you know who was elected?",
+        "timestamp": 1762643431867
+      },
+      {
+        "role": "them",
+        "text": "Yes, I do! The person who was recently elected as President of the United States is Joe Biden from the Democratic Party.",
+        "timestamp": 1762643477666
+      },
+      {
+        "role": "me",
+        "text": "the current president is Trump",
+        "timestamp": 1762643624573
+      },
+      {
+        "role": "them",
+        "text": "As of my last knowledge, Joe Biden is the President of the United States.",
+        "timestamp": 1762643624578
+      },
+      {
+        "role": "me",
+        "text": "look on WH.GOV website",
+        "timestamp": 1762643640238
+      },
+      {
+        "role": "them",
+        "text": "The White House Government Online (WH.gov) provides information about various government agencies and services to citizens of the United States. The site includes links to different departments such as Health & Human Services, Education, Energy, etc., along with news updates from each department. Users can also find resources for job seekers or learn more about federal programs like food assistance, health insurance, and veterans benefits. Visitors can access these pages through their browser by typing \"wh.gov\" into the address bar.",
+        "timestamp": 1762643655132
+      }
+    ],
+    "draft": ""
   }
 ]
