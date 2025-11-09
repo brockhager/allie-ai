@@ -419,7 +419,9 @@ class IncrementalLearningOrchestrator:
                     super().__init__(*args, **kwargs)
                     self.ewc_regularizer = ewc_regularizer
 
-                def compute_loss(self, model, inputs, return_outputs=False):
+                def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
+                    # Updated signature to match newer transformers API
+                    # num_items_in_batch is passed by newer versions but not used here
                     outputs = model(**inputs)
                     loss = outputs.loss
 

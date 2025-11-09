@@ -97,14 +97,44 @@ model = None
 logger.warning("Using dummy model for testing - skipping real model download")
 # Dummy model for testing (fallback)
 class DummyModel:
+    def __init__(self):
+        self.device = "cpu"
+    
     def generate(self, **kwargs):
-        return ["Dummy response from model"]
+        # Return tensor-like object with shape attribute
+        class DummyOutput:
+            def __init__(self):
+                self.shape = [1, 10]  # batch_size=1, seq_len=10
+            def __getitem__(self, idx):
+                return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Dummy token IDs
+        
+        return [DummyOutput()]
 
 class DummyTokenizer:
+    def __init__(self):
+        self.eos_token_id = 2
+    
     def __call__(self, prompt, return_tensors=None):
-        return {"input_ids": [1, 2, 3]}
+        # Return object with .to() method to match real tokenizer behavior
+        class TokenizerOutput:
+            def __init__(self):
+                self.data = {"input_ids": [[1, 2, 3]]}
+            
+            def to(self, device):
+                # Return self to support chaining
+                return self
+            
+            def __getitem__(self, key):
+                return self.data[key]
+        
+        output = TokenizerOutput()
+        # Make it subscriptable like a dict
+        output.input_ids = output.data["input_ids"]
+        return output
+    
     def decode(self, tokens, skip_special_tokens=None):
         return "This is a dummy response for testing purposes."
+    
     def apply_chat_template(self, messages, tokenize=False, add_generation_prompt=True):
         # Simple template for testing
         return "Test prompt"

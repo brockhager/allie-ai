@@ -643,6 +643,20 @@
       "training_stats": null,
       "evaluation_results": null,
       "error_message": "IncrementalLearningOrchestrator._execute_training.<locals>.EWCTrainer.compute_loss() got an unexpected keyword argument 'num_items_in_batch'"
+    },
+    {
+      "id": "learn_20251109_160734",
+      "status": "failed",
+      "start_time": "2025-11-09T16:07:34.921420",
+      "end_time": "2025-11-09T16:08:01.265603",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "IncrementalLearningOrchestrator._execute_training.<locals>.EWCTrainer.compute_loss() got an unexpected keyword argument 'num_items_in_batch'"
     }
   ],
   "config": {
