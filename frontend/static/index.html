@@ -112,7 +112,14 @@
             height: 100%;
             flex-direction: column;
             gap: 20px;
-            color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            background: rgba(255, 255, 255, 0.9);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10;
         }
 
         .loading-spinner {
@@ -296,13 +303,21 @@
                 // Handle iframe load events
                 Object.values(this.frames).forEach(frame => {
                     frame.addEventListener('load', () => {
+                        console.log('Iframe loaded:', frame.id);
                         this.hideLoading();
                     });
 
                     frame.addEventListener('error', () => {
+                        console.error('Iframe failed to load:', frame.id);
                         this.showError();
                     });
                 });
+
+                // Fallback: hide loading after 3 seconds if iframes don't load
+                setTimeout(() => {
+                    console.log('Hiding loading due to timeout');
+                    this.hideLoading();
+                }, 3000);
 
                 // Remember last active tab
                 const savedRoute = localStorage.getItem('allie-active-tab');
