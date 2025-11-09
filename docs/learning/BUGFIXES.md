@@ -59,9 +59,27 @@ TypeError: server.DummyModel.generate() argument after ** must be a mapping, not
 
 This allows `**inputs` unpacking to work properly: `model.generate(**inputs)`
 
+### 4. TokenizerOutput AttributeError: 'list' object has no attribute 'shape'
+
+**Error:**
+```
+AttributeError: 'list' object has no attribute 'shape'
+```
+
+**Location:** `backend/server.py` line 1414
+
+**Cause:** `input_ids` was a plain Python list `[[1, 2, 3]]`, but code expected it to have `.shape` attribute like a PyTorch tensor
+
+**Fix:** Created `DummyTensor` class that wraps list data and provides:
+- `shape` attribute - tuple representing tensor dimensions (batch_size, sequence_length)
+- `__getitem__` method - allows indexing like `tensor[0]`
+- Automatic shape calculation from nested list structure
+
+Now `inputs['input_ids'].shape[1]` works correctly for calculating max_length parameter.
+
 ## Files Modified
 
-1. `backend/server.py` - Fixed DummyModel, DummyTokenizer, and TokenizerOutput
+1. `backend/server.py` - Fixed DummyModel, DummyTokenizer, TokenizerOutput, and added DummyTensor
 2. `scripts/learning_orchestrator.py` - Fixed EWCTrainer.compute_loss signature
 
 ## Testing

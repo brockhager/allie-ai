@@ -1,8 +1,68 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T16:13:17.716968",
-  "fact_count": 606,
+  "saved_at": "2025-11-09T16:19:44.066295",
+  "fact_count": 612,
   "facts": [
+    {
+      "fact": "El túnel: by Ernesto Sabato (1948) Subjects: Spanish fiction, Spanish language, Spanish language books",
+      "timestamp": "2025-11-09T16:19:44.065019",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Peru</B> ( (); Spanish: <B>Perú</B> [<B>peˈɾu</B>]; Quechua: Piruw Republika [pʰɪɾʊw]; Aymara: Piruw Suyu [pɪɾʊw",
+      "timestamp": "2025-11-09T16:19:44.055061",
+      "category": "geography",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Peru: instance_of = ['Q3624078', 'Q6256']",
+      "timestamp": "2025-11-09T16:19:44.042600",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Peru, officially the Republic of Peru, is a country in western South America. It is bordered to the north by Ecuador and Colombia, to the east by Brazil, to the southeast by Bolivia, to the south by Chile, and to the south and west by the Pacific Ocean. Peru is a megadiverse country, with habitats r...",
+      "timestamp": "2025-11-09T16:19:44.034622",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Peru Category",
+      "timestamp": "2025-11-09T16:19:44.024174",
+      "category": "geography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Peru, officially the Republic of Peru, is a country in western South America. It is bordered to the north by Ecuador and Colombia, to the east by Brazil, to the southeast by Bolivia, to the south by Chile, and to the south and west by the Pacific Ocean. Peru is a megadiverse country, with habitats ranging from the arid plains of the Pacific coastal region in the west, to the peaks of the Andes mountains extending from the north to the southeast of the country, to the tropical Amazon basin rainforest in the east with the Amazon River. Peru has a population of over 32 million, and its capital and largest city is Lima. At 1,285,216 km², Peru is the 19th largest country in the world, and the third largest in South America.",
+      "timestamp": "2025-11-09T16:19:44.011087",
+      "category": "geography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
     {
       "fact": "El túnel: by Ernesto Sabato (1948) Subjects: Spanish fiction, Spanish language, Spanish language books",
       "timestamp": "2025-11-09T16:13:17.715791",
@@ -41,7 +101,7 @@
       "source": "wikipedia",
       "status": "not_verified",
       "confidence_score": 95,
-      "is_outdated": false
+      "is_outdated": true
     },
     {
       "fact": "Peru Category",

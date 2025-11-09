@@ -116,9 +116,22 @@ class DummyTokenizer:
     
     def __call__(self, prompt, return_tensors=None):
         # Return object with .to() method to match real tokenizer behavior
+        class DummyTensor:
+            """Mock tensor with shape attribute"""
+            def __init__(self, data):
+                self.data = data
+                # Calculate shape: (batch_size, sequence_length)
+                if isinstance(data, list) and len(data) > 0:
+                    self.shape = (len(data), len(data[0]) if isinstance(data[0], list) else 1)
+                else:
+                    self.shape = (1, 1)
+            
+            def __getitem__(self, key):
+                return self.data[key]
+        
         class TokenizerOutput:
             def __init__(self):
-                self.data = {"input_ids": [[1, 2, 3]]}
+                self.data = {"input_ids": DummyTensor([[1, 2, 3]])}
             
             def to(self, device):
                 # Return self to support chaining
@@ -137,7 +150,7 @@ class DummyTokenizer:
                 return self.data.items()
         
         output = TokenizerOutput()
-        # Make it subscriptable like a dict
+        # Make it subscriptable like a dict and add tensor as attribute
         output.input_ids = output.data["input_ids"]
         return output
     
