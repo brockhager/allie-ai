@@ -240,12 +240,21 @@ async def root():
 
 @app.get("/ui", response_class=HTMLResponse)
 async def get_ui():
-    """Serve the Allie UI page (for iframe embedding)"""
+    """Serve the tabbed interface"""
+    index_path = STATIC_DIR / "index.html"
+    if index_path.exists():
+        return index_path.read_text(encoding="utf-8")
+    else:
+        return HTMLResponse(content="<h1>Allie - Tabbed Interface</h1><p>Interface not found</p>", status_code=404)
+
+@app.get("/chat", response_class=HTMLResponse)
+async def get_chat():
+    """Serve the Allie chat UI"""
     ui_path = STATIC_DIR / "ui.html"
     if ui_path.exists():
         return ui_path.read_text(encoding="utf-8")
     else:
-        return HTMLResponse(content="<h1>Allie UI</h1><p>UI file not found</p>", status_code=404)
+        return HTMLResponse(content="<h1>Allie Chat UI</h1><p>Chat interface not found</p>", status_code=404)
 
 @app.get("/fact-check", response_class=HTMLResponse)
 async def fact_check_ui():
