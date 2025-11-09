@@ -407,11 +407,10 @@ class IncrementalLearningOrchestrator:
             dataset = Dataset.from_list(training_data['training_examples'])
             tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=dataset.column_names)
 
-            # Initialize EWC regularizer
-            ewc_regularizer = ElasticWeightConsolidation(
-                model,
-                self.config['training_params']['ewc_lambda']
-            )
+            # Initialize EWC regularizer with correct device parameter
+            device = 'cuda' if torch.cuda.is_available() else 'cpu'
+            ewc_regularizer = ElasticWeightConsolidation(model, device=device)
+            ewc_regularizer.ewc_lambda = self.config['training_params']['ewc_lambda']
 
             # Custom trainer with EWC loss
             class EWCTrainer(Trainer):
