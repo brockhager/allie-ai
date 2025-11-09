@@ -46,6 +46,37 @@ async def fact_check_ui():
     else:
         return HTMLResponse("<html><body><h3>Fact Check UI not installed</h3></body></html>", status_code=404)
 
+# Mock API endpoints for testing
+@app.get("/api/conversations")
+async def mock_conversations():
+    """Mock conversations endpoint"""
+    return []
+
+@app.get("/api/learning/status")
+async def mock_learning_status():
+    """Mock learning status endpoint"""
+    return {
+        "enabled": False,
+        "message": "Learning system not available in test server. Use the full server on port 8001."
+    }
+
+@app.get("/api/hybrid-memory/statistics")
+async def mock_memory_stats():
+    """Mock memory statistics endpoint"""
+    return {
+        "status": "success",
+        "statistics": {
+            "total_facts": 0,
+            "active_facts": 0,
+            "outdated_facts": 0,
+            "indexed_keywords": 0,
+            "average_confidence": 0,
+            "pending_review": 0,
+            "categories": {},
+            "sources": {}
+        }
+    }
+
 if __name__ == "__main__":
     import uvicorn
     print("Starting minimal test server on http://localhost:8002")
