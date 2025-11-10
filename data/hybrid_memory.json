@@ -1,8 +1,68 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T17:10:07.524221",
-  "fact_count": 645,
+  "saved_at": "2025-11-09T19:35:12.291193",
+  "fact_count": 651,
   "facts": [
+    {
+      "fact": "Bill: by Canada. Legislature. Legislative Assembly. (2002) Subjects: Legislative Bills, Law and legislation, Banking law",
+      "timestamp": "2025-11-09T19:35:12.290185",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Canada</B> is a country in the northern part of North America. Its ten provinces and three territories",
+      "timestamp": "2025-11-09T19:35:12.282164",
+      "category": "geography",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Canada: instance_of = ['Q223832', 'Q202686', 'Q3624078', 'Q6256', 'Q43702']",
+      "timestamp": "2025-11-09T19:35:12.273424",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Canada is a country in North America. Its ten provinces and three territories extend from the Atlantic Ocean to the Pacific Ocean and northward into the Arctic Ocean, making it the second-largest country by total area, with the longest coastline of any country. Its border with the United States is t...",
+      "timestamp": "2025-11-09T19:35:12.265543",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Canada Category",
+      "timestamp": "2025-11-09T19:35:12.257288",
+      "category": "geography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Canada is a country in North America. Its ten provinces and three territories extend from the Atlantic Ocean to the Pacific Ocean and northward into the Arctic Ocean, making it the second-largest country by total area, with the longest coastline of any country. Its border with the United States is the longest international land border. The country is characterized by a wide range of both meteorologic and geological regions. With a population of over 41 million, it has widely varying population densities, with the majority residing in its urban areas and large areas being sparsely populated. Canada's capital is Ottawa and its three largest metropolitan areas are Toronto, Montreal, and Vancouver. Indigenous peoples have continuously inhabited what is now Canada for thousands of years. Beginning in the 16th century, British and French expeditions explored and later settled along the Atlantic coast.",
+      "timestamp": "2025-11-09T19:35:12.248539",
+      "category": "geography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
     {
       "fact": "Brad Pitt : Summary of Top 20 Movies for Brad Pitt: by Harry James (2016)",
       "timestamp": "2025-11-09T17:10:07.523157",

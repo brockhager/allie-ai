@@ -1,24 +1,14 @@
 [
   {
-    "id": "c-tw7yrha",
+    "id": "c-6enqde4",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762733359871
-      },
-      {
-        "role": "me",
-        "text": "who is brad pitt",
-        "timestamp": 1762733380763
-      },
-      {
-        "role": "them",
-        "text": "Based on the given material, Brad Pitt is listed as \"William Bradley Pitt\" in various sources such as DuckDuckGo, Wikipedia, WIKIDATA, and OpenLibrary. While there is no definitive answer to your question regarding which specific movie he was featured in, it can be inferred that he appeared as a lead character or supporting actor in at least three different movies during his acting career, namely \"Thelma & Louise,\" \"Legends of the Fall,\" and \"Snatch.\" These films were all directed by Ridley Scott, and\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Brad_Pitt\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Best_Supporting_Actor_AACTA_International_Award_winners",
-        "timestamp": 1762733439876
+        "timestamp": 1762742056875
       }
     ],
-    "draft": ""
+    "draft": "where is canad"
   }
 ]

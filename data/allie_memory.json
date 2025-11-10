@@ -22,6 +22,13 @@
       "usage_count": 0
     },
     {
+      "fact": "and Canada is located in North America",
+      "importance": 0.85,
+      "category": "geography",
+      "timestamp": "2025-11-09T19:35:48.671339",
+      "usage_count": 0
+    },
+    {
       "fact": "Colorado is a state in the United States",
       "importance": 0.7,
       "category": "geography",
