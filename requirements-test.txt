@@ -1,0 +1,13 @@
+# Testing dependencies
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+httpx>=0.24.0  # For async HTTP testing
+fastapi[test]>=0.100.0  # FastAPI test client
+
+# Code coverage
+coverage>=7.0.0
+
+# Mock and fixtures
+responses>=0.23.0  # For mocking HTTP responses

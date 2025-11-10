@@ -974,9 +974,34 @@ async def update_conversation_api(conv_id: str, payload: Dict[str, Any] = Body(.
             # Save to backup
             with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
                 json.dump(conversation_history, f, indent=2)
-            
+
             return payload
-    raise HTTPException(status_code=404, detail="Conversation not found")
+
+    # If conversation doesn't exist, create it
+    conversation_history.append(payload)
+
+    # Process messages for automatic learning on new conversation
+    if payload.get("messages"):
+        for msg in payload["messages"]:
+            if msg.get("role") == "me" and msg.get("text"):
+                learning_result = auto_learner.process_message(msg["text"], "user")
+                if learning_result["learning_actions"]:
+                    logger.info(f"Learned {learning_result['total_facts_learned']} facts from user message")
+
+    # Generate conversation summary for new conversation
+    if payload.get("messages") and len(payload["messages"]) > 0:
+        try:
+            summary = await generate_conversation_summary(payload)
+            key_points = extract_key_points(payload)
+            allie_memory.add_conversation_summary(summary, key_points)
+        except Exception as e:
+            logger.warning(f"Failed to summarize conversation: {e}")
+
+    # Save to backup
+    with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
+        json.dump(conversation_history, f, indent=2)
+
+    return payload
 
 async def generate_conversation_summary(conversation: Dict[str, Any]) -> str:
     """Generate a summary of the conversation"""
@@ -1910,10 +1935,17 @@ async def update_hybrid_memory(
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/hybrid-memory/reconcile")
-async def reconcile_with_external(external_facts: List[Dict[str, Any]] = Body(...)):
+async def reconcile_with_external(payload: Dict[str, Any] = Body(...)):
     """Reconcile hybrid memory with external facts"""
+    external_facts = payload.get("external_facts", [])
+    query = payload.get("query", "")
+    source = payload.get("source", "external")
+
+    if not isinstance(external_facts, list):
+        raise HTTPException(status_code=400, detail="external_facts must be a list")
+
     try:
-        report = hybrid_memory.reconcile_with_external(external_facts)
+        report = hybrid_memory.reconcile_with_external(query, external_facts, source)
         return {
             "status": "success",
             "reconciliation_report": report
@@ -2016,9 +2048,9 @@ async def approve_reconciliation(queue_id: int, payload: Dict[str, Any] = Body(.
         if action_type == "promote":
             # Add fact to facts table with high confidence
             fact_result = advanced_memory.add_fact(
-                item["keyword"],
                 item["fact"],
-                item["source"],
+                category=item["keyword"],
+                source=item["source"],
                 confidence=0.9,
                 status="true",
                 confidence_score=85
@@ -2028,9 +2060,9 @@ async def approve_reconciliation(queue_id: int, payload: Dict[str, Any] = Body(.
         elif action_type == "mark_needs_review":
             # Add fact with needs_review status
             fact_result = advanced_memory.add_fact(
-                item["keyword"],
                 item["fact"],
-                item["source"],
+                category=item["keyword"],
+                source=item["source"],
                 confidence=0.5,
                 status="needs_review",
                 confidence_score=50
