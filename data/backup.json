@@ -70,5 +70,37 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-wg8o0i6",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762732755286
+      },
+      {
+        "role": "me",
+        "text": "who is brad pitt",
+        "timestamp": 1762732766814
+      },
+      {
+        "role": "them",
+        "text": "Who is Brad Pitt?\nBrad Pitt is an American actor and film producer who has been acting professionally since the early 1990s. He began his career as a lead actor in movies like \"Thelma & Louise,\" where he played the supporting character Hank Callahan. Since then, Pitt has gone on to play some iconic characters, including Luke Skywalker in Star Wars: Episode I - The Phantom Menace and Mike Ross in the legal drama series \"Orange Is the New Black.\" Pitt also made appearances in several critically\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Brad_Pitt\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Best_Supporting_Actor_AACTA_International_Award_winners",
+        "timestamp": 1762732817067
+      },
+      {
+        "role": "me",
+        "text": "was brad pitt in orange is the new black?",
+        "timestamp": 1762732904425
+      },
+      {
+        "role": "them",
+        "text": "Yes, Brad Pitt played the role of Dante \"D\" Hicks on Orange Is The New Black, an American crime drama television series that premiered on Netflix on July 13, 2014. He continued to act as the character until his character's final episode in season three.\n\n---\n**Source:** Model\n**Confidence:** 60%\n**URLs:**\n\ud83e\udd16 AI Model: Generated response",
+        "timestamp": 1762732920559
+      }
+    ],
+    "draft": ""
   }
 ]

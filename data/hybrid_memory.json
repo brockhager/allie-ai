@@ -1,8 +1,58 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T16:55:57.524765",
-  "fact_count": 635,
+  "saved_at": "2025-11-09T16:59:45.131957",
+  "fact_count": 640,
   "facts": [
+    {
+      "fact": "Brad Pitt : Summary of Top 20 Movies for Brad Pitt: by Harry James (2016)",
+      "timestamp": "2025-11-09T16:59:45.130735",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Brad Pitt: instance_of = Q5",
+      "timestamp": "2025-11-09T16:59:45.122546",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "William Bradley Pitt (born December 18, 1963) is an American actor and film producer. In a film career spanning more than thirty years, Pitt has received numerous accolades, including two Academy Awards, two British Academy Film Awards, two Golden Globe Awards, and two Primetime Emmy Awards. His fil...",
+      "timestamp": "2025-11-09T16:59:45.113533",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Best Supporting Actor AACTA International Award winners",
+      "timestamp": "2025-11-09T16:59:45.105289",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "William Bradley Pitt is an American actor and film producer. In a film career spanning more than thirty years, Pitt has received numerous accolades, including two Academy Awards, two British Academy Film Awards, two Golden Globe Awards, and two Primetime Emmy Awards. His films as a leading actor have grossed over $7.5 billion worldwide. Pitt first gained recognition as a cowboy hitchhiker in the Ridley Scott road film Thelma & Louise. Pitt emerged as a star taking on leading man roles in films such as the drama A River Runs Through It, the western Legends of the Fall, the horror film Interview with the Vampire, the crime thriller Seven, the cult film Fight Club, and the crime comedy Snatch. Pitt found greater commercial success starring in Steven Soderbergh's heist film Ocean's Eleven, and reprised his role in its sequels.",
+      "timestamp": "2025-11-09T16:59:45.095361",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "Dublin Dr Pepper is the popular name for a style of Dr Pepper soft drink made by the Dublin Dr Pepper Bottling Company in Dublin, Texas, US. This style of Dr. Pepper is attributed to Gavyn Ray, a Dr. Pepper connoisseur.",
       "timestamp": "2025-11-09T16:55:57.523108",
