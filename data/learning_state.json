@@ -1413,6 +1413,160 @@
       "training_stats": null,
       "evaluation_results": null,
       "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_210513",
+      "status": "failed",
+      "start_time": "2025-11-09T21:05:13.281746",
+      "end_time": "2025-11-09T21:05:43.648023",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_210940",
+      "status": "failed",
+      "start_time": "2025-11-09T21:09:40.178630",
+      "end_time": "2025-11-09T21:10:08.885997",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_211259",
+      "status": "failed",
+      "start_time": "2025-11-09T21:12:59.153836",
+      "end_time": "2025-11-09T21:13:27.266264",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_211621",
+      "status": "failed",
+      "start_time": "2025-11-09T21:16:21.461642",
+      "end_time": "2025-11-09T21:16:43.438640",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_211925",
+      "status": "failed",
+      "start_time": "2025-11-09T21:19:25.438562",
+      "end_time": "2025-11-09T21:19:51.507347",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_212247",
+      "status": "failed",
+      "start_time": "2025-11-09T21:22:47.035452",
+      "end_time": "2025-11-09T21:23:14.329616",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_212551",
+      "status": "failed",
+      "start_time": "2025-11-09T21:25:51.465305",
+      "end_time": "2025-11-09T21:26:15.788011",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_212859",
+      "status": "failed",
+      "start_time": "2025-11-09T21:28:59.432374",
+      "end_time": "2025-11-09T21:29:20.060281",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_213209",
+      "status": "failed",
+      "start_time": "2025-11-09T21:32:09.994687",
+      "end_time": "2025-11-09T21:32:36.829403",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_213523",
+      "status": "failed",
+      "start_time": "2025-11-09T21:35:23.965188",
+      "end_time": "2025-11-09T21:35:54.602789",
+      "data_stats": {
+        "total_conversations": 7,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_213828",
+      "status": "failed",
+      "start_time": "2025-11-09T21:38:28.501608",
+      "end_time": "2025-11-09T21:39:11.018674",
+      "data_stats": {
+        "total_conversations": 7,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
     }
   ],
   "config": {

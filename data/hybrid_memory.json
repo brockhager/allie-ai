@@ -1,8 +1,1788 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T21:01:31.134861",
-  "fact_count": 688,
+  "saved_at": "2025-11-09T21:37:53.969144",
+  "fact_count": 866,
   "facts": [
+    {
+      "fact": "Study Guide: by SuperSummary (2019) Subjects: Sociology",
+      "timestamp": "2025-11-09T21:37:53.967468",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Charles Richard Drew (June 3, 1904 – April 1, 1950) was an American surgeon and medical researcher. He researched in the field of blood transfusions, developing improved techniques for blood storage, and applied his expert knowledge to developing large-scale blood banks early in World War II. This a...",
+      "timestamp": "2025-11-09T21:37:53.944880",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Duct tape or duck tape is cloth- or scrim-backed pressure-sensitive tape, often coated with polyethylene. A variety of constructions exist using different backings and adhesives, and the term \"duct tape\" has been genericized to refer to all of them. A variation is heat-resistant foil tape useful for...",
+      "timestamp": "2025-11-09T21:36:04.798232",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Utopia: by Thomas More (1518) Subjects: Utopias, Proverbs, Bibliography",
+      "timestamp": "2025-11-09T21:34:04.181221",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Brasília ( brə-ZIL-ee-ə, Brazilian Portuguese: [bɾaˈziliɐ, bɾaˈziljɐ] ) is the capital city of Brazil and the Federal District. Located in the Brazilian highlands in the country's Central-West region, it was founded by President Juscelino Kubitschek on 21 April 1960, to replace Rio de Janeiro as the...",
+      "timestamp": "2025-11-09T21:34:04.169585",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The House of Commons is the lower house of the Parliament of the United Kingdom. Like the upper house, the House of Lords, it meets in the Palace of Westminster in London, England. The House of Commons is an elected body consisting of 650 members known as members of Parliament (MPs), who are elected...",
+      "timestamp": "2025-11-09T21:32:52.006383",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Cynthia Marie Lummis Wiederspahn ( LUH-miss; born September 10, 1954) is an American attorney and politician serving as the junior United States senator from Wyoming since 2021. A member of the Republican Party, Lummis served as the U.S. representative for Wyoming's at-large congressional district f...",
+      "timestamp": "2025-11-09T21:32:51.883774",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The constitution of the United Kingdom comprises the written and unwritten arrangements that establish the United Kingdom of Great Britain and Northern Ireland as a political body. Unlike in most countries, no official attempt has been made to codify such arrangements into a single document, thus it...",
+      "timestamp": "2025-11-09T21:32:51.800176",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Constitution of the United States is the supreme law of the United States of America. It superseded the Articles of Confederation, the nation's first constitution, on March 4, 1789. Originally including seven articles, the Constitution defined the foundational structure of the federal government...",
+      "timestamp": "2025-11-09T21:32:51.786919",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The constitution of the United Kingdom is an uncodified constitution made up of various statutes, judicial precedents, convention, treaties and other sources. Beginning in the Middle Ages, the constitution developed gradually in response to various crises. By the 20th century, the British monarchy h...",
+      "timestamp": "2025-11-09T21:32:51.772764",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": true
+    },
+    {
+      "fact": "The Declaration of Independence, formally The unanimous Declaration of the thirteen united States of America in the original printing, is the founding document of the United States. On July 4, 1776, it was adopted unanimously by the Second Continental Congress, who were convened at Pennsylvania Stat...",
+      "timestamp": "2025-11-09T21:32:10.805511",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "People for the Ethical Treatment of Animals (PETA;  PEE-tə) is an American animal rights nonprofit organization based in Norfolk, Virginia, and originally led by Ingrid Newkirk, its co-founder.\nFounded in March 1980 by Newkirk and animal rights activist Alex Pacheco, the organization first gained at...",
+      "timestamp": "2025-11-09T21:32:10.692063",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "This list contains selected positive numbers in increasing order, including counts of things, dimensionless quantities and probabilities. Each number is given a name in the short scale, which is used in English-speaking countries, as well as a name in the long scale, which is used in some of the cou...",
+      "timestamp": "2025-11-09T21:31:33.113459",
+      "category": "mathematics",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Super Bowl, originally known as the AFL–NFL World Championship Game, is the annual league championship game of the National Football League (NFL) of the United States. It has served as the final game of every NFL season since 1966, replacing the NFL Championship Game. Since 2022, the game has be...",
+      "timestamp": "2025-11-09T21:31:33.100729",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Carson Hilton Palmer (born December 27, 1979) is an American former professional football quarterback who played in the National Football League (NFL) for 15 seasons. Palmer played college football for the USC Trojans, winning the Heisman Trophy in 2002. He was selected first overall by the Cincinna...",
+      "timestamp": "2025-11-09T21:31:33.072457",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The modern Olympic Games (Olympics; French: Jeux olympiques) are the world's preeminent international sporting events. They feature summer and winter sports competitions in which thousands of athletes from around the world participate in a variety of competitions. The Olympic Games, open to both ama...",
+      "timestamp": "2025-11-09T21:31:33.060202",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Alan Bartlett Shepard Jr. (November 18, 1923 – July 21, 1998) was an American astronaut. In 1961, he became the second person and the first American to travel into space and, in 1971, he became the fifth and oldest person to walk on the Moon, at age 47.",
+      "timestamp": "2025-11-09T21:31:19.673489",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The national flag of the United States, often referred to as the American flag or the U.S. flag, consists of thirteen horizontal stripes, alternating red and white, with a blue rectangle in the canton bearing fifty small, white, five-pointed stars arranged in nine offset horizontal rows, where rows ...",
+      "timestamp": "2025-11-09T21:31:19.494461",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "This is a list of topics that have been characterized as pseudoscience by academics or researchers. Detailed discussion of these topics may be found on their main pages. These characterizations were made in the context of educating the public about questionable or potentially fraudulent or dangerous...",
+      "timestamp": "2025-11-09T21:31:19.447691",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A football is a ball inflated with air that is used to play one of the various sports known as football. In these games, with some exceptions, goals or points are scored only when the ball enters one of two designated goal-scoring areas; football games involve the two teams each trying to move the b...",
+      "timestamp": "2025-11-09T21:31:19.427083",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Boxing is a combat sport and martial art. Taking place in a boxing ring, it involves two people – usually wearing protective equipment, such as protective gloves, hand wraps, and mouthguards – throwing punches at each other for a predetermined amount of time.\nAlthough the term 'boxing' is commonly a...",
+      "timestamp": "2025-11-09T21:31:19.414665",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Toyota Motor Corporation (Japanese: トヨタ自動車株式会社, Hepburn: Toyota Jidōsha kabushikigaisha; IPA: [toꜜjota], English: , commonly known as simply Toyota) is a Japanese multinational automotive manufacturer headquartered in Toyota City, Aichi, Japan. It was founded by Kiichiro Toyoda and incorporated on A...",
+      "timestamp": "2025-11-09T21:30:52.311754",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "An automated teller machine (ATM) is an electronic telecommunications device that enables customers of financial institutions to perform financial transactions, such as cash withdrawals, deposits, funds transfers, balance inquiries or account information inquiries, at any time and without the need f...",
+      "timestamp": "2025-11-09T21:30:50.048582",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Barbie is a fashion doll created by American businesswoman Ruth Handler, manufactured by American toy and entertainment company Mattel and introduced on March 9, 1959. The toy was based on the German Bild Lilli doll which Handler had purchased while in Europe. The figurehead of an eponymous brand th...",
+      "timestamp": "2025-11-09T21:30:50.036298",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Sony Group Corporation, commonly referred to as simply Sony, is a Japanese multinational conglomerate headquartered at Sony City in Minato, Tokyo, Japan. The Sony Group encompasses various businesses, including electronics (Sony Corporation), imaging and sensing (Sony Semiconductor Solutions), film ...",
+      "timestamp": "2025-11-09T21:30:49.961916",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Monty Python, also known as the Pythons, were a British comedy troupe formed in 1969 consisting of Graham Chapman, John Cleese, Terry Gilliam, Eric Idle, Terry Jones and Michael Palin. The group came to prominence for the sketch comedy television series Monty Python's Flying Circus, which aired on t...",
+      "timestamp": "2025-11-09T21:30:49.945395",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "IKEA ( eye-KEE-ə, Swedish: [ɪˈkêːa]) is a multinational conglomerate founded in Sweden that designs and sells ready-to-assemble furniture, household goods, and various related services.\nIKEA was started in 1943 by Ingvar Kamprad, and has been the world's largest furniture retailer since 2008. The br...",
+      "timestamp": "2025-11-09T21:30:31.475577",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Visa Inc. () is an American multinational payment card services corporation headquartered in San Francisco, California. It facilitates electronic funds transfers throughout the world, most commonly through Visa-branded credit cards, debit cards and prepaid cards.",
+      "timestamp": "2025-11-09T21:30:31.463670",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "eBay Inc. ( EE-bay, stylized as ebay) is an American multinational e-commerce company based in San Jose, California, that allows users to buy or view items via retail sales through online marketplaces and websites in 190 markets worldwide. Sales occur either via online auctions or \"buy it now\" insta...",
+      "timestamp": "2025-11-09T21:30:31.451809",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Ford Mustang is an American automobile manufactured and marketed by Ford since 1964, as Ford's longest nameplate in continuous production. Currently in its seventh generation, it is the fifth-best selling Ford car nameplate. The namesake of the \"pony car\" automobile segment, the Mustang was deve...",
+      "timestamp": "2025-11-09T21:30:31.439935",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Nintendo Co., Ltd. is a Japanese multinational video game company headquartered in Kyoto. It develops, publishes, and releases both video games and video game consoles.",
+      "timestamp": "2025-11-09T21:30:31.427874",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Christmas season or the festive season, also known as the holiday season or the holidays, is an annual period generally spanning from November or December to early January incorporating Christmas Day and New Year's Day. The gift-giving associated with the season creates a peak season for the ret...",
+      "timestamp": "2025-11-09T21:30:06.019049",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Shoelaces, also called shoestrings (US English) or bootlaces (UK English), are a system commonly used to secure shoes, boots, and other footwear. They typically consist of a pair of strings or cords, one for each shoe, finished off at both ends with stiff sections, known as aglets. Each shoelace typ...",
+      "timestamp": "2025-11-09T21:29:57.543110",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Universal Product Code (UPC or UPC code) is a barcode symbology that is used worldwide for tracking trade items in stores.\nThe chosen symbology has bars (or spaces) of exactly 1, 2, 3, or 4 units wide each; each decimal digit to be encoded consists of two bars and two spaces chosen to have a tot...",
+      "timestamp": "2025-11-09T21:29:56.903934",
+      "category": "technology",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The United Kingdom of Great Britain and Northern Ireland, commonly known as the United Kingdom (UK) or Britain, is a country in Northwestern Europe, off the coast of the continental mainland. It comprises England, Scotland, Wales and Northern Ireland, with a population of over 69 million in 2024. Th...",
+      "timestamp": "2025-11-09T21:29:56.867297",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A scale or balance is a device used to measure weight or mass. These are also known as mass scales, weight scales, mass balances, massometers, and weight balances.\nThe traditional scale consists of two plates or bowls suspended at equal distances from a fulcrum.",
+      "timestamp": "2025-11-09T21:29:56.845568",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Eiffel Tower (  EYE-fəl; French: Tour Eiffel [tuʁ ɛfɛl] ) is a wrought-iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel, whose company designed and built the tower from 1887 to 1889.\nLocally nicknamed \"La dame de fer\" (French for \"Iron Lady\"...",
+      "timestamp": "2025-11-09T21:29:26.300419",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Anne of Green Gables: by Lucy Maud Montgomery (1908) Subjects: Fiction, Juvenile fiction, Country life",
+      "timestamp": "2025-11-09T21:29:07.517871",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The U.S. Pledge of Allegiance is a patriotic recited verse that promises allegiance to the flag of the United States and the republic of the United States. The first version was written in 1885 by Captain George Thatcher Balch, a Union army officer in the Civil War who later authored a book on how t...",
+      "timestamp": "2025-11-09T21:29:07.488469",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Spanish-suited playing cards or Spanish-suited cards have four suits, and a deck is usually made up of 40 or 48 cards (or even 50 by including two jokers). It is categorized as a Latin-suited deck and has strong similarities with the Portuguese-suited deck, Italian-suited deck and some French decks....",
+      "timestamp": "2025-11-09T21:29:02.856090",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A  frisbee (pronounced  FRIZ-bee), also called a flying disc or simply a disc, is a gliding toy or sporting item generally made of injection-molded plastic and roughly 20 to 25 centimetres (8 to 10 in) in diameter with a pronounced lip. It is used recreationally and competitively for throwing and ca...",
+      "timestamp": "2025-11-09T21:29:02.778870",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Minerva \"Minnie\" Mouse is an American cartoon character created by the Walt Disney Company. The longtime sweetheart of Mickey Mouse, she is an anthropomorphic mouse with white gloves, a red or pink bow, blue (or pink or red) polka-dotted dress, white bloomers and yellow low-heeled shoes occasionally...",
+      "timestamp": "2025-11-09T21:28:40.563832",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The unicorn is a legendary creature that has been described since antiquity as a beast with a single large, pointed, spiraling horn projecting from its forehead.\nIn European literature and art, the unicorn has for the last thousand years or so been depicted as a white horse- or goat-like animal with...",
+      "timestamp": "2025-11-09T21:28:40.000627",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A diacritic (also diacritical mark, diacritical point, diacritical sign, or accent) is a glyph added to a letter or to a basic glyph. The term derives from the Ancient Greek διακριτικός (diakritikós, \"distinguishing\"), from διακρίνω (diakrínō, \"to distinguish\"). The word diacritic is a noun, though ...",
+      "timestamp": "2025-11-09T21:28:38.885016",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Ants are eusocial insects of the family Formicidae and, along with the related wasps and bees, belong to the order Hymenoptera. Ants evolved from vespoid wasp ancestors in the Cretaceous period. More than 13,800 of an estimated total of 22,000 species have been classified.",
+      "timestamp": "2025-11-09T21:28:38.874141",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The American technology company Google has added Easter eggs into many of its products and services, such as Google Search, YouTube, and Android since the 2000s. Google avoids adding Easter eggs to popular search pages, as they do not want to negatively impact usability.\nWhile unofficial and not mai...",
+      "timestamp": "2025-11-09T21:28:38.854299",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Conspiracy theories claim that some or all elements of the Apollo program and the associated Moon landings were hoaxes staged by NASA, possibly with the aid of other organizations. The most notable claim of these conspiracy theories is that the six crewed landings (1969–1972) were faked and that twe...",
+      "timestamp": "2025-11-09T21:26:56.331383",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Solar System consists of the Sun and the objects that orbit it. The name comes from Sōl, the Latin name for the Sun. It formed about 4.6 billion years ago when a dense region of a molecular cloud collapsed, creating the Sun and a protoplanetary disc from which the orbiting bodies assembled.",
+      "timestamp": "2025-11-09T21:26:56.164454",
+      "category": "science",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Solar System consists of the Sun and the objects that orbit it. The name comes from Sōl, the Latin name for the Sun. It formed about 4.6 billion years ago when a dense region of a molecular cloud collapsed, creating the Sun and a protoplanetary disc from which the orbiting bodies assembled.",
+      "timestamp": "2025-11-09T21:26:56.133976",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Brown dwarfs are substellar objects that have more mass than the biggest gas giant planets, but less than the least massive main-sequence stars.  Their mass is approximately 13 to 80 times that of Jupiter (MJ)—not big enough to sustain nuclear fusion of hydrogen into helium in their cores, but massi...",
+      "timestamp": "2025-11-09T21:26:56.050118",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A carbon planet is a hypothetical type of planet that contains more carbon than oxygen. Carbon is the fourth most abundant element in the universe by mass after hydrogen, helium, and oxygen.\nMarc Kuchner and Sara Seager coined the term \"carbon planet\" in 2005 and investigated such planets following ...",
+      "timestamp": "2025-11-09T21:26:37.283765",
+      "category": "science",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Venus is the second planet from the Sun. It is often called Earth's \"twin\" or \"sister\" among the planets of the Solar System for its orbit being the closest to Earth's, both being rocky planets, and having the most similar and nearly equal size, mass, and surface gravity. Venus, though, is significa...",
+      "timestamp": "2025-11-09T21:26:37.273213",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Apollo 8 (December 21–27, 1968) was the first crewed spacecraft to leave Earth's gravitational sphere of influence, and the first human spaceflight to reach the Moon. The crew orbited the Moon ten times without landing and then returned to Earth. The three astronauts—Frank Borman, Jim Lovell, and Wi...",
+      "timestamp": "2025-11-09T21:26:37.259832",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Sun is the star at the centre of the Solar System. It is a massive, nearly perfect sphere of hot plasma, heated to incandescence by nuclear fusion reactions in its core, radiating the energy from its surface mainly as visible light and infrared radiation with 10% at ultraviolet energies. It is t...",
+      "timestamp": "2025-11-09T21:26:37.245670",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Counting Crows is an American rock band from the San Francisco Bay Area, California. Formed in 1991, the band consists of rhythm guitarist David Bryson, drummer Jim Bogios, vocalist Adam Duritz, keyboardist Charlie Gillingham, multi-instrumentalist David Immerglück, bassist Millard Powers, and lead ...",
+      "timestamp": "2025-11-09T21:24:01.827982",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Victorious is an American sitcom that premiered on Nickelodeon on March 27, 2010, and aired until February 2, 2013. The series stars Victoria Justice as Tori Vega, a teenage girl who attends Hollywood Arts High School, a performing arts school with a group of students. It was announced on August 10,...",
+      "timestamp": "2025-11-09T21:23:57.734348",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Elephant seals or sea elephants are very large, oceangoing true seals in the genus Mirounga. Both species, the northern elephant seal (M. angustirostris) and the southern elephant seal (M. leonina), were hunted to the brink of extinction for lamp oil by the end of the 19th century, but their numbers...",
+      "timestamp": "2025-11-09T21:23:57.605198",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Wild Animal Coloring Book: by Katty Green (2020)",
+      "timestamp": "2025-11-09T21:23:39.280203",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Vietnamese dragons (Vietnamese: Rồng; chữ Nôm: 蠬/蠪; Sino-Vietnamese: Long; chữ Hán: 龍) are symbolic creatures in Vietnamese folklore and mythology.  According to an ancient origin myth, the Vietnamese people are descended from a dragon and an Immortal. The dragon was symbolic of bringing rain, essen...",
+      "timestamp": "2025-11-09T21:23:39.263740",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Limp Bizkit is an American nu metal band from Jacksonville, Florida. Its lineup consists of lead vocalist Fred Durst, drummer John Otto, guitarist Wes Borland, and turntablist DJ Lethal. The band's musical style is marked by Durst's angry vocal delivery and Borland's sonic experimentation.",
+      "timestamp": "2025-11-09T21:23:38.368216",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Butterflies are winged insects from the lepidopteran superfamily Papilionoidea, characterised by large, often brightly coloured wings that often fold together when at rest, and a conspicuous, fluttering flight. The oldest butterfly fossils have been dated to the Paleocene, about 56 million years ago...",
+      "timestamp": "2025-11-09T21:23:35.092819",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Alphakids: by Susan E. Hill (1999) Subjects: Reading (Primary), Reading (Kindergarten)",
+      "timestamp": "2025-11-09T21:23:34.293388",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Tokens were an American doo-wop band and record production company group from Brooklyn, New York City. The group had four top 40 hits on the Billboard Hot 100, all in the 1960s, their biggest being the chart-topping 1961 hit single \"The Lion Sleeps Tonight\", which borrowed heavily from the 1939 ...",
+      "timestamp": "2025-11-09T21:23:34.281221",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Robert Recorde (c. 1510 – 1558) was a Welsh physician and mathematician. He invented the equals sign (=) and also introduced the pre-existing plus (+) and minus (−) signs to English speakers in 1557.",
+      "timestamp": "2025-11-09T21:23:06.864628",
+      "category": "mathematics",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "In mathematics, two quantities are in the golden ratio if their ratio is the same as the ratio of their sum to the larger of the two quantities. Expressed algebraically, for quantities ⁠\n  \n    \n      \n        a\n      \n    \n    {\\displaystyle a}\n  \n⁠ and ⁠\n  \n    \n      \n        b\n      \n    \n    {\\...",
+      "timestamp": "2025-11-09T21:23:06.850972",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A googolplex is the large number 1010100, that is, 10 raised to the power of a googol. If written out in ordinary decimal notation, it would be 1 followed by a googol (10100) zeroes – a physically impossible number to write explicitly.",
+      "timestamp": "2025-11-09T21:23:06.658434",
+      "category": "mathematics",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The duodecimal system, also known as base twelve or dozenal, is a positional numeral system using twelve as its base. In duodecimal, the number twelve is denoted \"10\", meaning 1 twelve and 0 units; in the decimal system, this number is instead written as \"12\" meaning 1 ten and 2 units, and the strin...",
+      "timestamp": "2025-11-09T21:22:30.814636",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Triskaidekaphobia (  TRIS-kye-DEK-ə-FOH-bee-ə,  TRIS-kə-; from Ancient Greek  τρεισκαίδεκα (treiskaídeka) 'thirteen' and Ancient Greek  φόβος (phóbos) 'fear') is fear or avoidance of the number 13. It is also a reason for the fear of Friday the 13th, called paraskevidekatriaphobia (from Greek  Παρασ...",
+      "timestamp": "2025-11-09T21:22:30.801517",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Hot Wheels  is an American media franchise and brand of scale model cars invented by Elliot Handler and introduced by his company Mattel on May 18, 1968. It was the primary competitor of Matchbox until Mattel bought Matchbox owner Tyco Toys in 1997.\nMany automobile manufacturers have since licensed ...",
+      "timestamp": "2025-11-09T21:22:30.785588",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A senary () numeral system (also known as base-6, heximal, or seximal) has six as its base. It has been adopted independently by a small number of cultures. Like the decimal base 10, the base is a semiprime, though it is unique as the product of the only two consecutive numbers that are both prime (...",
+      "timestamp": "2025-11-09T21:22:30.767346",
+      "category": "mathematics",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Sir Isaac Newton (4 January [O.S. 25 December] 1643 – 31 March [O.S. 20 March] 1727) was an English polymath active as a mathematician, physicist, astronomer, alchemist, theologian, author, and inventor. He was a key figure in the Scientific Revolution and the Enlightenment that followed. His book P...",
+      "timestamp": "2025-11-09T21:22:30.750742",
+      "category": "mathematics",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The at sign (@) is a typographical symbol used as an accounting and invoice abbreviation meaning \"at a rate of\" (e.g. 7 widgets @ £2 per widget = £14), and now seen more widely in email addresses and social media platform handles. In English, it is normally read aloud as \"at\", and is also commonly c...",
+      "timestamp": "2025-11-09T21:22:05.275633",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "On 3 December 1984, over 500,000 people in the vicinity of the Union Carbide India Limited pesticide plant in Bhopal, Madhya Pradesh, India were exposed to the highly toxic gas methyl isocyanate, in what is considered the world's worst industrial disaster. A government affidavit in 2006 stated that ...",
+      "timestamp": "2025-11-09T21:22:03.987082",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A floppy disk, diskette, or floppy diskette (casually known as a floppy or a disk) is a type of disk storage made from a thin, flexible disk coated with a magnetic storage medium. It's enclosed in a square or nearly square plastic shell lined with fabric to help remove dust from the spinning disk. F...",
+      "timestamp": "2025-11-09T21:22:03.975106",
+      "category": "technology",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Photography is the art, application, and practice of creating images by recording light, either electronically by means of an image sensor, or chemically by means of a light-sensitive material such as photographic film. It is employed in many fields of science, manufacturing (e.g., photolithography)...",
+      "timestamp": "2025-11-09T21:22:03.934681",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A website (also written as a web site) is any web page whose content is identified by a common domain name and is published on at least one web server. Websites are typically dedicated to a particular topic or purpose, such as news, education, commerce, entertainment, or social media. Hyperlinking b...",
+      "timestamp": "2025-11-09T21:21:50.580520",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Wi-Fi () is a family of wireless network protocols based on the IEEE 802.11 family of standards, which are commonly used for local area networking of devices and Internet access, allowing nearby digital devices to exchange data by radio waves. These are the most widely used computer networks, used g...",
+      "timestamp": "2025-11-09T21:21:50.376122",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Apple Inc. is an American multinational technology company headquartered in Cupertino, California, in Silicon Valley, best known for its consumer electronics, software and online services. Founded in 1976 as Apple Computer Company by Steve Jobs, Steve Wozniak and Ronald Wayne, the company was incorp...",
+      "timestamp": "2025-11-09T21:21:50.325220",
+      "category": "technology",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "QWERTY ( KWUR-tee) is a keyboard layout for Latin-script alphabets; the name comes from the order of the first six keys on the top letter row of the keyboard: QWERTY. The design evolved for the quick typing of English on typewriters.\nThe QWERTY design is based on a layout included on the Sholes and ...",
+      "timestamp": "2025-11-09T21:21:50.314369",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "\"Me at the zoo\" is a YouTube video uploaded on April 23, 2005, recognized as the first video uploaded to the platform. The 19-second video features Jawed Karim, one of the co-founders of YouTube, being recorded by his high school friend, Yakov Lapitsky. In the video, Karim is seen standing in front ...",
+      "timestamp": "2025-11-09T21:21:50.289543",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Garfield is an American comic strip created by Jim Davis. Originally published locally as Jon in 1976 (later changed to Garfield in 1977), then in nationwide syndication from 1978, it chronicles the life of the title character Garfield the cat, Odie the dog, and their owner Jon Arbuckle. As of 2013,...",
+      "timestamp": "2025-11-09T21:21:20.130170",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Prehistoric music (previously called primitive music) is a term in the history of music for all music produced in preliterate cultures (prehistory), beginning somewhere in very late geological history. Prehistoric music is followed by ancient music in different parts of the world, but still exists i...",
+      "timestamp": "2025-11-09T21:21:18.907357",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Statue of Liberty (Liberty Enlightening the World; French: La Liberté éclairant le monde) is a colossal neoclassical sculpture of a robed and crowned female on Liberty Island in New York Harbor, within New York City. The copper-clad statue, a gift to the United States from the people of France, ...",
+      "timestamp": "2025-11-09T21:21:18.896265",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Snow White and the Seven Dwarfs is a 1937 American animated musical fantasy film produced by Walt Disney Productions and released by RKO Radio Pictures. Based on the 1812 German fairy tale by the Brothers Grimm, the production was supervised by David Hand, and was directed by five sequence directors...",
+      "timestamp": "2025-11-09T21:21:18.886075",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Quarrymen (also written as \"the Quarry Men\") are a British skiffle and rock and roll group, formed by John Lennon in Liverpool in 1956, which evolved into the Beatles in 1960. Originally consisting of Lennon and several school friends, the Quarrymen took their name from a line in the school song...",
+      "timestamp": "2025-11-09T21:21:02.820637",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Griffith Park is a large municipal park at the eastern end of the Santa Monica Mountains, ranging from the Los Feliz neighborhood of Los Angeles, California to the San Fernando Valley. The park includes popular attractions such as the Los Angeles Zoo, the Autry Museum of the American West, the Griff...",
+      "timestamp": "2025-11-09T21:21:02.749237",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Nutty Bible Quotes - black & white version: by Jakob Ståhle (2014)",
+      "timestamp": "2025-11-09T21:20:29.989935",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Satanic Bible is a collection of essays, observations, and rituals published by Anton LaVey in 1969. It is the central religious text of LaVeyan Satanism, and is considered the foundation of its philosophy and dogma. It has been described as the most important document to influence contemporary ...",
+      "timestamp": "2025-11-09T21:20:29.980470",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The 2000s (pronounced \"two-thousands\"; shortened to the '00s and also known as the aughts or the noughties) was the decade that began on January 1, 2000, and ended on December 31, 2009.\nDuring this decade, the world population grew from 6.1 to 6.9 billion people. Approximately 1.35 billion people we...",
+      "timestamp": "2025-11-09T21:20:29.970313",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "An alphabet is a writing system that uses a standard set of symbols, called letters, to represent particular sounds in a spoken language. Specifically, letters largely correspond to phonemes as the smallest sound segments that can distinguish one word from another in a given language. Not all writin...",
+      "timestamp": "2025-11-09T21:20:29.955114",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The United States provided many inventions in the time from the Colonial Period to the Gilded Age, which were achieved by inventors who were either native-born or naturalized citizens of the United States. Copyright protection secures a person's right to his or her first-to-invent claim of the origi...",
+      "timestamp": "2025-11-09T21:20:29.943742",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Stressed Is Desserts Spelled Backward: by Brian, Luke Seaward (2006)",
+      "timestamp": "2025-11-09T21:20:10.340328",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "An anadrome is a word or phrase whose letters can be reversed to spell a different word or phrase. For example, desserts is an anadrome of stressed. An anadrome is therefore a special type of anagram.",
+      "timestamp": "2025-11-09T21:20:10.329879",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A constitution, or supreme law, is the aggregate of fundamental principles or established precedents that constitute the legal basis of a polity, organization or other type of entity, and commonly determines how that entity is to be governed.\nWhen these principles are written down into a single docu...",
+      "timestamp": "2025-11-09T21:20:09.853444",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Great Gatsby ( ) is a 1925 tragedy novel by American writer F. Scott Fitzgerald. Set in the Jazz Age on Long Island, near New York City, the novel depicts first-person narrator Nick Carraway's interactions with Jay Gatsby, a mysterious millionaire obsessed with reuniting with his former lover, D...",
+      "timestamp": "2025-11-09T21:20:09.835976",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The economy of Switzerland is one of the world's most advanced and a highly-developed free market economy. The economy of Switzerland has ranked first in the world since 2015 on the Global Innovation Index and third in the 2020 Global Competitiveness Report. According to United Nations data for 2016...",
+      "timestamp": "2025-11-09T21:19:32.334975",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "KFC Corporation, doing business as KFC (an abbreviation of Kentucky Fried Chicken), is an American multinational fast food restaurant chain specializing in Southern fried chicken and chicken sandwiches. Headquartered in Louisville, Kentucky, it is the world's second-largest restaurant chain (as meas...",
+      "timestamp": "2025-11-09T21:19:31.505600",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Confectionery is the art of making confections, or sweet foods.  Confections are items that are rich in sugar and carbohydrates, although exact definitions are difficult. In general, however, confections are divided into two broad and somewhat overlapping categories: baker's confections and sugar co...",
+      "timestamp": "2025-11-09T21:19:30.382834",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A Caesar salad (also spelled Cesar, César and Cesare), also known as Caesar's salad, is a green salad of romaine lettuce and croutons dressed with lemon juice (or lime juice), olive oil, eggs, Worcestershire sauce, anchovies, garlic, Dijon mustard, Parmesan and black pepper.\nThe salad was created on...",
+      "timestamp": "2025-11-09T21:19:30.368184",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "On the American late-night live television sketch comedy and variety show Saturday Night Live (SNL), a commercial advertisement parody is commonly shown after the host's opening monologue. Many of the parodies were produced by James Signorelli.  The industries, products, and ad formats targeted by t...",
+      "timestamp": "2025-11-09T21:19:30.326402",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Amanita muscaria, commonly known as the fly agaric or fly amanita, is a basidiomycete fungus of the genus Amanita. It is a large white-gilled, white-spotted mushroom  typically featuring a bright red cap covered with distinctive white warts. It is one of the most recognisable fungi in the world.",
+      "timestamp": "2025-11-09T21:19:08.230796",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Aztecs ( AZ-teks) were a Mesoamerican civilization that flourished in central Mexico from 1300 to 1521. The Aztec people included different ethnic groups of central Mexico, particularly those groups who spoke the Nahuatl language. Aztec culture was organized into city-states (altepetl), some of ...",
+      "timestamp": "2025-11-09T21:19:05.687750",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "American cuisine consists of the cooking style and traditional dishes prepared in the United States, an especially diverse culture in a large country with a long history of immigration. It principally derives from a mixing of European cuisine, Native American and Alaskan cuisine, and African America...",
+      "timestamp": "2025-11-09T21:19:03.301241",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "American Chinese cuisine, also known as Sino–American cuisine and often referred to in American English as simply Chinese food, is a style of Chinese cuisine developed by Chinese Americans. The dishes served in North American Chinese restaurants are modified to suit customers' tastes and are often q...",
+      "timestamp": "2025-11-09T21:19:03.159440",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Hemp, or industrial hemp, is a plant in the botanical class of Cannabis sativa cultivars grown specifically for industrial and consumable use. It can be used to make a wide range of products. Along with bamboo, hemp is among the fastest growing plants on Earth.",
+      "timestamp": "2025-11-09T21:19:03.110908",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Hawaiian pizza is a pizza invented in Canada, topped with pineapple, tomato sauce, mozzarella cheese, and either ham or bacon.",
+      "timestamp": "2025-11-09T21:18:44.205625",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Acrisure Stadium, formerly (and still colloquially) known as Heinz Field, is a multi-purpose stadium located in the North Shore neighborhood of Pittsburgh, Pennsylvania, U.S. It primarily serves as the home of the Pittsburgh Steelers of the National Football League (NFL) and the Pittsburgh Panthers ...",
+      "timestamp": "2025-11-09T21:18:42.772100",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Eggplant (in North American, Australian, and Philippine English), aubergine (in British, Irish, and New Zealand English), brinjal (in Bangladeshi, Indian, Singapore, Malaysian, South African, and Sri Lankan English), or baigan (in Caribbean English) is a plant species in the nightshade family Solana...",
+      "timestamp": "2025-11-09T21:18:42.035160",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The peanut (Arachis hypogaea), also known as the groundnut, goober (US), goober pea, pindar (US) or monkey nut (UK), is a legume crop grown mainly for its edible seeds, contained in underground pods. It is widely grown in the tropics and subtropics by small and large commercial producers, both as a ...",
+      "timestamp": "2025-11-09T21:18:41.335403",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Perspiration, also known as sweat, is the fluid secreted by sweat glands in the skin of mammals.\nTwo types of sweat glands can be found in humans: eccrine glands and apocrine glands. The eccrine sweat glands are distributed over much of the body and are responsible for secreting the watery, brackish...",
+      "timestamp": "2025-11-09T21:17:58.106371",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The heart is a muscular organ found in humans and other animals. This organ pumps blood through the blood vessels. The heart and blood vessels together make the circulatory system.",
+      "timestamp": "2025-11-09T21:17:54.251764",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Blood is a body fluid in the circulatory system of humans and other vertebrates that delivers necessary substances such as nutrients and oxygen to the cells, and transports metabolic waste products away from those same cells.\nBlood is composed of blood cells suspended in blood plasma. Plasma, which ...",
+      "timestamp": "2025-11-09T21:17:54.229167",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The stomach is a muscular, hollow organ in the upper gastrointestinal tract of humans and many other animals, including several invertebrates. The Ancient Greek name for the stomach is gaster which is used as gastric in medical terms related to the stomach. The stomach has a dilated structure and fu...",
+      "timestamp": "2025-11-09T21:17:35.579866",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Mantis shrimp are carnivorous marine crustaceans of the order Stomatopoda (from Ancient Greek  στόμα (stóma) 'mouth' and  ποδός (podós) 'foot'). Stomatopods branched off from other members of the class Malacostraca around 400 million years ago, with more than 520 extant species of mantis shrimp know...",
+      "timestamp": "2025-11-09T21:17:35.570844",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The brain is an organ that serves as the center of the nervous system in all vertebrate and most invertebrate animals. It consists of nervous tissue and is typically located in the head (cephalization), usually near organs for special senses such as vision, hearing, and olfaction. Being the most spe...",
+      "timestamp": "2025-11-09T21:17:35.560792",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "China has been the source of many innovations, scientific discoveries and inventions. This includes the Four Great Inventions: papermaking, the compass, gunpowder, and early printing (both woodblock and movable type). The list below contains these and other inventions in ancient and modern China att...",
+      "timestamp": "2025-11-09T21:17:35.550492",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Hachikō (ハチ公; mid-November 1923 – March 8, 1935) was an Akita dog remembered for his strong dedication to his owner, Hidesaburō Ueno, for whom he continued to wait for almost 10 years following Ueno's death in 1925.\nHachikō was born in mid-November 1923, on a farm near Ōdate, Akita Prefecture, Japan...",
+      "timestamp": "2025-11-09T21:17:35.533837",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The xenomorph (also known as a XX121 xenomorph, Internecivus raptus, or simply the Alien or the creature) is a fictional endoparasitoid extraterrestrial species that serves as the main antagonist of the Alien and Alien vs. Predator franchises, and a minor antagonist in Predator: Concrete Jungle.\nThe...",
+      "timestamp": "2025-11-09T21:17:20.990877",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Twins are two offspring produced by the same pregnancy. Twins can be either monozygotic ('identical'), meaning that they develop from one zygote, which splits and forms two embryos, or dizygotic ('non-identical' or 'fraternal'), meaning that each twin develops from a separate egg and each egg is fer...",
+      "timestamp": "2025-11-09T21:17:20.720072",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The muscular system is an organ system consisting of skeletal, smooth, and cardiac muscle. It permits movement of the body, maintains posture, and circulates blood throughout the body. The muscular systems in vertebrates are controlled through the nervous system although some muscles (such as the ca...",
+      "timestamp": "2025-11-09T21:17:19.799032",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Skeletal muscle (commonly referred to as muscle) is one of the three types of vertebrate muscle tissue, the others being cardiac muscle and smooth muscle. They are part of the voluntary muscular system and typically are attached by tendons to bones of a skeleton. The skeletal muscle cells are much l...",
+      "timestamp": "2025-11-09T21:17:19.317423",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The textile and clothing industries provide the most significant source of economic growth in Bangladesh's rapidly developing economy. Exports of textiles and garments are the principal source of foreign exchange earnings. By the end of December 2024, the Bangladeshi Garments Industry has earned $50...",
+      "timestamp": "2025-11-09T21:17:19.284992",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Eugene Byrd (born August 28, 1975) is an American actor. He is best known for his roles as Wink in 8 Mile and Clark Edison on the FOX series Bones.",
+      "timestamp": "2025-11-09T21:16:55.643513",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Industrial Revolution, sometimes divided into the First Industrial Revolution and Second Industrial Revolution, was a transitional period of the global economy toward more widespread, efficient and stable manufacturing processes, succeeding the Second Agricultural Revolution. Beginning in Great ...",
+      "timestamp": "2025-11-09T21:16:53.731440",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Thomas Andrews Jr. (7 February 1873 – 15 April 1912) was a British businessman and shipbuilder, who was managing director and head of the drafting department of the shipbuilding company Harland and Wolff in Belfast, Ireland. He was the naval architect in charge of the plans for the ocean liner Titan...",
+      "timestamp": "2025-11-09T21:16:53.682793",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "America between the wars: by Derek Chollet, James Goldgeier (2008) Subjects: Politics and government, Political culture, September 11 Terrorist Attacks, 2001",
+      "timestamp": "2025-11-09T21:16:11.762384",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Berlin Wall (German: Berliner Mauer, pronounced [bɛʁˌliːnɐ ˈmaʊɐ] ), officially the Anti-Fascist Protection Rampart, was a guarded concrete barrier that encircled West Berlin from 1961 to 1989, separating it from East Berlin and the German Democratic Republic (GDR; East Germany). Construction of...",
+      "timestamp": "2025-11-09T21:16:11.748708",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Dutch colonial empire (Dutch: Nederlandse Koloniale Rijk) comprised overseas territories and trading posts under some form of Dutch control from the early 17th to late 20th centuries, including those initially administered by Dutch chartered companies—primarily the Dutch East India Company (1602...",
+      "timestamp": "2025-11-09T21:16:07.020068",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Johannes Gensfleisch zur Laden zum Gutenberg (c. 1393 – 1406 – 3 February 1468) was a German inventor and craftsman who invented the movable-type printing press. Though movable type was already in use in East Asia, Gutenberg's invention of the printing press enabled a much faster rate of printing. T...",
+      "timestamp": "2025-11-09T21:16:07.010678",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Longships (Old Norse: langskip) were long clinker built warships (Old Norse: herskip, Old Swedish: hærskip) propelled by oars, and later also by sail, used by the Norse and surrounding Germanic tribes from at least the 4th century AD and throughout the Viking Age, being part of the Nordic ship build...",
+      "timestamp": "2025-11-09T21:16:07.001598",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The total number of military and civilian casualties in World War I was about 40 million: estimates range from around 15 to 22 million deaths and about 23 million wounded military personnel, ranking it among the deadliest conflicts in human history.\nThe total number of deaths includes from nine to 1...",
+      "timestamp": "2025-11-09T21:16:06.992496",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Qin Shi Huang (Chinese: 秦始皇, Qín Shǐ Huáng, ; February 259 – 12 July 210 BC) was the founder of the Qin dynasty and the first emperor of China. Rather than maintain the title of \"king\" (wáng 王) borne by the previous Shang and Zhou rulers, he assumed the invented title of \"emperor\" (huángdì 皇帝), whic...",
+      "timestamp": "2025-11-09T21:16:06.982131",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Aztec Empire, also known as the Triple Alliance (Classical Nahuatl: Ēxcān Tlahtōlōyān, [ˈjéːʃkaːn̥ t͡ɬaʔtoːˈlóːjaːn̥]) or the Tenochca Empire, was an alliance of three Nahua city-states: Mexico-Tenochtitlan, Tetzcoco, and Tlacopan. These three city-states ruled that area in and around the Valley...",
+      "timestamp": "2025-11-09T21:15:52.582607",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Achaemenid Empire (; Old Persian: 𐎧𐏁𐏂, Xšāça, lit. 'The Empire' or 'The Kingdom') was an ancient Iranian empire founded by Cyrus the Great of the Achaemenid dynasty in 550 BC. At peak, its territorial extent was roughly 5.5 million square kilometres (2.1 million square miles), making it the larg...",
+      "timestamp": "2025-11-09T21:15:51.525703",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Andromeda is one of the 48 constellations listed by the 2nd-century Greco-Roman astronomer Ptolemy,  and one of the 88 modern constellations. Located in the northern celestial hemisphere, it is named for Andromeda, daughter of Cassiopeia, in the Greek myth, who was chained to a rock to be eaten by t...",
+      "timestamp": "2025-11-09T21:15:51.512746",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Human nutrition deals with the provision of essential nutrients in food that are necessary to support human life and good health. Poor nutrition is a chronic problem often linked to poverty, food security, or a poor understanding of nutritional requirements. Malnutrition and its consequences are lar...",
+      "timestamp": "2025-11-09T21:15:51.499139",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Charles I and IV (German: Karl Franz Josef Ludwig Hubert Georg Otto Maria, Hungarian: Károly Ferenc József Lajos Hubert György Ottó Mária; 17 August 1887 – 1 April 1922) was Emperor of Austria (as Charles I), King of Hungary (as Charles IV), and the ruler of the other states of the Habsburg monarchy...",
+      "timestamp": "2025-11-09T21:15:51.489203",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Mongolia is a landlocked country in East Asia. Bordered by Russia to the north and China to the south and southeast, it covers an area of 1,564,116 square kilometres (603,909 square miles), making it the 18th-largest country in the world and the second largest landlocked country after Kazakhstan, as...",
+      "timestamp": "2025-11-09T21:14:23.825487",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Venice ( VEN-iss; Italian: Venezia [veˈnɛttsja] ; Venetian: Venesia [veˈnɛsja], formerly Venexia [veˈnɛzja]) is a city in northeastern Italy and the capital of the region of Veneto. It is built on a group of 118 islands that are separated by expanses of open water and by canals; portions of the city...",
+      "timestamp": "2025-11-09T21:14:22.542980",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Lesotho, formally the Kingdom of Lesotho and formerly known as Basutoland, is a landlocked country in Southern Africa. Entirely surrounded by South Africa, it is the largest of only three sovereign enclaves in the world, the others being San Marino and Vatican City, which are surrounded by Italy.  L...",
+      "timestamp": "2025-11-09T21:14:22.472693",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Great Lakes, also called the Great Lakes of North America, are a series of large interconnected freshwater lakes spanning the Canada–United States border. The five lakes are Superior, Michigan, Huron, Erie, and Ontario (though hydrologically, Michigan and Huron are a single body of water, joined...",
+      "timestamp": "2025-11-09T21:14:22.450518",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Alaska (  ə-LASS-kə) is a non-contiguous U.S. state on the northwest extremity of North America. Part of the Western United States region, it is one of the two non-contiguous U.S. states, alongside Hawaii. Alaska is considered to be the northernmost, westernmost, and easternmost (the Aleutian Island...",
+      "timestamp": "2025-11-09T21:14:08.877585",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Japan is an archipelagic country comprising a stratovolcanic archipelago over 3,000 km (1,900 mi) along the Pacific coast of East Asia. It consists of 14,125 islands. The five main islands are Hokkaido, Honshu, Kyushu, Shikoku, and Okinawa.",
+      "timestamp": "2025-11-09T21:14:08.484448",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "This is a list of international, national and subnational flags used in Asia.",
+      "timestamp": "2025-11-09T21:14:04.862138",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Greenland is an autonomous territory in the Kingdom of Denmark. It is by far the largest geographically of three constituent parts of the kingdom; the other two are metropolitan Denmark and the Faroe Islands. It shares a small 1.2 km border with Canada on Hans Island.",
+      "timestamp": "2025-11-09T21:14:04.842779",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "This article lists extreme locations on Earth that hold geographical records or are otherwise known for their geophysical or meteorological superlatives. All of these locations are Earth-wide extremes; extremes of individual continents or countries are not listed.",
+      "timestamp": "2025-11-09T21:14:04.818599",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Egyptian pyramids are ancient masonry structures located in Egypt. Most were built as tombs for the pharaohs and their consorts during the Old and Middle Kingdom periods. At least 138 identified pyramids have been discovered in Egypt.",
+      "timestamp": "2025-11-09T21:13:32.068777",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "France 2006: by Darwin Porter, Danforth Prince (2005) Subjects: Travel & holiday guides, France, guidebooks",
+      "timestamp": "2025-11-09T21:12:42.762141",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The World Tourism rankings are compiled by the United Nations World Tourism Organization as part of their World Tourism Barometer publication, which is released up to six times per year. It ranks destinations by the number of international visitor arrivals, by the revenue generated by inbound touris...",
+      "timestamp": "2025-11-09T21:12:42.752451",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Anglo-Zanzibar War was a military conflict fought between the United Kingdom and the Sultanate of Zanzibar on 27 August 1896. The conflict lasted between 38 and 45 minutes, marking it as the shortest recorded war in history. The immediate cause of the war was the suspicious death of the pro-Brit...",
+      "timestamp": "2025-11-09T21:12:41.204347",
+      "category": "history",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Fragmented space in the Russian Federation: by Blair A. Ruble, Nancy Popson (2001) Subjects: Politics and government, Federal government, Political culture",
+      "timestamp": "2025-11-09T21:12:40.632397",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "A time zone is an area which observes a uniform standard time for legal, commercial and social purposes. Time zones tend to follow the boundaries between countries and their subdivisions instead of strictly following longitude, because it is convenient for areas in frequent communication to keep the...",
+      "timestamp": "2025-11-09T21:12:40.622247",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Vatican City had an estimated resident population of 882 in 2024, including non-citizens. Additionally, 372 Vatican citizens live abroad, primarily diplomats of the Holy See and cardinals in Rome. Vatican City remains the world's smallest country in both land area and population size.",
+      "timestamp": "2025-11-09T21:12:40.565369",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Canada has a vast geography that occupies much of the continent of North America, sharing a land border with the contiguous United States to the south and the U.S. state of Alaska to the northwest. Canada stretches from the Atlantic Ocean in the east to the Pacific Ocean in the west; to the north li...",
+      "timestamp": "2025-11-09T21:12:40.463787",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Pacific Ocean is the largest and deepest of Earth's five oceanic divisions. It extends from the Arctic Ocean in the north to the Southern Ocean, or, depending on the definition, to Antarctica in the south, and is bounded by the continents of Asia and Australia in the west and the Americas in the...",
+      "timestamp": "2025-11-09T21:12:08.557812",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Cotton (from Arabic  qutn) is a soft, fluffy staple fiber that grows in a boll, or protective case, around the seeds of the cotton plants of the genus Gossypium in the mallow family Malvaceae. The fiber is almost pure cellulose, and can contain minor percentages of waxes, fats, pectins, and water. U...",
+      "timestamp": "2025-11-09T21:12:07.238970",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The polar bear (Ursus maritimus) is a large bear native to the Arctic and nearby areas. It is closely related to the brown bear, and the two species can interbreed. The polar bear is the largest extant species of bear and land carnivore by body mass, with adult males weighing 300–800 kg (660–1,760 l...",
+      "timestamp": "2025-11-09T21:12:06.451018",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Caffeine is a central nervous system (CNS) stimulant of the methylxanthine class and is the most commonly consumed psychoactive substance globally. It is mainly used for its eugeroic (wakefulness promoting), ergogenic (physical performance-enhancing), or nootropic (cognitive-enhancing) properties; i...",
+      "timestamp": "2025-11-09T21:12:06.440787",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Amazon rainforest, also called the Amazon jungle or Amazonia, is a moist broadleaf tropical rainforest in the Amazon biome that covers most of the Amazon basin of South America. This basin encompasses 7 million km2 (2.7 million sq mi), of which 6 million km2 (2.3 million sq mi) are covered by th...",
+      "timestamp": "2025-11-09T21:12:06.410043",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A detection dog or sniffer dog is a dog that is trained to use its senses to detect substances such as explosives, illegal drugs, wildlife scat, semen, currency, blood, and contraband electronics such as illicit mobile phones. The sense most used by detection dogs is smell. Hunting dogs that search ...",
+      "timestamp": "2025-11-09T21:11:42.820846",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Carbon (from Latin  carbo 'coal') is a chemical element;  it has symbol C and atomic number 6. It is nonmetallic and tetravalent—meaning that its atoms are able to form up to four covalent bonds due to its valence shell exhibiting 4 electrons. It belongs to group 14 of the periodic table.",
+      "timestamp": "2025-11-09T21:11:41.984163",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Jellyfish, also known as sea jellies or simply jellies, are the medusa-phase of certain gelatinous members of the subphylum Medusozoa, which is a major part of the phylum Cnidaria. Jellyfish are mainly free-swimming marine animals, although a few are anchored to the seabed by stalks rather than bein...",
+      "timestamp": "2025-11-09T21:11:41.973280",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The great white shark (Carcharodon carcharias), also known as the white shark, white pointer, or simply great white, is a species of large mackerel shark which can be found in the coastal surface waters of all the major oceans. It is the only known surviving species of its genus Carcharodon. The gre...",
+      "timestamp": "2025-11-09T21:11:41.960732",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Flamingos or flamingoes () are a type of wading bird in the family Phoenicopteridae, which is the only extant family in the order Phoenicopteriformes. There are four flamingo species distributed throughout the Americas (including the Caribbean), and two species native to Afro-Eurasia.\nA group of fla...",
+      "timestamp": "2025-11-09T21:11:28.553633",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Venus is the second planet from the Sun. It is often called Earth's \"twin\" or \"sister\" among the planets of the Solar System for its orbit being the closest to Earth's, both being rocky planets, and having the most similar and nearly equal size, mass, and surface gravity. Venus, though, is significa...",
+      "timestamp": "2025-11-09T21:11:25.647072",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Supersonic speed is the speed of an object that exceeds the speed of sound (Mach 1). For objects traveling in dry air of a temperature of 20 °C (68 °F) at sea level, this speed is approximately 343.2 m/s (1,126 ft/s; 768 mph; 667.1 kn; 1,236 km/h). Speeds greater than five times the speed of sound (...",
+      "timestamp": "2025-11-09T21:11:24.846786",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Dumbo is a 1941 American animated musical fantasy comedy-drama film produced by Walt Disney Productions and released by RKO Radio Pictures. The film is based upon the storyline written by Helen Aberson and Harold Pearl, and illustrated by Helen Durney for the prototype of a novelty toy (\"Roll-a-Book...",
+      "timestamp": "2025-11-09T21:11:24.531125",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A planet is a large, rounded astronomical body that is generally required to be in orbit around a star, stellar remnant, or brown dwarf, and is not one itself. The Solar System has eight planets by the most restrictive definition of the term: the terrestrial planets Mercury, Venus, Earth, and Mars, ...",
+      "timestamp": "2025-11-09T21:11:24.066698",
+      "category": "science",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Deoxyribonucleic acid (; DNA) is a polymer composed of two polynucleotide chains that coil around each other to form a double helix. The polymer carries genetic instructions for the development, functioning, growth and reproduction of all known organisms and many viruses. DNA and ribonucleic acid (R...",
+      "timestamp": "2025-11-09T21:10:35.640624",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A berry is a small, pulpy, and often edible fruit. Typically, berries are juicy, rounded, brightly colored, sweet, sour or tart, and do not have a stone or pit although many pips or seeds may be present.‍ Common examples of berries in the culinary sense are strawberries, raspberries, blueberries, bl...",
+      "timestamp": "2025-11-09T21:10:34.643810",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "An octopus (pl.: octopuses or octopodes) is a soft-bodied, eight-limbed mollusc of the order Octopoda (, ok-TOP-ə-də). The order consists of some 300 species and is grouped within the class Cephalopoda with squids, cuttlefish, and nautiloids. Like other cephalopods, an octopus is bilaterally symmetr...",
+      "timestamp": "2025-11-09T21:10:34.451903",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Cetaceans (; from Latin  cetus 'whale', from Ancient Greek  κῆτος (kêtos) 'huge fish, sea monster') are aquatic mammals belonging to the infraorder Cetacea, in the order Artiodactyla. Cetaceans include whales, dolphins and porpoises. Key characteristics are their fully aquatic lifestyle, streamlined...",
+      "timestamp": "2025-11-09T21:10:34.040338",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Fahrenheit scale () is a temperature scale based on one proposed in 1724 by the physicist Daniel Gabriel Fahrenheit (1686–1736). It uses the degree Fahrenheit (symbol: °F) as the unit. Several accounts of how he originally defined his scale exist, but the original paper suggests the lower defini...",
+      "timestamp": "2025-11-09T21:10:13.645604",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The boiling point of a substance is the temperature at which the vapor pressure of a liquid equals the pressure surrounding the liquid and the liquid changes into a vapor.\nThe boiling point of a liquid varies depending upon the surrounding environmental pressure.  A liquid in a partial vacuum, i.e.,...",
+      "timestamp": "2025-11-09T21:10:13.628015",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Extremely low frequency (ELF) is the ITU designation for electromagnetic radiation (radio waves) with frequencies from 3 to 30 Hz, and corresponding wavelengths of 100,000 to 10,000 kilometers, respectively. In atmospheric science, an alternative definition is usually given, from 3 Hz to 3 kHz. In t...",
+      "timestamp": "2025-11-09T21:10:13.615798",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Planet Earth/Inside Out: by Gail Gibbons (1995) Subjects: Juvenile literature, Children's fiction, Science fiction",
+      "timestamp": "2025-11-09T21:10:13.600735",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Earth is the third planet from the Sun and the only astronomical object known to harbor life. This is enabled by Earth being an ocean world, the only one in the Solar System sustaining liquid surface water. Almost all of Earth's water is contained in its global ocean, covering 70.8% of Earth's crust...",
+      "timestamp": "2025-11-09T21:10:13.590982",
+      "category": "science",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A chromosome is a package of DNA containing part or all of the genetic material of an organism. In most chromosomes, the very long thin DNA fibers are coated with nucleosome-forming packaging proteins; in eukaryotic cells, the most important of these proteins are the histones. Aided by chaperone pro...",
+      "timestamp": "2025-11-09T21:10:13.577410",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "Coloring Book: by Donald Nguyen (2019)",
       "timestamp": "2025-11-09T21:01:31.133549",
@@ -1421,7 +3201,7 @@
       "source": "openlibrary",
       "status": "not_verified",
       "confidence_score": 85,
-      "is_outdated": false
+      "is_outdated": true
     },
     {
       "fact": "United States Presidents (NAID 134606994): instance_of = Q18593264",
@@ -3179,7 +4959,7 @@
       "category": "cultural",
       "confidence": 0.85,
       "source": "openlibrary",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 85
     },
@@ -3539,7 +5319,7 @@
       "category": "cultural",
       "confidence": 0.85,
       "source": "openlibrary",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 85
     },
@@ -4359,7 +6139,7 @@
       "category": "cultural",
       "confidence": 0.85,
       "source": "openlibrary",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 85
     },
@@ -4739,7 +6519,7 @@
       "category": "cultural",
       "confidence": 0.85,
       "source": "openlibrary",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 85
     },
@@ -5119,7 +6899,7 @@
       "category": "cultural",
       "confidence": 0.85,
       "source": "openlibrary",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 85
     },
@@ -5399,7 +7179,7 @@
       "category": "cultural",
       "confidence": 0.85,
       "source": "openlibrary",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 85
     },
