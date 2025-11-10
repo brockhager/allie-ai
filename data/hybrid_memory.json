@@ -1,8 +1,58 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T23:37:16.322365",
-  "fact_count": 897,
+  "saved_at": "2025-11-09T23:52:55.233577",
+  "fact_count": 902,
   "facts": [
+    {
+      "fact": "Artificial intelligence is the capability of computational systems to perform tasks typically associated with human intelligence, such as learning, reasoning, problem-solving, perception, and decision-making. It is a field of research in computer science that develops and studies methods and software that enable machines to perceive their environment and use learning and intelligence to take actions that maximize their chances of achieving defined goals. High-profile applications of AI include advanced web search engines; recommendation systems; virtual assistants; autonomous vehicles; generative and creative tools; and superhuman play and analysis in strategy games. However, many AI applications are not perceived as AI: \"A lot of cutting edge AI has filtered into general applications, often without being called AI because once something becomes useful enough and common enough it's not labeled AI anymore.\"",
+      "timestamp": "2025-11-09T23:52:55.227091",
+      "category": "artificial intelligence",
+      "confidence": 0.7,
+      "source": "test",
+      "status": "not_verified",
+      "confidence_score": 70,
+      "is_outdated": false
+    },
+    {
+      "fact": "Test fact",
+      "timestamp": "2025-11-09T23:50:45.938654",
+      "category": "test",
+      "confidence": 0.8,
+      "source": "test",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Composition Notebook: by Nine Forty Publishing (2018)",
+      "timestamp": "2025-11-09T23:45:45.847022",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "A rainbow flag is a multicolored flag consisting of the colors of the rainbow. The designs differ, but many of the colors are based on the seven spectral colors of the visible light spectrum.",
+      "timestamp": "2025-11-09T23:45:45.836138",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Oreocarya cana is a long-lived species of perennial plant known by the common names mountain cryptantha and mountain cat's-eye in the family Boraginaceae. It is found in the western and central United States.",
+      "timestamp": "2025-11-09T23:41:29.007981",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "Doodle a Day: by Hello You (2021)",
       "timestamp": "2025-11-09T23:37:16.320807",

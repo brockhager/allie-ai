@@ -11,8 +11,11 @@ Run tests in the workspace venv (Windows PowerShell):
 C:/Users/brock/allieai/.venv/Scripts/python.exe -m pytest -q
 ```
 
-The test suite used during development finished locally with:
-- 18 passed, 28 warnings (as of 2025-11-08)
+Test summary (local dev):
+- Unit tests: 69 passed ✅
+- Integration tests: 19 passed ✅
+- API endpoint tests: 31 passed ✅
+- API integration tests: 12 passed ✅
 
 ## Files of interest (changes made so far)
 
@@ -27,6 +30,12 @@ The test suite used during development finished locally with:
 - `scripts/test_search.py` — async search test adapted to run reliably in our pytest environment
 - `pytest.ini` — enables asyncio support for pytest where available
 - `docs/HYBRID_MEMORY_GUIDE.md` and `docs/memory/README.md` — updated references to the migrated linked-list filename
+
+## Recent fixes and outcomes
+
+- Fixed: Quick-topics research returned "Unknown error" for all topics. Root cause: incorrect parameter (`keyword=...`) passed to `hybrid_memory.add_fact()`; corrected to use `fact=` and `category=`. Verified DuckDuckGo and DBpedia queries return results and facts are now stored.
+- Fixed: UI popup "facts not loaded". Root cause: intermittent premature server shutdown in some dev environments; added `start_server.py` for more robust startup and `test_server_manual.py` to validate endpoints. Verified `/api/facts` formatting and timeline retrieval.
+
 
 ## Remaining TODOs
 
@@ -64,7 +73,7 @@ These are actionable items we can pick from next. Each item is short and has a s
 - Fix hybrid memory bugs (preserve timestamps on load, always include `fact` and `is_outdated` keys in returned dicts, merge DB/in-memory statistics)
 - Add a synchronous wrapper / plugin support for async tests to ensure `scripts/test_search.py` runs in CI-local environments
 - Add `pytest.ini` to help pytest async mode
-- Run the full pytest suite and iterate to green (final local run: 18 passed, 28 warnings)
+- Run the full pytest suite and iterate to green (local run: unit + integration + API tests passing; see Test summary above)
 - Update documentation references to the migrated linked-list filename
 
 

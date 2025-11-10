@@ -2419,11 +2419,10 @@ async def quick_topics_research(payload: Dict[str, Any] = Body(...)):
                             try:
                                 # Store fact in hybrid memory
                                 fact_result = hybrid_memory.add_fact(
-                                    keyword=topic,
                                     fact=text,
-                                    source=result.get("source", "external_research"),
+                                    category=topic,  # Use topic as category instead of keyword
                                     confidence=result.get("confidence", 0.7),
-                                    category="research"
+                                    source=result.get("source", "external_research")
                                 )
                                 facts_learned += 1
                                 stored_facts.append({
