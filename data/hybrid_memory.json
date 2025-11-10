@@ -1,8 +1,68 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T20:48:53.578649",
-  "fact_count": 682,
+  "saved_at": "2025-11-09T21:01:31.134861",
+  "fact_count": 688,
   "facts": [
+    {
+      "fact": "Coloring Book: by Donald Nguyen (2019)",
+      "timestamp": "2025-11-09T21:01:31.133549",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Sleep is a state of reduced mental and physical activity in which consciousness is altered and certain sensory activity is inhibited. During sleep, there is a marked decrease in muscle activity and interactions with the surrounding environment. While sleep differs from wakefulness in terms of the ab...",
+      "timestamp": "2025-11-09T21:01:31.121129",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Study Guide: by SuperSummary (2017)",
+      "timestamp": "2025-11-09T20:59:39.996759",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "A Shirley Temple is a non-alcoholic mixed drink traditionally made with ginger ale and a splash of grenadine, and garnished with a maraschino cherry. Modern Shirley Temple recipes may substitute lemon-lime soda or lemonade and sometimes orange juice, in part or in whole. Shirley Temples are often se...",
+      "timestamp": "2025-11-09T20:59:39.910302",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Heidi: by Johanna Spyri (1885) Subjects: Johanna Spyri, Shirley Temple, Movie tie-in",
+      "timestamp": "2025-11-09T20:58:34.119470",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Presidential elections were held in the United States on November 5, 1996. Incumbent Democratic president Bill Clinton and his running mate, incumbent vice president Al Gore, were elected to a second term. They defeated the Republican ticket of former Senate majority leader Bob Dole and former secre...",
+      "timestamp": "2025-11-09T20:58:34.108965",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "Olivia Rodrigo: by Heather E. Schwartz (2022) Subjects: Music, history and criticism",
       "timestamp": "2025-11-09T20:48:53.577673",
@@ -3109,7 +3169,7 @@
       "category": "general",
       "confidence": 0.95,
       "source": "wikipedia",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 95
     },
