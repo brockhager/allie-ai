@@ -1,30 +1,46 @@
 [
   {
-    "id": "c-qo4r3e4",
+    "id": "c-c4bx4iq",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762745857610
+        "timestamp": 1762746217816
       },
       {
         "role": "me",
-        "text": "who is bob dole",
-        "timestamp": 1762745909079
-      },
-      {
-        "role": "them",
-        "text": "Yes, Bob Dole is currently serving as the Vice President of the United States under President Donald Trump. His tenure began on January 20th, 2017, following the inauguration of Trump as the 45th President. In his role, he serves alongside President Trump, providing advice and guidance on policy matters. Before becoming Vice President, Dole held various positions within the government, including Chairman of the Committee on Foreign Relations for the Senate, which oversees foreign affairs, national security, and international relations. During his time in office, Dole\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Bob_Dole\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Bob_Dole",
-        "timestamp": 1762745945438,
-        "is_false": true
+        "text": "who is the president",
+        "timestamp": 1762746345576
       },
       {
         "role": "them",
         "text": "As of my last knowledge, Joe Biden is the President of the United States.",
-        "timestamp": 1762746000291,
+        "timestamp": 1762746345591,
         "is_false": true,
-        "user_correction": "Robert Joseph Dole was an American politician, attorney, and U.S. Army officer who represented Kansas in the United States Senate from 1969 to 1996. He was the Republican Leader of the U.S Senate during the final 11 years of his tenure, including three non-consecutive years as Majority Leader of the U.S. Senate."
+        "user_correction": "Donald Trump is the current President of the United States"
+      },
+      {
+        "role": "me",
+        "text": "who is the vice president?",
+        "timestamp": 1762746374790
+      },
+      {
+        "role": "them",
+        "text": "The current information available suggests that the Vice President of the United States (VPOTUS) is the second-highest ranking official in the executive branch of the US Government, after the President of the United States. They hold a position equivalent to the Deputy Prime Minister in many countries around the world, but with fewer duties and responsibilities. As such, their role is primarily ceremonial and symbolic in nature, rather than having any real power or authority within the administration. However, they do play a significant role in ensuring the smooth functioning of government and maintaining public trust\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Vice_president\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Vice_presidents",
+        "timestamp": 1762746414510,
+        "is_false": true,
+        "user_correction": "The current Vice President is JD Vance"
+      },
+      {
+        "role": "me",
+        "text": "who is Olivia Rodrigo",
+        "timestamp": 1762746529939
+      },
+      {
+        "role": "them",
+        "text": "Yes, Olivia Isabel Rodrigo is the name behind \"Drivers License,\" the lead single off of her debut studio album, Sour, that became a global sensation after its release in early 2021. In addition to her chart-topping success, Rodrigo has since become a prominent figure in the music industry, with numerous hit songs and collaborations under her belt. Her upcoming projects include releasing new material under her real first name, alongside a potential tour later in 2022.\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Olivia_Rodrigo\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/American_indie_pop_musicians",
+        "timestamp": 1762746568696
       }
     ],
     "draft": ""

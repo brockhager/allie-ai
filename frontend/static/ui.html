@@ -50,7 +50,7 @@
   .status-value{font-size:13px;color:var(--text);font-weight:500}
   /* Standard chat flow: older messages at top, newest at bottom.
     Add bottom padding so content is not covered by the fixed input bar. */
-  .messages{flex:1;padding:16px;padding-bottom:200px;overflow:auto;display:flex;flex-direction:column;gap:12px;min-height:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
+  .messages{flex:1;padding:16px;padding-bottom:240px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:12px;min-height:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
   .row{display:flex;gap:10px;align-items:flex-end}
   .bubble{max-width:75%;padding:12px 14px;border-radius:13px;font-size:15px;line-height:1.4}
   .bubble.me{margin-left:auto;background:linear-gradient(90deg,var(--me),#1f7fe8);color:#021125;border-bottom-right-radius:6px}

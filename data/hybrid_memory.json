@@ -1,8 +1,98 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T20:38:32.584096",
-  "fact_count": 673,
+  "saved_at": "2025-11-09T20:48:53.578649",
+  "fact_count": 682,
   "facts": [
+    {
+      "fact": "Olivia Rodrigo: by Heather E. Schwartz (2022) Subjects: Music, history and criticism",
+      "timestamp": "2025-11-09T20:48:53.577673",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Olivia Rodrigo: instance_of = Q5",
+      "timestamp": "2025-11-09T20:48:53.569369",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Olivia Isabel Rodrigo (born February 20, 2003) is an American singer-songwriter and actress. She began her career as a child, appearing in commercials and the direct-to-video film An American Girl: Grace Stirs Up Success (2015). She rose to prominence for her leading roles in the Disney Channel seri...",
+      "timestamp": "2025-11-09T20:48:53.560426",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "American indie pop musicians",
+      "timestamp": "2025-11-09T20:48:53.551762",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Olivia Isabel Rodrigo is an American singer-songwriter and actress. She began her career as a child, appearing in commercials and the direct-to-video film An American Girl: Grace Stirs Up Success. She rose to prominence for her leading roles in the Disney Channel series Bizaardvark and the Disney+ series High School Musical: The Musical: The Series. Shifting focus onto her recording career, Rodrigo signed with Geffen Records to release her 2021 single \"Drivers License\", which peaked at number one on the US Billboard Hot 100 for eight weeks and raised her to international prominence. That same year, she released her debut studio album, Sour, which spawned her second number-one song \"Good 4 U\" and the similarly successful singles \"Deja Vu\", \"Traitor\", and \"Brutal\". The documentary Olivia Rodrigo: Driving Home 2 U, which chronicles the creative process of Sour, was released the following year.",
+      "timestamp": "2025-11-09T20:48:53.541193",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Vice President: by Elina Salajeva (2017)",
+      "timestamp": "2025-11-09T20:46:18.803035",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The vice president of the United States (VPOTUS, or informally, veep) is the second-highest ranking office in the executive branch of the U.S. federal government, after the president of the United States, and ranks first in the presidential line of succession. The vice president is also an officer i...",
+      "timestamp": "2025-11-09T20:46:18.794181",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Vice presidents",
+      "timestamp": "2025-11-09T20:46:18.783184",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "A vice president or vice-president, also director in British English, is an officer in government or business who is below the president in rank. It can also refer to executive vice presidents, signifying that the vice president is on the executive branch of the government, university or company. The name comes from the Latin term vice meaning \"in place of\" and typically serves as pro tempore to the president. In some countries, the vice president is called the deputy president. In everyday speech, the abbreviation VP is used.",
+      "timestamp": "2025-11-09T20:46:18.773186",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "Bob Dole: by Fleming Saunders (1996)",
       "timestamp": "2025-11-09T20:38:32.582954",
