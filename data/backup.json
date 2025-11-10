@@ -1,104 +1,22 @@
 [
   {
-    "id": "c-syfmpuo",
+    "id": "c-tw7yrha",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762732266603
-      },
-      {
-        "role": "me",
-        "text": "what is 222* 342534",
-        "timestamp": 1762732348576
-      },
-      {
-        "role": "them",
-        "text": "76042548",
-        "timestamp": 1762732348583
-      },
-      {
-        "role": "me",
-        "text": "4564816 / 45",
-        "timestamp": 1762732377392
-      },
-      {
-        "role": "them",
-        "text": "101440.3556",
-        "timestamp": 1762732377396
-      },
-      {
-        "role": "me",
-        "text": "101440.3556 * 45",
-        "timestamp": 1762732391928
-      },
-      {
-        "role": "them",
-        "text": "4564816.002",
-        "timestamp": 1762732391933
-      },
-      {
-        "role": "me",
-        "text": "what are wolves",
-        "timestamp": 1762732426529
-      },
-      {
-        "role": "them",
-        "text": "As per current knowledge, the wolf is a large canine native to Eurasia and North America. As for the specific breed of wolves identified, there are over 30 subspecies with the Grey wolf being one of them. However, the term \"wolf\" refers to both wild and domesticated animals of the genus Canis. In terms of their appearance and behavior, these dogs vary widely depending on where they live and how they interact with humans. The Warrington Wolves, a professional rugby league team in Warrington, UK, is primarily made up\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/Wolf\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/Wolverhampton_Wanderers_F.C.",
-        "timestamp": 1762732484607
-      },
-      {
-        "role": "me",
-        "text": "who makes dr pepper",
-        "timestamp": 1762732539557
-      },
-      {
-        "role": "them",
-        "text": "According to Wikipedia, the Dublin Dr Pepper brand is associated with the Dr. Pepper connoisseur named Gavyn Ray. The Dublin Dr Pepper style is believed to be his creation, as it was named after him. Therefore, today's answer would be \"Dr Pepper.\"\n\n---\n**Source:** External_Sources\n**Confidence:** 85%",
-        "timestamp": 1762732569254
-      },
-      {
-        "role": "me",
-        "text": "Dr Pepper is made by Keurig Dr Pepper, a leading beverage company in the United States. While Keurig Dr Pepper owns the brand, it doesn't have its own bottling facilities for Dr Pepper. Instead, it contracts with different bottlers, including those who also bottle Coca-Cola and Pepsi products, to produce and distribute the drink depending on the region.",
-        "timestamp": 1762732625706
-      },
-      {
-        "role": "them",
-        "text": "As you well know, Dr Pepper is one of the most iconic brands worldwide known for its refreshing taste that has been loved since its inception over 137 years ago. The beverage was first created back then by Samuel Colt & Sons Company in Pennsylvania, USA as an addition to their lineup of nonalcoholic soft drinks. However, despite being popular globally, it wasn\u2019t until the early 1980s when Keurig Dr Pepper acquired the brand and brought it into the market. This acquisition\n\n---\n**Source:** Model\n**Confidence:** 60%\n**URLs:**\n\ud83e\udd16 AI Model: Generated response",
-        "timestamp": 1762732679284
-      }
-    ],
-    "draft": ""
-  },
-  {
-    "id": "c-wg8o0i6",
-    "title": "Allie",
-    "messages": [
-      {
-        "role": "them",
-        "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762732755286
+        "timestamp": 1762733359871
       },
       {
         "role": "me",
         "text": "who is brad pitt",
-        "timestamp": 1762732766814
+        "timestamp": 1762733380763
       },
       {
         "role": "them",
-        "text": "Who is Brad Pitt?\nBrad Pitt is an American actor and film producer who has been acting professionally since the early 1990s. He began his career as a lead actor in movies like \"Thelma & Louise,\" where he played the supporting character Hank Callahan. Since then, Pitt has gone on to play some iconic characters, including Luke Skywalker in Star Wars: Episode I - The Phantom Menace and Mike Ross in the legal drama series \"Orange Is the New Black.\" Pitt also made appearances in several critically\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Brad_Pitt\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Best_Supporting_Actor_AACTA_International_Award_winners",
-        "timestamp": 1762732817067
-      },
-      {
-        "role": "me",
-        "text": "was brad pitt in orange is the new black?",
-        "timestamp": 1762732904425
-      },
-      {
-        "role": "them",
-        "text": "Yes, Brad Pitt played the role of Dante \"D\" Hicks on Orange Is The New Black, an American crime drama television series that premiered on Netflix on July 13, 2014. He continued to act as the character until his character's final episode in season three.\n\n---\n**Source:** Model\n**Confidence:** 60%\n**URLs:**\n\ud83e\udd16 AI Model: Generated response",
-        "timestamp": 1762732920559
+        "text": "Based on the given material, Brad Pitt is listed as \"William Bradley Pitt\" in various sources such as DuckDuckGo, Wikipedia, WIKIDATA, and OpenLibrary. While there is no definitive answer to your question regarding which specific movie he was featured in, it can be inferred that he appeared as a lead character or supporting actor in at least three different movies during his acting career, namely \"Thelma & Louise,\" \"Legends of the Fall,\" and \"Snatch.\" These films were all directed by Ridley Scott, and\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Brad_Pitt\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Best_Supporting_Actor_AACTA_International_Award_winners",
+        "timestamp": 1762733439876
       }
     ],
     "draft": ""

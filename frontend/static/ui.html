@@ -141,6 +141,17 @@
   </main>
 
   <aside class="memory-panel">
+    <div class="memory-stats-card" style="background:rgba(96,165,250,0.08);border-color:rgba(96,165,250,0.2)">
+      <div class="memory-stats-title">
+        <span>⭐</span>
+        <span>Learning Score</span>
+      </div>
+      <div style="text-align:center;padding:8px 0">
+        <div style="font-size:32px;font-weight:700;color:var(--accent)" id="learningScore">-</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px" id="learningScoreLabel">Calculating...</div>
+      </div>
+    </div>
+
     <div class="memory-stats-card">
       <div class="memory-stats-title">
         <span>🧠</span>
@@ -239,6 +250,10 @@ const memSources = document.getElementById('memSources');
 const memLastUpdate = document.getElementById('memLastUpdate');
 const memRefreshBtn = document.getElementById('memRefreshBtn');
 
+// Learning score elements
+const learningScore = document.getElementById('learningScore');
+const learningScoreLabel = document.getElementById('learningScoreLabel');
+
 // Fetch and update memory statistics
 async function updateMemoryStats() {
   try {
@@ -314,6 +329,95 @@ async function updateMemoryStats() {
 
 // Refresh button handler
 memRefreshBtn.onclick = updateMemoryStats;
+
+// Calculate and update learning score
+async function updateLearningScore() {
+  try {
+    // Fetch both memory stats and learning status
+    const [memResp, learningResp] = await Promise.all([
+      fetch('/api/hybrid-memory/statistics'),
+      fetch('/api/learning/status')
+    ]);
+    
+    if (!memResp.ok || !learningResp.ok) {
+      learningScore.textContent = '?';
+      learningScoreLabel.textContent = 'Error fetching data';
+      return;
+    }
+    
+    const memData = await memResp.json();
+    const learningData = await learningResp.json();
+    
+    const stats = memData.statistics;
+    const dataStats = learningData.data_stats || {};
+    
+    // Calculate learning score (0-100)
+    // Factors:
+    // - Active facts (40 points max): 1 point per fact, capped at 40
+    // - Fact quality (30 points max): ratio of active to total facts
+    // - Data diversity (20 points max): number of categories
+    // - Recent learning (10 points max): based on conversation count
+    
+    const activeFacts = stats.active_facts || 0;
+    const totalFacts = stats.total_facts || 0;
+    const categoryCount = Object.keys(stats.categories || {}).length;
+    const conversationCount = dataStats.total_conversations || 0;
+    
+    let score = 0;
+    
+    // Active facts contribution (40 points max)
+    score += Math.min(activeFacts, 40);
+    
+    // Fact quality contribution (30 points max)
+    if (totalFacts > 0) {
+      const qualityRatio = activeFacts / totalFacts;
+      score += qualityRatio * 30;
+    }
+    
+    // Data diversity contribution (20 points max)
+    score += Math.min(categoryCount * 2, 20);
+    
+    // Recent learning contribution (10 points max)
+    score += Math.min(conversationCount, 10);
+    
+    // Round to whole number
+    score = Math.round(score);
+    
+    // Update display
+    learningScore.textContent = score;
+    
+    // Set label based on score
+    let label = 'Getting started';
+    if (score >= 90) label = 'Expert level!';
+    else if (score >= 75) label = 'Advanced';
+    else if (score >= 50) label = 'Intermediate';
+    else if (score >= 25) label = 'Learning...';
+    
+    learningScoreLabel.textContent = label;
+    
+    // Add color gradient based on score
+    if (score >= 75) {
+      learningScore.style.color = '#22c55e'; // green
+    } else if (score >= 50) {
+      learningScore.style.color = '#60a5fa'; // blue (accent)
+    } else if (score >= 25) {
+      learningScore.style.color = '#f59e0b'; // orange
+    } else {
+      learningScore.style.color = '#6b7280'; // gray
+    }
+    
+  } catch (err) {
+    console.error('Error updating learning score:', err);
+    learningScore.textContent = '?';
+    learningScoreLabel.textContent = 'Error';
+  }
+}
+
+// Refresh button handler (also update learning score)
+memRefreshBtn.onclick = async () => {
+  await updateMemoryStats();
+  await updateLearningScore();
+};
 
 exportAllBtn.onclick = () => {
   const blob = new Blob([JSON.stringify(conversations, null, 2)], { type: 'application/json' });
@@ -826,6 +930,9 @@ function updateLearningStatus(status) {
 
   // Load memory statistics on init
   await updateMemoryStats();
+  
+  // Load learning score on init
+  await updateLearningScore();
 
   // Set up periodic status updates
   setInterval(async () => {
@@ -842,6 +949,7 @@ function updateLearningStatus(status) {
   setInterval(async () => {
     try {
       await updateMemoryStats();
+      await updateLearningScore();
     } catch (err) {
       console.warn('Failed to update memory stats:', err);
     }

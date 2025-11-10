@@ -213,30 +213,30 @@ app = FastAPI(title="Allie")
 _auto_learning_task = None
 _last_learning_check = datetime.now()
 _last_learning_trigger = None
-_learning_cooldown_minutes = 5  # Reduced cooldown to 5 minutes to allow faster learning cycles
+_learning_cooldown_minutes = 3  # Reduced from 5 to 3 minutes for more frequent learning cycles
 
 async def auto_learning_background_task():
     """Background task that periodically checks and triggers learning.
 
-    Frequency reduced to allow faster learning cycles while keeping a small backoff
-    on error. The cooldown controlling actual episode starts is still managed by
+    Checks every 30 seconds for faster response to new learning opportunities.
+    The cooldown controlling actual episode starts is still managed by
     `_learning_cooldown_minutes` to avoid excessive episodes.
     """
     global _last_learning_check
     while True:
         try:
-            # Check every 60 seconds so we can detect learning opportunities faster
-            await asyncio.sleep(60)
+            # Check every 30 seconds for faster detection of learning opportunities
+            await asyncio.sleep(30)
 
             # Throttle actual check frequency slightly using _last_learning_check
-            if datetime.now() - _last_learning_check > timedelta(minutes=1):
+            if datetime.now() - _last_learning_check > timedelta(seconds=30):
                 _last_learning_check = datetime.now()
                 result = await check_and_trigger_auto_learning()
                 if result:
                     logger.info(f"Background learning triggered: {result}")
         except Exception as e:
             logger.error(f"Error in auto-learning background task: {e}")
-            await asyncio.sleep(10)  # Shorter retry on error to recover faster
+            await asyncio.sleep(5)  # Shorter retry on error to recover faster
 
 @app.on_event("startup")
 async def startup_event():

@@ -85,21 +85,21 @@ class IncrementalLearningOrchestrator:
             'models_dir': 'models',
             'logs_dir': 'logs',
             'learning_thresholds': {
-                'min_conversations': 3,  # Minimum approved conversations to trigger learning
-                'min_quality_score': 0.7,
-                'max_age_hours': 24
+                'min_conversations': 2,  # Lowered from 3 - learn from just 2 conversations
+                'min_quality_score': 0.6,  # Lowered from 0.7 - accept slightly lower quality
+                'max_age_hours': 48  # Increased from 24 - consider older conversations
             },
             'training_params': {
                 'batch_size': 4,
                 'learning_rate': 2e-4,
-                'num_epochs': 3,
+                'num_epochs': 2,  # Reduced from 3 for faster training cycles
                 'ewc_lambda': 0.1,
                 'replay_ratio': 0.3,
                 'max_length': 512
             },
             'scheduling': {
-                'preferred_start_hour': 0,  # Always allow learning for testing
-                'preferred_end_hour': 23,  # Allow learning until 11 PM
+                'preferred_start_hour': 0,  # 24/7 learning - always allow
+                'preferred_end_hour': 24,  # 24/7 learning window
                 'max_concurrent_episodes': 1
             }
         }
