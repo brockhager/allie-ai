@@ -22,8 +22,8 @@
     font-size:16px;
     border-radius:10px;
     border:1px solid rgba(255,255,255,0.04);
-    background:transparent;
-    color:var(--text);
+    background:#ffffff;
+    color:#021125;
     resize:vertical;
     min-height:84px;
     max-height:320px;
@@ -38,7 +38,9 @@
   }
 
   /* Ensure the inputbar layout accommodates larger controls */
-  .inputbar{display:flex;gap:16px;padding:12px}
+  /* Anchor the input bar to the bottom so it never moves and stays visible.
+    Position left/right to account for the sidebar and memory panel widths. */
+  .inputbar{display:flex;gap:16px;padding:12px;position:fixed;left:260px;right:240px;bottom:0;background:transparent;z-index:40}
   .inputbar > div{display:flex;flex-direction:column;align-items:flex-end}
   button.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08)}
   .main{flex:1;display:flex;flex-direction:column;min-height:0}
@@ -46,7 +48,10 @@
   .status-section{margin-left:auto;display:flex;flex-direction:column;gap:4px}
   .status-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
   .status-value{font-size:13px;color:var(--text);font-weight:500}
-  .messages{flex:1;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px;min-height:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
+  /* Show newest messages at the top using column-reverse so we can append normally
+    but visually present items newest-first. Add bottom padding so content is not
+    covered by the fixed input bar. */
+  .messages{flex:1;padding:16px;padding-bottom:180px;overflow:auto;display:flex;flex-direction:column-reverse;gap:12px;min-height:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
   .row{display:flex;gap:10px;align-items:flex-end}
   .bubble{max-width:75%;padding:12px 14px;border-radius:13px;font-size:15px;line-height:1.4}
   .bubble.me{margin-left:auto;background:linear-gradient(90deg,var(--me),#1f7fe8);color:#021125;border-bottom-right-radius:6px}
@@ -456,66 +461,75 @@ async function updateLearningScore() {
     const stats = memData.statistics;
     const dataStats = learningData.data_stats || {};
     
-  // Calculate learning score (0-1000) - Much more conservative scoring
-  // Realistic expectations (scaled to 0-1000):
-  // - Getting Started (0-200): Few facts, just beginning
-  // - Learning (200-400): Building knowledge base
-  // - Intermediate (400-600): Substantial knowledge
-  // - Advanced (600-800): Deep knowledge across many topics
-  // - Expert (800-1000): Comprehensive mastery
-    
+    // Calculate learning score (0-1000)
+    // New approach: keep theoretical range 0-1000 but make the usual scores
+    // more conservative by reweighting contributions and applying penalties
+    // for false reports, stored negative examples, and outdated facts.
+    // Components sum to 100 before scaling to 0-1000.
+
     const activeFacts = stats.active_facts || 0;
     const totalFacts = stats.total_facts || 0;
     const categoryCount = Object.keys(stats.categories || {}).length;
     const conversationCount = dataStats.total_conversations || 0;
     const qualityConversations = dataStats.quality_conversations || 0;
-    
-    let score = 0;
-    
-    // Active facts contribution (35 points max) - Much stricter scaling
-    // Need 100+ facts to max out this component
-    score += Math.min(activeFacts * 0.35, 35);
-    
-    // Fact quality contribution (25 points max)
-    // Penalize if too many outdated facts
+
+    // Defensive: some backends may expose false/negative counts in different places
+    const falseReports = (stats.false_reports || dataStats.false_reports || 0);
+    const negativeExamples = ((stats.categories && (stats.categories.negative_example || stats.categories['negative_example'])) || 0);
+    const outdatedFacts = stats.outdated_facts || 0;
+
+    let rawScore = 0;
+
+    // Active facts (0-30)
+    // Need ~150 active facts to reach the max of this component
+    rawScore += Math.min(activeFacts / 5, 30);
+
+    // Fact quality (0-30) based on ratio of active to total facts
     if (totalFacts > 0) {
-      const qualityRatio = activeFacts / totalFacts;
-      score += qualityRatio * 25;
+      const qualityRatio = Math.max(0, Math.min(1, activeFacts / totalFacts));
+      rawScore += qualityRatio * 30;
     }
-    
-    // Data diversity contribution (20 points max)
-    // Need 10+ categories to max out
-    score += Math.min(categoryCount * 2, 20);
-    
-    // Quality conversations (15 points max)
-    // Need 15+ quality conversations to max out
-    score += Math.min(qualityConversations, 15);
-    
-    // Total conversations (5 points max)
-    // Bonus for engagement, capped at 50 conversations
-    score += Math.min(conversationCount * 0.1, 5);
-    
-    // Scale to 0-1000 and round
-    score = Math.round(score * 10);
+
+    // Diversity (0-15): categories/topics
+    rawScore += Math.min(categoryCount * 1.5, 15);
+
+    // Quality conversations (0-15)
+    rawScore += Math.min(qualityConversations * 0.8, 15);
+
+    // Engagement (0-10)
+    rawScore += Math.min(conversationCount * 0.2, 10);
+
+  // Penalty (subtract up to 80 points before scaling)
+  // Heavier penalty for reported false replies and negative examples.
+  // - falseReports are the strongest signal of incorrect behavior
+  // - negativeExamples (user-provided corrections saved as negatives) are significant
+  // - outdatedFacts are penalized but less strongly
+  // Tuning: increase multipliers for stronger punishment of wrong answers.
+  const penaltyPoints = Math.min((falseReports * 5) + (negativeExamples * 2.0) + (outdatedFacts * 0.5), 80);
+    rawScore = Math.max(0, rawScore - penaltyPoints);
+
+    // Ensure rawScore is within 0-100, then scale to 0-1000
+    rawScore = Math.max(0, Math.min(100, rawScore));
+    const finalScore = Math.round(rawScore * 10);
 
     // Update display
-    learningScore.textContent = score;
+    learningScore.textContent = finalScore;
 
-    // Set label based on scaled score
+    // Labeling
     let label = 'Just starting';
-    if (score >= 800) label = 'Expert level!';
-    else if (score >= 600) label = 'Advanced';
-    else if (score >= 400) label = 'Intermediate';
-    else if (score >= 200) label = 'Learning...';
-
+    if (finalScore >= 900) label = 'Exceptional';
+    else if (finalScore >= 700) label = 'Expert';
+    else if (finalScore >= 500) label = 'Advanced';
+    else if (finalScore >= 300) label = 'Intermediate';
+    else if (finalScore >= 150) label = 'Learning';
     learningScoreLabel.textContent = label;
 
-    // Add color gradient based on scaled score
-    if (score >= 600) {
-      learningScore.style.color = '#22c55e'; // green
-    } else if (score >= 400) {
-      learningScore.style.color = '#60a5fa'; // blue (accent)
-    } else if (score >= 200) {
+    // Color grading
+    if (finalScore >= 700) {
+      learningScore.style.color = '#16a34a'; // green
+    } else if (finalScore >= 500) {
+      learningScore.style.color = '#60a5fa'; // blue
+    } else if (finalScore >= 300) {
       learningScore.style.color = '#f59e0b'; // orange
     } else {
       learningScore.style.color = '#6b7280'; // gray
@@ -595,7 +609,8 @@ function renderActive(){
   messagesEl.innerHTML = '';
   (conv.messages || []).forEach((m, idx) => appendMessage(m.text, m.role, new Date(m.timestamp), idx));
   promptEl.value = conv.draft || '';
-  messagesEl.scrollTop = messagesEl.scrollHeight;
+  // With newest-first presentation we show the top of the list (scrollTop=0)
+  messagesEl.scrollTop = 0;
 }
 
 function appendMessage(text, who = 'them', time = new Date(), index = 0){
@@ -704,7 +719,8 @@ function appendMessage(text, who = 'them', time = new Date(), index = 0){
   }
 
   row.appendChild(bubble); row.appendChild(meta); messagesEl.appendChild(row);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
+  // Keep view showing newest messages (we use column-reverse so newest are at visual top)
+  messagesEl.scrollTop = 0;
 }
 
 function setActive(id){ activeId = id; renderTabs(); renderActive(); }

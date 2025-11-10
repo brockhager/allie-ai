@@ -89,3 +89,28 @@ Polished UI with chat bubbles, timestamps, and avatars
 Deployment guide for hosting backend and frontend together
 
 Authentication and user accounts for multi‑user conversations
+
+## Learning Score (UI) — tuning notes
+
+The frontend exposes a "Learning Score" displayed in the right-hand panel. This is a conservative, heuristic metric (range 0–1000) intended as a rough indicator of how well Allie is learning and how reliable the stored facts are.
+
+Key points about the current heuristic (implemented in `frontend/static/ui.html` -> `updateLearningScore()`):
+
+- The score is computed from several components that sum to a 0–100 base, and then scaled by 10 to produce the 0–1000 display value.
+- Positive contributions include:
+	- active facts (weighted, up to ~30 points)
+	- fact quality ratio (active / total facts, up to ~30 points)
+	- category/topic diversity (up to ~15 points)
+	- quality conversations (up to ~15 points)
+	- engagement (total conversations, up to ~10 points)
+- Penalties subtract from the raw 0–100 base before scaling. Penalty signals include:
+	- user `falseReports` (strong penalty multiplier) — these are the heaviest negative signals
+	- stored negative examples (user-provided corrections saved to memory)
+	- outdated facts
+- Current penalty multipliers (tunable):
+	- falseReports × 5
+	- negativeExamples × 2.0
+	- outdatedFacts × 0.5
+	- penalty capped at 80 points
+
+If the score appears too high or too low for your environment, tweak the multipliers and caps in `frontend/static/ui.html` or request I add a small debug overlay that shows the component breakdown (active facts, quality ratio, diversity, engagement, penalty) to assist tuning.

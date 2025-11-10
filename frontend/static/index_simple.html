@@ -103,6 +103,10 @@
                     <span>✅</span>
                     <span>Fact Checking</span>
                 </a>
+                <a href="#quick-teach" class="nav-tab" data-route="quick-teach">
+                    <span>🎓</span>
+                    <span>Quick Teach</span>
+                </a>
             </div>
         </div>
     </nav>
@@ -117,6 +121,10 @@
             <h2>Fact Checking</h2>
             <p>This is the fact checking interface. The iframe would load here.</p>
         </div>
+        <div id="quick-teach-frame" class="content-frame">
+            <h2>Quick Teach</h2>
+            <iframe src="/quick-teach" style="width:100%;height:80vh;border:0"></iframe>
+        </div>
     </div>
 
     <script>
@@ -124,7 +132,8 @@
         const tabs = document.querySelectorAll('.nav-tab');
         const frames = {
             'allie': document.getElementById('allie-frame'),
-            'fact-check': document.getElementById('fact-check-frame')
+            'fact-check': document.getElementById('fact-check-frame'),
+            'quick-teach': document.getElementById('quick-teach-frame')
         };
 
         tabs.forEach(tab => {

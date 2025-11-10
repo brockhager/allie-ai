@@ -1287,6 +1287,34 @@
       "training_stats": null,
       "evaluation_results": null,
       "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
+    },
+    {
+      "id": "learn_20251109_201443",
+      "status": "failed",
+      "start_time": "2025-11-09T20:14:43.856549",
+      "end_time": "2025-11-09T20:14:51.475591",
+      "data_stats": {
+        "total_conversations": 6,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "Cannot copy out of meta tensor; no data! Please use torch.nn.Module.to_empty() instead of torch.nn.Module.to() when moving module from meta to a different device."
+    },
+    {
+      "id": "learn_20251109_201805",
+      "status": "failed",
+      "start_time": "2025-11-09T20:18:05.384953",
+      "end_time": "2025-11-09T20:18:44.876385",
+      "data_stats": {
+        "total_conversations": 7,
+        "approved_conversations": 3,
+        "avg_quality": 0.7679999999999999
+      },
+      "training_stats": null,
+      "evaluation_results": null,
+      "error_message": "unsupported operand type(s) for +: 'NoneType' and 'Tensor'"
     }
   ],
   "config": {
