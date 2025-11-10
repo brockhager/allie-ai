@@ -1672,6 +1672,9 @@ async def add_to_hybrid_memory(
             "fact": fact,
             "category": category
         }
+    except Exception as e:
+        logger.error(f"Error adding to hybrid memory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/api/feedback/mark_false")
