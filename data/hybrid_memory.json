@@ -1,8 +1,88 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T21:37:53.969144",
-  "fact_count": 866,
+  "saved_at": "2025-11-09T21:46:43.479545",
+  "fact_count": 874,
   "facts": [
+    {
+      "fact": "The Thirteenth Amendment (Amendment XIII) to the United States Constitution abolished slavery and involuntary servitude, except as punishment for a crime. The amendment was passed by the Senate on April 8, 1864, by the House of Representatives on January 31, 1865, and ratified by the required 27 of ...",
+      "timestamp": "2025-11-09T21:46:43.477264",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Thirteenth Amendment (Amendment XIII) to the United States Constitution abolished slavery and involuntary servitude, except as punishment for a crime. The amendment was passed by the Senate on April 8, 1864, by the House of Representatives on January 31, 1865, and ratified by the required 27 of ...",
+      "timestamp": "2025-11-09T21:44:41.895203",
+      "category": "geography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "As You Like It: by William Shakespeare (1734) Subjects: Drama, Fathers and daughters, Exiles",
+      "timestamp": "2025-11-09T21:43:01.588922",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Shamrock Rovers Football Club (Irish: Cumann Peile Ruagairí na Seamróige) is an Irish association football club based in Tallaght, South Dublin. The club's senior team competes in the League of Irelan...",
+      "timestamp": "2025-11-09T21:43:01.577887",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "You? Me? Us?: instance_of = Q482994",
+      "timestamp": "2025-11-09T21:43:01.566973",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "In Modern English, the word \"you\" is the second-person pronoun. It is grammatically plural, and was historically used only for the dative case, but in most modern dialects is used for all cases and numbers.",
+      "timestamp": "2025-11-09T21:43:01.555708",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Generic you - In English grammar, the personal pronoun you can often be used in the place of one, the singular impersonal pronoun, in colloquial speech.",
+      "timestamp": "2025-11-09T21:43:01.544229",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "In Modern English, the word \"you\" is the second-person pronoun. It is grammatically plural, and was historically used only for the dative case, but in most modern dialects is used for all cases and numbers.",
+      "timestamp": "2025-11-09T21:43:01.531840",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "Study Guide: by SuperSummary (2019) Subjects: Sociology",
       "timestamp": "2025-11-09T21:37:53.967468",

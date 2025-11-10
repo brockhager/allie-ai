@@ -38,21 +38,20 @@
   }
 
   /* Ensure the inputbar layout accommodates larger controls */
-  /* Anchor the input bar to the bottom so it never moves and stays visible.
-    Position left/right to account for the sidebar and memory panel widths.
-    Make its right edge slightly inset so it does not cover the messages scrollbar. */
-  .inputbar{display:flex;gap:16px;padding:12px;position:fixed;left:260px;right:calc(240px + 14px);bottom:0;background:rgba(255,255,255,0.96);z-index:40;border-top:1px solid rgba(0,0,0,0.06);box-shadow:0 -8px 24px rgba(2,6,23,0.28)}
+  /* Make inputbar sticky (not fixed) at the bottom of the main panel so it stays
+     at the bottom but does not overlay the messages area - this is CRITICAL for scrolling */
+  .inputbar{display:flex;gap:16px;padding:12px;position:sticky;bottom:0;background:rgba(255,255,255,0.98);z-index:40;border-top:1px solid rgba(0,0,0,0.06);box-shadow:0 -8px 24px rgba(2,6,23,0.28);margin-top:auto;}
   .inputbar > div{display:flex;flex-direction:column;align-items:flex-end}
   button.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08)}
-  .main{flex:1;display:flex;flex-direction:column;min-height:0}
-  .header{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px}
+  .main{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+  .header{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px;flex-shrink:0}
   .status-section{margin-left:auto;display:flex;flex-direction:column;gap:4px}
   .status-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
   .status-value{font-size:13px;color:var(--text);font-weight:500}
   /* Standard chat flow: older messages at top, newest at bottom.
-    Add LARGE bottom padding so content is NEVER covered by the fixed input bar.
-    Reserve space for the scrollbar with `scrollbar-gutter` so it remains clickable. */
-  .messages{flex:1;padding:16px;padding-bottom:360px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:12px;min-height:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);scrollbar-gutter:stable;}
+    REMOVED bottom padding since inputbar is now sticky (not fixed/overlay).
+    Messages area will naturally scroll with a scrollbar. */
+  .messages{flex:1;padding:16px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:12px;min-height:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
   .row{display:flex;gap:10px;align-items:flex-end}
   .bubble{max-width:75%;padding:12px 14px;border-radius:13px;font-size:15px;line-height:1.4}
   .bubble.me{margin-left:auto;background:linear-gradient(90deg,var(--me),#1f7fe8);color:#021125;border-bottom-right-radius:6px}
@@ -133,7 +132,7 @@
       <button id="importBtn" class="secondary">Import</button>
     </div>
 
-    <div id="chatPanel">
+    <div id="chatPanel" style="display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden">
       <div class="messages" id="messages" aria-live="polite"></div>
 
       <div class="inputbar">
