@@ -1,8 +1,68 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T21:46:43.479545",
-  "fact_count": 874,
+  "saved_at": "2025-11-09T21:58:14.551759",
+  "fact_count": 880,
   "facts": [
+    {
+      "fact": "The Big Sleep: by Raymond Chandler (1939) Subjects: Fiction, Philip Marlowe (Fictitious character), Private investigators",
+      "timestamp": "2025-11-09T21:58:14.549987",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Big Universe, Big Data: Machine Learning and Image Analysis for Astronomy: instance_of = Q13442814",
+      "timestamp": "2025-11-09T21:58:14.538083",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Big Bang is a physical theory that describes how the universe expanded from an initial state of high density and temperature. Various cosmological models based on the Big Bang concept explain a broad range of phenomena,  including the abundance of light elements, the cosmic microwave background ...",
+      "timestamp": "2025-11-09T21:58:14.524930",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Study Guide: by SuperSummary (2017)",
+      "timestamp": "2025-11-09T21:56:00.004021",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "sea water: instance_of = Q5447188",
+      "timestamp": "2025-11-09T21:55:59.992433",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Seawater, or sea water, is water from a sea or ocean. On average, seawater in the world's oceans has a salinity of about 3.5% (35 g/L, 35 ppt, 600 mM). This means that every kilogram (roughly one liter by volume) of seawater has approximately 35 grams (1.2 oz) of dissolved salts (predominantly sodiu...",
+      "timestamp": "2025-11-09T21:55:59.976414",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "The Thirteenth Amendment (Amendment XIII) to the United States Constitution abolished slavery and involuntary servitude, except as punishment for a crime. The amendment was passed by the Senate on April 8, 1864, by the House of Representatives on January 31, 1865, and ratified by the required 27 of ...",
       "timestamp": "2025-11-09T21:46:43.477264",

@@ -2,6 +2,9 @@ import json
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class HybridMemory:
@@ -196,4 +199,115 @@ class HybridMemory:
 			"facts_added": facts_added,
 			"memory_confirmed": memory_confirmed,
 		}
+
+	def add_to_learning_queue(self, keyword: str, fact: str, source: str, provenance: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+		"""Add a fact to the learning queue for validation instead of directly to memory"""
+		# This would integrate with the database learning_queue table
+		# For now, return a mock response since we're using file-based storage
+		queue_item = {
+			"id": len(self.facts) + 1000,  # Mock ID
+			"keyword": keyword,
+			"fact": fact,
+			"source": source,
+			"provenance": provenance or {},
+			"processed": False,
+			"queued_at": datetime.now().isoformat()
+		}
+
+		# In a real implementation, this would insert into the database
+		logger.info(f"Queued fact for keyword '{keyword}' from {source}")
+		return {"status": "queued", "queue_id": queue_item["id"]}
+
+	def get_learning_queue(self, status: Optional[str] = None, limit: int = 50) -> List[Dict[str, Any]]:
+		"""Get items from learning queue (mock implementation)"""
+		# Mock implementation - in real system this would query database
+		return []
+
+	def process_queue_item(self, queue_id: int, action: str) -> Dict[str, Any]:
+		"""Process a queued item (mock implementation)"""
+		return {"status": "processed", "queue_id": queue_id, "action": action}
+
+	def update_fact_status(self, fact_id: int, status: str, confidence_score: Optional[int] = None) -> Dict[str, Any]:
+		"""Update a fact's verification status and confidence score"""
+		# Find fact by ID (mock implementation using index)
+		if 0 <= fact_id < len(self.facts):
+			fact_entry = self.facts[fact_id]
+			fact_entry["status"] = status
+			if confidence_score is not None:
+				fact_entry["confidence_score"] = confidence_score
+			fact_entry["updated_at"] = datetime.now().isoformat()
+			self._save()
+
+			return {
+				"status": "updated",
+				"fact_id": fact_id,
+				"new_status": status,
+				"new_confidence_score": confidence_score
+			}
+		else:
+			return {"status": "not_found", "fact_id": fact_id}
+
+	def get_fact_by_id(self, fact_id: int) -> Optional[Dict[str, Any]]:
+		"""Get a fact by its ID"""
+		if 0 <= fact_id < len(self.facts):
+			return self.facts[fact_id].copy()
+		return None
+
+	def get_all_facts(self, status_filter: Optional[str] = None, category_filter: Optional[str] = None,
+					 limit: int = 100, offset: int = 0) -> List[Dict[str, Any]]:
+		"""Get all facts with optional filtering"""
+		filtered_facts = []
+
+		for fact in self.facts:
+			# Apply status filter
+			if status_filter and fact.get("status") != status_filter:
+				continue
+
+			# Apply category filter
+			if category_filter and fact.get("category") != category_filter:
+				continue
+
+			filtered_facts.append(fact)
+
+		# Apply pagination
+		start = offset
+		end = offset + limit
+		return filtered_facts[start:end]
+
+	def compute_confidence_score(self, provenance: Dict[str, Any], source_weights: Dict[str, str], recency_days: int = 0) -> int:
+		"""Compute confidence score based on provenance and source weights"""
+		base_confidence = 50  # Default
+
+		# Adjust based on source
+		source = provenance.get("source", "unknown")
+		source_weight = source_weights.get(source, 0.5)
+		base_confidence = int(base_confidence * source_weight)
+
+		# Recency bonus
+		recency_bonus = min(recency_days * 2, 20)  # Max 20 points for very recent
+		base_confidence += recency_bonus
+
+		# Channel bonus (chat might be less reliable than curated sources)
+		channel = provenance.get("channel", "unknown")
+		if channel == "verified_source":
+			base_confidence += 15
+		elif channel == "chat":
+			base_confidence -= 10
+
+		return max(0, min(100, base_confidence))
+
+	def mark_false(self, fact_id: int, reviewer: str, reason: str) -> Dict[str, Any]:
+		"""Mark a fact as false with audit trail"""
+		result = self.update_fact_status(fact_id, "false", 0)
+
+		if result["status"] == "updated":
+			# Log the change (in real implementation, this would go to learning_log table)
+			logger.info(f"Fact {fact_id} marked as false by {reviewer}: {reason}")
+
+		return result
+
+	def rollback_fact(self, fact_id: int, target_log_id: int) -> Dict[str, Any]:
+		"""Rollback a fact to a previous state from learning log"""
+		# Mock implementation - in real system would query learning_log table
+		return {"status": "rolled_back", "fact_id": fact_id, "target_log_id": target_log_id}
 

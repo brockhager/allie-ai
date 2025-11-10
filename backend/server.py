@@ -1736,6 +1736,9 @@ async def mark_response_false(payload: Dict[str, Any] = Body(...)):
                     confidence=0.0,
                     source="user_feedback",
                     metadata={"flagged_false": True, "conv_id": conv_id, "message_index": msg_idx}
+
+
+
                 )
         except Exception as e:
             logger.warning(f"Failed to add flagged fact to hybrid memory: {e}")
@@ -1932,554 +1935,253 @@ async def get_hybrid_memory_stats():
         logger.error(f"Error getting statistics: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-async def check_and_trigger_auto_learning():
-    """Automatically trigger learning if conditions are met"""
-    global _last_learning_trigger
-    
-    if not LEARNING_ENABLED:
-        return None
-    
-    # Check cooldown period
-    if _last_learning_trigger is not None:
-        time_since_last = datetime.now() - _last_learning_trigger
-        if time_since_last < timedelta(minutes=_learning_cooldown_minutes):
-            logger.debug(f"Learning cooldown active: {_learning_cooldown_minutes - time_since_last.seconds // 60} minutes remaining")
-            return None
-    
-    try:
-        import sys
-        scripts_dir = APP_ROOT.parent / "scripts"
-        sys.path.insert(0, str(scripts_dir))
-
-        from learning_orchestrator import IncrementalLearningOrchestrator
-
-        orchestrator = IncrementalLearningOrchestrator()
-        should_learn, reason = orchestrator.should_trigger_learning()
-
-        if should_learn:
-            # Check if there's already an active episode
-            status = orchestrator.get_status()
-            if not status.get("is_active", False):
-                # Check for recent failures in episode history (if available)
-                try:
-                    history = getattr(orchestrator, 'episode_history', [])
-                    if history:
-                        # Get last 3 episodes
-                        recent_episodes = sorted(history, key=lambda x: x.get('start_time', 0), reverse=True)[:3]
-                        recent_failures = [ep for ep in recent_episodes if ep.get('status') == 'failed']
-                        
-                        # If we have 2+ recent failures, wait longer before trying again
-                        if len(recent_failures) >= 2:
-                            logger.warning(f"Skipping auto-learning: {len(recent_failures)} recent failures detected")
-                            _last_learning_trigger = datetime.now()  # Reset cooldown
-                            return None
-                except AttributeError:
-                    # episode_history not available, continue anyway
-                    logger.debug("episode_history not available on orchestrator")
-                
-                logger.info(f"Auto-triggering learning episode: {reason}")
-                episode_id = orchestrator.start_learning_episode()
-                _last_learning_trigger = datetime.now()
-                return {"auto_triggered": True, "episode_id": episode_id, "reason": reason}
-        
-        return None
-    except Exception as e:
-        logger.warning(f"Auto-learning check failed: {e}")
-        return None
-
-@app.get("/api/learning/status")
-async def get_learning_status():
-    """Get current learning system status and auto-trigger if needed"""
-    if not LEARNING_ENABLED:
-        return {"enabled": False, "message": "Learning system not available"}
-
-    try:
-        # Import the orchestrator directly instead of using subprocess
-        import sys
-        scripts_dir = APP_ROOT.parent / "scripts"
-        sys.path.insert(0, str(scripts_dir))
-
-        from learning_orchestrator import IncrementalLearningOrchestrator
-
-        # Create orchestrator instance and get status
-        orchestrator = IncrementalLearningOrchestrator()
-        status = orchestrator.get_status()
-        
-        # Auto-trigger learning if conditions are met
-        auto_trigger_result = await check_and_trigger_auto_learning()
-
-        response = {
-            "enabled": True,
-            "is_active": status.get("is_active", False),
-            "should_learn": status.get("learning_ready", False),
-            "current_episode": status.get("current_episode"),
-            "reason": "Ready for learning" if status.get("learning_ready") else "Learning conditions not met",
-            "system_resources": status.get("system_resources", {}),
-            "data_stats": status.get("data_stats", {}),
-            "auto_learning": True  # Indicate that auto-learning is enabled
-        }
-        
-        if auto_trigger_result:
-            response["auto_triggered"] = auto_trigger_result
-        
-        return response
-
-    except Exception as e:
-        logger.error(f"Error getting learning status: {e}")
-        return {"enabled": True, "error": str(e), "is_active": False, "should_learn": False, "auto_learning": True}
-
-@app.post("/api/learning/start")
-async def start_learning_episode():
-    """Start a new learning episode"""
-    if not LEARNING_ENABLED:
-        raise HTTPException(status_code=503, detail="Learning system not available")
-
-    try:
-        # Import the orchestrator directly
-        import sys
-        scripts_dir = APP_ROOT.parent / "scripts"
-        sys.path.insert(0, str(scripts_dir))
-
-        from learning_orchestrator import IncrementalLearningOrchestrator
-
-        # Create orchestrator and check if learning should be triggered
-        orchestrator = IncrementalLearningOrchestrator()
-        should_learn, reason = orchestrator.should_trigger_learning()
-
-        if not should_learn:
-            raise HTTPException(status_code=400, detail=f"Learning conditions not met: {reason}")
-
-        # Start learning episode
-        episode_id = orchestrator.start_learning_episode()
-
-        return {"episode_id": episode_id, "status": "started", "message": "Learning episode started successfully"}
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error starting learning episode: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/learning/history")
-async def get_learning_history():
-    """Get learning episode history"""
-    if not LEARNING_ENABLED:
-        return {"enabled": False, "history": []}
-
-    try:
-        # For now, return empty history since we don't have persistent storage
-        return {"enabled": True, "history": [], "message": "History not yet implemented"}
-    except Exception as e:
-        logger.error(f"Error getting learning history: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/learning/bulk-learn")
-async def bulk_learn(payload: Dict[str, Any] = Body(...)):
-    """
-    Bulk learning endpoint - allows Allie to learn from multiple facts or topics quickly
-    
-    Accepts:
-    - facts: List[str] - Direct facts to learn
-    - topics: List[str] - Topics to research and learn about
-    - urls: List[str] - URLs to scrape and learn from
-    """
-    facts = payload.get("facts", [])
-    topics = payload.get("topics", [])
-    urls = payload.get("urls", [])
-    
-    if not (facts or topics or urls):
-        raise HTTPException(status_code=400, detail="Must provide facts, topics, or urls")
-    
-    results = {
-        "facts_learned": 0,
-        "topics_researched": 0,
-        "urls_processed": 0,
-        "details": []
-    }
-    
-    try:
-        # Process direct facts through learning pipeline
-        if facts:
-            prepared_facts = []
-            for fact in facts:
-                if isinstance(fact, str) and fact.strip():
-                    # Extract keyword from fact
-                    fact_text = fact.strip()
-                    words = fact_text.split()[:5]
-                    keyword = ' '.join(words).strip('.,!?;:')
-                    
-                    prepared_facts.append({
-                        'keyword': keyword,
-                        'fact': fact_text,
-                        'source': 'bulk_learn',
-                        'confidence': 0.9,  # User-provided facts have high confidence
-                        'category': 'bulk_learning'
-                    })
-            
-            # Process batch through pipeline
-            if prepared_facts:
-                pipeline_result = learning_pipeline.process_batch(prepared_facts, auto_resolve=True)
-                results["facts_learned"] = pipeline_result['added'] + pipeline_result['updated']
-                results["details"].append(f"Processed {len(prepared_facts)} facts: {pipeline_result['added']} added, {pipeline_result['updated']} updated")
-        
-        # Research topics using multi-source retrieval
-        if topics:
-            for topic in topics:
-                if isinstance(topic, str) and topic.strip():
-                    logger.info(f"Researching topic: {topic}")
-                    
-                    # Use multi-source search to gather information
-                    search_results = await search_all_sources(
-                        query=topic,
-                        memory_results=[],
-                        max_results_per_source=5
-                    )
-                    
-                    if search_results.get("success") and search_results.get("facts_to_store"):
-                        topic_facts = []
-                        for fact_data in search_results["facts_to_store"]:
-                            fact = fact_data.get("fact", "")
-                            if fact and isinstance(fact, str):
-                                # Extract keyword from fact
-                                words = fact.split()[:5]
-                                keyword = ' '.join(words).strip('.,!?;:')
-                                
-                                topic_facts.append({
-                                    'keyword': keyword,
-                                    'fact': fact,
-                                    'source': fact_data.get("source", "bulk_research"),
-                                    'confidence': fact_data.get("confidence", 0.8),
-                                    'category': fact_data.get("category", "research")
-                                })
-                        
-                        if topic_facts:
-                            pipeline_result = learning_pipeline.process_batch(topic_facts, auto_resolve=True)
-                            learned = pipeline_result['added'] + pipeline_result['updated']
-                            results["topics_researched"] += 1
-                            results["details"].append(f"Researched '{topic}': learned {learned} facts")
-                    else:
-                        results["details"].append(f"No information found for topic: {topic}")
-        
-        # Process URLs (if provided)
-        if urls:
-            for url in urls:
-                if isinstance(url, str) and url.strip():
-                    # For now, just note that URL processing would happen here
-                    # Full implementation would fetch and parse the URL
-                    results["details"].append(f"URL processing not yet implemented: {url}")
-                    results["urls_processed"] += 1
-        
-        return {
-            "status": "success",
-            "results": results,
-            "message": f"Learned {results['facts_learned']} facts, researched {results['topics_researched']} topics"
-        }
-    
-    except Exception as e:
-        logger.error(f"Error in bulk learning: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/learning/quick-topics")
-async def quick_topic_learning(payload: Dict[str, Any] = Body(...)):
-    """
-    Quick learning about common knowledge topics
-    Researches a list of topics in parallel for faster learning
-    """
-    topics = payload.get("topics", [])
-    
-    if not topics:
-        raise HTTPException(status_code=400, detail="Must provide topics list")
-    
-    if len(topics) > 20:
-        raise HTTPException(status_code=400, detail="Maximum 20 topics at once")
-    
-    results = []
-    
-    try:
-        # Process topics in parallel (up to 5 at a time to avoid overwhelming APIs)
-        import asyncio
-        
-        async def research_topic(topic: str):
-            try:
-                search_results = await search_all_sources(
-                    query=topic,
-                    memory_results=[],
-                    max_results_per_source=3
-                )
-                
-                facts_learned = 0
-                if search_results.get("success") and search_results.get("facts_to_store"):
-                    for fact_data in search_results["facts_to_store"]:
-                        fact = fact_data.get("fact", "")
-                        if fact and isinstance(fact, str):
-                            hybrid_memory.add_fact(
-                                fact,
-                                category=fact_data.get("category", "quick_learn"),
-                                confidence=fact_data.get("confidence", 0.8),
-                                source=fact_data.get("source", "quick_research")
-                            )
-                            facts_learned += 1
-                
-                return {
-                    "topic": topic,
-                    "success": True,
-                    "facts_learned": facts_learned
-                }
-            except Exception as e:
-                logger.error(f"Error researching topic {topic}: {e}")
-                return {
-                    "topic": topic,
-                    "success": False,
-                    "error": str(e)
-                }
-        
-        # Process in batches of 5
-        for i in range(0, len(topics), 5):
-            batch = topics[i:i+5]
-            batch_results = await asyncio.gather(*[research_topic(t) for t in batch])
-            results.extend(batch_results)
-        
-        total_facts = sum(r.get("facts_learned", 0) for r in results)
-        successful = sum(1 for r in results if r.get("success"))
-        
-        return {
-            "status": "success",
-            "topics_processed": len(topics),
-            "successful": successful,
-            "total_facts_learned": total_facts,
-            "results": results
-        }
-    
-    except Exception as e:
-        logger.error(f"Error in quick topic learning: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-
 # -------------------------
-# Advanced Memory Management Endpoints
+# Learning Queue Endpoints (NEW FOR UPGRADE)
 # -------------------------
 
-@app.get("/api/memory/stats")
-async def get_memory_statistics():
-    """Get comprehensive memory statistics from advanced system"""
+@app.post("/api/learning_queue")
+async def enqueue_fact(payload: Dict[str, Any] = Body(...)):
+    """Enqueue a new fact for processing (called by ingestion pipeline)"""
+    keyword = payload.get("keyword", "").strip()
+    fact = payload.get("fact", "").strip()
+    source = payload.get("source", "unknown")
+    provenance = payload.get("provenance", {})
+
+    if not keyword or not fact:
+        raise HTTPException(status_code=400, detail="keyword and fact are required")
+
     try:
-        stats = learning_pipeline.get_pipeline_stats()
+        # Add to learning queue instead of directly to facts
+        result = advanced_memory.add_to_learning_queue(keyword, fact, source, provenance=provenance)
         return {
             "status": "success",
-            "statistics": stats
+            "result": result
         }
     except Exception as e:
-        logger.error(f"Error getting memory stats: {e}")
+        logger.error(f"Error enqueueing fact: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/memory/queue")
-async def get_learning_queue(status: str = "pending", limit: int = 50):
-    """Get items from the learning queue"""
+@app.get("/api/learning_queue")
+async def get_learning_queue(processed: bool = None, limit: int = 50, offset: int = 0):
+    """List learning queue items"""
     try:
-        queue_items = advanced_memory.get_learning_queue(status=status, limit=limit)
+        # Convert processed boolean to status string
+        status_filter = None
+        if processed is not None:
+            status_filter = "processed" if processed else "pending"
+
+        queue_items = advanced_memory.get_learning_queue(status=status_filter, limit=limit)
         return {
             "status": "success",
             "queue": queue_items,
-            "count": len(queue_items)
-        }
-    except Exception as e:
-        logger.error(f"Error getting learning queue: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/memory/queue/{queue_id}/process")
-async def process_queue_item(queue_id: int, action: str = Body(..., embed=True)):
-    """
-    Process a queued fact
-    
-    Actions: 'validate', 'reject', 'process'
-    """
-    if action not in ['validate', 'reject', 'process']:
-        raise HTTPException(status_code=400, detail="Invalid action. Must be 'validate', 'reject', or 'process'")
-    
-    try:
-        result = advanced_memory.process_queue_item(queue_id, action)
-        return {
-            "status": "success",
-            "result": result
-        }
-    except Exception as e:
-        logger.error(f"Error processing queue item: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/memory/search")
-async def search_memory(query: str, limit: int = 10):
-    """Search facts in advanced memory"""
-    try:
-        results = advanced_memory.search_facts(query, limit=limit)
-        return {
-            "status": "success",
-            "results": results,
-            "count": len(results)
-        }
-    except Exception as e:
-        logger.error(f"Error searching memory: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/memory/timeline")
-async def get_memory_timeline(limit: int = 50, include_deleted: bool = False):
-    """Get memory timeline"""
-    try:
-        timeline = advanced_memory.timeline(limit=limit, include_deleted=include_deleted)
-        return {
-            "status": "success",
-            "timeline": timeline,
-            "count": len(timeline)
-        }
-    except Exception as e:
-        logger.error(f"Error getting timeline: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/memory/cluster")
-async def create_cluster(payload: Dict[str, Any] = Body(...)):
-    """Create a fact cluster"""
-    cluster_name = payload.get("cluster_name")
-    description = payload.get("description", "")
-    
-    if not cluster_name:
-        raise HTTPException(status_code=400, detail="cluster_name is required")
-    
-    try:
-        result = advanced_memory.create_cluster(cluster_name, description)
-        return {
-            "status": "success",
-            "result": result
-        }
-    except Exception as e:
-        logger.error(f"Error creating cluster: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/memory/cluster/{cluster_name}")
-async def get_cluster_facts(cluster_name: str):
-    """Get all facts in a cluster"""
-    try:
-        facts = advanced_memory.get_cluster_facts(cluster_name)
-        return {
-            "status": "success",
-            "cluster_name": cluster_name,
-            "facts": facts,
-            "count": len(facts)
-        }
-    except Exception as e:
-        logger.error(f"Error getting cluster facts: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-# -------------------------
-# Fact-Check Endpoints
-# -------------------------
-
-@app.get("/api/facts")
-async def get_facts(status: str = None, category: str = None, limit: int = 50, offset: int = 0):
-    """Get facts for manual verification with filtering and pagination"""
-    try:
-        facts = advanced_memory.get_all_facts(
-            status_filter=status,
-            category_filter=category,
-            limit=limit,
-            offset=offset
-        )
-        return {
-            "status": "success",
-            "facts": facts,
-            "count": len(facts),
+            "count": len(queue_items),
             "filters": {
-                "status": status,
-                "category": category,
+                "processed": processed,
                 "limit": limit,
                 "offset": offset
             }
         }
     except Exception as e:
-        logger.error(f"Error getting facts: {e}")
+        logger.error(f"Error getting learning queue: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.patch("/api/facts/{fact_id}")
-async def update_fact_status(fact_id: int, payload: Dict[str, Any] = Body(...)):
-    """Update a fact's verification status and confidence score"""
-    status = payload.get("status")
-    confidence_score = payload.get("confidence_score")
-    
-    if not status:
-        raise HTTPException(status_code=400, detail="status is required")
-    
-    valid_statuses = ['true', 'false', 'not_verified', 'needs_review', 'experimental']
-    if status not in valid_statuses:
-        raise HTTPException(status_code=400, detail=f"Invalid status. Must be one of: {', '.join(valid_statuses)}")
-    
-    if confidence_score is not None and (confidence_score < 0 or confidence_score > 100):
-        raise HTTPException(status_code=400, detail="confidence_score must be between 0 and 100")
-    
+# -------------------------
+# Reconciliation Endpoints (NEW FOR UPGRADE)
+# -------------------------
+
+@app.post("/api/reconcile/{queue_id}/approve")
+async def approve_reconciliation(queue_id: int, payload: Dict[str, Any] = Body(...)):
+    """Admin approves suggested_action and applies the change"""
+    reviewer = payload.get("reviewer", "admin")
+    reason = payload.get("reason", "Manual approval")
+
     try:
-        result = advanced_memory.update_fact_status(fact_id, status, confidence_score)
-        if result["status"] == "not_found":
-            raise HTTPException(status_code=404, detail=f"Fact with ID {fact_id} not found")
-        
+        # Get the queued item
+        queue_items = advanced_memory.get_learning_queue(status="pending", limit=1)
+        item = next((i for i in queue_items if i["id"] == queue_id), None)
+
+        if not item:
+            raise HTTPException(status_code=404, detail=f"Queue item {queue_id} not found")
+
+        suggested_action = item.get("suggested_action")
+        if not suggested_action:
+            raise HTTPException(status_code=400, detail="No suggested action available for approval")
+
+        action_type = suggested_action.get("action")
+        if action_type not in ["promote", "mark_needs_review", "auto_update", "ignore"]:
+            raise HTTPException(status_code=400, detail=f"Unsupported action type: {action_type}")
+
+        result = {"status": "approved", "action": action_type}
+
+        if action_type == "promote":
+            # Add fact to facts table with high confidence
+            fact_result = advanced_memory.add_fact(
+                item["keyword"],
+                item["fact"],
+                item["source"],
+                confidence=0.9,
+                status="true",
+                confidence_score=85
+            )
+            result["fact_added"] = fact_result
+
+        elif action_type == "mark_needs_review":
+            # Add fact with needs_review status
+            fact_result = advanced_memory.add_fact(
+                item["keyword"],
+                item["fact"],
+                item["source"],
+                confidence=0.5,
+                status="needs_review",
+                confidence_score=50
+            )
+            result["fact_added"] = fact_result
+
+        elif action_type == "auto_update":
+            # Update existing fact
+            update_result = advanced_memory.update_fact(
+                item["keyword"],
+                suggested_action.get("new_fact", item["fact"]),
+                item["source"],
+                confidence=0.8
+            )
+            result["fact_updated"] = update_result
+
+        # Mark queue item as processed
+        advanced_memory.process_queue_item(queue_id, "processed")
+
+        # Log the approval
+        learning_log_entry = {
+            "fact_id": result.get("fact_added", {}).get("fact_id") or result.get("fact_updated", {}).get("fact_id"),
+            "old_fact": item["fact"],
+            "new_fact": suggested_action.get("new_fact", item["fact"]),
+            "action": f"reconcile_approve_{action_type}",
+            "reviewer": reviewer,
+            "reason": reason,
+            "meta": {"queue_id": queue_id, "suggested_action": suggested_action}
+        }
+
+        # Log to learning_log table (would need to be implemented in AllieMemoryDB)
+        # For now, we'll just return the result
+
         return {
             "status": "success",
-            "result": result
+            "result": result,
+            "reviewer": reviewer,
+            "reason": reason
         }
+
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error updating fact status: {e}")
+        logger.error(f"Error approving reconciliation: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/facts/{fact_id}")
-async def get_fact_by_id(fact_id: int):
-    """Get a specific fact by ID"""
+# -------------------------
+# Feature Flags Endpoints (NEW FOR UPGRADE)
+# -------------------------
+
+@app.get("/api/feature_flags")
+async def get_feature_flags():
+    """Get all feature flags and their current status"""
     try:
-        fact = advanced_memory.get_fact_by_id(fact_id)
-        if not fact:
-            raise HTTPException(status_code=404, detail=f"Fact with ID {fact_id} not found")
-        
+        # For now, return hardcoded flags since we don't have DB integration yet
+        flags = {
+            "AUTO_APPLY_UPDATES": {"enabled": False, "description": "Automatically apply suggested updates from reconciliation worker"},
+            "READ_ONLY_MEMORY": {"enabled": False, "description": "Disable all memory modifications"},
+            "WRITE_DIRECT": {"enabled": False, "description": "Allow direct writes to facts table bypassing queue"}
+        }
         return {
             "status": "success",
-            "fact": fact
+            "flags": flags
         }
-    except HTTPException:
-        raise
     except Exception as e:
-        logger.error(f"Error getting fact by ID: {e}")
+        logger.error(f"Error getting feature flags: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/facts/bulk-update")
-async def bulk_update_facts(payload: Dict[str, Any] = Body(...)):
-    """Bulk update multiple facts' status"""
-    updates = payload.get("updates", [])
-    
-    if not updates:
-        raise HTTPException(status_code=400, detail="updates list is required")
-    
-    results = []
-    errors = []
-    
-    for update in updates:
-        fact_id = update.get("fact_id")
-        status = update.get("status")
-        confidence_score = update.get("confidence_score")
-        
-        if not fact_id or not status:
-            errors.append({"fact_id": fact_id, "error": "fact_id and status are required"})
-            continue
-        
-        try:
-            result = advanced_memory.update_fact_status(fact_id, status, confidence_score)
-            results.append(result)
-        except Exception as e:
-            errors.append({"fact_id": fact_id, "error": str(e)})
-    
-    return {
-        "status": "success",
-        "results": results,
-        "errors": errors,
-        "total_processed": len(results),
-        "total_errors": len(errors)
+@app.post("/api/feature_flags")
+async def update_feature_flag(payload: Dict[str, Any] = Body(...)):
+    """Update a feature flag (admin only)"""
+    flag_name = payload.get("flag_name")
+    enabled = payload.get("enabled")
+
+    if not flag_name:
+        raise HTTPException(status_code=400, detail="flag_name is required")
+
+    valid_flags = ["AUTO_APPLY_UPDATES", "READ_ONLY_MEMORY", "WRITE_DIRECT"]
+    if flag_name not in valid_flags:
+        raise HTTPException(status_code=400, detail=f"Invalid flag name. Must be one of: {', '.join(valid_flags)}")
+
+    if not isinstance(enabled, bool):
+        raise HTTPException(status_code=400, detail="enabled must be a boolean")
+
+    try:
+        # For now, just log the change since we don't have DB integration yet
+        logger.info(f"Feature flag {flag_name} set to {enabled}")
+
+        return {
+            "status": "success",
+            "flag_name": flag_name,
+            "enabled": enabled,
+            "message": f"Feature flag {flag_name} updated successfully"
+        }
+    except Exception as e:
+        logger.error(f"Error updating feature flag: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# -------------------------
+# Auth Middleware Stub (NEW FOR UPGRADE)
+# -------------------------
+
+def get_current_user_role():
+    """Stub for authentication - returns admin role for now"""
+    # TODO: Implement proper authentication
+    return "admin"
+
+def require_role(required_role: str):
+    """Decorator to check user role"""
+    def decorator(func):
+        async def wrapper(*args, **kwargs):
+            user_role = get_current_user_role()
+            # Simple role hierarchy: admin > reviewer > viewer
+            role_hierarchy = {"admin": 3, "reviewer": 2, "viewer": 1}
+
+            if role_hierarchy.get(user_role, 0) < role_hierarchy.get(required_role, 999):
+                raise HTTPException(status_code=403, detail=f"Insufficient permissions. Required: {required_role}")
+
+            return await func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+def check_feature_flag(flag_name: str):
+    """Check if a feature flag is enabled"""
+    # TODO: Implement actual flag checking from database
+    # For now, return False for safety (no auto-updates)
+    flag_defaults = {
+        "AUTO_APPLY_UPDATES": False,
+        "READ_ONLY_MEMORY": False,
+        "WRITE_DIRECT": False
     }
+    return flag_defaults.get(flag_name, False)
+
+# Apply role requirements to sensitive endpoints
+@app.patch("/api/facts/{fact_id}")
+@require_role("reviewer")
+async def update_fact_status_protected(fact_id: int, payload: Dict[str, Any] = Body(...)):
+    """Protected version of update_fact_status"""
+    return await update_fact_status(fact_id, payload)
+
+@app.post("/api/reconcile/{queue_id}/approve")
+@require_role("reviewer")
+async def approve_reconciliation_protected(queue_id: int, payload: Dict[str, Any] = Body(...)):
+    """Protected version of approve_reconciliation"""
+    return await approve_reconciliation(queue_id, payload)
+
+@app.post("/api/feature_flags")
+@require_role("admin")
+async def update_feature_flag_protected(payload: Dict[str, Any] = Body(...)):
+    """Protected version of update_feature_flag"""
+    return await update_feature_flag(payload)
 
 # -------------------------
 # Graceful shutdown - close httpx client
