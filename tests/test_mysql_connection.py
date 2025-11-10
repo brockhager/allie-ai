@@ -7,11 +7,11 @@ from pathlib import Path
 # Add advanced-memory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "advanced-memory"))
 
-from db import MemoryDB
+from db import AllieMemoryDB
 
 try:
     # Connect to your existing database
-    db = MemoryDB(
+    db = AllieMemoryDB(
         host='localhost',
         user='allie',
         password='StrongPassword123!',  # Your existing password

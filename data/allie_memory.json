@@ -64,6 +64,20 @@
       "usage_count": 0
     },
     {
+      "fact": "What is the capital of Italy",
+      "importance": 0.75,
+      "category": "geography",
+      "timestamp": "2025-11-09T23:05:46.871401",
+      "usage_count": 0
+    },
+    {
+      "fact": "What is the capital of Italy",
+      "importance": 0.75,
+      "category": "geography",
+      "timestamp": "2025-11-09T23:07:52.788344",
+      "usage_count": 0
+    },
+    {
       "fact": "Colorado is a state in the United States",
       "importance": 0.7,
       "category": "geography",

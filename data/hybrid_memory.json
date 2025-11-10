@@ -1,8 +1,68 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T21:58:14.551759",
-  "fact_count": 880,
+  "saved_at": "2025-11-09T23:08:22.475475",
+  "fact_count": 886,
   "facts": [
+    {
+      "fact": "Doodle a Day: by Hello You (2021)",
+      "timestamp": "2025-11-09T23:08:22.473914",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Jerry Maguire is a 1996 American romantic comedy-drama sports film directed and written by Cameron Crowe. It was produced by Crowe and James L. Brooks, respectively for Vinyl Films and Gracie Films and distributed by Sony Pictures Releasing under the TriStar Pictures label. It stars Tom Cruise as th...",
+      "timestamp": "2025-11-09T23:08:22.460668",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Doodle a Day: by Hello You (2021)",
+      "timestamp": "2025-11-09T23:06:19.933233",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Jerry Maguire is a 1996 American romantic comedy-drama sports film directed and written by Cameron Crowe. It was produced by Crowe and James L. Brooks, respectively for Vinyl Films and Gracie Films and distributed by Sony Pictures Releasing under the TriStar Pictures label. It stars Tom Cruise as th...",
+      "timestamp": "2025-11-09T23:06:19.922229",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Doodle a Day: by Hello You (2021)",
+      "timestamp": "2025-11-09T23:00:33.460818",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Jerry Maguire is a 1996 American romantic comedy-drama sports film directed and written by Cameron Crowe. It was produced by Crowe and James L. Brooks, respectively for Vinyl Films and Gracie Films and distributed by Sony Pictures Releasing under the TriStar Pictures label. It stars Tom Cruise as th...",
+      "timestamp": "2025-11-09T23:00:33.449698",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "The Big Sleep: by Raymond Chandler (1939) Subjects: Fiction, Philip Marlowe (Fictitious character), Private investigators",
       "timestamp": "2025-11-09T21:58:14.549987",
