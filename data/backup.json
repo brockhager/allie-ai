@@ -1,69 +1,30 @@
 [
   {
-    "id": "c-pteycbt",
+    "id": "c-qo4r3e4",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762744472204
-      }
-    ],
-    "draft": ""
-  },
-  {
-    "id": "c-lhdnckl",
-    "title": "Allie",
-    "messages": [
-      {
-        "role": "them",
-        "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762744488877
-      }
-    ],
-    "draft": ""
-  },
-  {
-    "id": "c-z7sdpwn",
-    "title": "Allie",
-    "messages": [
-      {
-        "role": "them",
-        "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762744502199
+        "timestamp": 1762745857610
       },
       {
         "role": "me",
-        "text": "who is president",
-        "timestamp": 1762744520310
+        "text": "who is bob dole",
+        "timestamp": 1762745909079
       },
       {
         "role": "them",
-        "text": "Yes, President is John F. Kennedy, who was elected as the 35th President of the United States on November 3, 1960. As per DuckDuckGo, Wikipedia, Wikidata, DBpedia, OpenLibrary, the current US President is Donald Trump.\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/The_Presidents_of_the_United_States_of_America_(band)\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/President_(corporate_title)",
-        "timestamp": 1762744548279,
-        "is_false": true,
-        "user_correction": "Donald Trump is the current President of the United States"
-      },
-      {
-        "role": "me",
-        "text": "was robin hood a real person?",
-        "timestamp": 1762744595068
-      },
-      {
-        "role": "them",
-        "text": "Yes, Robin Hood was indeed a real historical figure who lived in England during the medieval period (1184-1327). He was known for his outlaw status and his reputation as an excellent archer and skilled thief. Robin's exploits were legendary, and he became famous throughout Europe due to his bravery and heroism. However, there is no definitive evidence that he existed as a person other than legend or fiction. The character of Robin Hood may have been inspired by actual people and events from the time period.\n\n---\n**Source:** Model\n**Confidence:** 60%\n**URLs:**\n\ud83e\udd16 AI Model: Generated response",
-        "timestamp": 1762744617411,
+        "text": "Yes, Bob Dole is currently serving as the Vice President of the United States under President Donald Trump. His tenure began on January 20th, 2017, following the inauguration of Trump as the 45th President. In his role, he serves alongside President Trump, providing advice and guidance on policy matters. Before becoming Vice President, Dole held various positions within the government, including Chairman of the Committee on Foreign Relations for the Senate, which oversees foreign affairs, national security, and international relations. During his time in office, Dole\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Bob_Dole\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Bob_Dole",
+        "timestamp": 1762745945438,
         "is_false": true
       },
       {
-        "role": "me",
-        "text": "what are good cat names?",
-        "timestamp": 1762744655226
-      },
-      {
         "role": "them",
-        "text": "Good cat names for humans who love cats include:\n1. Kitty - This name has a sweet and playful vibe that will make your furry friend feel loved.\n2. Scooby Doo - Another classic name that is perfect for any feline lover! It evokes images of mystery and adventure, making it a great choice for anyone looking to add some fun and excitement to their home.\n3. Scamp - This name is casual yet charming, and can perfectly capture the playful spirit of a kitten.\n\n---\n**Source:** External_Sources\n**Confidence:** 85%",
-        "timestamp": 1762744686384
+        "text": "As of my last knowledge, Joe Biden is the President of the United States.",
+        "timestamp": 1762746000291,
+        "is_false": true,
+        "user_correction": "Robert Joseph Dole was an American politician, attorney, and U.S. Army officer who represented Kansas in the United States Senate from 1969 to 1996. He was the Republican Leader of the U.S Senate during the final 11 years of his tenure, including three non-consecutive years as Majority Leader of the U.S. Senate."
       }
     ],
     "draft": ""

@@ -40,7 +40,7 @@
   /* Ensure the inputbar layout accommodates larger controls */
   /* Anchor the input bar to the bottom so it never moves and stays visible.
     Position left/right to account for the sidebar and memory panel widths. */
-  .inputbar{display:flex;gap:16px;padding:12px;position:fixed;left:260px;right:240px;bottom:0;background:transparent;z-index:40}
+  .inputbar{display:flex;gap:16px;padding:12px;position:fixed;left:260px;right:240px;bottom:0;background:rgba(255,255,255,0.96);z-index:40;border-top:1px solid rgba(0,0,0,0.06);box-shadow:0 -8px 24px rgba(2,6,23,0.28)}
   .inputbar > div{display:flex;flex-direction:column;align-items:flex-end}
   button.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08)}
   .main{flex:1;display:flex;flex-direction:column;min-height:0}
@@ -48,10 +48,9 @@
   .status-section{margin-left:auto;display:flex;flex-direction:column;gap:4px}
   .status-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
   .status-value{font-size:13px;color:var(--text);font-weight:500}
-  /* Show newest messages at the top using column-reverse so we can append normally
-    but visually present items newest-first. Add bottom padding so content is not
-    covered by the fixed input bar. */
-  .messages{flex:1;padding:16px;padding-bottom:180px;overflow:auto;display:flex;flex-direction:column-reverse;gap:12px;min-height:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
+  /* Standard chat flow: older messages at top, newest at bottom.
+    Add bottom padding so content is not covered by the fixed input bar. */
+  .messages{flex:1;padding:16px;padding-bottom:200px;overflow:auto;display:flex;flex-direction:column;gap:12px;min-height:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
   .row{display:flex;gap:10px;align-items:flex-end}
   .bubble{max-width:75%;padding:12px 14px;border-radius:13px;font-size:15px;line-height:1.4}
   .bubble.me{margin-left:auto;background:linear-gradient(90deg,var(--me),#1f7fe8);color:#021125;border-bottom-right-radius:6px}
@@ -609,8 +608,8 @@ function renderActive(){
   messagesEl.innerHTML = '';
   (conv.messages || []).forEach((m, idx) => appendMessage(m.text, m.role, new Date(m.timestamp), idx));
   promptEl.value = conv.draft || '';
-  // With newest-first presentation we show the top of the list (scrollTop=0)
-  messagesEl.scrollTop = 0;
+  // Scroll to bottom so the newest message is visible and the send box remains in view
+  messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
 function appendMessage(text, who = 'them', time = new Date(), index = 0){
@@ -719,8 +718,8 @@ function appendMessage(text, who = 'them', time = new Date(), index = 0){
   }
 
   row.appendChild(bubble); row.appendChild(meta); messagesEl.appendChild(row);
-  // Keep view showing newest messages (we use column-reverse so newest are at visual top)
-  messagesEl.scrollTop = 0;
+  // Scroll to bottom so newest messages are visible above the input box
+  messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
 function setActive(id){ activeId = id; renderTabs(); renderActive(); }

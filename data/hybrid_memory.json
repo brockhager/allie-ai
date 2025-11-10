@@ -1,8 +1,58 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T20:17:41.643151",
-  "fact_count": 668,
+  "saved_at": "2025-11-09T20:38:32.584096",
+  "fact_count": 673,
   "facts": [
+    {
+      "fact": "Bob Dole: by Fleming Saunders (1996)",
+      "timestamp": "2025-11-09T20:38:32.582954",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bob Dole: instance_of = Q5",
+      "timestamp": "2025-11-09T20:38:32.574813",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Robert Joseph  Dole (July 22, 1923 – December 5, 2021) was an American politician, attorney, and U.S. Army officer who represented Kansas in the United States Senate from 1969 to 1996. He was the Republican Leader of the U.S Senate during the final 11 years of his tenure, including three non-consecu...",
+      "timestamp": "2025-11-09T20:38:32.565832",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bob Dole Category",
+      "timestamp": "2025-11-09T20:38:32.557249",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Robert Joseph Dole was an American politician, attorney, and U.S. Army officer who represented Kansas in the United States Senate from 1969 to 1996. He was the Republican Leader of the U.S Senate during the final 11 years of his tenure, including three non-consecutive years as Majority Leader of the U.S. Senate. Prior to his 27 years in the Senate, he served in the United States House of Representatives from 1961 to 1969. Dole was also the Republican presidential nominee in the 1996 presidential election and the vice presidential nominee in the 1976 presidential election. Dole was born and raised in Russell, Kansas, where he established a legal career after serving with distinction in the United States Army during World War II. Following a period as Russell County, Kansas Attorney, he won election to the House of Representatives in 1960.",
+      "timestamp": "2025-11-09T20:38:32.547193",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "Coloring Book: by Donald Nguyen (2019)",
       "timestamp": "2025-11-09T20:17:41.641905",
