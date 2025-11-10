@@ -1672,8 +1672,175 @@ async def add_to_hybrid_memory(
             "fact": fact,
             "category": category
         }
+
+
+@app.post("/api/feedback/mark_false")
+async def mark_response_false(payload: Dict[str, Any] = Body(...)):
+    """User reports that a specific assistant response is wrong.
+    Expected payload: { conv_id: str, message_index: int, correction?: str }
+    This will:
+    - mark the message with is_false and user_correction
+    - add a flagged negative fact to hybrid memory
+    - write a feedback report to data/feedback_reports.jsonl
+    - append to negative_examples.jsonl if a correction is provided
+    - trigger auto-learning check in background
+    """
+    try:
+        conv_id = payload.get("conv_id")
+        msg_idx = int(payload.get("message_index"))
+        correction = payload.get("correction")
+
+        if conv_id is None or msg_idx is None:
+            raise HTTPException(status_code=400, detail="conv_id and message_index required")
+
+        # Find conversation
+        conv = next((c for c in conversation_history if c.get("id") == conv_id), None)
+        if conv is None:
+            raise HTTPException(status_code=404, detail="Conversation not found")
+
+        messages = conv.get("messages", [])
+        if msg_idx < 0 or msg_idx >= len(messages):
+            raise HTTPException(status_code=400, detail="message_index out of range")
+
+        msg = messages[msg_idx]
+        if msg.get("role") != "them":
+            raise HTTPException(status_code=400, detail="Can only mark assistant responses as false")
+
+        # Mark message
+        msg["is_false"] = True
+        if correction:
+            msg["user_correction"] = correction
+
+        # Save conversation backup
+        with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
+            json.dump(conversation_history, f, indent=2)
+
+        # Add flagged fact to hybrid memory for later processing
+        try:
+            if hybrid_memory:
+                hybrid_memory.add_fact(
+                    fact=msg.get("text", ""),
+                    category="reported_false",
+                    confidence=0.0,
+                    source="user_feedback",
+                    metadata={"flagged_false": True, "conv_id": conv_id, "message_index": msg_idx}
+                )
+        except Exception as e:
+            logger.warning(f"Failed to add flagged fact to hybrid memory: {e}")
+
+        # Write a feedback report to file for auditing and training
+        try:
+            report = {
+                "timestamp": datetime.now().isoformat(),
+                "conv_id": conv_id,
+                "message_index": msg_idx,
+                "assistant_text": msg.get("text", ""),
+                "correction": correction
+            }
+            with open(DATA_DIR / "feedback_reports.jsonl", "a", encoding="utf-8") as f:
+                f.write(json.dumps(report) + "\n")
+        except Exception as e:
+            logger.warning(f"Failed to write feedback report: {e}")
+
+        # If we have a prior user prompt and the reporter provided a correction, add a negative example
+        try:
+            prompt_text = None
+            if msg_idx > 0 and messages[msg_idx - 1].get("role") == "me":
+                prompt_text = messages[msg_idx - 1].get("text")
+
+            if correction and prompt_text:
+                neg_example = {"prompt": prompt_text, "completion": correction}
+                with open(DATA_DIR / "negative_examples.jsonl", "a", encoding="utf-8") as f:
+                    f.write(json.dumps(neg_example) + "\n")
+        except Exception as e:
+            logger.warning(f"Failed to append negative example: {e}")
+
+        # Trigger auto-learning check asynchronously
+        try:
+            asyncio.create_task(check_and_trigger_auto_learning())
+        except Exception:
+            pass
+
+        return {"status": "reported", "conv_id": conv_id, "message_index": msg_idx}
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.error(f"Error adding to hybrid memory: {e}")
+        logger.error(f"Error processing feedback mark_false: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/feedback/request_better")
+async def request_better_answer(payload: Dict[str, Any] = Body(...)):
+    """User requests that Allie give a better answer for a specific assistant message.
+    Expected payload: { conv_id: str, message_index: int }
+    This will call the normal generation flow with context and append the new reply to the conversation.
+    """
+    try:
+        conv_id = payload.get("conv_id")
+        msg_idx = int(payload.get("message_index"))
+
+        if conv_id is None:
+            raise HTTPException(status_code=400, detail="conv_id required")
+
+        conv = next((c for c in conversation_history if c.get("id") == conv_id), None)
+        if conv is None:
+            raise HTTPException(status_code=404, detail="Conversation not found")
+
+        messages = conv.get("messages", [])
+        if msg_idx < 0 or msg_idx >= len(messages):
+            raise HTTPException(status_code=400, detail="message_index out of range")
+
+        orig_msg = messages[msg_idx]
+        if orig_msg.get("role") != "them":
+            raise HTTPException(status_code=400, detail="Can only request better answers for assistant messages")
+
+        # Build an improvement prompt using surrounding context
+        # Prefer the user prompt immediately before the assistant reply
+        user_prompt = None
+        if msg_idx > 0 and messages[msg_idx - 1].get("role") == "me":
+            user_prompt = messages[msg_idx - 1].get("text")
+
+        improvement_instructions = "The previous assistant response was reported as incorrect. Please provide a better, corrected answer to the user's original prompt. If available, reference facts from memory or reputable sources and avoid hallucinations."
+
+        if user_prompt:
+            gen_prompt = f"User asked: {user_prompt}\n\nPrevious assistant answer: {orig_msg.get('text', '')}\n\n{improvement_instructions}\n\nProvide an improved answer:" 
+        else:
+            gen_prompt = f"Previous assistant answer: {orig_msg.get('text', '')}\n\n{improvement_instructions}\n\nProvide an improved answer:" 
+
+        # Call the existing generation flow directly
+        gen_payload = {"prompt": gen_prompt, "conversation_context": messages, "max_tokens": 512}
+        try:
+            gen_result = await generate_response(gen_payload)
+        except Exception as e:
+            logger.error(f"Error generating improved answer: {e}")
+            raise HTTPException(status_code=500, detail=str(e))
+
+        new_reply = gen_result.get("text") or gen_result.get("content") or str(gen_result)
+
+        # Append new assistant reply to conversation
+        messages.append({"role": "them", "text": new_reply, "timestamp": datetime.now().timestamp()})
+
+        # Persist conversations
+        try:
+            with open(DATA_DIR / "backup.json", "w", encoding="utf-8") as f:
+                json.dump(conversation_history, f, indent=2)
+        except Exception as e:
+            logger.warning(f"Failed to save conversation after better-answer request: {e}")
+
+        # Optionally process assistant reply for automatic learning
+        try:
+            assistant_learning = auto_learner.process_message(new_reply, "assistant")
+            if assistant_learning.get("learning_actions"):
+                logger.info(f"Auto-learner extracted {assistant_learning.get('total_facts_learned',0)} facts from improved assistant reply")
+        except Exception:
+            # Non-fatal if learning processing fails
+            logger.debug("Auto-learner failed to process improved reply")
+
+        return {"status": "ok", "new_reply": new_reply}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error processing request_better: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/hybrid-memory/search")

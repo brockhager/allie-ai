@@ -1,8 +1,28 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T19:35:12.291193",
-  "fact_count": 651,
+  "saved_at": "2025-11-09T19:44:03.052561",
+  "fact_count": 653,
   "facts": [
+    {
+      "fact": "Up from Slavery: by Booker T. Washington (1900) Subjects: Washington, booker t., 1856-1915, African americans, biography, Educators, united states",
+      "timestamp": "2025-11-09T19:44:03.051517",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The president of the United States (POTUS) is the head of state and head of government of the United States. The president directs the executive branch of the federal government and is the commander-in-chief of the United States Armed Forces.\nThe power of the presidency has grown since the first pre...",
+      "timestamp": "2025-11-09T19:44:03.042602",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "Bill: by Canada. Legislature. Legislative Assembly. (2002) Subjects: Legislative Bills, Law and legislation, Banking law",
       "timestamp": "2025-11-09T19:35:12.290185",

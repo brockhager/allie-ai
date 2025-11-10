@@ -51,6 +51,8 @@
   .bubble{max-width:75%;padding:12px 14px;border-radius:13px;font-size:15px;line-height:1.4}
   .bubble.me{margin-left:auto;background:linear-gradient(90deg,var(--me),#1f7fe8);color:#021125;border-bottom-right-radius:6px}
   .bubble.them{margin-right:auto;background:#111827;border:1px solid rgba(255,255,255,0.02)}
+  .bubble.reported-false{border-color:rgba(255,99,99,0.6);box-shadow:0 0 0 2px rgba(255,99,99,0.03) inset}
+  .false-label{display:inline-block;margin-left:8px;background:rgba(255,99,99,0.12);color:#ff6b6b;font-size:11px;padding:2px 6px;border-radius:6px}
   .meta{font-size:12px;color:var(--muted);margin-top:6px}
   .sidebar-status{margin-bottom:16px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05)}
   .sidebar-status-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
@@ -488,12 +490,13 @@ function renderActive(){
   if (!conv) return;
   convTitle.textContent = conv.title || 'Conversation';
   messagesEl.innerHTML = '';
-  (conv.messages || []).forEach(m => appendMessage(m.text, m.role, new Date(m.timestamp)));
+  (conv.messages || []).forEach((m, idx) => appendMessage(m.text, m.role, new Date(m.timestamp), idx));
   promptEl.value = conv.draft || '';
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-function appendMessage(text, who = 'them', time = new Date()){
+function appendMessage(text, who = 'them', time = new Date(), index = 0){
+  const conv = getActive();
   const row = document.createElement('div'); row.className = 'row';
   const bubble = document.createElement('div'); bubble.className = 'bubble ' + (who === 'me' ? 'me' : 'them');
   
@@ -509,6 +512,94 @@ function appendMessage(text, who = 'them', time = new Date()){
   bubble.innerHTML = formattedText;
   
   const meta = document.createElement('div'); meta.className = 'meta'; meta.textContent = time.toLocaleTimeString();
+
+  // If this is an assistant message, add 'Report wrong' control and optionally 'Give better answer' when reported
+  if (who !== 'me'){
+    const msgObj = (conv && conv.messages && conv.messages[index]) ? conv.messages[index] : {};
+
+    // If already reported as false, visually mark and show label
+    if (msgObj.is_false) {
+      bubble.classList.add('reported-false');
+      const existingLabel = document.createElement('span'); existingLabel.className = 'false-label'; existingLabel.textContent = 'Marked false';
+      bubble.appendChild(existingLabel);
+    }
+
+    const reportBtn = document.createElement('button');
+    reportBtn.textContent = 'Report wrong';
+    reportBtn.style.marginLeft = '8px';
+    reportBtn.style.padding = '4px 8px';
+    reportBtn.style.fontSize = '12px';
+    reportBtn.style.borderRadius = '6px';
+    reportBtn.className = 'secondary';
+    reportBtn.onclick = async () => {
+      const confirmReport = confirm('Mark this response as incorrect and request an improved answer?');
+      if (!confirmReport) return;
+      const correction = prompt('Optional: Provide the correct answer (helps training). Leave blank to skip.');
+      try {
+        const resp = await fetch('/api/feedback/mark_false', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ conv_id: conv.id, message_index: index, correction: correction })
+        });
+        if (!resp.ok) throw new Error(await resp.text());
+        // Mark visually
+        bubble.classList.add('reported-false');
+        const lbl = document.createElement('span'); lbl.className = 'false-label'; lbl.textContent = 'Marked false';
+        bubble.appendChild(lbl);
+        // Update local conversation object and persist
+        if (conv && conv.messages && conv.messages[index]){
+          conv.messages[index].is_false = true;
+          if (correction) conv.messages[index].user_correction = correction;
+          try { await apiUpdate(conv); } catch(e){ console.warn('Failed to save reported state:', e); }
+        }
+        // Re-render to show 'Give better answer' control immediately
+        renderActive();
+        alert('Thank you — the response has been flagged. You can now click "Give better answer" to ask Allie to try again.');
+      } catch (err) {
+        console.error('Report failed:', err);
+        alert('Failed to report the response. See console for details.');
+      }
+    };
+    meta.appendChild(reportBtn);
+
+    // Show 'Give better answer' when message is reported as false
+    const giveBetterBtn = document.createElement('button');
+    giveBetterBtn.textContent = 'Give better answer';
+    giveBetterBtn.style.marginLeft = '8px';
+    giveBetterBtn.style.padding = '4px 8px';
+    giveBetterBtn.style.fontSize = '12px';
+    giveBetterBtn.style.borderRadius = '6px';
+    giveBetterBtn.className = 'secondary';
+    giveBetterBtn.onclick = async () => {
+      const ok = confirm('Request Allie to provide a better answer now?');
+      if (!ok) return;
+      try {
+        giveBetterBtn.disabled = true; giveBetterBtn.textContent = 'Requesting...';
+        const resp = await fetch('/api/feedback/request_better', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ conv_id: conv.id, message_index: index })
+        });
+        if (!resp.ok) throw new Error(await resp.text());
+        const j = await resp.json();
+        const newReply = j.new_reply || j.newReply || (await resp.text());
+
+        // Append new assistant reply locally and persist
+        if (!conv.messages) conv.messages = [];
+        conv.messages.push({ role: 'them', text: newReply, timestamp: Date.now() });
+        try { await apiUpdate(conv); } catch(e){ console.warn('Failed to save conversation after better answer:', e); }
+        renderActive();
+        alert('Allie provided an improved answer. Check the conversation.');
+      } catch (err) {
+        console.error('Give better failed:', err);
+        alert('Failed to request a better answer. See console for details.');
+      } finally {
+        giveBetterBtn.disabled = false; giveBetterBtn.textContent = 'Give better answer';
+      }
+    };
+
+    // Only show this control if message is already flagged false
+    if (msgObj.is_false) meta.appendChild(giveBetterBtn);
+  }
+
   row.appendChild(bubble); row.appendChild(meta); messagesEl.appendChild(row);
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
