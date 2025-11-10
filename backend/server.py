@@ -204,10 +204,8 @@ except Exception as e:
 
 # -------------------------
 
-# -------------------------
-# FastAPI app
-# -------------------------
-app = FastAPI(title="Allie")
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
 
 # Background task for automatic learning
 _auto_learning_task = None
@@ -215,69 +213,44 @@ _last_learning_check = datetime.now()
 _last_learning_trigger = None
 _learning_cooldown_minutes = 3  # Reduced from 5 to 3 minutes for more frequent learning cycles
 
-async def auto_learning_background_task():
-    """Background task that periodically checks and triggers learning.
-
-    Checks every 30 seconds for faster response to new learning opportunities.
-    The cooldown controlling actual episode starts is still managed by
-    `_learning_cooldown_minutes` to avoid excessive episodes.
-    """
-    global _last_learning_check
-    while True:
-        try:
-            # Check every 30 seconds for faster detection of learning opportunities
-            await asyncio.sleep(30)
-
-            # Throttle actual check frequency slightly using _last_learning_check
-            if datetime.now() - _last_learning_check > timedelta(seconds=30):
-                _last_learning_check = datetime.now()
-                result = await check_and_trigger_auto_learning()
-                if result:
-                    logger.info(f"Background learning triggered: {result}")
-        except Exception as e:
-            logger.error(f"Error in auto-learning background task: {e}")
-            await asyncio.sleep(5)  # Shorter retry on error to recover faster
-
-async def check_and_trigger_auto_learning():
-    """Check learning conditions and trigger learning if appropriate"""
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Handle application startup and shutdown"""
+    # Startup
+    logger.info("Starting up Allie server...")
+    
     try:
-        # Get current statistics
-        stats = hybrid_memory.get_statistics()
-        total_facts = stats.get("total_facts", 0)
-        active_facts = stats.get("active_facts", 0)
+        # The initialization code that was in startup_event
+        if LEARNING_ENABLED:
+            # Temporarily disable background task to test server startup
+            logger.info("Auto-learning background task disabled for testing")
+            # _auto_learning_task = asyncio.create_task(auto_learning_background_task())
+            # logger.info("Auto-learning background task started")
         
-        # Simple auto-learning logic
-        should_trigger = total_facts >= 20 and active_facts >= 10
+        logger.info("Allie server startup complete")
+        yield
         
-        if should_trigger:
-            logger.info(f"Auto-learning conditions met: {total_facts} total facts, {active_facts} active")
-            return {
-                "triggered": True,
-                "reason": f"Sufficient facts for learning ({total_facts} total, {active_facts} active)",
-                "stats": stats
-            }
-        else:
-            return {
-                "triggered": False,
-                "reason": f"Not enough facts yet ({total_facts} total, {active_facts} active, need 20/10)",
-                "stats": stats
-            }
-            
     except Exception as e:
-        logger.error(f"Error in auto-learning check: {e}")
-        return {
-            "triggered": False,
-            "reason": f"Error: {str(e)}",
-            "error": True
-        }
+        logger.error(f"Error during server operation: {e}")
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
+        raise
+    finally:
+        # Shutdown
+        logger.info("Shutting down Allie server...")
+        
+        try:
+            # Close HTTP client
+            global _http_client
+            if _http_client is not None:
+                await _http_client.aclose()
+                _http_client = None
+                logger.info("httpx client closed")
+        except Exception as e:
+            logger.error(f"Error during shutdown: {e}")
 
-@app.on_event("startup")
-async def startup_event():
-    """Start background tasks on server startup"""
-    global _auto_learning_task
-    if LEARNING_ENABLED:
-        _auto_learning_task = asyncio.create_task(auto_learning_background_task())
-        logger.info("Auto-learning background task started")
+# FastAPI app
+app = FastAPI(title="Allie", lifespan=lifespan)
 
 # mount static files and ui route
 if not STATIC_DIR.exists():
@@ -599,6 +572,63 @@ auto_learner = AutomaticLearner(allie_memory, advanced_memory)
 
 # Initial cleanup on startup
 cleanup_all_folders()
+
+# -------------------------
+# Auto-learning helper function
+# -------------------------
+async def check_and_trigger_auto_learning():
+    """
+    Check if conditions are met for triggering an auto-learning episode.
+    This function is called when user feedback indicates a fact needs review.
+    """
+    global _last_learning_check, _last_learning_trigger
+    
+    try:
+        current_time = datetime.now()
+        
+        # Check cooldown period
+        if _last_learning_trigger is not None:
+            time_since_last = (current_time - _last_learning_trigger).total_seconds() / 60
+            if time_since_last < _learning_cooldown_minutes:
+                logger.debug(f"Auto-learning on cooldown. {_learning_cooldown_minutes - time_since_last:.1f} minutes remaining")
+                return
+        
+        # Check if we have enough data to justify learning
+        stats = hybrid_memory.get_statistics()
+        total_facts = stats.get("total_facts", 0)
+        
+        # Need at least 10 facts to trigger learning
+        if total_facts < 10:
+            logger.debug(f"Not enough facts for auto-learning (have {total_facts}, need 10)")
+            return
+        
+        # Check for negative examples or feedback reports
+        neg_examples_file = DATA_DIR / "negative_examples.jsonl"
+        feedback_file = DATA_DIR / "feedback_reports.jsonl"
+        
+        has_feedback = (
+            (neg_examples_file.exists() and neg_examples_file.stat().st_size > 0) or
+            (feedback_file.exists() and feedback_file.stat().st_size > 0)
+        )
+        
+        if not has_feedback:
+            logger.debug("No feedback data to trigger auto-learning")
+            return
+        
+        # Conditions met - log that we would trigger learning
+        logger.info(f"Auto-learning conditions met: {total_facts} facts, feedback available")
+        logger.info("Auto-learning task is currently disabled for testing")
+        
+        # Update tracking
+        _last_learning_check = current_time
+        _last_learning_trigger = current_time
+        
+        # In the future, this would trigger actual learning:
+        # await auto_learner.run_learning_episode()
+        
+    except Exception as e:
+        logger.error(f"Error in check_and_trigger_auto_learning: {e}")
+
 async def search_web(query: str) -> Dict[str, Any]:
     """Search the web using DuckDuckGo instant answers"""
     # Check cache first
@@ -2110,6 +2140,138 @@ async def update_fact_status(fact_id: int, payload: Dict[str, Any] = Body(...)):
 # Learning Status Endpoints (NEW FOR UI COMPATIBILITY)
 # -------------------------
 
+async def query_duckduckgo(http_client: httpx.AsyncClient, query: str) -> Dict[str, Any]:
+    """Query DuckDuckGo for fact verification"""
+    try:
+        await asyncio.sleep(0.5)  # Rate limiting
+
+        url = f"https://api.duckduckgo.com/?q={query}&format=json&no_html=1&skip_disambig=1"
+        response = await http_client.get(url)
+
+        if response.status_code == 200:
+            data = response.json()
+            results = []
+
+            # Extract instant answer
+            if data.get("Answer"):
+                results.append({
+                    "text": data["Answer"],
+                    "source": "duckduckgo_instant",
+                    "confidence": 0.8
+                })
+
+            # Extract abstract
+            if data.get("AbstractText"):
+                results.append({
+                    "text": data["AbstractText"],
+                    "source": "duckduckgo_abstract",
+                    "confidence": 0.75
+                })
+
+            return {
+                "success": True,
+                "results": results[:3],  # Limit to top 3
+                "query": query
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"HTTP {response.status_code}",
+                "query": query
+            }
+
+    except Exception as e:
+        logger.warning(f"DuckDuckGo query failed for '{query}': {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "query": query
+        }
+
+async def query_wikidata(http_client: httpx.AsyncClient, query: str) -> Dict[str, Any]:
+    """Query Wikidata for structured facts"""
+    try:
+        await asyncio.sleep(0.5)  # Rate limiting
+
+        # First search for entities
+        search_url = f"https://www.wikidata.org/w/api.php?action=wbsearchentities&search={query}&language=en&format=json&limit=3"
+        response = await http_client.get(search_url)
+
+        if response.status_code == 200:
+            data = response.json()
+            results = []
+
+            if data.get("search"):
+                for entity in data["search"][:2]:  # Limit to top 2
+                    results.append({
+                        "text": f"{entity.get('label', '')}: {entity.get('description', '')}",
+                        "source": "wikidata",
+                        "entity_id": entity.get("id"),
+                        "confidence": 0.9
+                    })
+
+            return {
+                "success": True,
+                "results": results,
+                "query": query
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"HTTP {response.status_code}",
+                "query": query
+            }
+
+    except Exception as e:
+        logger.warning(f"Wikidata query failed for '{query}': {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "query": query
+        }
+
+async def query_dbpedia(http_client: httpx.AsyncClient, query: str) -> Dict[str, Any]:
+    """Query DBpedia for facts"""
+    try:
+        await asyncio.sleep(0.5)  # Rate limiting
+
+        # Use DBpedia Spotlight for entity extraction
+        spotlight_url = f"https://api.dbpedia-spotlight.org/en/annotate?text={query}&confidence=0.5&support=20"
+        response = await http_client.get(spotlight_url, headers={"Accept": "application/json"})
+
+        if response.status_code == 200:
+            data = response.json()
+            results = []
+
+            if "Resources" in data:
+                for resource in data["Resources"][:2]:  # Limit to top 2
+                    results.append({
+                        "text": resource.get("@surfaceForm", ""),
+                        "source": "dbpedia",
+                        "uri": resource.get("@URI", ""),
+                        "confidence": float(resource.get("@similarityScore", 0))
+                    })
+
+            return {
+                "success": True,
+                "results": results,
+                "query": query
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"HTTP {response.status_code}",
+                "query": query
+            }
+
+    except Exception as e:
+        logger.warning(f"DBpedia query failed for '{query}': {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "query": query
+        }
+
 @app.get("/api/learning/status")
 async def get_learning_status():
     """Get learning system status for UI"""
@@ -2200,6 +2362,127 @@ async def get_learning_history():
         
     except Exception as e:
         logger.error(f"Error getting learning history: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/learning/quick-topics")
+async def quick_topics_research(payload: Dict[str, Any] = Body(...)):
+    """Research multiple topics in parallel and learn facts from external sources"""
+    topics = payload.get("topics", [])
+
+    if not topics or not isinstance(topics, list):
+        raise HTTPException(status_code=400, detail="topics must be a non-empty list")
+
+    if len(topics) > 20:
+        raise HTTPException(status_code=400, detail="Maximum 20 topics allowed at once")
+
+    try:
+        # Import required modules for research
+        import httpx
+        import asyncio
+        from typing import Dict, List, Any
+
+        # Create HTTP client for external requests
+        async with httpx.AsyncClient(
+            timeout=httpx.Timeout(10.0, connect=10.0),
+            limits=httpx.Limits(max_keepalive_connections=5, max_connections=10)
+        ) as http_client:
+
+            async def research_topic(topic: str) -> Dict[str, Any]:
+                """Research a single topic using multiple external sources"""
+                try:
+                    logger.info(f"Researching topic: {topic}")
+
+                    # Query multiple sources in parallel
+                    queries = await asyncio.gather(
+                        query_duckduckgo(http_client, topic),
+                        query_wikidata(http_client, topic),
+                        query_dbpedia(http_client, topic),
+                        return_exceptions=True
+                    )
+
+                    # Collect successful results
+                    external_results = []
+                    for query_result in queries:
+                        if isinstance(query_result, Exception):
+                            logger.warning(f"Query failed for {topic}: {query_result}")
+                            continue
+                        if query_result.get("success") and query_result.get("results"):
+                            external_results.extend(query_result["results"])
+
+                    # Extract facts from results and store them
+                    facts_learned = 0
+                    stored_facts = []
+
+                    for result in external_results:
+                        text = result.get("text", "").strip()
+                        if text and len(text) > 10:  # Minimum length check
+                            try:
+                                # Store fact in hybrid memory
+                                fact_result = hybrid_memory.add_fact(
+                                    keyword=topic,
+                                    fact=text,
+                                    source=result.get("source", "external_research"),
+                                    confidence=result.get("confidence", 0.7),
+                                    category="research"
+                                )
+                                facts_learned += 1
+                                stored_facts.append({
+                                    "fact": text,
+                                    "source": result.get("source", "unknown"),
+                                    "confidence": result.get("confidence", 0.7)
+                                })
+                            except Exception as e:
+                                logger.warning(f"Failed to store fact for {topic}: {e}")
+
+                    return {
+                        "topic": topic,
+                        "success": facts_learned > 0,
+                        "facts_learned": facts_learned,
+                        "sources_queried": len([q for q in queries if not isinstance(q, Exception)]),
+                        "results": stored_facts
+                    }
+
+                except Exception as e:
+                    logger.error(f"Error researching topic '{topic}': {e}")
+                    return {
+                        "topic": topic,
+                        "success": False,
+                        "facts_learned": 0,
+                        "error": str(e)
+                    }
+
+            # Research topics in batches of 5 to avoid overwhelming external APIs
+            batch_size = 5
+            all_results = []
+
+            for i in range(0, len(topics), batch_size):
+                batch = topics[i:i + batch_size]
+                logger.info(f"Processing batch {i//batch_size + 1}: {batch}")
+
+                # Research batch in parallel
+                batch_results = await asyncio.gather(*[research_topic(topic) for topic in batch])
+                all_results.extend(batch_results)
+
+                # Small delay between batches to be respectful to APIs
+                if i + batch_size < len(topics):
+                    await asyncio.sleep(1.0)
+
+            # Calculate summary
+            topics_processed = len(all_results)
+            successful = sum(1 for r in all_results if r["success"])
+            total_facts_learned = sum(r["facts_learned"] for r in all_results)
+
+            logger.info(f"Quick topics research complete: {topics_processed} topics, {successful} successful, {total_facts_learned} facts learned")
+
+            return {
+                "topics_processed": topics_processed,
+                "successful": successful,
+                "total_facts_learned": total_facts_learned,
+                "results": all_results
+            }
+
+    except Exception as e:
+        logger.error(f"Error in quick topics research: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # -------------------------
@@ -2451,17 +2734,6 @@ async def update_feature_flag_protected(payload: Dict[str, Any] = Body(...)):
     return await update_feature_flag(payload)
 
 # -------------------------
-# Graceful shutdown - close httpx client
-# -------------------------
-@app.on_event("shutdown")
-async def _shutdown_event():
-    global _http_client
-    if _http_client is not None:
-        await _http_client.aclose()
-        _http_client = None
-        logger.info("httpx client closed")
-
-        # ... all your FastAPI routes above ...
 
 
 # run backups
@@ -2494,8 +2766,8 @@ def backup_conversations():
     except Exception as e:
         print(f"[Cleanup error] {e}")
 
-# Run once immediately to test
-backup_conversations()
+# Run backup asynchronously during startup instead of at import time
+# backup_conversations()  # Commented out - will be called in lifespan if needed
 
 
 if __name__ == "__main__":

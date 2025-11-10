@@ -1,8 +1,118 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T23:08:22.475475",
-  "fact_count": 886,
+  "saved_at": "2025-11-09T23:37:16.322365",
+  "fact_count": 897,
   "facts": [
+    {
+      "fact": "Doodle a Day: by Hello You (2021)",
+      "timestamp": "2025-11-09T23:37:16.320807",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Jerry Maguire is a 1996 American romantic comedy-drama sports film directed and written by Cameron Crowe. It was produced by Crowe and James L. Brooks, respectively for Vinyl Films and Gracie Films and distributed by Sony Pictures Releasing under the TriStar Pictures label. It stars Tom Cruise as th...",
+      "timestamp": "2025-11-09T23:37:16.309932",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Doodle a Day: by Hello You (2021)",
+      "timestamp": "2025-11-09T23:36:11.168254",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Jerry Maguire is a 1996 American romantic comedy-drama sports film directed and written by Cameron Crowe. It was produced by Crowe and James L. Brooks, respectively for Vinyl Films and Gracie Films and distributed by Sony Pictures Releasing under the TriStar Pictures label. It stars Tom Cruise as th...",
+      "timestamp": "2025-11-09T23:36:11.157449",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Old Man and the Sea: by Ernest Hemingway (1952) Subjects: American Sea stories, Male friendship, Fishers",
+      "timestamp": "2025-11-09T23:12:46.792042",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Emma Rose Kenney (born September 14, 1999) is an American actress known as Debbie Gallagher on Shameless from 2011-2021, and Harris Conner-Healy in the tenth season of Roseanne and its spin-off, The Conners.",
+      "timestamp": "2025-11-09T23:12:46.781448",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Dolly Parton: by Isabel Sanchez Vegara, Daria Solak (2019) Subjects: Women, biography, juvenile literature, Women, biography",
+      "timestamp": "2025-11-09T23:11:56.015729",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Dolly Parton: instance_of = Q5",
+      "timestamp": "2025-11-09T23:11:56.002395",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Dolly Rebecca Parton (born January 19, 1946) is an American singer, songwriter, actress, philanthropist, and businesswoman. After achieving success as a songwriter for other artists, Parton's debut album, Hello, I'm Dolly, was released in 1967, commencing a career spanning 60 years and 50 studio alb...",
+      "timestamp": "2025-11-09T23:11:55.992020",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Dolly Parton Category",
+      "timestamp": "2025-11-09T23:11:55.981481",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Dolly Rebecca Parton is an American singer, songwriter, actress, philanthropist, and businesswoman. After achieving success as a songwriter for other artists, Parton's debut album, Hello, I'm Dolly, was released in 1967, commencing a career spanning 60 years and 50 studio albums. Referred to as the \"Queen of Country\", Parton is one of the most-honored female country performers of all time and has received various accolades, including eleven Grammy Awards and three Emmy Awards, as well as nominations for two Academy Awards, six Golden Globe Awards, and a Tony Award. Parton has sold more than 100 million records worldwide, making her one of the best-selling music artists of all time. Her music includes Recording Industry Association of America-certified gold, platinum and multi-platinum awards. She has had 25 singles reach No. 1 on the Billboard country music charts, a record for a female artist.",
+      "timestamp": "2025-11-09T23:11:55.970524",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "Doodle a Day: by Hello You (2021)",
       "timestamp": "2025-11-09T23:08:22.473914",
