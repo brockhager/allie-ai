@@ -521,7 +521,13 @@ async function updateLearningScore() {
     else if (finalScore >= 500) label = 'Advanced';
     else if (finalScore >= 300) label = 'Intermediate';
     else if (finalScore >= 150) label = 'Learning';
-    learningScoreLabel.textContent = label;
+    
+    // Add timestamp to show last update
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString();
+    learningScoreLabel.textContent = `${label} • Updated ${timeStr}`;
+    
+    console.log(`[Learning Score] Updated: ${finalScore} (${label}) at ${timeStr}`);
 
     // Color grading
     if (finalScore >= 700) {

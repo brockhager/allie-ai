@@ -20,39 +20,73 @@
 </head>
 <body>
   <div class="container">
-    <h1>Quick Teach</h1>
-    <div class="muted">Use this page to quickly teach Allie a correction, add facts to memory, or mark a conversation response as wrong.</div>
+    <h1>🎓 Quick Teach - Help Allie Learn Faster!</h1>
+    <div class="muted">Quickly teach Allie facts, research topics, or correct wrong answers.</div>
 
-    <label>Conversation ID (optional)</label>
-    <input id="convId" placeholder="e.g. c-0" />
-
-    <label>Message Index (optional)</label>
-    <input id="msgIndex" placeholder="index of assistant message in conversation (0-based)" />
-
-    <label>User prompt / Original question (optional)</label>
-    <textarea id="userPrompt" rows="2" placeholder="The original user prompt that led to the incorrect answer"></textarea>
-
-    <label>Incorrect assistant reply (optional)</label>
-    <textarea id="badReply" rows="3" placeholder="The assistant reply you want to flag as incorrect"></textarea>
-
-    <label>Correct answer / Correction (recommended)</label>
-    <textarea id="correction" rows="4" placeholder="Provide the corrected answer or preferred completion"></textarea>
-
-    <div class="row">
-      <button id="markFalseBtn">Mark as Wrong (Report)</button>
-      <button id="addMemoryBtn" class="secondary">Add Correction to Memory</button>
-      <button id="addNegativeBtn" class="secondary">Add as Negative Example</button>
-      <button id="requestBetterBtn" class="secondary">Request Better Answer</button>
+    <!-- Research Topics Section -->
+    <div style="margin-top:24px;padding:16px;background:rgba(96,165,250,0.08);border-radius:8px;border:1px solid rgba(96,165,250,0.2)">
+      <h3 style="color:var(--accent);margin:0 0 8px 0">🔍 Research Topics</h3>
+      <div class="muted" style="margin-bottom:12px">Enter topics for Allie to research and learn about (one per line)</div>
+      
+      <textarea id="researchTopics" rows="6" placeholder="Enter topics (one per line), for example:&#10;Solar System planets&#10;World War II&#10;Python programming language&#10;Artificial Intelligence"></textarea>
+      
+      <div class="row">
+        <button id="researchBtn">🔍 Research These Topics</button>
+        <button id="commonTopicsBtn" class="secondary">📚 Teach Common Knowledge</button>
+      </div>
+      
+      <div id="researchStatus" class="feedback" style="display:none"></div>
     </div>
 
-    <div id="status" class="feedback" style="display:none"></div>
+    <!-- Teach Facts Section -->
+    <div style="margin-top:24px;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.03)">
+      <h3 style="color:var(--accent);margin:0 0 8px 0">📝 Teach Facts Directly</h3>
+      <div class="muted" style="margin-bottom:12px">Enter facts you want Allie to learn (one per line)</div>
+      
+      <textarea id="bulkFacts" rows="6" placeholder="Enter facts (one per line), for example:&#10;The capital of France is Paris&#10;Water boils at 100°C at sea level&#10;Python was created by Guido van Rossum"></textarea>
+      
+      <button id="bulkLearnBtn">✓ Teach These Facts</button>
+      
+      <div id="bulkStatus" class="feedback" style="display:none"></div>
+    </div>
 
-    <hr style="margin-top:18px;border:none;border-top:1px solid rgba(255,255,255,0.03)" />
-    <h3 style="color:var(--accent);margin:8px 0">Quick Teach Tips</h3>
+    <!-- Correct Wrong Answers Section -->
+    <div style="margin-top:24px;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.03)">
+      <h3 style="color:var(--accent);margin:0 0 8px 0">🔧 Correct Wrong Answers</h3>
+      <div class="muted" style="margin-bottom:12px">Report incorrect answers and provide corrections</div>
+
+      <label>Conversation ID (optional)</label>
+      <input id="convId" placeholder="e.g. c-0" />
+
+      <label>Message Index (optional)</label>
+      <input id="msgIndex" placeholder="index of assistant message in conversation (0-based)" />
+
+      <label>User prompt / Original question (optional)</label>
+      <textarea id="userPrompt" rows="2" placeholder="The original user prompt that led to the incorrect answer"></textarea>
+
+      <label>Incorrect assistant reply (optional)</label>
+      <textarea id="badReply" rows="3" placeholder="The assistant reply you want to flag as incorrect"></textarea>
+
+      <label>Correct answer / Correction (recommended)</label>
+      <textarea id="correction" rows="4" placeholder="Provide the corrected answer or preferred completion"></textarea>
+
+      <div class="row">
+        <button id="markFalseBtn">Mark as Wrong (Report)</button>
+        <button id="addMemoryBtn" class="secondary">Add Correction to Memory</button>
+        <button id="addNegativeBtn" class="secondary">Add as Negative Example</button>
+        <button id="requestBetterBtn" class="secondary">Request Better Answer</button>
+      </div>
+
+      <div id="status" class="feedback" style="display:none"></div>
+    </div>
+
+    <hr style="margin-top:24px;border:none;border-top:1px solid rgba(255,255,255,0.03)" />
+    <h3 style="color:var(--accent);margin:8px 0">💡 Quick Teach Tips</h3>
     <ul class="muted">
-      <li>Provide a short, accurate correction to help the model learn.</li>
-      <li>If you know the conversation id and message index, "Mark as Wrong" will associate the report with that conversation.</li>
-      <li>"Request Better Answer" will ask Allie to regenerate a better reply for the flagged message (only if conv id & index provided).</li>
+      <li><strong>Research Topics:</strong> Allie will research each topic and learn multiple facts about it automatically</li>
+      <li><strong>Teach Facts:</strong> Directly add facts to Allie's memory without research</li>
+      <li><strong>Correct Answers:</strong> Report wrong answers and provide corrections to improve Allie's accuracy</li>
+      <li>Common Knowledge teaches pre-selected topics: Solar System, World War II, Python, AI, US Presidents, and more</li>
     </ul>
   </div>
 
@@ -63,6 +97,10 @@ const msgIndexEl = document.getElementById('msgIndex');
 const userPromptEl = document.getElementById('userPrompt');
 const badReplyEl = document.getElementById('badReply');
 const correctionEl = document.getElementById('correction');
+const researchTopicsEl = document.getElementById('researchTopics');
+const bulkFactsEl = document.getElementById('bulkFacts');
+const researchStatusEl = document.getElementById('researchStatus');
+const bulkStatusEl = document.getElementById('bulkStatus');
 
 function showStatus(txt, isError=false){
   statusEl.style.display = 'block';
@@ -70,12 +108,105 @@ function showStatus(txt, isError=false){
   statusEl.textContent = txt;
 }
 
+function showResearchStatus(txt, isError=false){
+  researchStatusEl.style.display = 'block';
+  researchStatusEl.style.background = isError ? 'rgba(255,0,0,0.04)' : 'rgba(0,255,0,0.03)';
+  researchStatusEl.textContent = txt;
+}
+
+function showBulkStatus(txt, isError=false){
+  bulkStatusEl.style.display = 'block';
+  bulkStatusEl.style.background = isError ? 'rgba(255,0,0,0.04)' : 'rgba(0,255,0,0.03)';
+  bulkStatusEl.textContent = txt;
+}
+
+// Research Topics functionality
+async function researchTopics(){
+  const topicsText = researchTopicsEl.value.trim();
+  if (!topicsText) { showResearchStatus('Please enter at least one topic', true); return; }
+  
+  const topics = topicsText.split('\n').map(t => t.trim()).filter(t => t);
+  if (topics.length === 0) { showResearchStatus('Please enter at least one topic', true); return; }
+  
+  try {
+    showResearchStatus(`🔍 Researching ${topics.length} topic(s)... This may take a minute.`);
+    const resp = await fetch('/api/learning/quick-topics', { 
+      method: 'POST', 
+      headers:{'Content-Type':'application/json'}, 
+      body: JSON.stringify({ topics: topics }),
+      timeout: 120000
+    });
+    if (!resp.ok) throw new Error(await resp.text());
+    
+    const result = await resp.json();
+    
+    let msg = `✓ Research complete!\n`;
+    msg += `Topics processed: ${result.topics_processed}\n`;
+    msg += `Successful: ${result.successful}\n`;
+    msg += `Total facts learned: ${result.total_facts_learned}\n\n`;
+    msg += `Details:\n`;
+    for (const r of result.results) {
+      if (r.success) {
+        msg += `✓ ${r.topic}: ${r.facts_learned} facts\n`;
+      } else {
+        msg += `✗ ${r.topic}: ${r.error || 'Unknown error'}\n`;
+      }
+    }
+    
+    showResearchStatus(msg);
+  } catch (err){ 
+    showResearchStatus('Failed to research topics: ' + err.message, true); 
+  }
+}
+
+async function teachCommonTopics(){
+  const commonTopics = [
+    "Solar System planets",
+    "World War II",
+    "Python programming language",
+    "Artificial Intelligence",
+    "Climate change",
+    "United States presidents",
+    "European countries and capitals",
+    "Human anatomy basics",
+    "Periodic table elements",
+    "Famous scientists"
+  ];
+  
+  researchTopicsEl.value = commonTopics.join('\n');
+  await researchTopics();
+}
+
+// Bulk learn facts functionality
+async function bulkLearnFacts(){
+  const factsText = bulkFactsEl.value.trim();
+  if (!factsText) { showBulkStatus('Please enter at least one fact', true); return; }
+  
+  const facts = factsText.split('\n').map(f => f.trim()).filter(f => f);
+  if (facts.length === 0) { showBulkStatus('Please enter at least one fact', true); return; }
+  
+  try {
+    showBulkStatus(`✓ Teaching ${facts.length} fact(s)...`);
+    const resp = await fetch('/api/learning/bulk-learn', { 
+      method: 'POST', 
+      headers:{'Content-Type':'application/json'}, 
+      body: JSON.stringify({ facts: facts })
+    });
+    if (!resp.ok) throw new Error(await resp.text());
+    
+    const result = await resp.json();
+    showBulkStatus(`✓ Learned ${result.results?.facts_learned || facts.length} facts successfully`);
+  } catch (err){ 
+    showBulkStatus('Failed to teach facts: ' + err.message, true); 
+  }
+}
+
+// Correct wrong answers functionality (existing)
 async function markAsWrong(){
   const conv = convIdEl.value.trim() || null;
   const idx = msgIndexEl.value.trim() || null;
   const correction = correctionEl.value.trim() || null;
   if (!conv || !idx){
-    // allow reporting without conv, but warn
     if (!confirm('No conversation id/index provided. Report will add the correction as a negative example and memory entry. Continue?')) return;
   }
   try {
@@ -101,7 +232,6 @@ async function addNegativeExample(){
   const completion = correctionEl.value.trim();
   if (!prompt || !completion) { showStatus('Provide both a prompt and a correction to add a negative example', true); return; }
   try {
-    // We don't have a dedicated endpoint for negative_examples; write via feedback endpoint if conv info provided, else call hybrid memory as placeholder
     const resp = await fetch('/api/hybrid-memory/add', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ fact: completion, category: 'negative_example', confidence: 0.95, source: 'quick_teach_ui' }) });
     if (!resp.ok) throw new Error(await resp.text());
     showStatus('Added negative example (stored in memory as negative_example)');
@@ -120,6 +250,10 @@ async function requestBetter(){
   } catch (err){ showStatus('Failed to request better answer: ' + err.message, true); }
 }
 
+// Wire up event handlers
+document.getElementById('researchBtn').onclick = researchTopics;
+document.getElementById('commonTopicsBtn').onclick = teachCommonTopics;
+document.getElementById('bulkLearnBtn').onclick = bulkLearnFacts;
 document.getElementById('markFalseBtn').onclick = markAsWrong;
 document.getElementById('addMemoryBtn').onclick = addToMemory;
 document.getElementById('addNegativeBtn').onclick = addNegativeExample;
