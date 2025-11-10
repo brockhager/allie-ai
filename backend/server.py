@@ -285,6 +285,15 @@ async def fact_check_ui():
     return HTMLResponse(fact_check_path.read_text(encoding="utf-8"))
 
 
+@app.get("/quick-teach", response_class=HTMLResponse)
+async def quick_teach_ui():
+    """Serve the Quick Teach UI page"""
+    quick_path = STATIC_DIR / "quick-teach.html"
+    if not quick_path.exists():
+        return HTMLResponse("<html><body><h3>Quick Teach UI not installed</h3></body></html>", status_code=404)
+    return HTMLResponse(quick_path.read_text(encoding="utf-8"))
+
+
 # -------------------------
 # httpx AsyncClient (module-level for connection reuse)
 # -------------------------

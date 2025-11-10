@@ -119,6 +119,7 @@
       <div style="flex:1"></div>
       <button id="exportAllBtn" class="secondary">Export All</button>
       <button id="exportBtn" class="secondary">Export</button>
+  <button id="quickTeachBtn" class="secondary">Quick Teach</button>
       <input id="importAllFile" type="file" style="display:none" accept=".json"/>
       <button id="importAllBtn" class="secondary">Import All</button>
 
@@ -126,9 +127,10 @@
       <button id="importBtn" class="secondary">Import</button>
     </div>
 
-    <div class="messages" id="messages" aria-live="polite"></div>
+    <div id="chatPanel">
+      <div class="messages" id="messages" aria-live="polite"></div>
 
-    <div class="inputbar">
+      <div class="inputbar">
       <textarea id="prompt" placeholder="Send a message..."></textarea>
       <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
         <div style="display:flex;flex-direction:column;gap:6px">
@@ -139,7 +141,41 @@
           Max tokens<br/><input id="maxTokens" type="number" value="120" min="1" style="width:80px;margin-top:6px"/>
         </div>
       </div>
+      </div>
     </div>
+
+    <!-- Embedded Quick Teach panel (hidden by default) -->
+    <div id="quickTeachPanel" style="display:none;padding:16px;overflow:auto;">
+      <div style="max-width:820px;margin:0 auto">
+        <h2 style="margin:0 0 8px 0;color:var(--accent)">Quick Teach</h2>
+        <div style="color:var(--muted);font-size:13px;margin-bottom:12px">Quickly report incorrect replies, add corrections to memory, or request a better answer.</div>
+
+        <label style="display:block;margin-top:8px;font-size:13px;color:var(--muted)">Conversation ID (optional)</label>
+        <input id="qtConvId" placeholder="e.g. c-0" />
+
+        <label style="display:block;margin-top:8px;font-size:13px;color:var(--muted)">Message Index (optional)</label>
+        <input id="qtMsgIndex" placeholder="index of assistant message in conversation (0-based)" />
+
+        <label style="display:block;margin-top:8px;font-size:13px;color:var(--muted)">User prompt / Original question (optional)</label>
+        <textarea id="qtUserPrompt" rows="2" placeholder="The original user prompt that led to the incorrect answer"></textarea>
+
+        <label style="display:block;margin-top:8px;font-size:13px;color:var(--muted)">Incorrect assistant reply (optional)</label>
+        <textarea id="qtBadReply" rows="3" placeholder="The assistant reply you want to flag as incorrect"></textarea>
+
+        <label style="display:block;margin-top:8px;font-size:13px;color:var(--muted)">Correct answer / Correction (recommended)</label>
+        <textarea id="qtCorrection" rows="4" placeholder="Provide the corrected answer or preferred completion"></textarea>
+
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button id="qtMarkFalseBtn">Mark as Wrong (Report)</button>
+          <button id="qtAddMemoryBtn" class="secondary">Add Correction to Memory</button>
+          <button id="qtAddNegativeBtn" class="secondary">Add as Negative Example</button>
+          <button id="qtRequestBetterBtn" class="secondary">Request Better Answer</button>
+        </div>
+
+        <div id="qtStatus" class="feedback" style="display:none;margin-top:12px"></div>
+      </div>
+    </div>
+
   </main>
 
   <aside class="memory-panel">
@@ -255,6 +291,73 @@ const memRefreshBtn = document.getElementById('memRefreshBtn');
 // Learning score elements
 const learningScore = document.getElementById('learningScore');
 const learningScoreLabel = document.getElementById('learningScoreLabel');
+
+// Quick Teach elements (embedded)
+const qtConvId = document.getElementById('qtConvId');
+const qtMsgIndex = document.getElementById('qtMsgIndex');
+const qtUserPrompt = document.getElementById('qtUserPrompt');
+const qtBadReply = document.getElementById('qtBadReply');
+const qtCorrection = document.getElementById('qtCorrection');
+const qtMarkFalseBtn = document.getElementById('qtMarkFalseBtn');
+const qtAddMemoryBtn = document.getElementById('qtAddMemoryBtn');
+const qtAddNegativeBtn = document.getElementById('qtAddNegativeBtn');
+const qtRequestBetterBtn = document.getElementById('qtRequestBetterBtn');
+const qtStatus = document.getElementById('qtStatus');
+
+function qtShowStatus(txt, isError=false){
+  qtStatus.style.display = 'block';
+  qtStatus.style.background = isError ? 'rgba(255,0,0,0.04)' : 'rgba(0,255,0,0.03)';
+  qtStatus.textContent = txt;
+}
+
+// Embedded Quick Teach handlers
+qtMarkFalseBtn.onclick = async () => {
+  const conv = qtConvId.value.trim() || null;
+  const idx = qtMsgIndex.value.trim() || null;
+  const correction = qtCorrection.value.trim() || null;
+  if (!conv || !idx){
+    if (!confirm('No conversation id/index provided. Report will add the correction as a negative example and memory entry. Continue?')) return;
+  }
+  try {
+    const body = { conv_id: conv, message_index: idx !== null && idx !== '' ? Number(idx) : null, correction: correction };
+    const resp = await fetch('/api/feedback/mark_false', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    if (!resp.ok) throw new Error(await resp.text());
+    qtShowStatus('Reported. Feedback recorded.');
+  } catch (err){ qtShowStatus('Failed to report: ' + err.message, true); }
+};
+
+qtAddMemoryBtn.onclick = async () => {
+  const fact = (qtCorrection.value.trim() || qtBadReply.value.trim());
+  if (!fact) { qtShowStatus('No correction or fact provided', true); return; }
+  try {
+    const resp = await fetch('/api/hybrid-memory/add', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ fact: fact, category: 'quick_teach', confidence: 0.9, source: 'quick_teach_ui' }) });
+    if (!resp.ok) throw new Error(await resp.text());
+    qtShowStatus('Added correction to hybrid memory');
+  } catch (err){ qtShowStatus('Failed to add to memory: ' + err.message, true); }
+};
+
+qtAddNegativeBtn.onclick = async () => {
+  const prompt = qtUserPrompt.value.trim();
+  const completion = qtCorrection.value.trim();
+  if (!prompt || !completion) { qtShowStatus('Provide both a prompt and a correction to add a negative example', true); return; }
+  try {
+    const resp = await fetch('/api/hybrid-memory/add', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ fact: completion, category: 'negative_example', confidence: 0.95, source: 'quick_teach_ui' }) });
+    if (!resp.ok) throw new Error(await resp.text());
+    qtShowStatus('Added negative example (stored in memory as negative_example)');
+  } catch (err){ qtShowStatus('Failed to add negative example: ' + err.message, true); }
+};
+
+qtRequestBetterBtn.onclick = async () => {
+  const conv = qtConvId.value.trim();
+  const idx = qtMsgIndex.value.trim();
+  if (!conv || !idx){ qtShowStatus('conv_id and message_index required to request a better answer', true); return; }
+  try{
+    const resp = await fetch('/api/feedback/request_better', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ conv_id: conv, message_index: Number(idx) }) });
+    if (!resp.ok) throw new Error(await resp.text());
+    const j = await resp.json();
+    qtShowStatus('Requested better answer. New reply appended to conversation.');
+  } catch (err){ qtShowStatus('Failed to request better answer: ' + err.message, true); }
+};
 
 // Fetch and update memory statistics
 async function updateMemoryStats() {
@@ -1058,6 +1161,27 @@ function updateLearningStatus(status) {
 
   statusEl.textContent = 'Ready';
   addLearningActivity('System ready and monitoring active', 'success');
+  // Quick Teach button
+  // Toggle between Chat and Quick Teach panels
+  let currentPanel = 'chat';
+  const quickTeachBtnEl = document.getElementById('quickTeachBtn');
+  const chatPanelEl = document.getElementById('chatPanel');
+  const quickTeachPanelEl = document.getElementById('quickTeachPanel');
+
+  function showPanel(name){
+    currentPanel = name;
+    if (name === 'quick_teach'){
+      chatPanelEl.style.display = 'none';
+      quickTeachPanelEl.style.display = 'block';
+      quickTeachBtnEl.classList.add('active');
+    } else {
+      chatPanelEl.style.display = 'block';
+      quickTeachPanelEl.style.display = 'none';
+      quickTeachBtnEl.classList.remove('active');
+    }
+  }
+
+  quickTeachBtnEl.onclick = () => { showPanel(currentPanel === 'chat' ? 'quick_teach' : 'chat'); };
 })();
 </script>
 </body>

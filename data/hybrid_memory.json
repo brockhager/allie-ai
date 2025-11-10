@@ -1,8 +1,78 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T19:44:03.052561",
-  "fact_count": 653,
+  "saved_at": "2025-11-09T20:04:50.655424",
+  "fact_count": 660,
   "facts": [
+    {
+      "fact": "Up from Slavery: by Booker T. Washington (1900) Subjects: Washington, booker t., 1856-1915, African americans, biography, Educators, united states",
+      "timestamp": "2025-11-09T20:04:50.653280",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The president of the United States (POTUS) is the head of state and head of government of the United States. The president directs the executive branch of the federal government and is the commander-in-chief of the United States Armed Forces.\nThe power of the presidency has grown since the first pre...",
+      "timestamp": "2025-11-09T20:04:50.623796",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "How Do You Feel? : Feeling Hb : How Do You Feel?: by Quagli PIRODDI (2023)",
+      "timestamp": "2025-11-09T20:01:44.466699",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Do You Feel: instance_of = Q482994",
+      "timestamp": "2025-11-09T20:01:44.458409",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Dirty Harry is a 1971 American action-thriller film produced and directed by Don Siegel, the first in the Dirty Harry series. Clint Eastwood plays the title role, in his first appearance as San Francisco Police Department (SFPD) Inspector \"Dirty\" Harry Callahan. The film drew upon the real-life case...",
+      "timestamp": "2025-11-09T20:01:44.445632",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Rocket Summer albums",
+      "timestamp": "2025-11-09T20:01:44.435049",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Do You Feel is the Rocket Summer's third full-length album, released on July 17, 2007, through Island Records. On this album, Bryce Avary incorporates more diverse instrumentation, including saxophone. Initially available on MySpace on July 10, the entire album was leaked onto the Internet on July 13. Following its release, the album debuted at number 44 on the U.S. Billboard 200, selling about 15,000 copies in its first week. The music video for \"Do You Feel\" featured the band performing as a quartet, and also features Josh Farro of Novel American and formerly of Paramore and Jeremy Davis of Paramore, Andrew McMahon of Jack's Mannequin, Matt Thiessen of Relient K, Ian Crawford and Cash Colligan formerly of the Cab, Forrest Kline of Hellogoodbye, Mike Herrera of MxPx, Alex Gaskarth of All Time Low, and Jonathan Cook of Forever the Sickest Kids.",
+      "timestamp": "2025-11-09T20:01:44.420049",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "Up from Slavery: by Booker T. Washington (1900) Subjects: Washington, booker t., 1856-1915, African americans, biography, Educators, united states",
       "timestamp": "2025-11-09T19:44:03.051517",
