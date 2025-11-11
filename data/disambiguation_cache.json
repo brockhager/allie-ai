@@ -26,5 +26,84 @@
       "needs_clarification": true
     },
     "expires": "2025-11-11T18:24:22.202308"
+  },
+  "what is python?": {
+    "result": {
+      "is_ambiguous": true,
+      "interpretations": [
+        {
+          "meaning_label": "General",
+          "summary": "...",
+          "sources_consulted": [
+            "openlibrary",
+            "dbpedia",
+            "duckduckgo"
+          ],
+          "confidence_score": 1.0,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "...",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.9499999999999998,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.9756410256410257,
+      "needs_clarification": true
+    },
+    "expires": "2025-11-11T19:47:09.220423"
+  },
+  "python programming": {
+    "result": {
+      "is_ambiguous": false,
+      "interpretations": [
+        {
+          "meaning_label": "General",
+          "summary": "Language: by Bradley N",
+          "sources_consulted": [
+            "openlibrary"
+          ],
+          "confidence_score": 0.8,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.8,
+      "needs_clarification": false
+    },
+    "expires": "2025-11-11T19:48:07.981277"
+  },
+  "what is javascript?": {
+    "result": {
+      "is_ambiguous": true,
+      "interpretations": [
+        {
+          "meaning_label": "General",
+          "summary": "...",
+          "sources_consulted": [
+            "openlibrary",
+            "dbpedia",
+            "duckduckgo"
+          ],
+          "confidence_score": 1.0,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "...",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.9499999999999998,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.9756410256410257,
+      "needs_clarification": true
+    },
+    "expires": "2025-11-11T19:50:13.797096"
   }
 }

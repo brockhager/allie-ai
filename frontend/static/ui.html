@@ -126,6 +126,7 @@
     <button id="exportBtn" class="secondary" tabindex="0" aria-label="Export current conversation">Export</button>
   <button id="quickTeachBtn" class="secondary" tabindex="0" aria-label="Quick teach panel">Quick Teach</button>
   <button id="kbBtn" class="secondary" tabindex="0" role="tab" aria-controls="kbPanel" aria-selected="false" aria-label="Open Knowledge Base" title="Knowledge Base (opens inside the app)">Knowledge Base</button>
+  <button id="learningQueueBtn" class="secondary" tabindex="0" role="tab" aria-controls="learningQueuePanel" aria-selected="false" aria-label="Open Learning Queue" title="Learning Queue">Learning Queue</button>
       <input id="importAllFile" type="file" style="display:none" accept=".json"/>
       <button id="importAllBtn" class="secondary">Import All</button>
 
@@ -187,6 +188,33 @@
       <div style="max-width:100%;margin:0 auto">
         <h2 style="margin:0 0 8px 0;color:var(--accent)">Knowledge Base</h2>
         <iframe id="kbIframe" src="/kb" style="width:100%;height:70vh;border:1px solid rgba(0,0,0,0.06);border-radius:6px"></iframe>
+      </div>
+    </div>
+
+    <!-- Learning Queue panel (hidden by default) -->
+    <div id="learningQueuePanel" style="display:none;padding:16px;overflow:auto;">
+      <div style="max-width:1000px;margin:0 auto">
+        <h2 style="margin:0 0 8px 0;color:var(--accent)">Learning Queue</h2>
+        <div style="margin-bottom:8px;color:var(--muted);font-size:13px">Pending items suggested by the automated learner or ingestion pipelines. Review and approve promotions to the Knowledge Base.</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <button id="refreshQueueBtn">Refresh</button>
+          <button id="approveAllBtn" class="secondary">Approve Visible</button>
+        </div>
+        <div id="learningQueueTableWrap" style="background:rgba(255,255,255,0.03);border-radius:6px;padding:8px">
+          <table id="learningQueueTable" style="width:100%;border-collapse:collapse">
+            <thead style="text-align:left;color:var(--muted);font-size:13px">
+              <tr>
+                <th style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">ID</th>
+                <th style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">Keyword</th>
+                <th style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">Fact (preview)</th>
+                <th style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">Source</th>
+                <th style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">Suggested Action</th>
+                <th style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="learningQueueBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -291,6 +319,13 @@ const startLearningBtn = document.getElementById('startLearningBtn');
 const stopLearningBtn = document.getElementById('stopLearningBtn');
 const viewHistoryBtn = document.getElementById('viewHistoryBtn');
 const learningActivityFeed = document.getElementById('learningActivityFeed');
+
+// Learning Queue elements
+const learningQueueBtnEl = document.getElementById('learningQueueBtn');
+const learningQueuePanelEl = document.getElementById('learningQueuePanel');
+const refreshQueueBtn = document.getElementById('refreshQueueBtn');
+const approveAllBtn = document.getElementById('approveAllBtn');
+const learningQueueBody = document.getElementById('learningQueueBody');
 
 // Memory statistics elements
 const memTotalFacts = document.getElementById('memTotalFacts');
@@ -1200,6 +1235,9 @@ function updateLearningStatus(status) {
   const chatPanelEl = document.getElementById('chatPanel');
   const quickTeachPanelEl = document.getElementById('quickTeachPanel');
   const kbPanelEl = document.getElementById('kbPanel');
+  const learningQueuePanel = document.getElementById('learningQueuePanel');
+
+  const learningQueueBtnLocal = learningQueueBtnEl;
 
   function showPanel(name){
     currentPanel = name;
@@ -1207,10 +1245,13 @@ function updateLearningStatus(status) {
     chatPanelEl.style.display = 'none';
     quickTeachPanelEl.style.display = 'none';
     kbPanelEl.style.display = 'none';
+    learningQueuePanel.style.display = 'none';
     // reset active styles
     quickTeachBtnEl.classList.remove('active');
     if (kbBtnEl) kbBtnEl.classList.remove('active');
     if (kbBtnEl) kbBtnEl.setAttribute('aria-selected', 'false');
+    if (learningQueueBtnLocal) learningQueueBtnLocal.classList.remove('active');
+    if (learningQueueBtnLocal) learningQueueBtnLocal.setAttribute('aria-selected', 'false');
 
     if (name === 'quick_teach'){
       quickTeachPanelEl.style.display = 'block';
@@ -1219,6 +1260,10 @@ function updateLearningStatus(status) {
       kbPanelEl.style.display = 'block';
       if (kbBtnEl) kbBtnEl.classList.add('active');
       if (kbBtnEl) kbBtnEl.setAttribute('aria-selected', 'true');
+    } else if (name === 'learning_queue'){
+      learningQueuePanel.style.display = 'block';
+      if (learningQueueBtnLocal) learningQueueBtnLocal.classList.add('active');
+      if (learningQueueBtnLocal) learningQueueBtnLocal.setAttribute('aria-selected', 'true');
     } else {
       chatPanelEl.style.display = 'flex';
     }
@@ -1226,6 +1271,76 @@ function updateLearningStatus(status) {
 
   quickTeachBtnEl.onclick = () => { showPanel(currentPanel === 'chat' ? 'quick_teach' : 'chat'); };
   if (kbBtnEl) kbBtnEl.onclick = () => { showPanel(currentPanel === 'kb' ? 'chat' : 'kb'); };
+  if (learningQueueBtnEl) learningQueueBtnEl.onclick = () => { showPanel(currentPanel === 'learning_queue' ? 'chat' : 'learning_queue'); };
+
+  if (learningQueueBtnEl) learningQueueBtnEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); learningQueueBtnEl.click(); }
+  });
+
+  // Learning Queue interactions
+  async function fetchLearningQueue(){
+    try {
+      const r = await fetch('/api/learning_queue');
+      if (!r.ok) throw new Error(await r.text());
+      const j = await r.json();
+      return j.items || j || [];
+    } catch (err){
+      console.error('Failed to fetch learning queue:', err);
+      return [];
+    }
+  }
+
+  function renderLearningQueue(items){
+    learningQueueBody.innerHTML = '';
+    if (!items || items.length === 0){
+      learningQueueBody.innerHTML = '<tr><td colspan="6" style="padding:12px;text-align:center;color:var(--muted)">No pending items</td></tr>';
+      return;
+    }
+    for (const it of items){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">${it.id || it.queue_id || it.uuid || ''}</td>
+        <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">${(it.keyword||it.key||'')}</td>
+        <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04);max-width:360px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${(it.fact||it.text||'').replace(/</g,'&lt;')}</td>
+        <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">${(it.source||'')}</td>
+        <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)">${(it.suggested_action||'promote')}</td>
+        <td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)"><button data-id="${it.id||it.queue_id||''}" class="approveBtn">Approve</button></td>
+      `;
+      learningQueueBody.appendChild(tr);
+    }
+
+    // wire approve buttons
+    learningQueueBody.querySelectorAll('.approveBtn').forEach(b => {
+      b.onclick = async (ev) => {
+        const id = b.getAttribute('data-id');
+        if (!id) return alert('No id found for this item');
+        if (!confirm('Approve and promote this item to the Knowledge Base?')) return;
+        try {
+          b.disabled = true; b.textContent = 'Approving...';
+          const resp = await fetch('/api/reconcile/' + encodeURIComponent(id) + '/approve', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ reviewer: 'ui_admin', reason: 'Approved via UI' }) });
+          if (!resp.ok) throw new Error(await resp.text());
+          addLearningActivity('Approved queue item ' + id, 'success');
+          await updateMemoryStats();
+          const items = await fetchLearningQueue(); renderLearningQueue(items);
+        } catch (err){ alert('Approve failed: ' + err.message); console.error(err); b.disabled = false; b.textContent = 'Approve'; }
+      };
+    });
+  }
+
+  refreshQueueBtn.onclick = async () => { const items = await fetchLearningQueue(); renderLearningQueue(items); };
+  approveAllBtn.onclick = async () => {
+    // Approve all visible items sequentially (simple UX)
+    const buttons = Array.from(learningQueueBody.querySelectorAll('.approveBtn'));
+    for (const btn of buttons){
+      btn.click();
+      // small delay to avoid hammering
+      await new Promise(r => setTimeout(r, 300));
+    }
+  };
+
+  // Auto-refresh when opening the panel
+  const originalShowPanel = showPanel;
+  showPanel = function(name){ originalShowPanel(name); if (name === 'learning_queue'){ fetchLearningQueue().then(renderLearningQueue); } };
 
   // Keyboard accessibility: Enter / Space activate the button
   if (kbBtnEl) kbBtnEl.addEventListener('keydown', (e) => {

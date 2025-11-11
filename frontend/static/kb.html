@@ -5,34 +5,49 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Allie — Knowledge Base</title>
   <style>
-    body{font-family:Arial,Helvetica,sans-serif;margin:16px;color:#111}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:8px;border:1px solid #ddd}
-    th{background:#f4f4f4;text-align:left}
-    .toolbar{margin-bottom:12px}
-    .btn{padding:8px 10px;border-radius:6px;background:#2b6cb0;color:#fff;border:none;cursor:pointer}
-    .input{padding:6px;border:1px solid #ccc;border-radius:6px}
+    /* Dark themed KB to match the main app and ensure high contrast inside iframe */
+    :root{--bg:#071226;--panel:#071226;--muted:#9ca3af;--text:#e6eef6;--accent:#60a5fa;--card:#0b1726}
+    html,body{height:100%;margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+    .container{padding:18px;max-width:1200px;margin:0 auto}
+    h1{margin:0 0 12px 0;color:var(--accent);font-size:20px}
+    table{width:100%;border-collapse:collapse;background:transparent}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top;font-size:14px}
+    th{background:transparent;text-align:left;color:var(--muted);font-size:13px}
+    td{color:var(--text)}
+    tbody tr:nth-child(odd){background:rgba(255,255,255,0.015)}
+    .toolbar{margin:12px 0 18px 0;display:flex;gap:8px;align-items:center}
+    .btn{padding:8px 10px;border-radius:8px;background:var(--accent);color:#021125;border:none;cursor:pointer;font-weight:600}
+    .btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+    .input{padding:8px;border:1px solid rgba(255,255,255,0.06);border-radius:8px;background:transparent;color:var(--text);min-width:180px}
+    /* Modal (dark) */
+    #modal{display:none;position:fixed;left:50%;top:12%;transform:translateX(-50%);background:var(--card);border:1px solid rgba(255,255,255,0.04);padding:16px;box-shadow:0 12px 40px rgba(2,6,23,0.6);border-radius:8px;z-index:999}
+    #modal h3{margin:0 0 8px 0;color:var(--accent)}
+    #modal .input, #modal textarea{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.04)}
+    /* Responsive adjustments */
+    @media (max-width:900px){ th,td{font-size:13px;padding:8px} h1{font-size:18px} }
   </style>
 </head>
 <body>
-  <h1>Knowledge Base</h1>
-  <div class="toolbar">
-    <input id="filterStatus" class="input" placeholder="Filter status (true,false,not_verified)" />
-    <button id="refreshBtn" class="btn">Refresh</button>
-    <button id="newBtn" class="btn">Add Fact</button>
+  <div class="container">
+    <h1>Knowledge Base</h1>
+    <div class="toolbar">
+      <input id="filterStatus" class="input" placeholder="Filter status (true,false,not_verified)" />
+      <button id="refreshBtn" class="btn">Refresh</button>
+      <button id="newBtn" class="btn">Add Fact</button>
+    </div>
+    <div id="tableWrap">Loading...</div>
   </div>
-  <div id="tableWrap">Loading...</div>
 
   <!-- Simple modal for add/edit -->
-  <div id="modal" style="display:none;position:fixed;left:50%;top:20%;transform:translateX(-50%);background:#fff;border:1px solid #ccc;padding:12px;box-shadow:0 8px 40px rgba(0,0,0,0.2)">
+  <div id="modal">
     <h3 id="modalTitle">Add KB Fact</h3>
-    <div style="display:flex;flex-direction:column;gap:8px;max-width:800px">
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:900px">
       <input id="m_keyword" class="input" placeholder="keyword" />
       <textarea id="m_fact" rows="6" class="input" placeholder="fact"></textarea>
       <input id="m_source" class="input" placeholder="source" />
       <select id="m_status" class="input"><option value="true">true</option><option value="false">false</option><option value="not_verified">not_verified</option><option value="needs_review">needs_review</option><option value="experimental">experimental</option></select>
       <input id="m_conf" class="input" type="number" value="90" min="0" max="100" />
-      <div style="display:flex;gap:8px"><button id="m_save" class="btn">Save</button><button id="m_cancel" class="btn" style="background:#777">Cancel</button></div>
+      <div style="display:flex;gap:8px"><button id="m_save" class="btn">Save</button><button id="m_cancel" class="btn ghost">Cancel</button></div>
     </div>
   </div>
 
