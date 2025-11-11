@@ -125,11 +125,16 @@ class AutomaticLearner:
                 
                 # Also store in hybrid memory if available
                 if self.hybrid_memory:
+                    # Extract keyword from fact (first few significant words)
+                    words = fact_text.split()[:3]  # Use first 3 words as keyword
+                    keyword = ' '.join(words).strip('.,!?;:')
+                    
                     self.hybrid_memory.add_fact(
+                        keyword=keyword,
                         fact=fact_text,
-                        category=category,
+                        source="automatic_learning",
                         confidence=confidence,
-                        source="automatic_learning"
+                        category=category
                     )
 
                 # Add to learning queue for reconciliation if available and confidence is high enough
@@ -163,11 +168,16 @@ class AutomaticLearner:
                 for related_fact in related_facts:
                     self.memory_system.add_fact(related_fact, importance=0.7, category=category)
                     if self.hybrid_memory:
+                        # Extract keyword from related fact
+                        related_words = related_fact.split()[:3]
+                        related_keyword = ' '.join(related_words).strip('.,!?;:')
+                        
                         self.hybrid_memory.add_fact(
+                            keyword=related_keyword,
                             fact=related_fact,
-                            category=category,
+                            source="automatic_learning_expansion",
                             confidence=0.7,
-                            source="automatic_learning_expansion"
+                            category=category
                         )
                     extracted_facts.append({
                         "fact": related_fact,

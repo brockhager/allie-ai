@@ -1,8 +1,198 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T19:50:13.782628",
-  "fact_count": 1055,
+  "saved_at": "2025-11-10T20:09:39.753877",
+  "fact_count": 1074,
   "facts": [
+    {
+      "fact": "Learning Python: by Mark Lutz, David Ascher (1999) Subjects: Python (Langage de programmation), Python (linguagem de programação), Python (Computer program language)",
+      "timestamp": "2025-11-10T20:09:39.751990",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Python</B> is an interpreted, high-level, general-purpose programming language. Created by Guido van",
+      "timestamp": "2025-11-10T20:09:39.739135",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Monty Python, also known as the Pythons, were a British comedy troupe formed in 1969 consisting of Graham Chapman, John Cleese, Terry Gilliam, Eric Idle, Terry Jones and Michael Palin. The group came to prominence for the sketch comedy television series Monty Python's Flying Circus, which aired on t...",
+      "timestamp": "2025-11-10T20:09:39.725518",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Cold War history of the United Kingdom",
+      "timestamp": "2025-11-10T20:09:39.712391",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "PYTHON was a Cold War contingency plan of the British Government for the continuity of government in the event of nuclear war.",
+      "timestamp": "2025-11-10T20:09:39.698851",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Research: 'SBDyNetVis: a visualization tool of dynamic network for systems biology model.' by Inoue K (2025 Nov 5)",
+      "timestamp": "2025-11-10T20:08:53.505504",
+      "category": "javascript",
+      "confidence": 0.8,
+      "source": "pubmed",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Research: 'OncotreeVIS-an interactive graphical user interface for visualizing mutation tree cohorts.' by Baciu-Drăgan MA, Beerenwinkel N (2025)",
+      "timestamp": "2025-11-10T20:08:53.489299",
+      "category": "javascript",
+      "confidence": 0.8,
+      "source": "pubmed",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'JSC : A JavaScript Object System' by Artur Ventura - The JSC language is a superset of JavaScript designed to ease the development\nof large web applications. This language extends JavaScripts own object system\nby isolating code in a class declaration, s...",
+      "timestamp": "2025-11-10T20:08:53.476850",
+      "category": "javascript",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'CodeCity for (and by) JavaScript' by Marcos Viana, Andre Hora, Marco Tulio Valente - JavaScript is one of the most popular programming languages on the web.\nDespite the language popularity and the increasing size of JavaScript systems,\nthere is a limited number of visualization tools ...",
+      "timestamp": "2025-11-10T20:08:53.464835",
+      "category": "javascript",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "DJ Javascript (Person) from GB - ambient",
+      "timestamp": "2025-11-10T20:08:53.452693",
+      "category": "javascript",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "JAVASCRIPT from JP - j-electronic",
+      "timestamp": "2025-11-10T20:08:53.440428",
+      "category": "javascript",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Javascript' by Andy Vickler (published 2021)",
+      "timestamp": "2025-11-10T20:08:53.427773",
+      "category": "javascript",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'JavaScript' by David Flanagan (published 1996)",
+      "timestamp": "2025-11-10T20:08:53.415924",
+      "category": "javascript",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "JavaScript (JS) is a programming language and core technology of the Web, alongside HTML and CSS. It was created by Brendan Eich in 1995. Ninety-nine percent of websites use JavaScript on the client side for webpage behavior.",
+      "timestamp": "2025-11-10T20:08:53.404090",
+      "category": "javascript",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>JavaScript</B> library: A <B>JavaScript</B> library is a library of pre-written <B>JavaScript</B> which allows for easier development of",
+      "timestamp": "2025-11-10T20:08:53.392204",
+      "category": "javascript",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>JavaScript</B>: <B>JavaScript</B> (), often abbreviated as JS, is a programming language that conforms to the ECMAScript",
+      "timestamp": "2025-11-10T20:08:53.379958",
+      "category": "javascript",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Official site - JavaScript",
+      "timestamp": "2025-11-10T20:08:53.363535",
+      "category": "javascript",
+      "confidence": 0.7,
+      "source": "duckduckgo_results",
+      "status": "not_verified",
+      "confidence_score": 70,
+      "is_outdated": false
+    },
+    {
+      "fact": "Object-based programming languages",
+      "timestamp": "2025-11-10T20:08:53.351544",
+      "category": "javascript",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "JavaScript is a programming language and core technology of the Web, alongside HTML and CSS. It was created by Brendan Eich in 1995. Ninety-nine percent of websites use JavaScript on the client side for webpage behavior. Web browsers have a dedicated JavaScript engine that executes the client code. These engines are also utilized in some servers and a variety of apps. The most popular runtime system for non-browser usage is Node.js. JavaScript is a high-level, often just-in-time–compiled language that conforms to the ECMAScript standard. It has dynamic typing, prototype-based object-orientation, and first-class functions. It is multi-paradigm, supporting event-driven, functional, and imperative programming styles. It has application programming interfaces for working with text, dates, regular expressions, standard data structures, and the Document Object Model. The ECMAScript standard does not include any input/output, such as networking, storage, or graphics facilities.",
+      "timestamp": "2025-11-10T20:08:53.338847",
+      "category": "javascript",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
     {
       "fact": "JavaScript: by David Flanagan (1996) Subjects: JavaScript (Computer program language), Web servers, Object-oriented programming (Computer science)",
       "timestamp": "2025-11-10T19:50:13.780857",
@@ -31,7 +221,7 @@
       "source": "wikipedia",
       "status": "not_verified",
       "confidence_score": 95,
-      "is_outdated": false
+      "is_outdated": true
     },
     {
       "fact": "JavaScript Category",
@@ -8939,7 +9129,7 @@
       "category": "general",
       "confidence": 0.95,
       "source": "wikipedia",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 95
     },
