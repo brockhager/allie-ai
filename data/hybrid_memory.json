@@ -1,8 +1,68 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T18:24:22.255927",
-  "fact_count": 1034,
+  "saved_at": "2025-11-10T18:35:44.319664",
+  "fact_count": 1040,
   "facts": [
+    {
+      "fact": "The Republican Party, also known as the Grand Old Party (GOP), is a conservative and right-wing political party in the United States. It emerged as the main rival of the Democratic Party in the 1850s, and the two parties have dominated American politics since then.\nThe Republican Party was founded i...",
+      "timestamp": "2025-11-10T18:35:44.317645",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Hunchback of Notre Dame: by Victor Hugo (1831) Subjects: Man-woman relationships, fiction, Translations into English, Sko nlitteratur",
+      "timestamp": "2025-11-10T18:33:55.756924",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Dartmouth <B>College</B> ( DART-məth) is a private Ivy League research university in Hanover, New",
+      "timestamp": "2025-11-10T18:33:55.744110",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "A college (Latin: collegium) may be a tertiary educational institution (sometimes awarding degrees), part of a collegiate university, an institution offering vocational education, a further education institution, or a secondary school.\nIn most of the world, a college may be a high school or secondar...",
+      "timestamp": "2025-11-10T18:33:55.731654",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Community college - A community college is a type of undergraduate higher education institution, generally leading to an associate degree, certificate, or diploma.",
+      "timestamp": "2025-11-10T18:33:55.718676",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "A college may be a tertiary educational institution, part of a collegiate university, an institution offering vocational education, a further education institution, or a secondary school. In most of the world, a college may be a high school or secondary school, a college of further education, a training institution that awards trade qualifications, a higher-education provider that does not have university status, or a constituent part of a university. In the United States, a college may offer undergraduate programs – either as an independent institution or as the undergraduate program of a university – or it may be a residential college of a university or a community college, referring to higher education institutions that aim to provide affordable and accessible education, usually limited to two-year associate degrees.",
+      "timestamp": "2025-11-10T18:33:55.704521",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "Java is a programming language",
       "timestamp": "2025-11-10T18:24:22.254190",

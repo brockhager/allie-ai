@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Allie — Knowledge Base</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:16px;color:#111}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px;border:1px solid #ddd}
+    th{background:#f4f4f4;text-align:left}
+    .toolbar{margin-bottom:12px}
+    .btn{padding:8px 10px;border-radius:6px;background:#2b6cb0;color:#fff;border:none;cursor:pointer}
+    .input{padding:6px;border:1px solid #ccc;border-radius:6px}
+  </style>
+</head>
+<body>
+  <h1>Knowledge Base</h1>
+  <div class="toolbar">
+    <input id="filterStatus" class="input" placeholder="Filter status (true,false,not_verified)" />
+    <button id="refreshBtn" class="btn">Refresh</button>
+    <button id="newBtn" class="btn">Add Fact</button>
+  </div>
+  <div id="tableWrap">Loading...</div>
+
+  <!-- Simple modal for add/edit -->
+  <div id="modal" style="display:none;position:fixed;left:50%;top:20%;transform:translateX(-50%);background:#fff;border:1px solid #ccc;padding:12px;box-shadow:0 8px 40px rgba(0,0,0,0.2)">
+    <h3 id="modalTitle">Add KB Fact</h3>
+    <div style="display:flex;flex-direction:column;gap:8px;max-width:800px">
+      <input id="m_keyword" class="input" placeholder="keyword" />
+      <textarea id="m_fact" rows="6" class="input" placeholder="fact"></textarea>
+      <input id="m_source" class="input" placeholder="source" />
+      <select id="m_status" class="input"><option value="true">true</option><option value="false">false</option><option value="not_verified">not_verified</option><option value="needs_review">needs_review</option><option value="experimental">experimental</option></select>
+      <input id="m_conf" class="input" type="number" value="90" min="0" max="100" />
+      <div style="display:flex;gap:8px"><button id="m_save" class="btn">Save</button><button id="m_cancel" class="btn" style="background:#777">Cancel</button></div>
+    </div>
+  </div>
+
+<script>
+async function fetchKB(status){
+  const qs = status ? `?status=${encodeURIComponent(status)}` : '';
+  const res = await fetch('/api/kb' + qs);
+  if(!res.ok) throw new Error('Failed to fetch');
+  return res.json();
+}
+
+function renderTable(data){
+  const rows = data.facts.map(r=>`<tr data-id="${r.id}"><td>${r.id}</td><td>${r.keyword}</td><td>${r.fact}</td><td>${r.source}</td><td>${r.status}</td><td>${r.confidence_score}</td><td>${r.updated_at}</td><td><button class="edit">Edit</button> <button class="del">Delete</button></td></tr>`).join('');
+  document.getElementById('tableWrap').innerHTML = `<table><thead><tr><th>ID</th><th>Keyword</th><th>Fact</th><th>Source</th><th>Status</th><th>Confidence</th><th>Updated</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.querySelectorAll('button.edit').forEach(b=>b.onclick = onEdit);
+  document.querySelectorAll('button.del').forEach(b=>b.onclick = onDelete);
+}
+
+async function refresh(){
+  try{
+    const status = document.getElementById('filterStatus').value.trim();
+    const data = await fetchKB(status || undefined);
+    renderTable(data);
+  }catch(e){document.getElementById('tableWrap').textContent = 'Failed to load: '+e}
+}
+
+function showModal(edit){
+  document.getElementById('modal').style.display = 'block';
+  document.getElementById('modalTitle').textContent = edit ? 'Edit KB Fact':'Add KB Fact';
+  if(!edit){document.getElementById('m_keyword').value='';document.getElementById('m_fact').value='';document.getElementById('m_source').value='internal';document.getElementById('m_conf').value='90';}
+}
+
+function hideModal(){document.getElementById('modal').style.display='none';}
+
+let editingId = null;
+async function onEdit(e){
+  const tr = e.target.closest('tr'); editingId = tr.dataset.id;
+  const cells = tr.children;
+  document.getElementById('m_keyword').value = cells[1].textContent;
+  document.getElementById('m_fact').value = cells[2].textContent;
+  document.getElementById('m_source').value = cells[3].textContent;
+  document.getElementById('m_status').value = cells[4].textContent;
+  document.getElementById('m_conf').value = cells[5].textContent;
+  showModal(true);
+}
+async function onDelete(e){
+  if(!confirm('Delete this KB fact?')) return;
+  const id = e.target.closest('tr').dataset.id;
+  const res = await fetch('/api/kb/'+id, { method: 'DELETE' });
+  if(!res.ok){ alert('Delete failed'); return; }
+  await refresh();
+}
+
+document.getElementById('refreshBtn').onclick = refresh;
+document.getElementById('newBtn').onclick = ()=>{ editingId=null; showModal(false); };
+document.getElementById('m_cancel').onclick = hideModal;
+
+document.getElementById('m_save').onclick = async ()=>{
+  const payload = { keyword: document.getElementById('m_keyword').value.trim(), fact: document.getElementById('m_fact').value.trim(), source: document.getElementById('m_source').value.trim(), status: document.getElementById('m_status').value, confidence_score: Number(document.getElementById('m_conf').value) };
+  if(!payload.keyword || !payload.fact){ alert('keyword and fact required'); return; }
+  if(editingId){
+    const res = await fetch('/api/kb/'+editingId, { method: 'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    if(!res.ok) alert('Update failed');
+  } else {
+    const res = await fetch('/api/kb', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    if(!res.ok) alert('Create failed');
+  }
+  hideModal();
+  await refresh();
+}
+
+// initial load
+refresh();
+</script>
+</body>
+</html>

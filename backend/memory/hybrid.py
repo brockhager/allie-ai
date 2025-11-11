@@ -10,12 +10,21 @@ import json
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Set
 from datetime import datetime
+import sys
 
 from .linked_list_impl import FactLinkedList, FactNode
 from .index import KeywordIndex
 from .db import MemoryDB
 
 logger = logging.getLogger(__name__)
+
+# Import disambiguation engine from advanced-memory directory
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "advanced-memory"))
+try:
+    from disambiguation import DisambiguationEngine
+except ImportError:
+    logger.warning("DisambiguationEngine not available")
+    DisambiguationEngine = None
 
 
 class HybridMemory:
@@ -43,6 +52,12 @@ class HybridMemory:
         
         # Initialize MySQL database connector
         self.db = MemoryDB()
+        
+        # Initialize disambiguation engine
+        if DisambiguationEngine:
+            self.disambiguation_engine = DisambiguationEngine()
+        else:
+            self.disambiguation_engine = None
         
         # Track fact topics for conflict detection
         self.fact_topics: Dict[str, FactNode] = {}  # topic -> latest fact node
@@ -219,23 +234,27 @@ class HybridMemory:
         
         return None
     
-    def search(self, query: str, limit: int = 5) -> List[Dict[str, Any]]:
+    def search(self, query: str, limit: int = 5, include_disambiguation: bool = False) -> Dict[str, Any]:
         """
         Search for facts matching the query
         
         Args:
             query: The search query
             limit: Maximum number of results
+            include_disambiguation: Whether to check for ambiguous queries
         
         Returns:
-            List of fact dictionaries
+            Dictionary with:
+            - results: List of fact dictionaries
+            - disambiguation: Disambiguation info (if include_disambiguation=True)
+            - fact_check_warnings: List of fact-check warnings
         """
         # First, try MySQL search (authoritative source)
         db_results = self.db.search_facts(query, limit=limit)
         
+        results = []
         if db_results:
             # Convert MySQL results to expected format
-            results = []
             for db_fact in db_results:
                 results.append({
                     "fact": db_fact["fact"],
@@ -248,22 +267,32 @@ class HybridMemory:
                     "is_outdated": False,
                     "keyword": db_fact["keyword"]
                 })
-            return results
+        else:
+            # Fallback to in-memory index search (legacy support)
+            matching_nodes = self.index.search(query, include_outdated=False)
+            
+            # Convert to dictionaries and limit results
+            for node in matching_nodes[:limit]:
+                result = node.to_dict()
+                result["keywords_matched"] = len(
+                    self.index.extract_keywords(query) & 
+                    self.index.extract_keywords(node.fact)
+                )
+                results.append(result)
         
-        # Fallback to in-memory index search (legacy support)
-        matching_nodes = self.index.search(query, include_outdated=False)
+        # Prepare response
+        response = {
+            "results": results,
+            "disambiguation": None,
+            "fact_check_warnings": []
+        }
         
-        # Convert to dictionaries and limit results
-        results = []
-        for node in matching_nodes[:limit]:
-            result = node.to_dict()
-            result["keywords_matched"] = len(
-                self.index.extract_keywords(query) & 
-                self.index.extract_keywords(node.fact)
-            )
-            results.append(result)
+        # Check for disambiguation if requested
+        if include_disambiguation and self.disambiguation_engine:
+            disambiguation = self.disambiguation_engine.detect_ambiguity(query, results)
+            response["disambiguation"] = disambiguation
         
-        return results
+        return response
     
     def get_timeline(self, include_outdated: bool = False) -> List[Dict[str, Any]]:
         """

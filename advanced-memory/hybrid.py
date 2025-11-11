@@ -10,6 +10,10 @@ import os
 sys.path.insert(0, os.path.dirname(__file__))
 
 from disambiguation import DisambiguationEngine
+try:
+	from db import AllieMemoryDB
+except Exception:
+	AllieMemoryDB = None
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +38,13 @@ class HybridMemory:
 
 		self.facts: List[Dict[str, Any]] = []
 		self.disambiguation_engine = DisambiguationEngine()
+		# Optional DB-backed Knowledge Base
+		self.db = None
+		if AllieMemoryDB:
+			try:
+				self.db = AllieMemoryDB()
+			except Exception as e:
+				logger.warning(f"AdvancedHybrid: could not initialize AllieMemoryDB: {e}")
 		self._load()
 
 	def _load(self):
@@ -126,6 +137,29 @@ class HybridMemory:
 		}
 		"""
 		q = (query or "").lower()
+
+		# 1) Check curated Knowledge Base first (if DB available)
+		if self.db:
+			try:
+				kb = self.db.get_kb_fact(query)
+				if kb:
+					# If KB marks as true, return immediately with high confidence
+					if kb.get('status') == 'true':
+						res = [{
+							'fact': kb.get('fact'),
+							'category': 'knowledge_base',
+							'confidence': kb.get('confidence_score', 90) / 100.0,
+							'source': kb.get('source', 'knowledge_base'),
+							'status': kb.get('status'),
+							'confidence_score': kb.get('confidence_score', 90),
+							'provenance': kb.get('provenance')
+						}]
+						return {"results": res, "disambiguation": None, "fact_check_warnings": []}
+					# If KB marks false, exclude and note
+					if kb.get('status') == 'false':
+						return {"results": [], "disambiguation": None, "fact_check_warnings": [f"Knowledge Base marks '{query}' as false"]}
+			except Exception:
+				pass
 		if not q:
 			return {"results": [], "disambiguation": None, "fact_check_warnings": []}
 
@@ -231,6 +265,17 @@ class HybridMemory:
 				facts_added.append(ext_norm)
 
 		self._save()
+
+		# If DB-backed KB available, enqueue conflicts for human review
+		if self.db and conflicts:
+			for c in conflicts:
+				new_fact = c.get('new')
+				keyword = query
+				try:
+					self.db.add_learning_queue(keyword, new_fact, source, confidence=0.3, provenance={'conflict_with': c.get('old')})
+				except Exception:
+					logger.exception('Failed to add conflict to learning_queue')
+
 		return {
 			"conflicts_found": len(conflicts),
 			"facts_updated": conflicts,

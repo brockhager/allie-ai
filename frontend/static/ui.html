@@ -122,9 +122,10 @@
     <div class="header">
       <div style="font-weight:600" id="convTitle">Allie</div>
       <div style="flex:1"></div>
-      <button id="exportAllBtn" class="secondary">Export All</button>
-      <button id="exportBtn" class="secondary">Export</button>
-  <button id="quickTeachBtn" class="secondary">Quick Teach</button>
+    <button id="exportAllBtn" class="secondary" tabindex="0" aria-label="Export all conversations">Export All</button>
+    <button id="exportBtn" class="secondary" tabindex="0" aria-label="Export current conversation">Export</button>
+  <button id="quickTeachBtn" class="secondary" tabindex="0" aria-label="Quick teach panel">Quick Teach</button>
+  <button id="kbBtn" class="secondary" tabindex="0" role="tab" aria-controls="kbPanel" aria-selected="false" aria-label="Open Knowledge Base" title="Knowledge Base (opens inside the app)">Knowledge Base</button>
       <input id="importAllFile" type="file" style="display:none" accept=".json"/>
       <button id="importAllBtn" class="secondary">Import All</button>
 
@@ -178,6 +179,14 @@
         </div>
 
         <div id="qtStatus" class="feedback" style="display:none;margin-top:12px"></div>
+      </div>
+    </div>
+
+    <!-- Knowledge Base panel (hidden by default) -->
+    <div id="kbPanel" style="display:none;padding:16px;overflow:auto;">
+      <div style="max-width:100%;margin:0 auto">
+        <h2 style="margin:0 0 8px 0;color:var(--accent)">Knowledge Base</h2>
+        <iframe id="kbIframe" src="/frontend/static/kb.html" style="width:100%;height:70vh;border:1px solid rgba(0,0,0,0.06);border-radius:6px"></iframe>
       </div>
     </div>
 
@@ -1183,27 +1192,47 @@ function updateLearningStatus(status) {
 
   statusEl.textContent = 'Ready';
   addLearningActivity('System ready and monitoring active', 'success');
-  // Quick Teach button
-  // Toggle between Chat and Quick Teach panels
+  // Quick Teach / Knowledge Base button
+  // Toggle between Chat, Quick Teach and Knowledge Base panels
   let currentPanel = 'chat';
   const quickTeachBtnEl = document.getElementById('quickTeachBtn');
+  const kbBtnEl = document.getElementById('kbBtn');
   const chatPanelEl = document.getElementById('chatPanel');
   const quickTeachPanelEl = document.getElementById('quickTeachPanel');
+  const kbPanelEl = document.getElementById('kbPanel');
 
   function showPanel(name){
     currentPanel = name;
+    // hide all
+    chatPanelEl.style.display = 'none';
+    quickTeachPanelEl.style.display = 'none';
+    kbPanelEl.style.display = 'none';
+    // reset active styles
+    quickTeachBtnEl.classList.remove('active');
+    if (kbBtnEl) kbBtnEl.classList.remove('active');
+    if (kbBtnEl) kbBtnEl.setAttribute('aria-selected', 'false');
+
     if (name === 'quick_teach'){
-      chatPanelEl.style.display = 'none';
       quickTeachPanelEl.style.display = 'block';
       quickTeachBtnEl.classList.add('active');
+    } else if (name === 'kb'){
+      kbPanelEl.style.display = 'block';
+      if (kbBtnEl) kbBtnEl.classList.add('active');
+      if (kbBtnEl) kbBtnEl.setAttribute('aria-selected', 'true');
     } else {
-      chatPanelEl.style.display = 'block';
-      quickTeachPanelEl.style.display = 'none';
-      quickTeachBtnEl.classList.remove('active');
+      chatPanelEl.style.display = 'flex';
     }
   }
 
   quickTeachBtnEl.onclick = () => { showPanel(currentPanel === 'chat' ? 'quick_teach' : 'chat'); };
+  if (kbBtnEl) kbBtnEl.onclick = () => { showPanel(currentPanel === 'kb' ? 'chat' : 'kb'); };
+
+  // Keyboard accessibility: Enter / Space activate the button
+  if (kbBtnEl) kbBtnEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault(); kbBtnEl.click();
+    }
+  });
 })();
 </script>
 </body>

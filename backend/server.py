@@ -8,7 +8,7 @@ import asyncio
 import sys
 
 import httpx
-from fastapi import FastAPI, Body, HTTPException
+from fastapi import FastAPI, Body, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 
@@ -1560,6 +1560,31 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
         if facts_stored:
             multi_source_results["facts_stored_this_query"] = facts_stored
         
+        # Check for disambiguation with external source results
+        if multi_source_results.get("success"):
+            # Build search results for disambiguation from all sources
+            search_results_for_disambiguation = []
+            
+            # Add results from all sources
+            all_results = multi_source_results.get("all_results", {})
+            for source_name, source_data in all_results.items():
+                if source_data.get("success") and source_data.get("results"):
+                    for result in source_data["results"]:
+                        search_results_for_disambiguation.append({
+                            "text": result.get("text", ""),
+                            "source": source_name,
+                            "title": result.get("title", ""),
+                            "confidence": result.get("confidence", 0.8)
+                        })
+            
+            # Use disambiguation engine if available
+            if hybrid_memory.disambiguation_engine and search_results_for_disambiguation:
+                disambiguation = hybrid_memory.disambiguation_engine.detect_ambiguity(
+                    prompt, 
+                    search_results_for_disambiguation
+                )
+                logger.info(f"Disambiguation check: is_ambiguous={disambiguation.get('is_ambiguous')}, interpretations={len(disambiguation.get('interpretations', []))}")
+        
         # For backward compatibility, set web_results if DuckDuckGo succeeded
         if multi_source_results and "duckduckgo" in multi_source_results.get("sources_used", []):
             ddg_data = multi_source_results["all_results"].get("duckduckgo", {})
@@ -1795,8 +1820,11 @@ Give clear, direct answers. Be conversational and natural."""
         # Wikipedia URLs
         if "wikipedia" in multi_source_results.get("sources_used", []):
             wiki_data = all_results.get("wikipedia", {})
-            if wiki_data.get("success") and wiki_data.get("url"):
-                source_info.append(f"📖 Wikipedia: {wiki_data['url']}")
+            if wiki_data.get("success") and wiki_data.get("results"):
+                for result in wiki_data["results"][:1]:  # Top result
+                    url = result.get("url", "")
+                    if url:
+                        source_info.append(f"📖 Wikipedia: {url}")
 
         # DuckDuckGo URLs (use the search results)
         if "duckduckgo" in multi_source_results.get("sources_used", []):
@@ -1810,9 +1838,29 @@ Give clear, direct answers. Be conversational and natural."""
         # Wikidata URLs
         if "wikidata" in multi_source_results.get("sources_used", []):
             wikidata_data = all_results.get("wikidata", {})
-            if wikidata_data.get("success") and wikidata_data.get("entity_id"):
-                entity_id = wikidata_data["entity_id"]
-                source_info.append(f"🗂️ Wikidata: https://www.wikidata.org/wiki/{entity_id}")
+            if wikidata_data.get("success") and wikidata_data.get("results"):
+                for result in wikidata_data["results"][:1]:  # Top result
+                    url = result.get("url", "")
+                    if url:
+                        source_info.append(f"🗂️ Wikidata: {url}")
+
+        # OpenLibrary URLs
+        if "openlibrary" in multi_source_results.get("sources_used", []):
+            openlibrary_data = all_results.get("openlibrary", {})
+            if openlibrary_data.get("success") and openlibrary_data.get("results"):
+                for result in openlibrary_data["results"][:1]:  # Top result
+                    url = result.get("url", "")
+                    if url:
+                        source_info.append(f"� OpenLibrary: {url}")
+
+        # DBpedia URLs
+        if "dbpedia" in multi_source_results.get("sources_used", []):
+            dbpedia_data = all_results.get("dbpedia", {})
+            if dbpedia_data.get("success") and dbpedia_data.get("results"):
+                for result in dbpedia_data["results"][:1]:  # Top result
+                    url = result.get("url", "")
+                    if url:
+                        source_info.append(f"🔗 DBpedia: {url}")
 
     elif relevant_facts and len(relevant_facts) > 0:
         # Memory-based response - medium confidence
@@ -2111,7 +2159,8 @@ async def request_better_answer(payload: Dict[str, Any] = Body(...)):
 async def search_hybrid_memory(query: str, limit: int = 10):
     """Search the hybrid memory system"""
     try:
-        results = hybrid_memory.search(query, limit=limit)
+        search_result = hybrid_memory.search(query, limit=limit)
+        results = search_result.get("results", [])
         return {
             "query": query,
             "count": len(results),
@@ -2119,6 +2168,156 @@ async def search_hybrid_memory(query: str, limit: int = 10):
         }
     except Exception as e:
         logger.error(f"Error searching hybrid memory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/kb")
+async def list_kb(status: str = None, limit: int = 100, offset: int = 0):
+    """List Knowledge Base facts with optional status filter"""
+    try:
+        # If status provided, filter; otherwise return paginated list
+        if status:
+            # Using advanced_memory DB connector
+            cursor = advanced_memory.connection.cursor(dictionary=True)
+            cursor.execute("SELECT id, keyword, fact, source, status, confidence_score, provenance, updated_at FROM knowledge_base WHERE status = %s ORDER BY updated_at DESC LIMIT %s OFFSET %s", (status, limit, offset))
+            rows = cursor.fetchall()
+            cursor.close()
+            return {"count": len(rows), "facts": rows}
+        else:
+            cursor = advanced_memory.connection.cursor(dictionary=True)
+            cursor.execute("SELECT id, keyword, fact, source, status, confidence_score, provenance, updated_at FROM knowledge_base ORDER BY updated_at DESC LIMIT %s OFFSET %s", (limit, offset))
+            rows = cursor.fetchall()
+            cursor.close()
+            return {"count": len(rows), "facts": rows}
+    except Exception as e:
+        logger.error(f"Error listing KB facts: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/kb")
+async def create_kb_fact(payload: dict):
+    """Create a new KB fact (admin)"""
+    try:
+        keyword = payload.get('keyword')
+        fact = payload.get('fact')
+        source = payload.get('source', 'admin')
+        status = payload.get('status', 'true')
+        confidence_score = int(payload.get('confidence_score', 90))
+        provenance = payload.get('provenance')
+        res = advanced_memory.add_kb_fact(keyword, fact, source=source, confidence_score=confidence_score, provenance=provenance, status=status)
+        return res
+    except Exception as e:
+        logger.error(f"Error creating KB fact: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.patch("/api/kb/{kb_id}")
+async def patch_kb_fact(kb_id: int, payload: dict):
+    try:
+        new_fact = payload.get('fact')
+        status = payload.get('status')
+        confidence = payload.get('confidence_score')
+        reviewer = payload.get('reviewer')
+        reason = payload.get('reason')
+        res = advanced_memory.update_kb_fact(kb_id, new_fact=new_fact, status=status, confidence_score=confidence, reviewer=reviewer, reason=reason)
+        return res
+    except Exception as e:
+        logger.error(f"Error updating KB fact: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/kb/{kb_id}")
+async def delete_kb_fact(kb_id: int, reviewer: str = None, reason: str = None):
+    try:
+        res = advanced_memory.delete_kb_fact(kb_id, reviewer=reviewer, reason=reason)
+        return res
+    except Exception as e:
+        logger.error(f"Error deleting KB fact: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Role check helper (very simple header-based RBAC)
+def _is_admin(request) -> bool:
+    # Accept header 'X-User-Role: admin' for admin operations
+    try:
+        role = request.headers.get('X-User-Role', '')
+        return role.lower() == 'admin'
+    except Exception:
+        return False
+
+
+@app.get("/api/knowledge-base")
+async def api_kb_list(request, status: str = None, limit: int = 100, offset: int = 0):
+    """Return KB facts as JSON (paginated)."""
+    try:
+        rows = advanced_memory.get_all_kb_facts(status=status, limit=limit, offset=offset)
+        return {"count": len(rows), "facts": rows}
+    except Exception as e:
+        logger.error(f"Error listing KB: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/knowledge-base/{kb_id}")
+async def api_kb_get(request, kb_id: int):
+    try:
+        cursor = advanced_memory.connection.cursor(dictionary=True)
+        cursor.execute("SELECT id, keyword, fact, source, status, confidence_score, provenance, updated_at FROM knowledge_base WHERE id = %s", (kb_id,))
+        row = cursor.fetchone()
+        cursor.close()
+        if not row:
+            raise HTTPException(status_code=404, detail="KB fact not found")
+        return row
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting KB fact: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/knowledge-base")
+async def api_kb_create(request, payload: dict):
+    if not _is_admin(request):
+        raise HTTPException(status_code=403, detail="admin role required")
+    try:
+        keyword = payload.get('keyword')
+        fact = payload.get('fact')
+        source = payload.get('source', 'admin')
+        status = payload.get('status', 'true')
+        confidence_score = int(payload.get('confidence_score', 90))
+        provenance = payload.get('provenance')
+        res = advanced_memory.add_kb_fact(keyword, fact, source=source, confidence_score=confidence_score, provenance=provenance, status=status)
+        return res
+    except Exception as e:
+        logger.error(f"Error creating KB fact: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.patch("/api/knowledge-base/{kb_id}")
+async def api_kb_patch(request, kb_id: int, payload: dict):
+    if not _is_admin(request):
+        raise HTTPException(status_code=403, detail="admin role required")
+    try:
+        new_fact = payload.get('fact')
+        status_val = payload.get('status')
+        confidence = payload.get('confidence_score')
+        reviewer = payload.get('reviewer')
+        reason = payload.get('reason')
+        res = advanced_memory.update_kb_fact(kb_id, new_fact=new_fact, status=status_val, confidence_score=confidence, reviewer=reviewer, reason=reason)
+        return res
+    except Exception as e:
+        logger.error(f"Error updating KB fact: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/knowledge-base/{kb_id}")
+async def api_kb_delete(request, kb_id: int):
+    if not _is_admin(request):
+        raise HTTPException(status_code=403, detail="admin role required")
+    try:
+        res = advanced_memory.delete_kb_fact(kb_id, reviewer=request.headers.get('X-User', None), reason='api_delete')
+        return res
+    except Exception as e:
+        logger.error(f"Error deleting KB fact: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/hybrid-memory/timeline")

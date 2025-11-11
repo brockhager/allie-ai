@@ -6,6 +6,7 @@ Provides persistent storage with self-correcting capabilities and learning histo
 """
 
 import mysql.connector
+import json
 from mysql.connector import Error
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
@@ -113,12 +114,15 @@ class AllieMemoryDB:
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS learning_log (
                 id INT AUTO_INCREMENT PRIMARY KEY,
+                fact_id INT DEFAULT NULL,
                 keyword VARCHAR(255) NOT NULL,
                 old_fact TEXT,
                 new_fact TEXT NOT NULL,
                 source VARCHAR(255) NOT NULL,
                 confidence FLOAT,
                 change_type ENUM('add', 'update', 'delete', 'validate') DEFAULT 'add',
+                reviewer VARCHAR(255) DEFAULT NULL,
+                reason TEXT DEFAULT NULL,
                 changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 INDEX idx_keyword (keyword),
                 INDEX idx_changed_at (changed_at)
@@ -168,6 +172,25 @@ class AllieMemoryDB:
         
         cursor.close()
         logger.info("Database tables initialized successfully")
+
+        # Create knowledge_base table if it doesn't exist
+        cursor = self.connection.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS knowledge_base (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                keyword VARCHAR(255) NOT NULL,
+                fact TEXT NOT NULL,
+                source VARCHAR(255) DEFAULT 'internal',
+                status ENUM('true','false','not_verified','needs_review','experimental') DEFAULT 'true',
+                confidence_score INT DEFAULT 90,
+                provenance JSON DEFAULT NULL,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX idx_kb_keyword (keyword),
+                INDEX idx_kb_status (status),
+                INDEX idx_kb_confidence (confidence_score)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+        """)
+        cursor.close()
     
     def add_fact(self, keyword: str, fact: str, source: str, 
                  confidence: float = 0.8, category: str = 'general',
@@ -386,6 +409,168 @@ class AllieMemoryDB:
                 
         except Error as e:
             logger.error(f"Error deleting fact: {e}")
+            return {"status": "error", "message": str(e)}
+
+    # ------------------ Knowledge Base Methods ------------------
+    def add_kb_fact(self, keyword: str, fact: str, source: str = 'internal', confidence_score: int = 90, provenance: Optional[Dict] = None, status: str = 'true') -> Dict:
+        """Add a fact to the curated Knowledge Base and log the change"""
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT id, fact FROM knowledge_base WHERE keyword = %s", (keyword,))
+            existing = cursor.fetchone()
+            if existing:
+                # If different, update
+                    existing_id, existing_fact = existing
+                    if existing_fact != fact:
+                        cursor.execute("""
+                            UPDATE knowledge_base SET fact=%s, source=%s, confidence_score=%s, provenance=%s, status=%s, updated_at=CURRENT_TIMESTAMP WHERE id=%s
+                        """, (fact, source, confidence_score, json.dumps(provenance) if provenance else None, status, existing_id))
+                        # Log
+                        cursor.execute("""
+                            INSERT INTO learning_log (fact_id, keyword, old_fact, new_fact, source, confidence, change_type)
+                            VALUES (%s, %s, %s, %s, %s, %s, 'update')
+                        """, (existing_id, keyword, existing_fact, fact, source, confidence_score))
+                        cursor.close()
+                        return {"status": "updated", "fact_id": existing_id}
+                    else:
+                        cursor.close()
+                        return {"status": "exists", "fact_id": existing[0]}
+
+            cursor.execute("""
+                INSERT INTO knowledge_base (keyword, fact, source, status, confidence_score, provenance)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (keyword, fact, source, status, confidence_score, json.dumps(provenance) if provenance else None))
+            kb_id = cursor.lastrowid
+            cursor.execute("""
+                INSERT INTO learning_log (fact_id, keyword, old_fact, new_fact, source, confidence, change_type)
+                VALUES (%s, %s, %s, %s, %s, %s, 'add')
+            """, (kb_id, keyword, None, fact, source, confidence_score))
+            cursor.close()
+            return {"status": "added", "fact_id": kb_id}
+        except Error as e:
+            logger.error(f"Error adding KB fact: {e}")
+            return {"status": "error", "message": str(e)}
+
+    def get_kb_fact(self, keyword: str) -> Optional[Dict]:
+        """Retrieve a KB fact by keyword (exact match)"""
+        try:
+            cursor = self.connection.cursor(dictionary=True)
+            cursor.execute("""
+                SELECT id, keyword, fact, source, status, confidence_score, provenance, updated_at
+                FROM knowledge_base
+                WHERE keyword = %s
+                ORDER BY updated_at DESC
+                LIMIT 1
+            """, (keyword,))
+            res = cursor.fetchone()
+            cursor.close()
+            return res
+        except Error as e:
+            logger.error(f"Error retrieving KB fact: {e}")
+            return None
+
+    def get_all_kb_facts(self, status: Optional[str] = None, limit: int = 100, offset: int = 0) -> List[Dict]:
+        """Return all KB facts, optionally filtered by status, with pagination."""
+        try:
+            cursor = self.connection.cursor(dictionary=True)
+            if status:
+                cursor.execute("""
+                    SELECT id, keyword, fact, source, status, confidence_score, provenance, updated_at
+                    FROM knowledge_base
+                    WHERE status = %s
+                    ORDER BY updated_at DESC
+                    LIMIT %s OFFSET %s
+                """, (status, limit, offset))
+            else:
+                cursor.execute("""
+                    SELECT id, keyword, fact, source, status, confidence_score, provenance, updated_at
+                    FROM knowledge_base
+                    ORDER BY updated_at DESC
+                    LIMIT %s OFFSET %s
+                """, (limit, offset))
+            rows = cursor.fetchall()
+            cursor.close()
+            return rows
+        except Error as e:
+            logger.error(f"Error listing KB facts: {e}")
+            return []
+
+    def update_kb_fact(self, kb_id: int, new_fact: str = None, status: str = None, confidence_score: int = None, reviewer: str = None, reason: str = None) -> Dict:
+        """Update a KB fact by id and log the change"""
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT fact, keyword FROM knowledge_base WHERE id = %s", (kb_id,))
+            existing = cursor.fetchone()
+            if not existing:
+                cursor.close()
+                return {"status": "not_found", "fact_id": kb_id}
+            old_fact, keyword = existing
+            updates = []
+            params = []
+            if new_fact is not None:
+                updates.append("fact = %s")
+                params.append(new_fact)
+            if status is not None:
+                updates.append("status = %s")
+                params.append(status)
+            if confidence_score is not None:
+                updates.append("confidence_score = %s")
+                params.append(confidence_score)
+            if updates:
+                params.append(kb_id)
+                sql = f"UPDATE knowledge_base SET {', '.join(updates)}, updated_at = CURRENT_TIMESTAMP WHERE id = %s"
+                cursor.execute(sql, tuple(params))
+
+            # Log
+            cursor.execute("""
+                INSERT INTO learning_log (fact_id, keyword, old_fact, new_fact, source, confidence, change_type, reviewer, reason)
+                VALUES (%s, %s, %s, %s, %s, %s, 'update', %s, %s)
+            """, (kb_id, keyword, old_fact, new_fact or old_fact, 'kb_admin', confidence_score if confidence_score is not None else None, reviewer, reason))
+
+            cursor.close()
+            return {"status": "updated", "fact_id": kb_id}
+        except Error as e:
+            logger.error(f"Error updating KB fact: {e}")
+            return {"status": "error", "message": str(e)}
+
+    def delete_kb_fact(self, kb_id: int, reviewer: str = None, reason: str = None) -> Dict:
+        """Delete a KB fact and log the deletion"""
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT fact, keyword FROM knowledge_base WHERE id = %s", (kb_id,))
+            existing = cursor.fetchone()
+            if not existing:
+                cursor.close()
+                return {"status": "not_found", "fact_id": kb_id}
+            old_fact, keyword = existing
+            cursor.execute("DELETE FROM knowledge_base WHERE id = %s", (kb_id,))
+            cursor.execute("""
+                INSERT INTO learning_log (fact_id, keyword, old_fact, new_fact, source, change_type, reviewer, reason)
+                VALUES (%s, %s, %s, '', %s, 'delete', %s, %s)
+            """, (kb_id, keyword, old_fact, 'kb_admin', reviewer, reason))
+            cursor.close()
+            return {"status": "deleted", "fact_id": kb_id}
+        except Error as e:
+            logger.error(f"Error deleting KB fact: {e}")
+            return {"status": "error", "message": str(e)}
+
+    def add_learning_queue(self, keyword: str, fact: str, source: str, confidence: float = 0.3, category: str = 'general', provenance: Optional[Dict] = None) -> Dict:
+        """Insert an item into learning_queue table"""
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("""
+                INSERT INTO learning_queue (keyword, fact, source, confidence, category)
+                VALUES (%s, %s, %s, %s, %s)
+            """, (keyword, fact, source, confidence, category))
+            qid = cursor.lastrowid
+            cursor.execute("""
+                INSERT INTO learning_log (keyword, old_fact, new_fact, source, confidence, change_type)
+                VALUES (%s, %s, %s, %s, %s, 'add')
+            """, (keyword, '', fact, source, confidence))
+            cursor.close()
+            return {"status": "queued", "queue_id": qid}
+        except Error as e:
+            logger.error(f"Error adding to learning queue: {e}")
             return {"status": "error", "message": str(e)}
     
     def timeline(self, limit: int = 100, include_deleted: bool = False) -> List[Dict]:
