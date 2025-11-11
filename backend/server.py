@@ -2521,43 +2521,48 @@ async def get_fact(fact_id: int):
 
 @app.put("/api/facts/{fact_id}")
 async def update_fact_status(fact_id: int, payload: Dict[str, Any] = Body(...)):
-    """Update a fact's status (for UI compatibility)"""
+    """Update a fact's status and/or confidence in the database"""
     try:
-        status = payload.get("status", "active")
-        confidence = payload.get("confidence")
+        status = payload.get("status")
+        confidence_score = payload.get("confidence_score")
         
-        timeline = hybrid_memory.get_timeline(include_outdated=True)
-        if fact_id < 1 or fact_id > len(timeline):
-            raise HTTPException(status_code=404, detail="Fact not found")
+        # Validate inputs
+        if not status and confidence_score is None:
+            raise HTTPException(status_code=400, detail="Must provide status or confidence_score")
         
-        fact_data = timeline[fact_id - 1]
-        old_fact = fact_data["fact"]
+        # Validate status value
+        if status and status not in ['true', 'false', 'not_verified', 'needs_review', 'experimental']:
+            raise HTTPException(status_code=400, detail=f"Invalid status: {status}. Must be one of: true, false, not_verified, needs_review, experimental")
         
-        # For now, we'll mark facts as outdated by updating them
-        if status == "outdated":
-            success = hybrid_memory.update_fact(old_fact, old_fact, source="user_review", mark_outdated=True)
-        elif confidence is not None:
-            # Update confidence by re-adding with new confidence
-            success = hybrid_memory.add_fact(
-                old_fact, 
-                category=fact_data["category"],
-                confidence=float(confidence),
-                source="user_review"
-            )
-        else:
-            success = True  # No change needed
+        # Validate confidence_score range
+        if confidence_score is not None:
+            confidence_score = int(confidence_score)
+            if confidence_score < 0 or confidence_score > 100:
+                raise HTTPException(status_code=400, detail="Confidence score must be between 0 and 100")
         
-        if success:
+        # Update fact status in database
+        result = advanced_memory.update_fact_status(fact_id, status or 'not_verified', confidence_score)
+        
+        if result.get("status") == "not_found":
+            raise HTTPException(status_code=404, detail=f"Fact {fact_id} not found")
+        elif result.get("status") == "error":
+            raise HTTPException(status_code=500, detail=result.get("message", "Database error"))
+        elif result.get("status") == "updated":
             return {
                 "status": "success",
                 "fact_id": fact_id,
-                "message": f"Fact {fact_id} updated"
+                "new_status": result.get("new_status"),
+                "new_confidence_score": result.get("new_confidence_score"),
+                "message": f"Fact {fact_id} updated successfully"
             }
         else:
-            raise HTTPException(status_code=500, detail="Failed to update fact")
+            raise HTTPException(status_code=500, detail="Unknown error updating fact")
             
     except HTTPException:
         raise
+    except ValueError as e:
+        logger.error(f"Validation error updating fact {fact_id}: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Error updating fact {fact_id}: {e}")
         raise HTTPException(status_code=500, detail=str(e))

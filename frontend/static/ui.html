@@ -505,11 +505,9 @@ async function updateLearningScore() {
     const stats = memData.statistics;
     const dataStats = learningData.data_stats || {};
     
-    // Calculate learning score (0-1000)
-    // New approach: keep theoretical range 0-1000 but make the usual scores
-    // more conservative by reweighting contributions and applying penalties
-    // for false reports, stored negative examples, and outdated facts.
-    // Components sum to 100 before scaling to 0-1000.
+    // Calculate learning score (dynamic range based on KB size)
+    // New approach: dynamic scoring based on actual KB growth and recent activity
+    // Base score from 0-100, then scale by KB size, plus growth bonuses
 
     const activeFacts = stats.active_facts || 0;
     const totalFacts = stats.total_facts || 0;
@@ -524,8 +522,7 @@ async function updateLearningScore() {
 
     let rawScore = 0;
 
-    // Active facts (0-30)
-    // Need ~150 active facts to reach the max of this component
+    // Active facts (0-30) - core knowledge base
     rawScore += Math.min(activeFacts / 5, 30);
 
     // Fact quality (0-30) based on ratio of active to total facts
@@ -543,18 +540,24 @@ async function updateLearningScore() {
     // Engagement (0-10)
     rawScore += Math.min(conversationCount * 0.2, 10);
 
-  // Penalty (subtract up to 80 points before scaling)
-  // Heavier penalty for reported false replies and negative examples.
-  // - falseReports are the strongest signal of incorrect behavior
-  // - negativeExamples (user-provided corrections saved as negatives) are significant
-  // - outdatedFacts are penalized but less strongly
-  // Tuning: increase multipliers for stronger punishment of wrong answers.
-  const penaltyPoints = Math.min((falseReports * 5) + (negativeExamples * 2.0) + (outdatedFacts * 0.5), 80);
+    // Penalty (subtract up to 80 points before scaling)
+    const penaltyPoints = Math.min((falseReports * 5) + (negativeExamples * 2.0) + (outdatedFacts * 0.5), 80);
     rawScore = Math.max(0, rawScore - penaltyPoints);
 
-    // Ensure rawScore is within 0-100, then scale to 0-1000
+    // Ensure rawScore is within 0-100
     rawScore = Math.max(0, Math.min(100, rawScore));
-    const finalScore = Math.round(rawScore * 10);
+
+    // Map rawScore (0-100) into the desired 1-1000 range, then add growth bonus
+    // Keep final score capped to 1000 and never drop below 1.
+    // Base mapping: rawScore * 10 -> 0-1000
+    const baseScore = Math.round(rawScore * 10);
+
+    // Growth bonus: +10 points per new fact in last 24 hours (as requested)
+    const recentFacts = stats.recent_facts_24h || 0;
+    const growthBonus = recentFacts * 10;
+
+    // Combine and clamp to 1-1000
+    let finalScore = Math.min(1000, Math.max(1, baseScore + growthBonus));
 
     // Update display
     learningScore.textContent = finalScore;

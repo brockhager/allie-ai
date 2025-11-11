@@ -726,7 +726,7 @@
                         <td><a href="#" class="source-link" onclick="showFactDetails(${index}); return false;">${source}</a></td>
                         <td class="updated-at">${updatedDate}</td>
                         <td>
-                            <select class="status-select" ${disabledAttr} onchange="updateFactStatus(${factId}, this.value)">
+                            <select class="status-select" ${disabledAttr} data-original-status="${status}" onchange="updateFactStatus(${factId}, this.value)">
                                 <option value="true" ${status === 'true' ? 'selected' : ''}>✅ True</option>
                                 <option value="false" ${status === 'false' ? 'selected' : ''}>❌ False</option>
                                 <option value="not_verified" ${status === 'not_verified' ? 'selected' : ''}>❓ Not Verified</option>
@@ -736,7 +736,7 @@
                         </td>
                         <td>
                             <input type="number" class="confidence-input" min="0" max="100"
-                                   value="${confidence}" ${disabledAttr}
+                                   value="${confidence}" ${disabledAttr} data-original-confidence="${confidence}"
                                    onchange="updateConfidence(${factId}, this.value)">
                         </td>
                         <td class="actions">
@@ -770,8 +770,12 @@
             // Validate fact ID
             if (!factId || typeof factId !== 'number' || factId === null) {
                 showError('Cannot update fact: invalid ID');
-                return;
+                return false;
             }
+            
+            // Store original status for rollback on error
+            const selectElement = event.target;
+            const originalStatus = selectElement.getAttribute('data-original-status') || status;
             
             try {
                 const response = await fetch(`/api/facts/${factId}`, {
@@ -784,15 +788,25 @@
 
                 const data = await response.json();
 
-                if (data.status === 'success') {
+                if (response.ok && data.status === 'success') {
                     showSuccess('Fact status updated');
+                    // Store new status as original for future changes
+                    selectElement.setAttribute('data-original-status', status);
                     loadStats(); // Refresh stats
+                    return true;
                 } else {
-                    showError('Failed to update fact status');
+                    // Revert dropdown to original value
+                    selectElement.value = originalStatus;
+                    const errorMsg = data.message || data.detail || 'Failed to update fact status';
+                    showError(errorMsg);
+                    return false;
                 }
             } catch (error) {
                 console.error('Error updating fact status:', error);
-                showError('Error updating fact status');
+                // Revert dropdown to original value
+                selectElement.value = originalStatus;
+                showError('Network error: ' + error.message);
+                return false;
             }
         }
 
@@ -800,14 +814,18 @@
             // Validate fact ID
             if (!factId || typeof factId !== 'number' || factId === null) {
                 showError('Cannot update fact: invalid ID');
-                return;
+                return false;
             }
             
             const confidenceNum = parseInt(confidence);
             if (isNaN(confidenceNum) || confidenceNum < 0 || confidenceNum > 100) {
                 showError('Confidence must be between 0 and 100');
-                return;
+                return false;
             }
+
+            // Store original confidence for rollback on error
+            const inputElement = event.target;
+            const originalConfidence = inputElement.getAttribute('data-original-confidence') || confidence;
 
             try {
                 const response = await fetch(`/api/facts/${factId}`, {
@@ -820,15 +838,25 @@
 
                 const data = await response.json();
 
-                if (data.status === 'success') {
+                if (response.ok && data.status === 'success') {
                     showSuccess('Confidence updated');
+                    // Store new confidence as original for future changes
+                    inputElement.setAttribute('data-original-confidence', confidenceNum);
                     loadStats(); // Refresh stats
+                    return true;
                 } else {
-                    showError('Failed to update confidence');
+                    // Revert input to original value
+                    inputElement.value = originalConfidence;
+                    const errorMsg = data.message || data.detail || 'Failed to update confidence';
+                    showError(errorMsg);
+                    return false;
                 }
             } catch (error) {
                 console.error('Error updating confidence:', error);
-                showError('Error updating confidence');
+                // Revert input to original value
+                inputElement.value = originalConfidence;
+                showError('Network error: ' + error.message);
+                return false;
             }
         }
 

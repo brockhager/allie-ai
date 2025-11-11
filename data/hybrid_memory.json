@@ -1,8 +1,878 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T21:21:27.501684",
-  "fact_count": 1770,
+  "saved_at": "2025-11-10T21:34:32.391785",
+  "fact_count": 1857,
   "facts": [
+    {
+      "fact": "Paper: 'Spectral and polar decomposition in AW*-algebras' by Michael Frank - We show the possibility and the uniqueness of polar decomposition of elements\nof arbitrary AW*-algebras inside them. We prove that spectral decomposition of\nnormal elements of normal AW*-algebras is p...",
+      "timestamp": "2025-11-10T21:34:32.388933",
+      "category": "aws",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'On a Local Structure in Kaplansky Algebras. Definitions and Basic\n  Properties' by Alexander A. Katz - We introduce and study locally AW*-algebras (Baer locally C*-algebras) as a\nlocally multiplicatively-convex generalization of AW*-algebras of Kaplansky.\nAmong other basic properties of these algebras,...",
+      "timestamp": "2025-11-10T21:34:32.368357",
+      "category": "aws",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "AWS - SiIvaGunner Contributor",
+      "timestamp": "2025-11-10T21:34:32.347423",
+      "category": "aws",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "AWS (Group) from HU - Hungarian metal and post-hardcore band",
+      "timestamp": "2025-11-10T21:34:32.323262",
+      "category": "aws",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Paradise Lost' by John Milton (published 1667)",
+      "timestamp": "2025-11-10T21:34:32.298505",
+      "category": "aws",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Im Westen nichts Neues' by Erich Maria Remarque (published 1928)",
+      "timestamp": "2025-11-10T21:34:32.277918",
+      "category": "aws",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Amazon Web Services, Inc. (AWS) is a subsidiary of Amazon that provides on-demand cloud computing platforms and APIs to individuals, companies, and governments, on a metered, pay-as-you-go basis.",
+      "timestamp": "2025-11-10T21:34:32.257377",
+      "category": "aws",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Banu <B>Aws</B>: The Banū <B>Aws</B> (Arabic: بنو أوس‎  pronounced [ˈbanuː ʔaws], \"Sons of <B>Aws</B>\") or simply <B>Aws</B> (Arabic",
+      "timestamp": "2025-11-10T21:34:32.236474",
+      "category": "aws",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Amazon Web Services: Amazon Web Services (<B>AWS</B>) is a subsidiary of Amazon that provides on-demand cloud computing",
+      "timestamp": "2025-11-10T21:34:32.215140",
+      "category": "aws",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Autonomous Web Services A web service is either: • a service offered by an electronic device to another electronic device...",
+      "timestamp": "2025-11-10T21:34:32.190592",
+      "category": "aws",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "AWS Amazon Web Services, Inc. is a subsidiary of Amazon that provides on-demand cloud computing...",
+      "timestamp": "2025-11-10T21:34:32.169660",
+      "category": "aws",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Minimal non-integer alphabets allowing parallel addition' by Jan Legerský - Parallel addition, i.e., addition with limited carry propagation, has been so\nfar studied for complex bases and integer alphabets. We focus on alphabets\nconsisting of integer combinations of powers of...",
+      "timestamp": "2025-11-10T21:34:32.148168",
+      "category": "alphabet",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Realizations of Hopf algebras of graphs by alphabets' by Loïc Foissy - We here give polynomial realizations of various Hopf algebras or bialgebras\non Feynman graphs, graphs, posets or quasi-posets, that it to say injections of\nthese objects into polynomial algebras gener...",
+      "timestamp": "2025-11-10T21:34:32.127430",
+      "category": "alphabet",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'The Valley of Fear' by Arthur Conan Doyle (published 1914)",
+      "timestamp": "2025-11-10T21:34:32.106451",
+      "category": "alphabet",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'A dictionary of the English language' by Samuel Johnson (published 1747)",
+      "timestamp": "2025-11-10T21:34:32.084870",
+      "category": "alphabet",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "An alphabet is a writing system that uses a standard set of symbols, called letters, to represent particular sounds in a spoken language. Specifically, letters largely correspond to phonemes as the smallest sound segments that can distinguish one word from another in a given language. Not all writing systems represent language in this way: a syllabary assigns symbols to spoken syllables, while logographies assign symbols to words, morphemes, or other semantic units.",
+      "timestamp": "2025-11-10T21:34:32.063859",
+      "category": "alphabet",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Syriac <B>alphabet</B>: The Syriac <B>alphabet</B> (ܐܠܦ ܒܝܬ ܣܘܪܝܝܐ ʾālep̄ bêṯ Sūryāyā) is a writing system primarily used to write",
+      "timestamp": "2025-11-10T21:34:32.042537",
+      "category": "alphabet",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Alphabet</B> Inc.: <B>Alphabet</B> Inc. is an American multinational conglomerate headquartered in Mountain View, California",
+      "timestamp": "2025-11-10T21:34:32.021782",
+      "category": "alphabet",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Alphabet book - An alphabet book is a type of children's book giving basic instruction in an alphabet. Intended for young children, alphabet books commonly use pictures, simple language and alliteration to aid language learning.",
+      "timestamp": "2025-11-10T21:34:32.000342",
+      "category": "alphabet",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Abecedarium - An abecedarium is an inscription consisting of the letters of an alphabet, almost always listed in order. Typically, abecedaria are practice exercises.",
+      "timestamp": "2025-11-10T21:34:31.977203",
+      "category": "alphabet",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "An alphabet is a writing system that uses a standard set of symbols, called letters, to represent particular sounds in a spoken language. Specifically, letters largely correspond to phonemes as the smallest sound segments that can distinguish one word from another in a given language. Not all writing systems represent language in this way: a syllabary assigns symbols to spoken syllables, while logographies assign symbols to words, morphemes, or other semantic units. The first letters were invented in Ancient Egypt to serve as an aid in writing Egyptian hieroglyphs; these are referred to as Egyptian uniliteral signs by lexicographers. This system was used until the 5th century AD, and fundamentally differed by adding pronunciation hints to existing hieroglyphs that had previously carried no pronunciation information. Later on, these phonemic symbols also became used to transcribe foreign words.",
+      "timestamp": "2025-11-10T21:34:31.954636",
+      "category": "alphabet",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": true
+    },
+    {
+      "fact": "Paper: 'Violence originated from Facebook: A case study in Bangladesh' by Matiur Rahman Minar, Jibon Naher - Facebook as in social network is a great innovation of modern times. Among\nall social networking sites, Facebook is the most popular social network all\nover the world. Bangladesh is no exception. Peop...",
+      "timestamp": "2025-11-10T21:34:31.931624",
+      "category": "facebook",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Contracting the Facebook API' by Ben Rubinger, Tevfik Bultan - In recent years, there has been an explosive growth in the popularity of\nonline social networks such as Facebook. In a new twist, third party developers\nare now able to create their own web applicatio...",
+      "timestamp": "2025-11-10T21:34:31.911336",
+      "category": "facebook",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Little Things (Group) - Western Australian band",
+      "timestamp": "2025-11-10T21:34:31.887519",
+      "category": "facebook",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "DJ Facebook (Person)",
+      "timestamp": "2025-11-10T21:34:31.864221",
+      "category": "facebook",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Lean In' by Sheryl Sandberg (published 1799)",
+      "timestamp": "2025-11-10T21:34:31.843498",
+      "category": "facebook",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Study Guide' by SuperSummary (published 2018)",
+      "timestamp": "2025-11-10T21:34:31.823093",
+      "category": "facebook",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Facebook is an American social media and social networking service owned by the American technology conglomerate Meta. Created in 2004 by Mark Zuckerberg with four other Harvard College students and roommates, Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, its name derives from the face book directories often given to American university students. Membership was initially limited to Harvard students, gradually expanding to other North American universities.",
+      "timestamp": "2025-11-10T21:34:31.802404",
+      "category": "facebook",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Facebook</B> Watch: <B>Facebook</B> Watch is a video-on-demand service operated by <B>Facebook</B>, Inc. It was announced on August 9",
+      "timestamp": "2025-11-10T21:34:31.781631",
+      "category": "facebook",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Facebook</B>: <B>Facebook</B> is an American online social media and social networking service based in Menlo Park",
+      "timestamp": "2025-11-10T21:34:31.761310",
+      "category": "facebook",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Corporation tax in the Republic of Ireland - Ireland's Corporate Tax System is a central component of Ireland's economy. In 2016–17, foreign firms paid 80% of Irish corporate tax, employed 25% of the Irish labour force, and created 57% of Irish OECD non-farm value-add.",
+      "timestamp": "2025-11-10T21:34:31.737295",
+      "category": "facebook",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Facebook is an American social media and social networking service owned by the American technology conglomerate Meta. Created in 2004 by Mark Zuckerberg with four other Harvard College students and roommates, Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, its name derives from the face book directories often given to American university students. Membership was initially limited to Harvard students, gradually expanding to other North American universities. Since 2006, Facebook allows everyone to register from 13 years old, except in the case of a handful of nations, where the age requirement is 14 years. As of December 2023, Facebook claimed almost 3.07 billion monthly active users worldwide. As of July 2025, Facebook ranked as the third-most-visited website in the world, with 23% of its traffic coming from the United States. It was the most downloaded mobile app of the 2010s.",
+      "timestamp": "2025-11-10T21:34:31.715861",
+      "category": "facebook",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": true
+    },
+    {
+      "fact": "Paper: 'Google Web APIs - an Instrument for Webometric Analyses?' by Philipp Mayr, Fabio Tosques - This paper introduces Google Web APIs (Google APIs) as an instrument and\nplayground for webometric studies. Several examples of Google APIs\nimplementations are given. Our examples show that this Googl...",
+      "timestamp": "2025-11-10T21:34:28.801101",
+      "category": "google",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Optimizing Google Shopping Campaigns Structures With Query-Level\n  Matching' by Mathieu Raffinot, Romain Rivière - How to bid on a Google shopping account (set of shopping campaigns) with\nquery-level matching like in Google Adwords....",
+      "timestamp": "2025-11-10T21:34:28.779590",
+      "category": "google",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Google (Other) - American tech company",
+      "timestamp": "2025-11-10T21:34:28.757008",
+      "category": "google",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "GOOGLE - phonk",
+      "timestamp": "2025-11-10T21:34:28.736935",
+      "category": "google",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'A Thief in the Night' by E. W. Hornung (published 1905)",
+      "timestamp": "2025-11-10T21:34:28.716666",
+      "category": "google",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Captivity and Restoration' by Mary White Rowlandson (published 1682)",
+      "timestamp": "2025-11-10T21:34:28.695606",
+      "category": "google",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Google LLC is an American multinational technology corporation focused on information technology, online advertising, search engine technology, email, cloud computing, software, quantum computing, e-commerce, consumer electronics, and artificial intelligence (AI). It has been referred to as \"the most powerful company in the world\" by the BBC, and is one of the world's most valuable brands. Google's parent company Alphabet Inc. has been described as a Big Tech company.",
+      "timestamp": "2025-11-10T21:34:28.675092",
+      "category": "google",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Google</B> Search: <B>Google</B> Search, also referred to as <B>Google</B> Web Search or simply <B>Google</B>, is a web search engine",
+      "timestamp": "2025-11-10T21:34:28.651397",
+      "category": "google",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Google</B>: <B>Google</B> LLC is an American multinational technology company that specializes in Internet-related",
+      "timestamp": "2025-11-10T21:34:28.631344",
+      "category": "google",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Companies in the PRISM network",
+      "timestamp": "2025-11-10T21:34:28.611274",
+      "category": "google",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Google LLC is an American multinational technology corporation focused on information technology, online advertising, search engine technology, email, cloud computing, software, quantum computing, e-commerce, consumer electronics, and artificial intelligence. It has been referred to as \"the most powerful company in the world\" by the BBC, and is one of the world's most valuable brands. Google's parent company Alphabet Inc. has been described as a Big Tech company. Google was founded on September 4, 1998, by American computer scientists Larry Page and Sergey Brin. Together, they own about 14% of its publicly listed shares and control 56% of its stockholder voting power through super-voting stock. The company went public via an initial public offering in 2004. In 2015, Google was reorganized as a wholly owned subsidiary of Alphabet Inc. Google is Alphabet's largest subsidiary and is a holding company for Alphabet's internet properties and interests.",
+      "timestamp": "2025-11-10T21:34:28.588428",
+      "category": "google",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": true
+    },
+    {
+      "fact": "Paper: 'Quantification of the cascading tipping probability from the AMOC to the\n  Amazon rainforest' by Valérian Jacques-Dumas, Henk A. Dijkstra - The Amazon rainforest and the AMOC are two key components of the Earth system\nand may both collapse under climate change. Due to its influence on\nprecipitation patterns, a collapsed AMOC influences th...",
+      "timestamp": "2025-11-10T21:34:28.566795",
+      "category": "amazon",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Amazons is PSPACE-complete' by Robert A. Hearn - Amazons is a board game which combines elements of Chess and Go. It has\nbecome popular in recent years, and has served as a useful platform for both\ngame-theoretic study and AI games research. Buro sh...",
+      "timestamp": "2025-11-10T21:34:28.545410",
+      "category": "amazon",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Amazon (Group) from DK - Danish band",
+      "timestamp": "2025-11-10T21:34:28.525274",
+      "category": "amazon",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Amazon (Group) from BR - Brazilian symphonic metal band",
+      "timestamp": "2025-11-10T21:34:28.505245",
+      "category": "amazon",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'The King in Yellow' by Robert W. Chambers (published 1895)",
+      "timestamp": "2025-11-10T21:34:28.484976",
+      "category": "amazon",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Swallows and Amazons' by Arthur Michell Ransome (published 1930)",
+      "timestamp": "2025-11-10T21:34:28.461159",
+      "category": "amazon",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Amazon most often refers to:Amazon River, in South America\nAmazon rainforest, a rainforest covering most of the Amazon basin\nAmazon (company), an American multinational technology company\nAmazons, a tribe of female warriors in Greek mythology",
+      "timestamp": "2025-11-10T21:34:28.437510",
+      "category": "amazon",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Amazon</B> Kindle: The <B>Amazon</B> Kindle is a series of e-readers designed and marketed by <B>Amazon</B>. <B>Amazon</B> Kindle devices",
+      "timestamp": "2025-11-10T21:34:28.417508",
+      "category": "amazon",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Amazon</B> (company): <B>Amazon.com</B>, Inc. (), is an American multinational technology company based in Seattle that focuses",
+      "timestamp": "2025-11-10T21:34:28.397074",
+      "category": "amazon",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": ".amazon is a brand top-level domain operated by the e-commerce company Amazon, granted to them in May 2019.",
+      "timestamp": "2025-11-10T21:34:28.376073",
+      "category": "amazon",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Forensics for Microsoft Teams' by Marco Nicoletti, Massimo Bernaschi - Microsoft Teams is a collaboration and communication platform developed by\nMicrosoft that replaces and extends Microsoft Skype for Business. It differs\nfrom Skype for Business by the fact that it exis...",
+      "timestamp": "2025-11-10T21:34:28.353523",
+      "category": "microsoft",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Can Microsoft Academic help to assess the citation impact of academic\n  books?' by Kayvan Kousha, Mike Thelwall - Despite recent evidence that Microsoft Academic is an extensive source of\ncitation counts for journal articles, it is not known if the same is true for\nacademic books. This paper fills this gap by com...",
+      "timestamp": "2025-11-10T21:34:28.329171",
+      "category": "microsoft",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Microsoft Executive (Person) - vaporwave",
+      "timestamp": "2025-11-10T21:34:28.309197",
+      "category": "microsoft",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Lady Susan' by Jane Austen (published 1925)",
+      "timestamp": "2025-11-10T21:34:28.289137",
+      "category": "microsoft",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Bundle' by Jeffrey D. Camm (published 2014)",
+      "timestamp": "2025-11-10T21:34:28.268859",
+      "category": "microsoft",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Microsoft Corporation is an American multinational technology conglomerate headquartered in Redmond, Washington. Founded in 1975, the company became influential in the rise of personal computers through software like Windows, and has since expanded to Internet services, cloud computing, artificial intelligence, video gaming, and other fields. Often described as a Big Tech company, Microsoft is the largest software maker, one of the most valuable public companies, and one of the most valuable brands globally.",
+      "timestamp": "2025-11-10T21:34:28.248397",
+      "category": "microsoft",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Microsoft</B>: <B>Microsoft</B> Corporation is an American multinational technology company with headquarters in Redmond",
+      "timestamp": "2025-11-10T21:34:28.226278",
+      "category": "microsoft",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Microsoft</B> Windows: <B>Microsoft</B> Windows, commonly referred to as Windows, is a group of several proprietary graphical",
+      "timestamp": "2025-11-10T21:34:28.204808",
+      "category": "microsoft",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Microsoft engineering groups - Microsoft engineering groups are the operating divisions of Microsoft. Starting in April 2002, Microsoft organised itself into seven groups, each an independent financial entity. In September 2005, Microsoft announced a reorganization of its then seven groups into three.",
+      "timestamp": "2025-11-10T21:34:28.184843",
+      "category": "microsoft",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Microsoft Corporation is an American multinational technology conglomerate headquartered in Redmond, Washington. Founded in 1975, the company became influential in the rise of personal computers through software like Windows, and has since expanded to Internet services, cloud computing, artificial intelligence, video gaming, and other fields. Often described as a Big Tech company, Microsoft is the largest software maker, one of the most valuable public companies, and one of the most valuable brands globally. Microsoft was founded by Bill Gates and Paul Allen to market BASIC interpreters for the Altair 8800. It rose to dominate the personal computer operating system market with MS-DOS in the mid-1980s, followed by Windows. During the 41 years from 1980 to 2021 Microsoft released 9 versions of MS-DOS with a median frequency of 2 years, and 13 versions of Windows with a median frequency of 3 years.",
+      "timestamp": "2025-11-10T21:34:28.164612",
+      "category": "microsoft",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": true
+    },
+    {
+      "fact": "Paper: 'Design of an Intelligent Vision Algorithm for Recognition and\n  Classification of Apples in an Orchard Scene' by Hamid Majidi Balanji, Alaeedin Rahmani Didar, Mohamadali Hadad Derafshi - Apple is one of the remarkable fresh fruit that contains a high degree of\nnutritious and medicinal value. Hand harvesting of apples by seasonal\nfarmworkers increases physical damages on the surface of...",
+      "timestamp": "2025-11-10T21:34:28.141211",
+      "category": "apple",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Localizing Small Apples in Complex Apple Orchard Environments' by Christian Wilms, Robert Johanson, Simone Frintrop - The localization of fruits is an essential first step in automated\nagricultural pipelines for yield estimation or fruit picking. One example of\nthis is the localization of apples in images of entire a...",
+      "timestamp": "2025-11-10T21:34:28.121251",
+      "category": "apple",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "A.P.P.L.E. (Group) from US - US punk band",
+      "timestamp": "2025-11-10T21:34:28.100050",
+      "category": "apple",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Fiona Apple (Person) from US - singer-songwriter and pianist",
+      "timestamp": "2025-11-10T21:34:28.077920",
+      "category": "apple",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Pollyanna' by Eleanor Hodgman Porter (published 1912)",
+      "timestamp": "2025-11-10T21:34:28.057238",
+      "category": "apple",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Heidi' by Johanna Spyri (published 1885)",
+      "timestamp": "2025-11-10T21:34:28.036524",
+      "category": "apple",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "An apple is the round, edible fruit of an apple tree. Fruit trees of the orchard or domestic apple, the most widely grown in the genus, are cultivated worldwide. The tree originated in Central Asia, where its wild ancestor, Malus sieversii, is still found. Apples have been grown for thousands of years in Eurasia before they were introduced to North America by European colonists. Apples have cultural significance in many mythologies and religions.",
+      "timestamp": "2025-11-10T21:34:28.016265",
+      "category": "apple",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Apple</B> Inc.: <B>Apple</B> Inc. is an American multinational technology company headquartered in Cupertino, California",
+      "timestamp": "2025-11-10T21:34:27.994197",
+      "category": "apple",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Apple</B> II:  computers which were produced until <B>Apple</B> IIe production ceased in November 1993. The <B>Apple</B> II marks <B>Apple's</B>",
+      "timestamp": "2025-11-10T21:34:27.973590",
+      "category": "apple",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Research: 'One Health for all: synergistic solutions advancing SDG3 through sustainable science and inclusive innovation.' by Liu J, Qiang N, Yi H (2025)",
+      "timestamp": "2025-11-10T21:34:27.951667",
+      "category": "bing",
+      "confidence": 0.8,
+      "source": "pubmed",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Research: 'The value of dual-energy CT radiomics in evaluating vascular maturity and prognosis in clear cell renal cell carcinoma.' by Li R, Li K, Li Z (2025 Nov 10)",
+      "timestamp": "2025-11-10T21:34:27.931326",
+      "category": "bing",
+      "confidence": 0.8,
+      "source": "pubmed",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Form factor of π^0-->γγ^*' by Bing An Li",
+      "timestamp": "2025-11-10T21:34:27.911051",
+      "category": "bing",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Mass relation of rho and a_{1} mesons' by Bing An Li - A mass relation of rho and a_[1} mesons has been obtained from Weinberg's\nfirst sum rule and KSFR sum rule....",
+      "timestamp": "2025-11-10T21:34:27.887391",
+      "category": "bing",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'A Game of Thrones' by George R. R. Martin (published 1996)",
+      "timestamp": "2025-11-10T21:34:27.867493",
+      "category": "bing",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'The Art of War' by 孙武 (published 1900)",
+      "timestamp": "2025-11-10T21:34:27.846876",
+      "category": "bing",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bing most often refers to:Bing Crosby (1903–1977), American singer\nMicrosoft Bing, a web search engine",
+      "timestamp": "2025-11-10T21:34:27.822060",
+      "category": "bing",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Bing</B> Crosby: Harold Lillis \"<B>Bing</B>\" Crosby Jr. (; May 3, 1903 – October 14, 1977) was an American singer, comedian",
+      "timestamp": "2025-11-10T21:34:27.798160",
+      "category": "bing",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bing Crosby Harry Lillis \"Bing\" Crosby Jr. was an American singer and actor.",
+      "timestamp": "2025-11-10T21:34:27.774664",
+      "category": "bing",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Microsoft Bing A search engine owned and operated by Microsoft, it is developed by Microsoft AI. The service...",
+      "timestamp": "2025-11-10T21:34:27.753489",
+      "category": "bing",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Captivity and Restoration: by Mary White Rowlandson, Joseph Rowlandson, Larvae Editions, Timothy Harrington, Caroline D. Grimm, Henry S. Nourse, John Eliot Thayer, John Williams, Henry S. (Henry Stedman) 183 Nourse, John Eliot 1862-1933 Edt Thayer (1682) Subjects: Massachusetts, biography, Lancaster (mass.), Massachusetts, history, colonial period, ca. 1600-1775",
+      "timestamp": "2025-11-10T21:31:01.158682",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Google</B> LLC is an American multinational technology company that specializes in Internet-related",
+      "timestamp": "2025-11-10T21:31:01.136698",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Google LLC ( , GOO-gəl) is an American multinational technology corporation focused on information technology, online advertising, search engine technology, email, cloud computing, software, quantum computing, e-commerce, consumer electronics, and artificial intelligence (AI). It has been referred t...",
+      "timestamp": "2025-11-10T21:31:01.114987",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Google Category",
+      "timestamp": "2025-11-10T21:31:01.091827",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Google LLC is an American multinational technology corporation focused on information technology, online advertising, search engine technology, email, cloud computing, software, quantum computing, e-commerce, consumer electronics, and artificial intelligence. It has been referred to as \"the most powerful company in the world\" by the BBC, and is one of the world's most valuable brands. Google's parent company Alphabet Inc. has been described as a Big Tech company. Google was founded on September 4, 1998, by American computer scientists Larry Page and Sergey Brin. Together, they own about 14% of its publicly listed shares and control 56% of its stockholder voting power through super-voting stock. The company went public via an initial public offering in 2004. In 2015, Google was reorganized as a wholly owned subsidiary of Alphabet Inc. Google is Alphabet's largest subsidiary and is a holding company for Alphabet's internet properties and interests.",
+      "timestamp": "2025-11-10T21:31:01.067346",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
     {
       "fact": "<B>DuckDuckGo</B> (DDG) is an internet search engine that emphasizes protecting searchers' privacy and",
       "timestamp": "2025-11-10T21:21:27.498639",
@@ -9941,7 +10811,7 @@
       "source": "wikipedia",
       "status": "not_verified",
       "confidence_score": 95,
-      "is_outdated": false
+      "is_outdated": true
     },
     {
       "fact": "The United States provided many inventions in the time from the Colonial Period to the Gilded Age, which were achieved by inventors who were either native-born or naturalized citizens of the United States. Copyright protection secures a person's right to his or her first-to-invent claim of the origi...",
@@ -16049,7 +16919,7 @@
       "category": "general",
       "confidence": 0.8,
       "source": "duckduckgo",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 80
     },

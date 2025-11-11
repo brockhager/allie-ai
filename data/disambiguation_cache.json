@@ -334,5 +334,35 @@
       "needs_clarification": true
     },
     "expires": "2025-11-11T21:21:27.519670"
+  },
+  "what is google?": {
+    "result": {
+      "is_ambiguous": true,
+      "interpretations": [
+        {
+          "meaning_label": "General",
+          "summary": "...",
+          "sources_consulted": [
+            "dbpedia",
+            "duckduckgo",
+            "openlibrary"
+          ],
+          "confidence_score": 1.0,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "...",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.9499999999999998,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.9756410256410257,
+      "needs_clarification": true
+    },
+    "expires": "2025-11-11T21:31:01.181468"
   }
 }

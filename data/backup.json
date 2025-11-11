@@ -88,5 +88,51 @@
       }
     ],
     "draft": ""
+  },
+  {
+    "id": "c-elsf7vp",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762835257460
+      },
+      {
+        "role": "me",
+        "text": "who is the president",
+        "timestamp": 1762835273897
+      },
+      {
+        "role": "them",
+        "text": "As of my last knowledge, Joe Biden is the President of the United States.",
+        "timestamp": 1762835273901,
+        "is_false": true,
+        "user_correction": "Donald Trump is the current President of the United States"
+      },
+      {
+        "role": "me",
+        "text": "what is google?",
+        "timestamp": 1762835456285
+      },
+      {
+        "role": "them",
+        "text": "What is Google?\nGoogle is a tech giant that specializes in the areas of internet-related content such as search engines, mobile applications, advertising platforms, and artificial intelligence technologies. It was founded in 1998 by two co-founders, Larry Page and Sergey Brin, who together hold approximately 14 percent of its publicly listed shares and have significant control over 56 percent of its stockholder voting power through super-voting stock. As a holding company for Alphabet's internet properties, including Google LLC, Google plays\n\n**Multiple Interpretations Detected:**\n1. **General** \u26a0\ufe0f (100% confidence)\n   ...\n   *Sources: dbpedia, duckduckgo, openlibrary*\n\n2. **General Knowledge** \u26a0\ufe0f (94% confidence)\n   ...\n   *Sources: wikipedia*\n\n**Could you clarify which interpretation you meant?**\n\n\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udcd6 Wikipedia: https://en.wikipedia.org/wiki/Google\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Google\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Google\n\ufffd OpenLibrary: https://openlibrary.org/works/OL239849W",
+        "timestamp": 1762835486920
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-18x62na",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762835723020
+      }
+    ],
+    "draft": ""
   }
 ]

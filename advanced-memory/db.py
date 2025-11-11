@@ -955,13 +955,33 @@ class AllieMemoryDB:
             cursor.execute("SELECT COUNT(*) FROM facts")
             stats['total_facts'] = cursor.fetchone()[0]
             
-            # Facts by category
+            # Active facts (not marked as false or outdated)
+            cursor.execute("SELECT COUNT(*) FROM facts WHERE status != 'false' AND status != 'outdated'")
+            stats['active_facts'] = cursor.fetchone()[0]
+            
+            # False reports
+            cursor.execute("SELECT COUNT(*) FROM facts WHERE status = 'false'")
+            stats['false_reports'] = cursor.fetchone()[0]
+            
+            # Outdated facts
+            cursor.execute("SELECT COUNT(*) FROM facts WHERE status = 'outdated'")
+            stats['outdated_facts'] = cursor.fetchone()[0]
+            
+            # Recent facts (last 24 hours)
+            cursor.execute("""
+                SELECT COUNT(*) FROM facts 
+                WHERE created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
+            """)
+            stats['recent_facts_24h'] = cursor.fetchone()[0]
+            
+            # Facts by category (active only)
             cursor.execute("""
                 SELECT category, COUNT(*) as count
                 FROM facts
+                WHERE status != 'false' AND status != 'outdated'
                 GROUP BY category
             """)
-            stats['by_category'] = {row[0]: row[1] for row in cursor.fetchall()}
+            stats['categories'] = {row[0]: row[1] for row in cursor.fetchall()}
             
             # Facts by source
             cursor.execute("""
