@@ -200,5 +200,24 @@
       "needs_clarification": true
     },
     "expires": "2025-11-11T20:34:17.329540"
+  },
+  "name 25 european capitals or large cities and what country they are in": {
+    "result": {
+      "is_ambiguous": false,
+      "interpretations": [
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "...",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.9499999999999998,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.9499999999999998,
+      "needs_clarification": false
+    },
+    "expires": "2025-11-11T20:41:35.872317"
   }
 }

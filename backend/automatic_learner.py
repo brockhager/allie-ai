@@ -49,6 +49,9 @@ class AutomaticLearner:
                 r"((?:the )?[\w\s]+ was (?:invented|created|developed|discovered) by [A-Z][a-z]+ [A-Z][a-z]+ in \d{4})",
                 r"([A-Z][a-z]+ [A-Z][a-z]+ served as (?:president|prime minister|governor|mayor) (?:of [A-Z][a-z]+(?:\s+[A-Z][a-z]+)* )?from \d{4} to \d{4})",
                 r"([A-Z][a-z]+ [A-Z][a-z]+ died (?:on )?(?:\d{1,2} \w+ \d{4}|in \d{4}) in [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+                # More flexible patterns
+                r"([A-Z][a-z]+ (?:was|is) (?:born|from) [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ (?:lived|worked|studied) (?:in|at) [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
             ],
             "history": [
                 r"([\w\s]+ (?:ended|began|started|occurred) (?:on )?(?:\d{1,2} \w+ \d{4}|in \d{4}))",

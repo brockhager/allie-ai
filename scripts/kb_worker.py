@@ -45,9 +45,9 @@ def main(poll_interval=5):
                     logger.info(f'Queue {qid} validated against KB')
                     continue
 
-                if not kb and conf >= 0.8:
+                if not kb and conf >= 0.75:  # Lowered threshold for more automatic promotion
                     # Suggest promote to KB
-                    res = db.add_kb_fact(keyword, fact, source=item.get('source', 'auto_worker'), confidence_score=int(conf*100), provenance={'queued_id': qid}, status='not_verified')
+                    res = db.add_kb_fact(keyword, fact, source=item.get('source', 'auto_worker'), confidence_score=int(conf*100), provenance={'queued_id': qid}, status='true')
                     cursor = db.connection.cursor()
                     cursor.execute("UPDATE learning_queue SET status='processed', processed_at=CURRENT_TIMESTAMP WHERE id=%s", (qid,))
                     cursor.close()
