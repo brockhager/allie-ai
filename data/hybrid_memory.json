@@ -1,8 +1,178 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-09T23:52:55.233577",
-  "fact_count": 902,
+  "saved_at": "2025-11-10T00:06:50.473462",
+  "fact_count": 919,
   "facts": [
+    {
+      "fact": "A cryptocurrency (colloquially crypto) is a digital currency designed to work through a computer network that is not reliant on any central authority, such as a government or bank, to uphold or maintain it. However, a type of cryptocurrency called a stablecoin may rely upon government action or legi...",
+      "timestamp": "2025-11-10T00:06:50.471728",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Bitcoin Standard: by Saifedean Ammous, James Fouhey (2018) Subjects: Economy, Bitcoin",
+      "timestamp": "2025-11-10T00:05:45.107516",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Bitcoin</B> (₿) is a cryptocurrency. It is a decentralized digital currency without a central bank or",
+      "timestamp": "2025-11-10T00:05:45.096356",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "bitcoin: instance_of = ['Q341', 'Q132364', 'Q20514253', 'Q8142', 'Q756202', 'Q19892282', 'Q13479982', 'Q1643989', 'Q986008']",
+      "timestamp": "2025-11-10T00:05:45.083864",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bitcoin (abbreviation: BTC; sign: ₿) is the first decentralized cryptocurrency. Based on a free-market ideology, bitcoin was invented in 2008 when an unknown entity published a white paper under the pseudonym of Satoshi Nakamoto. Use of bitcoin as a currency began in 2009, with the release of its op...",
+      "timestamp": "2025-11-10T00:05:45.071593",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bitcoin Category",
+      "timestamp": "2025-11-10T00:05:45.060068",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bitcoin is the first decentralized cryptocurrency. Based on a free-market ideology, bitcoin was invented in 2008 when an unknown entity published a white paper under the pseudonym of Satoshi Nakamoto. Use of bitcoin as a currency began in 2009, with the release of its open-source implementation. From 2021 until 2025, El Salvador adopted it as legal tender currency. As bitcoin is pseudonymous, its use by criminals has attracted the attention of regulators, leading to its ban by several countries as of 2021. Bitcoin works through the collaboration of computers, each of which acts as a node in the peer-to-peer bitcoin network. Each node maintains an independent copy of a public distributed ledger of transactions, called a blockchain, without central oversight. Transactions are validated through the use of cryptography, preventing one person from spending another person's bitcoin, as long as the owner of the bitcoin keeps certain sensitive data secret.",
+      "timestamp": "2025-11-10T00:05:45.046030",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "A nonprofit organization, also known as a nonbusiness entity, nonprofit institution, not-for-profit organization, or simply a nonprofit, is a non-governmental legal entity that operates for a collective, public, or social benefit, rather than to generate profit for private owners. Nonprofit organisations are subject to a non-distribution constraint, meaning that any revenue exceeding expenses must be used to further the organization's purpose. Depending on local laws, nonprofits may include charities, political organizations, schools, hospitals, business associations, churches, foundations, social clubs, and cooperatives. Some nonprofit entities obtain tax-exempt status and may also qualify to receive tax-deductible contributions; however, an organization can still be a nonprofit without having tax exemption.",
+      "timestamp": "2025-11-10T00:05:05.535226",
+      "category": "non-profit",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "CBS Broadcasting Inc., commonly shortened to CBS, is an American commercial broadcast television and radio network and the flagship property of the CBS Entertainment Group division of Paramount Skydance following the 2025 merger of Paramount Global, National Amusements and Skydance Media. It is one of Paramount Skydance's three flagship subsidiaries, along with partial namesake Paramount Pictures and MTV. Founded in 1927, headquartered at the CBS Building in New York City and being part of the \"Big Three\" television networks, CBS has major production facilities and operations at the CBS Broadcast Center and One Astor Plaza and Television City and the CBS Studio Center in Los Angeles. It is sometimes referred to as the Eye Network, after the company's trademark symbol of an eye, and also the Tiffany Network, which alludes to the perceived high quality of its programming during the tenure of William S. Paley.",
+      "timestamp": "2025-11-10T00:05:05.523766",
+      "category": "cbs",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "The National Broadcasting Company is an American commercial broadcast television and radio network, serving as the flagship property of NBC Entertainment, a division of NBCUniversal, which is a subsidiary of Comcast. It is one of NBCUniversal's two main flagship subsidiaries, alongside Universal Studios. It is the first and oldest major broadcast programming network in the United States. NBC's headquarters are located in New York City at Rockefeller Center's Comcast Building, the network's longtime home. The network's predecessor parent companies were integral to the center's construction. NBC also notably has offices at the NBC Tower in Chicago, Illinois, and at 10 Universal City Plaza in Los Angeles, California.",
+      "timestamp": "2025-11-10T00:05:05.513066",
+      "category": "nbc",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Public Broadcasting Service is an American public broadcaster and non-commercial, free-to-air television network based in Arlington, Virginia. PBS is a nonprofit organization and the most prominent provider of educational programs to public television stations in the United States, distributing shows such as Nature, Nova, Frontline, PBS News Hour, Washington Week, Masterpiece, American Experience, and children's programs such as Mister Rogers' Neighborhood, Sesame Street, Barney & Friends, Arthur, Curious George, The Magic School Bus, and others. Certain stations also provide spillover service to Canada. PBS is funded by a combination of member station dues, pledge drives, corporate sponsorships, and donations from both private foundations and individual citizens. From its founding in 1969 up until 2025, it also received funding from the Corporation for Public Broadcasting.",
+      "timestamp": "2025-11-10T00:05:05.500080",
+      "category": "pbs",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "A blockchain is a distributed ledger with growing lists of records that are securely linked together via cryptographic hashes. Each block contains a cryptographic hash of the previous block, a timestamp, and transaction data. Since each block contains information about the previous block, they effectively form a chain, with each additional block linking to the ones before it. Consequently, blockchain transactions are resistant to alteration because, once recorded, the data in any given block cannot be changed retroactively without altering all subsequent blocks and obtaining network consensus to accept these changes. Blockchains are typically managed by a peer-to-peer computer network for use as a public distributed ledger, where nodes collectively adhere to a consensus algorithm protocol to add and validate new transaction blocks.",
+      "timestamp": "2025-11-10T00:04:40.355632",
+      "category": "blockchain",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bitcoin is the first decentralized cryptocurrency. Based on a free-market ideology, bitcoin was invented in 2008 when an unknown entity published a white paper under the pseudonym of Satoshi Nakamoto. Use of bitcoin as a currency began in 2009, with the release of its open-source implementation. From 2021 until 2025, El Salvador adopted it as legal tender currency. As bitcoin is pseudonymous, its use by criminals has attracted the attention of regulators, leading to its ban by several countries as of 2021. Bitcoin works through the collaboration of computers, each of which acts as a node in the peer-to-peer bitcoin network. Each node maintains an independent copy of a public distributed ledger of transactions, called a blockchain, without central oversight. Transactions are validated through the use of cryptography, preventing one person from spending another person's bitcoin, as long as the owner of the bitcoin keeps certain sensitive data secret.",
+      "timestamp": "2025-11-10T00:04:40.344845",
+      "category": "bitcoin",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "Ethereum is a decentralized blockchain with smart contract functionality. Ether is the native cryptocurrency of the platform. Among cryptocurrencies, ether is second only to bitcoin in market capitalization. It is open-source software. Ethereum was conceived in 2013 by programmer Vitalik Buterin. Other founders include Gavin Wood, Charles Hoskinson, Anthony Di Iorio, and Joseph Lubin. In 2014, development work began and was crowdfunded, and the network went live on 30 July 2015. Ethereum allows anyone to deploy decentralized applications onto it, which anyone can then use. Decentralized finance applications provide financial instruments that do not directly rely on financial intermediaries like brokerages, exchanges, or banks. This facilitates borrowing against cryptocurrency holdings or lending them out for interest.",
+      "timestamp": "2025-11-10T00:04:40.328763",
+      "category": "Ethereum",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "Ethereum is a decentralized blockchain with smart contract functionality. Ether is the native cryptocurrency of the platform. Among cryptocurrencies, ether is second only to bitcoin in market capitalization. It is open-source software. Ethereum was conceived in 2013 by programmer Vitalik Buterin. Other founders include Gavin Wood, Charles Hoskinson, Anthony Di Iorio, and Joseph Lubin. In 2014, development work began and was crowdfunded, and the network went live on 30 July 2015. Ethereum allows anyone to deploy decentralized applications onto it, which anyone can then use. Decentralized finance applications provide financial instruments that do not directly rely on financial intermediaries like brokerages, exchanges, or banks. This facilitates borrowing against cryptocurrency holdings or lending them out for interest.",
+      "timestamp": "2025-11-10T00:04:31.011449",
+      "category": "Ethereum",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bitcoin is the first decentralized cryptocurrency. Based on a free-market ideology, bitcoin was invented in 2008 when an unknown entity published a white paper under the pseudonym of Satoshi Nakamoto. Use of bitcoin as a currency began in 2009, with the release of its open-source implementation. From 2021 until 2025, El Salvador adopted it as legal tender currency. As bitcoin is pseudonymous, its use by criminals has attracted the attention of regulators, leading to its ban by several countries as of 2021. Bitcoin works through the collaboration of computers, each of which acts as a node in the peer-to-peer bitcoin network. Each node maintains an independent copy of a public distributed ledger of transactions, called a blockchain, without central oversight. Transactions are validated through the use of cryptography, preventing one person from spending another person's bitcoin, as long as the owner of the bitcoin keeps certain sensitive data secret.",
+      "timestamp": "2025-11-10T00:04:30.995135",
+      "category": "bitcoin",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "A blockchain is a distributed ledger with growing lists of records that are securely linked together via cryptographic hashes. Each block contains a cryptographic hash of the previous block, a timestamp, and transaction data. Since each block contains information about the previous block, they effectively form a chain, with each additional block linking to the ones before it. Consequently, blockchain transactions are resistant to alteration because, once recorded, the data in any given block cannot be changed retroactively without altering all subsequent blocks and obtaining network consensus to accept these changes. Blockchains are typically managed by a peer-to-peer computer network for use as a public distributed ledger, where nodes collectively adhere to a consensus algorithm protocol to add and validate new transaction blocks.",
+      "timestamp": "2025-11-10T00:04:30.958712",
+      "category": "blockchain",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
     {
       "fact": "Artificial intelligence is the capability of computational systems to perform tasks typically associated with human intelligence, such as learning, reasoning, problem-solving, perception, and decision-making. It is a field of research in computer science that develops and studies methods and software that enable machines to perceive their environment and use learning and intelligence to take actions that maximize their chances of achieving defined goals. High-profile applications of AI include advanced web search engines; recommendation systems; virtual assistants; autonomous vehicles; generative and creative tools; and superhuman play and analysis in strategy games. However, many AI applications are not perceived as AI: \"A lot of cutting edge AI has filtered into general applications, often without being called AI because once something becomes useful enough and common enough it's not labeled AI anymore.\"",
       "timestamp": "2025-11-09T23:52:55.227091",
