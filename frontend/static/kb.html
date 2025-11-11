@@ -55,13 +55,28 @@
 async function fetchKB(status){
   const qs = status ? `?status=${encodeURIComponent(status)}` : '';
   const res = await fetch('/api/kb' + qs);
-  if(!res.ok) throw new Error('Failed to fetch');
+  if(!res.ok) {
+    const errText = await res.text();
+    console.error('KB fetch error:', errText);
+    throw new Error('Failed to fetch: ' + res.status + ' - ' + errText);
+  }
   return res.json();
 }
 
 function renderTable(data){
+  console.log('Rendering table with data:', data);
+  if(!data || !data.facts || !Array.isArray(data.facts)){
+    console.error('Invalid data structure:', data);
+    document.getElementById('tableWrap').textContent = 'No facts data available';
+    return;
+  }
+  if(data.facts.length === 0){
+    document.getElementById('tableWrap').innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">No KB entries found. Click "Add Fact" to create one.</div>';
+    return;
+  }
   const rows = data.facts.map(r=>`<tr data-id="${r.id}"><td>${r.id}</td><td>${r.keyword}</td><td>${r.fact}</td><td>${r.source}</td><td>${r.status}</td><td>${r.confidence_score}</td><td>${r.updated_at}</td><td><button class="edit">Edit</button> <button class="del">Delete</button></td></tr>`).join('');
   document.getElementById('tableWrap').innerHTML = `<table><thead><tr><th>ID</th><th>Keyword</th><th>Fact</th><th>Source</th><th>Status</th><th>Confidence</th><th>Updated</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table>`;
+  console.log(`Table rendered with ${data.facts.length} rows`);
   document.querySelectorAll('button.edit').forEach(b=>b.onclick = onEdit);
   document.querySelectorAll('button.del').forEach(b=>b.onclick = onDelete);
 }
@@ -70,8 +85,12 @@ async function refresh(){
   try{
     const status = document.getElementById('filterStatus').value.trim();
     const data = await fetchKB(status || undefined);
+    console.log('KB data loaded:', data);
     renderTable(data);
-  }catch(e){document.getElementById('tableWrap').textContent = 'Failed to load: '+e}
+  }catch(e){
+    console.error('Refresh error:', e);
+    document.getElementById('tableWrap').textContent = 'Failed to load: '+e.message;
+  }
 }
 
 function showModal(edit){
@@ -108,15 +127,31 @@ document.getElementById('m_cancel').onclick = hideModal;
 document.getElementById('m_save').onclick = async ()=>{
   const payload = { keyword: document.getElementById('m_keyword').value.trim(), fact: document.getElementById('m_fact').value.trim(), source: document.getElementById('m_source').value.trim(), status: document.getElementById('m_status').value, confidence_score: Number(document.getElementById('m_conf').value) };
   if(!payload.keyword || !payload.fact){ alert('keyword and fact required'); return; }
-  if(editingId){
-    const res = await fetch('/api/kb/'+editingId, { method: 'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-    if(!res.ok) alert('Update failed');
-  } else {
-    const res = await fetch('/api/kb', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-    if(!res.ok) alert('Create failed');
+  try {
+    if(editingId){
+      const res = await fetch('/api/kb/'+editingId, { method: 'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      if(!res.ok) {
+        const errText = await res.text();
+        alert('Update failed: ' + errText);
+        return;
+      }
+    } else {
+      const res = await fetch('/api/kb', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      if(!res.ok) {
+        const errText = await res.text();
+        alert('Create failed: ' + errText);
+        console.error('KB Create error:', errText);
+        return;
+      }
+      const result = await res.json();
+      console.log('KB fact created:', result);
+    }
+    hideModal();
+    await refresh();
+  } catch(err) {
+    alert('Error saving KB fact: ' + err.message);
+    console.error('Save error:', err);
   }
-  hideModal();
-  await refresh();
 }
 
 // initial load

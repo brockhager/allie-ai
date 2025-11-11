@@ -1,14 +1,108 @@
 [
   {
-    "id": "c-m65j9eq",
+    "id": "c-wzwcnq9",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762830472861
+        "timestamp": 1762830827294
+      },
+      {
+        "role": "me",
+        "text": "how old do cats live to be?",
+        "timestamp": 1762830903449
+      },
+      {
+        "role": "them",
+        "text": "According to Wikipedia and OpenLibrary, cats typically live between 14 - 18 years in the wild or up to 20 years in captivity. In contrast, domesticated cats tend to have an average lifespan of around 16 years in the US, but can reach even longer lives if healthy and well-cared for.\n\n**Multiple Interpretations Detected:**\n1. **General Knowledge** \u26a0\ufe0f (94% confidence)\n   ...\n   *Sources: wikipedia*\n\n2. **General** \u26a0\ufe0f (80% confidence)\n   ...\n   *Sources: openlibrary*\n\n\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udcd6 Wikipedia: https://en.wikipedia.org/wiki/Cats_(musical)\n\ufffd OpenLibrary: https://openlibrary.org/works/OL21868175W",
+        "timestamp": 1762830925393
+      },
+      {
+        "role": "me",
+        "text": "where is paris?",
+        "timestamp": 1762830952273
+      },
+      {
+        "role": "them",
+        "text": "Paris is the capital and most populous city of France.",
+        "timestamp": 1762830952279
+      },
+      {
+        "role": "me",
+        "text": "what is the population of salt lake city?",
+        "timestamp": 1762830976330
+      },
+      {
+        "role": "them",
+        "text": "As per current data provided on Wikipedia, OpenLibrary, and US Census Bureau's estimates for 2020, according to the population figures released by the US Census Bureau, Salt Lake City's estimated total population as of July 1st, 2021, is around 199,723 people. This number reflects the latest available information based on official sources, which were collected during the 2020 census conducted by the US Census Bureau. Therefore, I would say that the population of Salt Lake City is approximately 199,\n\n**Multiple Interpretations Detected:**\n1. **General Knowledge** \u26a0\ufe0f (94% confidence)\n   ...\n   *Sources: wikipedia*\n\n2. **General** \u26a0\ufe0f (80% confidence)\n   ...\n   *Sources: openlibrary*\n\n\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udcd6 Wikipedia: https://en.wikipedia.org/wiki/Salt_Lake_City\n\ufffd OpenLibrary: https://openlibrary.org/works/OL33463607W",
+        "timestamp": 1762831002627
+      },
+      {
+        "role": "me",
+        "text": "were pirates real?",
+        "timestamp": 1762831555728
+      },
+      {
+        "role": "them",
+        "text": "Yes, pirates were indeed a significant threat in the early years of the modern era. Pirate ships sailed from ports across Europe, Africa, Asia, and South America, capturing merchant vessels for their cargoes or taking them as prisoners. The word \"pirate\" comes from the Spanish phrase \"paro de nav\u00edos,\" which means \"ship blockade.\" In some cases, they even attacked large ships carrying valuable goods like gold or silver to extort ransoms or seize the prize. While it's not completely certain that all pirates were actually real people,\n\n---\n**Source:** Model\n**Confidence:** 60%\n**URLs:**\n\ud83e\udd16 AI Model: Generated response",
+        "timestamp": 1762831575654
       }
     ],
-    "draft": "what is python?"
+    "draft": ""
+  },
+  {
+    "id": "c-ua22yix",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762831000364
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-p8ksdkl",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762831606591
+      },
+      {
+        "role": "me",
+        "text": "what is a knowledge base?",
+        "timestamp": 1762831663690
+      },
+      {
+        "role": "them",
+        "text": "A knowledge base (KB) is a database of frequently asked questions (FAQs), facts, or other information that can be used to provide accurate and relevant responses to queries from users. It typically consists of structured data organized in a logical manner using taxonomies or ontologies. The KB contains pre-built FAQs, documents, images, videos, and other multimedia resources, along with machine learning models for answering new questions quickly and accurately. By integrating the KB into its products or services, businesses can improve their customer support operations by providing quick access to useful\n\n---\n**Source:** Model\n**Confidence:** 60%\n**URLs:**\n\ud83e\udd16 AI Model: Generated response",
+        "timestamp": 1762831684288
+      },
+      {
+        "role": "me",
+        "text": "what is a scrum master",
+        "timestamp": 1762831916341
+      },
+      {
+        "role": "them",
+        "text": "A Scrum Master (SM) is an individual who plays a critical role in the success of Agile software development projects by providing guidance, coaching, and support to team members and managers. In Agile methodology, a SM's primary responsibility is to ensure that all teams deliver high-quality work within their assigned timeframe while adhering to project goals and objectives. They help teams develop processes and tools that align with the Agile framework, facilitate communication between stakeholders, and promote collaboration among team members. The SM also serves as a liaison between\n\n---\n**Source:** Model\n**Confidence:** 60%\n**URLs:**\n\ud83e\udd16 AI Model: Generated response",
+        "timestamp": 1762831936179
+      },
+      {
+        "role": "me",
+        "text": "what is AI?",
+        "timestamp": 1762832053015
+      },
+      {
+        "role": "them",
+        "text": "Yes, AI or .ai is an internet country code top-level domain used specifically for the artificial intelligence industry. As mentioned in current information on DuckDuckGo, Wikipedia, Wikidata, DBPedia, OpenLibrary, it is the Internet Country Code Top-Level Domain for Anguilla, which is a British Overseas Territory located in the Caribbean. This domain type is commonly seen as a generic top-level domain due to users and website owners often seeing it as more general compared to country-targeted ones like '.com', '.org',\n\n**Multiple Interpretations Detected:**\n1. **General** \u26a0\ufe0f (100% confidence)\n   ...\n   *Sources: duckduckgo, openlibrary, dbpedia*\n\n2. **General Knowledge** \u26a0\ufe0f (94% confidence)\n   ...\n   *Sources: wikipedia*\n\n3. **Structured Data** \u26a0\ufe0f (50% confidence)\n   ...\n   *Sources: wikidata*\n\n**Could you clarify which interpretation you meant?**\n\n\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udcd6 Wikipedia: https://en.wikipedia.org/wiki/Artificial_intelligence\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/.ai\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/Internet_in_the_United_Kingdom\n\ud83d\uddc2\ufe0f Wikidata: https://www.wikidata.org/wiki/Q125904821\n\ufffd OpenLibrary: https://openlibrary.org/works/OL50548W",
+        "timestamp": 1762832082897
+      }
+    ],
+    "draft": ""
   }
 ]
