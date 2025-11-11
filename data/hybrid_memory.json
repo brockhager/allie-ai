@@ -1,8 +1,48 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T17:41:18.686595",
-  "fact_count": 1023,
+  "saved_at": "2025-11-10T18:05:26.467926",
+  "fact_count": 1027,
   "facts": [
+    {
+      "fact": "Hybrid test fact 2025-11-10T18:05:26.466110",
+      "timestamp": "2025-11-10T18:05:26.466114",
+      "category": "diagnostic",
+      "confidence": 0.8,
+      "source": "diagnostic",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Hybrid test fact 2025-11-10T18:05:13.504747",
+      "timestamp": "2025-11-10T18:05:13.504754",
+      "category": "diagnostic",
+      "confidence": 0.8,
+      "source": "diagnostic",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Much Ado About Nothing: by William Shakespeare (1600) Subjects: mistaken identities, performing arts, comedy",
+      "timestamp": "2025-11-10T17:55:54.436095",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "My Book about ME is a children's book written by Theodor Geisel under the pen name Dr. Seuss and illustrated by Roy McKie. It was first published by Random House on September 12, 1969.",
+      "timestamp": "2025-11-10T17:55:54.418919",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "Presidential elections were held in the United States on November 8, 2016. The Republican ticket of businessman Donald Trump and Indiana governor Mike Pence defeated the Democratic ticket of former secretary of state Hillary Clinton and Virginia junior senator Tim Kaine, in what was considered one o...",
       "timestamp": "2025-11-10T17:41:18.684640",

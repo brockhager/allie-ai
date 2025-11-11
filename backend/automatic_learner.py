@@ -17,9 +17,10 @@ logger = logging.getLogger(__name__)
 class AutomaticLearner:
     """Handles automatic extraction and storage of factual information"""
 
-    def __init__(self, memory_system, hybrid_memory=None):
+    def __init__(self, memory_system, hybrid_memory=None, learning_queue=None):
         self.memory_system = memory_system
         self.hybrid_memory = hybrid_memory  # Optional hybrid memory system
+        self.learning_queue = learning_queue  # Optional learning queue system
 
         # Knowledge expansion rules
         self.expansion_rules = {
@@ -130,6 +131,32 @@ class AutomaticLearner:
                         confidence=confidence,
                         source="automatic_learning"
                     )
+
+                # Add to learning queue for reconciliation if available and confidence is high enough
+                if self.learning_queue and confidence >= 0.7:
+                    try:
+                        # Extract keyword from fact (first few significant words)
+                        words = fact_text.split()[:3]  # Use first 3 words as keyword
+                        keyword = ' '.join(words).strip('.,!?;:')
+                        
+                        queue_result = self.learning_queue.add_to_learning_queue(
+                            keyword=keyword,
+                            fact=fact_text,
+                            source="conversation_learning",
+                            confidence=confidence,
+                            category=category
+                        )
+                        
+                        if queue_result.get("status") == "queued":
+                            learning_actions.append({
+                                "action": "queued_for_reconciliation",
+                                "fact": fact_text,
+                                "category": category,
+                                "confidence": confidence,
+                                "queue_id": queue_result.get("queue_id")
+                            })
+                    except Exception as e:
+                        logger.warning(f"Failed to add fact to learning queue: {e}")
 
                 # Generate related information
                 related_facts = self._expand_knowledge(fact_text, category)

@@ -683,7 +683,7 @@ MEMORY_FILE = DATA_DIR / "allie_memory.json"
 allie_memory = AllieMemory(MEMORY_FILE)
 
 # Initialize automatic learner with advanced memory
-auto_learner = AutomaticLearner(allie_memory, advanced_memory)
+auto_learner = AutomaticLearner(allie_memory, advanced_memory, learning_queue=advanced_memory)
 
 # Initial cleanup on startup
 cleanup_all_folders()
