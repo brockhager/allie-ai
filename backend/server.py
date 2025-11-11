@@ -1151,8 +1151,59 @@ async def update_conversation_api(conv_id: str, payload: Dict[str, Any] = Body(.
                 for j, msg in enumerate(new_messages):
                     if j >= len(old_messages) or msg != old_messages[j]:
                         if msg.get("role") == "me" and msg.get("text"):
-                            # Process user message for learning
-                            learning_result = auto_learner.process_message(msg["text"], "user")
+                            # Check if this is a clarification response
+                            clarification_combined = None
+                            if j > 0:  # Need at least one previous message
+                                prev_msg = new_messages[j-1] if j < len(new_messages) else old_messages[-1] if old_messages else None
+                                if prev_msg and prev_msg.get("role") == "them":
+                                    prev_text = prev_msg.get("text", "")
+                                    # Check if previous assistant message contains clarification context
+                                    clarification_marker = "<!--CLARIFICATION_CONTEXT:"
+                                    if clarification_marker in prev_text:
+                                        try:
+                                            # Extract clarification context from previous message
+                                            start_idx = prev_text.find(clarification_marker)
+                                            end_idx = prev_text.find("-->", start_idx)
+                                            if end_idx > start_idx:
+                                                context_json = prev_text[start_idx + len(clarification_marker):end_idx]
+                                                clarification_data = json.loads(context_json)
+
+                                                if clarification_data.get("clarification_pending"):
+                                                    original_query = clarification_data.get("original_query", "")
+                                                    user_clarification = msg["text"].strip()
+
+                                                    # Combine original query with clarification
+                                                    # Example: "Tell me about Ada Lovelace" + "Her childhood" -> "Tell me about Ada Lovelace's childhood"
+                                                    if original_query and user_clarification:
+                                                        # Simple combination logic - can be enhanced
+                                                        if user_clarification.lower().startswith(("the ", "a ", "an ")):
+                                                            # Replace article with possessive: "the history" -> "Ada Lovelace's history"
+                                                            clarification_combined = f"{original_query}'s {user_clarification}"
+                                                        elif len(user_clarification.split()) <= 3:
+                                                            # Short clarification, likely a specific aspect
+                                                            clarification_combined = f"{original_query} {user_clarification}"
+                                                        else:
+                                                            # Longer clarification, use as-is but log for learning
+                                                            clarification_combined = f"{original_query}: {user_clarification}"
+
+                                                        logger.info(f"Clarification combined: '{original_query}' + '{user_clarification}' -> '{clarification_combined}'")
+
+                                                        # Store clarification event in advanced memory
+                                                        try:
+                                                            hybrid_memory.add_fact(
+                                                                fact=f"Clarification: User clarified '{original_query}' with '{user_clarification}' resulting in '{clarification_combined}'",
+                                                                category="clarification_event",
+                                                                confidence=0.9,
+                                                                source="conversation_clarification"
+                                                            )
+                                                        except Exception as e:
+                                                            logger.warning(f"Failed to store clarification event: {e}")
+                                        except Exception as e:
+                                            logger.warning(f"Failed to process clarification context: {e}")
+
+                            # Process user message for learning (use combined query if available)
+                            message_to_process = clarification_combined if clarification_combined else msg["text"]
+                            learning_result = auto_learner.process_message(message_to_process, "user")
                             if learning_result["learning_actions"]:
                                 logger.info(f"Learned {learning_result['total_facts_learned']} facts from user message")
 
@@ -1282,6 +1333,68 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     prompt = payload.get("prompt", "")
     max_tokens = payload.get("max_tokens", 512)  # Increased from 200 to allow fuller responses
     conversation_context = payload.get("conversation_context", [])  # New parameter
+
+    # Check for clarification response in conversation context
+    clarification_combined = None
+    if conversation_context and len(conversation_context) >= 2:
+        # Look for clarification pattern: assistant message with clarification context followed by user response
+        last_assistant_msg = None
+        last_user_msg = None
+
+        # Find the last assistant and user messages
+        for msg in reversed(conversation_context):
+            if msg.get("role") == "them" and last_assistant_msg is None:
+                last_assistant_msg = msg
+            elif msg.get("role") == "me" and last_user_msg is None:
+                last_user_msg = msg
+
+        # Check if the last assistant message contains clarification context
+        if last_assistant_msg and last_user_msg:
+            assistant_text = last_assistant_msg.get("text", "")
+            clarification_marker = "<!--CLARIFICATION_CONTEXT:"
+            if clarification_marker in assistant_text:
+                try:
+                    # Extract clarification context
+                    start_idx = assistant_text.find(clarification_marker)
+                    end_idx = assistant_text.find("-->", start_idx)
+                    if end_idx > start_idx:
+                        context_json = assistant_text[start_idx + len(clarification_marker):end_idx]
+                        clarification_data = json.loads(context_json)
+
+                        if clarification_data.get("clarification_pending"):
+                            original_query = clarification_data.get("original_query", "")
+                            user_clarification = last_user_msg.get("text", "").strip()
+
+                            # Combine original query with clarification
+                            if original_query and user_clarification:
+                                # Simple combination logic - can be enhanced
+                                if user_clarification.lower().startswith(("the ", "a ", "an ")):
+                                    # Replace article with possessive: "the history" -> "Ada Lovelace's history"
+                                    clarification_combined = f"{original_query}'s {user_clarification}"
+                                elif len(user_clarification.split()) <= 3:
+                                    # Short clarification, likely a specific aspect
+                                    clarification_combined = f"{original_query} {user_clarification}"
+                                else:
+                                    # Longer clarification, use as-is
+                                    clarification_combined = f"{original_query}: {user_clarification}"
+
+                                logger.info(f"Clarification detected and combined: '{original_query}' + '{user_clarification}' -> '{clarification_combined}'")
+
+                                # Store clarification event in advanced memory
+                                try:
+                                    hybrid_memory.add_fact(
+                                        fact=f"Clarification: User clarified '{original_query}' with '{user_clarification}' resulting in '{clarification_combined}'",
+                                        category="clarification_event",
+                                        confidence=0.9,
+                                        source="conversation_clarification"
+                                    )
+                                except Exception as e:
+                                    logger.warning(f"Failed to store clarification event: {e}")
+
+                                # Use the combined query instead of the original prompt
+                                prompt = clarification_combined
+                except Exception as e:
+                    logger.warning(f"Failed to process clarification context: {e}")
 
     # Input validation
     if not prompt or not isinstance(prompt, str):
@@ -1834,6 +1947,18 @@ Give clear, direct answers. Be conversational and natural."""
             if disambiguation.get("needs_clarification"):
                 clarifying_question = "Could you clarify which interpretation you meant?"
                 final_reply += f"**{clarifying_question}**\n\n"
+
+                # Store clarification state in conversation context for later processing
+                # This will be used by the conversation update logic to combine clarification responses
+                clarification_context = {
+                    "clarification_pending": True,
+                    "original_query": prompt,
+                    "interpretations": interpretations,
+                    "timestamp": datetime.now().isoformat()
+                }
+
+                # Add clarification context to the response for the frontend to handle
+                final_reply += f"<!--CLARIFICATION_CONTEXT:{json.dumps(clarification_context)}-->"
 
         # Log disambiguation events and fact-check warnings
         if disambiguation:

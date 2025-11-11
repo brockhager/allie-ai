@@ -1,8 +1,118 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T23:54:39.040820",
-  "fact_count": 1864,
+  "saved_at": "2025-11-11T00:09:11.982789",
+  "fact_count": 1875,
   "facts": [
+    {
+      "fact": "Über die spezielle und die allgemeine Relativitätstheorie: by Albert Einstein (1917) Subjects: Relativity (Physics), Popular works, General relativity (Physics)",
+      "timestamp": "2025-11-11T00:09:11.977948",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Albert <B>Einstein</B> ( EYEN-styne; German: [ˈalbɛʁt ˈʔaɪnʃtaɪn] (); 14 March 1879 – 18 April 1955) was a",
+      "timestamp": "2025-11-11T00:09:11.945743",
+      "category": "biography",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Einstein: instance_of = Q101352",
+      "timestamp": "2025-11-11T00:09:11.910115",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Albert Einstein (14 March 1879 – 18 April 1955) was a German-born theoretical physicist best known for developing the theory of relativity. Einstein also made important contributions to quantum theory. His mass–energy equivalence formula E = mc2, which arises from special relativity, has been called...",
+      "timestamp": "2025-11-11T00:09:11.874334",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Albert Einstein A German-born theoretical physicist who is best known for developing the theory of relativity.",
+      "timestamp": "2025-11-11T00:09:11.837663",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Das Schloß: by Franz Kafka (1926) Subjects: Fiction, Bureaucracy, Castles",
+      "timestamp": "2025-11-11T00:01:13.012696",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "millionths of a <B>metre</B> to 33.6 metres (110 ft). They have complex interactions with each other and their",
+      "timestamp": "2025-11-11T00:01:12.985599",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Meta: instance_of = ['Q891723', 'Q18388277', 'Q1641122', 'Q4830453']",
+      "timestamp": "2025-11-11T00:01:12.962738",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Meta most commonly refers to:",
+      "timestamp": "2025-11-11T00:01:12.940120",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Metaverse A virtual world in which users interact while represented by avatars, typically in a 3D display...",
+      "timestamp": "2025-11-11T00:01:12.914360",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Meta Platforms Meta Platforms, Inc. is an American multinational technology company headquartered in Menlo Park...",
+      "timestamp": "2025-11-11T00:01:12.892267",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "The Lost World: by Michael Crichton (1995) Subjects: prions, scrapie, Ornitholestes",
       "timestamp": "2025-11-10T23:54:39.037647",

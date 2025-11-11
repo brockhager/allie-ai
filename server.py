@@ -53,7 +53,7 @@ except json.JSONDecodeError:
 # -------------------------
 tokenizer = AutoTokenizer.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
 base_model = AutoModelForCausalLM.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
-model = PeftModel.from_pretrained(base_model, str(APP_ROOT.parent / "allie_finetuned"))
+model = PeftModel.from_pretrained(base_model, str(APP_ROOT / "allie_finetuned"))
 
 # -------------------------
 # FastAPI app

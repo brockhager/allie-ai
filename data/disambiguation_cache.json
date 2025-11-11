@@ -440,5 +440,83 @@
       "needs_clarification": true
     },
     "expires": "2025-11-11T23:54:39.059432"
+  },
+  "what is meta": {
+    "result": {
+      "is_ambiguous": true,
+      "interpretations": [
+        {
+          "meaning_label": "General",
+          "summary": "...",
+          "sources_consulted": [
+            "openlibrary",
+            "duckduckgo",
+            "dbpedia"
+          ],
+          "confidence_score": 1.0,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "...",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.9499999999999998,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "Structured Data",
+          "summary": "...",
+          "sources_consulted": [
+            "wikidata"
+          ],
+          "confidence_score": 0.9,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.9517543859649124,
+      "needs_clarification": true
+    },
+    "expires": "2025-11-12T00:01:13.035674"
+  },
+  "who is einstein": {
+    "result": {
+      "is_ambiguous": true,
+      "interpretations": [
+        {
+          "meaning_label": "General",
+          "summary": "...",
+          "sources_consulted": [
+            "openlibrary",
+            "duckduckgo",
+            "dbpedia"
+          ],
+          "confidence_score": 1.0,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "...",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.9499999999999998,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "Structured Data",
+          "summary": "...",
+          "sources_consulted": [
+            "wikidata"
+          ],
+          "confidence_score": 0.9,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.9517543859649124,
+      "needs_clarification": true
+    },
+    "expires": "2025-11-12T00:09:12.012383"
   }
 }
