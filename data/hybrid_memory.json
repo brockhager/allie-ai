@@ -1,8 +1,78 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T18:05:26.467926",
-  "fact_count": 1027,
+  "saved_at": "2025-11-10T18:24:22.255927",
+  "fact_count": 1034,
   "facts": [
+    {
+      "fact": "Java is a programming language",
+      "timestamp": "2025-11-10T18:24:22.254190",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "true",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Python is a snake genus",
+      "timestamp": "2025-11-10T18:24:22.241434",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "wikipedia",
+      "status": "true",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Python is a programming language",
+      "timestamp": "2025-11-10T18:24:22.228507",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "true",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Java is a programming language",
+      "timestamp": "2025-11-10T18:23:18.656923",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "true",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Python is a snake genus",
+      "timestamp": "2025-11-10T18:23:18.643789",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "wikipedia",
+      "status": "true",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Python is a programming language",
+      "timestamp": "2025-11-10T18:23:18.629325",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "true",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Nancy Patricia Pelosi ( pə-LOH-see; née D'Alesandro; born March 26, 1940) is an American politician who was the 52nd speaker of the United States House of Representatives, serving from 2007 to 2011 and again from 2019 to 2023. A member of the Democratic Party, she was the first woman elected U.S. Ho...",
+      "timestamp": "2025-11-10T18:09:08.523910",
+      "category": "cultural",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "Hybrid test fact 2025-11-10T18:05:26.466110",
       "timestamp": "2025-11-10T18:05:26.466114",

@@ -38,14 +38,28 @@
     </nav>
     <div class="content-area">
         <iframe id="allie" class="content-frame active" src="/chat"></iframe>
-        <iframe id="fact" class="content-frame" src="/fact-check"></iframe>
-        <iframe id="quick" class="content-frame" src="/quick-teach"></iframe>
-        <iframe id="admin" class="content-frame" src="/admin-dashboard"></iframe>
+        <iframe id="fact" class="content-frame" data-src="/fact-check"></iframe>
+        <iframe id="quick" class="content-frame" data-src="/quick-teach"></iframe>
+        <iframe id="admin" class="content-frame" data-src="/admin-dashboard"></iframe>
     </div>
     <script>
+        // Lazy load iframes
+        const loadedIframes = new Set(['allie']); // allie is loaded by default
+        
         function showTab(tab) {
             document.querySelectorAll('.content-frame').forEach(f => f.classList.remove('active'));
-            document.getElementById(tab).classList.add('active');
+            const iframe = document.getElementById(tab);
+            iframe.classList.add('active');
+            
+            // Lazy load iframe if not already loaded
+            if (!loadedIframes.has(tab)) {
+                const dataSrc = iframe.getAttribute('data-src');
+                if (dataSrc) {
+                    iframe.src = dataSrc;
+                    loadedIframes.add(tab);
+                }
+            }
+            
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             event.target.closest('.nav-tab').classList.add('active');
         }

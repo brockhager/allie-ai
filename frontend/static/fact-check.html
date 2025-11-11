@@ -592,6 +592,11 @@
 
             try {
                 const response = await fetch(`/api/facts?${params}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const data = await response.json();
 
                 if (data.status === 'success') {
@@ -600,11 +605,15 @@
                     renderPagination(Math.ceil((data.total || data.facts.length) / 50));
                     document.getElementById('pagination').style.display = 'flex';
                 } else {
-                    showError('Failed to load facts');
+                    console.error('Failed to load facts:', data);
+                    const errorMsg = data.message || 'Failed to load facts';
+                    renderFactsTable([]);  // Show empty table instead of alert
+                    console.error(errorMsg);
                 }
             } catch (error) {
                 console.error('Error loading facts:', error);
-                showError('Error loading facts');
+                renderFactsTable([]);  // Show empty table instead of alert
+                console.error('Error loading facts: ' + error.message);
             }
         }
 
@@ -642,8 +651,8 @@
         function renderFactsTable(facts) {
             const content = document.getElementById('facts-content');
 
-            if (facts.length === 0) {
-                content.innerHTML = '<div class="loading">No facts found</div>';
+            if (!facts || facts.length === 0) {
+                content.innerHTML = '<div class="loading">No facts found. Facts will appear here once Allie learns from conversations.</div>';
                 return;
             }
 

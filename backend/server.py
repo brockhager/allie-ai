@@ -1374,7 +1374,11 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
     # First, enhance the search query with conversation context if pronouns are detected
     enhanced_query = enhance_query_with_context(prompt, conversation_context)
     logger.debug(f"Augmented memory search query: '{enhanced_query}' (original: '{prompt}')")
-    hybrid_results = hybrid_memory.search(enhanced_query, limit=5)
+    hybrid_search_result = hybrid_memory.search(enhanced_query, limit=5, include_disambiguation=True)
+    hybrid_results = hybrid_search_result.get("results", [])
+    disambiguation = hybrid_search_result.get("disambiguation")
+    fact_check_warnings = hybrid_search_result.get("fact_check_warnings", [])
+
     # Only use hybrid memory - no fallback to legacy memory to avoid pollution
     relevant_facts = [result["fact"] for result in hybrid_results] if hybrid_results else []
     recent_context = None  # Disabled to avoid pollution
@@ -1731,6 +1735,48 @@ Give clear, direct answers. Be conversational and natural."""
         final_reply += "\n\n" + "\n".join(external_learning_confirmations)
     if memory_validation_updates:
         final_reply += "\n\n" + "\n".join(memory_validation_updates)
+
+    # Step 9.5: Handle disambiguation results
+    if disambiguation and disambiguation.get("is_ambiguous"):
+        # Format disambiguation results for UI display
+        interpretations = disambiguation.get("interpretations", [])
+        if interpretations:
+            final_reply += "\n\n**Multiple Interpretations Detected:**\n"
+            for i, interp in enumerate(interpretations[:3], 1):  # Show up to 3
+                status_emoji = {
+                    "true": "✅",
+                    "not_verified": "⚠️",
+                    "false": "❌"
+                }.get(interp.get("status", "not_verified"), "❓")
+
+                confidence_pct = int(interp.get("confidence_score", 0) * 100)
+                final_reply += f"{i}. **{interp['meaning_label']}** {status_emoji} ({confidence_pct}% confidence)\n"
+                final_reply += f"   {interp['summary']}\n"
+                final_reply += f"   *Sources: {', '.join(interp.get('sources_consulted', []))}*\n\n"
+
+            if disambiguation.get("needs_clarification"):
+                clarifying_question = "Could you clarify which interpretation you meant?"
+                final_reply += f"**{clarifying_question}**\n\n"
+
+        # Log disambiguation events and fact-check warnings
+        if disambiguation:
+            # Log disambiguation event
+            logger.info(f"Disambiguation: query='{prompt}', ambiguous={disambiguation.get('is_ambiguous')}, interpretations={len(disambiguation.get('interpretations', []))}, confidence={disambiguation.get('confidence', 0):.2f}")
+
+            # Log to learning_log if available (for now, just log to console)
+            # TODO: Store in learning_log table when database integration is complete
+
+        if fact_check_warnings:
+            logger.info(f"Fact-check warnings: {len(fact_check_warnings)} warnings for query '{prompt}'")
+            for warning in fact_check_warnings:
+                logger.info(f"  - {warning}")
+
+    # Step 9.6: Add fact-check warnings to response
+    if fact_check_warnings:
+        final_reply += "\n\n**Fact-Check Warnings:**\n"
+        for warning in fact_check_warnings[:3]:  # Limit to 3 warnings
+            final_reply += f"⚠️ {warning}\n"
+        final_reply += "\n"
 
     # Step 10: Always add source URL and confidence score to every response
     source_info = []
@@ -2171,10 +2217,13 @@ async def get_facts(limit: int = 50, offset: int = 0):
                 "confidence": fact_data.get("confidence", 0.8),
                 "source": fact_data.get("source", "unknown"),
                 "timestamp": fact_data["timestamp"],
+                "updated_at": fact_data["timestamp"],  # Add for frontend compatibility
+                "status": "true",  # Default status
                 "is_outdated": fact_data.get("is_outdated", False)
             })
         
         return {
+            "status": "success",  # Add status field for frontend
             "facts": facts,
             "total": len(timeline),
             "limit": limit,
@@ -2182,7 +2231,12 @@ async def get_facts(limit: int = 50, offset: int = 0):
         }
     except Exception as e:
         logger.error(f"Error getting facts: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        return {
+            "status": "error",
+            "message": str(e),
+            "facts": [],
+            "total": 0
+        }
 
 @app.get("/api/facts/{fact_id}")
 async def get_fact(fact_id: int):

@@ -3,6 +3,13 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 import logging
+import sys
+import os
+
+# Add the current directory to the path so we can import disambiguation
+sys.path.insert(0, os.path.dirname(__file__))
+
+from disambiguation import DisambiguationEngine
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +33,7 @@ class HybridMemory:
 			self.data_file = Path(__file__).parent.parent.joinpath("data", "hybrid_memory.json")
 
 		self.facts: List[Dict[str, Any]] = []
+		self.disambiguation_engine = DisambiguationEngine()
 		self._load()
 
 	def _load(self):
@@ -106,14 +114,33 @@ class HybridMemory:
 			result.update({"updated": True, "old_fact": old_fact})
 		return result
 
-	def search(self, query: str, limit: int = 5) -> List[Dict[str, Any]]:
+	def search(self, query: str, limit: int = 5, include_disambiguation: bool = True) -> Dict[str, Any]:
+		"""
+		Search facts with disambiguation support and Fact-Check status filtering
+
+		Returns:
+		{
+			"results": List[Dict],  # Regular search results
+			"disambiguation": Dict,  # Disambiguation analysis (if enabled)
+			"fact_check_warnings": List[str]  # Any false facts excluded
+		}
+		"""
 		q = (query or "").lower()
 		if not q:
-			return []
+			return {"results": [], "disambiguation": None, "fact_check_warnings": []}
 
 		hits: List[Dict[str, Any]] = []
+		excluded_false_facts = []
+
 		for entry in self.facts:
 			text = (entry.get("fact") or "").lower()
+			status = entry.get("status", "not_verified")
+
+			# Respect Fact-Check statuses: exclude false by default
+			if status == "false":
+				excluded_false_facts.append(entry.get("fact", "")[:100] + "...")
+				continue
+
 			if q in text and not entry.get("is_outdated", False):
 				hits.append(entry)
 
@@ -132,7 +159,18 @@ class HybridMemory:
 			x.get('timestamp', ''),  # Most recent first
 		), reverse=True)
 
-		return hits[:limit]
+		results = hits[:limit]
+
+		# Perform disambiguation analysis if enabled and we have results
+		disambiguation = None
+		if include_disambiguation and results:
+			disambiguation = self.disambiguation_engine.detect_ambiguity(query, results)
+
+		return {
+			"results": results,
+			"disambiguation": disambiguation,
+			"fact_check_warnings": excluded_false_facts
+		}
 
 	def get_timeline(self, include_outdated: bool = False) -> List[Dict[str, Any]]:
 		if include_outdated:
@@ -306,8 +344,129 @@ class HybridMemory:
 
 		return result
 
-	def rollback_fact(self, fact_id: int, target_log_id: int) -> Dict[str, Any]:
-		"""Rollback a fact to a previous state from learning log"""
-		# Mock implementation - in real system would query learning_log table
-		return {"status": "rolled_back", "fact_id": fact_id, "target_log_id": target_log_id}
+	def _calculate_confidence_score(self, base_confidence: float, source: str, external_verification: Optional[Dict[str, Any]] = None) -> int:
+		"""
+		Calculate confidence score using the new formula:
+		base_source_weight + agreement_bonus + recency_bonus − ambiguity_penalty − provenance_penalty
+
+		Capped at 50 unless ≥2 independent, credible sources agree.
+		If Fact-Check status == false, force confidence ≤10.
+		"""
+		# Base source weight
+		base_weight = self.disambiguation_engine.source_weights.get(source, 0.5)
+
+		# Agreement bonus: check if multiple sources agree on this fact
+		agreement_bonus = 0.0
+		if external_verification:
+			agreeing_sources = external_verification.get("agreeing_sources", [])
+			if len(agreeing_sources) >= 2:
+				agreement_bonus = 0.2
+			elif len(agreeing_sources) >= 1:
+				agreement_bonus = 0.1
+
+		# Recency bonus: +0.1 if fact is recent
+		recency_bonus = 0.0
+		if external_verification and external_verification.get("is_recent", False):
+			recency_bonus = 0.1
+
+		# Ambiguity penalty: -0.1 if fact is ambiguous
+		ambiguity_penalty = 0.0
+		if external_verification and external_verification.get("is_ambiguous", False):
+			ambiguity_penalty = 0.1
+
+		# Provenance penalty: -0.1 if source has low credibility or conflicts
+		provenance_penalty = 0.0
+		if external_verification and external_verification.get("has_conflicts", False):
+			provenance_penalty = 0.1
+
+		# Calculate raw confidence
+		confidence = base_weight + agreement_bonus + recency_bonus - ambiguity_penalty - provenance_penalty
+
+		# Cap at 50% unless 2+ credible sources agree
+		credible_sources = []
+		if external_verification:
+			for src in external_verification.get("agreeing_sources", []):
+				if self.disambiguation_engine.source_weights.get(src, 0) >= 0.8:
+					credible_sources.append(src)
+
+		if len(credible_sources) < 2 and confidence > 0.5:
+			confidence = 0.5
+
+		# Force low confidence for false facts
+		if external_verification and external_verification.get("fact_check_status") == "false":
+			confidence = min(confidence, 0.1)
+
+		return max(0, min(100, int(confidence * 100)))
+
+	def _analyze_conflicts(self, fact: str, source: str) -> Dict[str, Any]:
+		"""Analyze potential conflicts with existing facts"""
+		conflicts = []
+		has_conflict = False
+		conflict_type = None
+
+		fact_lower = fact.lower()
+		fact_prefix = " ".join(fact_lower.split()[:6])
+
+		for entry in self.facts:
+			if entry.get("is_outdated", False):
+				continue
+
+			entry_fact = entry.get("fact", "").lower()
+			entry_prefix = " ".join(entry_fact.split()[:6])
+
+			# Check for direct contradiction
+			if fact_prefix == entry_prefix and fact_lower != entry_fact:
+				conflicts.append({
+					"type": "direct_contradiction",
+					"existing_fact": entry.get("fact"),
+					"existing_status": entry.get("status"),
+					"existing_source": entry.get("source")
+				})
+				has_conflict = True
+				conflict_type = "direct_contradiction"
+
+			# Check for external source contradiction
+			elif source not in ["user", "correction"] and entry.get("source") not in ["user", "correction"]:
+				# Both are external sources - potential conflict
+				if fact_prefix == entry_prefix and fact_lower != entry_fact:
+					conflicts.append({
+						"type": "external_contradiction",
+						"existing_fact": entry.get("fact"),
+						"existing_status": entry.get("status"),
+						"existing_source": entry.get("source")
+					})
+					has_conflict = True
+					conflict_type = "external_contradiction"
+
+		return {
+			"has_conflict": has_conflict,
+			"conflict_type": conflict_type,
+			"conflicts": conflicts
+		}
+
+	def _log_confidence_calculation(self, fact: str, confidence_score: int, source: str, external_verification: Optional[Dict[str, Any]] = None):
+		"""Log confidence calculation for monitoring and improvement"""
+		log_entry = {
+			"timestamp": datetime.now().isoformat(),
+			"fact": fact[:200] + "..." if len(fact) > 200 else fact,
+			"confidence_score": confidence_score,
+			"source": source,
+			"external_verification": external_verification
+		}
+
+		# Track overconfidence cases for source weight adjustment
+		if confidence_score >= 70 and external_verification and external_verification.get("fact_check_status") == "false":
+			logger.warning(f"Overconfidence detected: {confidence_score}% confidence but fact marked false")
+			# In a real implementation, this would trigger source weight reduction
+			# self._adjust_source_weight(source, -0.05)
+
+		logger.info(f"Confidence calculation: {json.dumps(log_entry, default=str)}")
+
+		# TODO: Store in learning_log table when database integration is complete
+
+	def get_disambiguation_analysis(self, query: str) -> Dict[str, Any]:
+		"""Get disambiguation analysis for a query"""
+		# Search for relevant facts
+		search_result = self.search(query, limit=10, include_disambiguation=True)
+		return search_result.get("disambiguation", {})
 

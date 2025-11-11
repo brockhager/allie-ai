@@ -1,0 +1,30 @@
+{
+  "python": {
+    "result": {
+      "is_ambiguous": true,
+      "interpretations": [
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "is a high-level programming language created by Guido van Rossum",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.5,
+          "status": "true"
+        },
+        {
+          "meaning_label": "Science/Research",
+          "summary": "is a genus of non-venomous snakes in the family Pythonidae found in Africa and Asia",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.5,
+          "status": "true"
+        }
+      ],
+      "confidence": 0.5,
+      "needs_clarification": true
+    },
+    "expires": "2025-11-11T18:24:22.202308"
+  }
+}
