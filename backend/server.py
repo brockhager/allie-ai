@@ -746,16 +746,16 @@ async def check_and_trigger_auto_learning():
             logger.debug("No feedback data to trigger auto-learning")
             return
         
-        # Conditions met - log that we would trigger learning
+        # Conditions met - trigger learning episode
         logger.info(f"Auto-learning conditions met: {total_facts} facts, feedback available")
-        logger.info("Auto-learning task is currently disabled for testing")
+        logger.info("Triggering auto-learning episode...")
         
         # Update tracking
         _last_learning_check = current_time
         _last_learning_trigger = current_time
         
-        # In the future, this would trigger actual learning:
-        # await auto_learner.run_learning_episode()
+        # Trigger actual learning episode
+        await auto_learner.run_learning_episode()
         
     except Exception as e:
         logger.error(f"Error in check_and_trigger_auto_learning: {e}")

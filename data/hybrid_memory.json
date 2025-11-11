@@ -1,8 +1,48 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T21:54:19.297170",
-  "fact_count": 1860,
+  "saved_at": "2025-11-10T23:54:39.040820",
+  "fact_count": 1864,
   "facts": [
+    {
+      "fact": "The Lost World: by Michael Crichton (1995) Subjects: prions, scrapie, Ornitholestes",
+      "timestamp": "2025-11-10T23:54:39.037647",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Jurassic Park is a 1993 American science fiction adventure film directed by Steven Spielberg and written by Michael Crichton and David Koepp, based on Crichton's 1990 novel. Starring Sam Neill, Laura Dern, Jeff Goldblum, and Richard Attenborough, the film is set on the fictional island of Isla Nubla...",
+      "timestamp": "2025-11-10T23:54:39.014859",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Films produced by Gerald R. Molen",
+      "timestamp": "2025-11-10T23:54:38.988425",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Jurassic Park is a 1993 American science fiction adventure film directed by Steven Spielberg and written by Michael Crichton and David Koepp, based on Crichton's 1990 novel. Starring Sam Neill, Laura Dern, Jeff Goldblum, and Richard Attenborough, the film is set on the fictional island of Isla Nublar near Costa Rica, where wealthy businessman John Hammond and a team of genetic scientists have created a wildlife park of de-extinct dinosaurs. When industrial sabotage leads to a catastrophic shutdown of the park's power facilities and security precautions, a small group of visitors struggle to survive and escape the now perilous island. Before Crichton's novel was published, four studios put in bids for its film rights. With the backing of Universal Pictures, Spielberg acquired the rights for $1.5 million. Crichton was hired for an additional $500,000 to adapt the novel for the screen.",
+      "timestamp": "2025-11-10T23:54:38.965694",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": true
+    },
     {
       "fact": "Coloring Book: by Donald Nguyen (2019)",
       "timestamp": "2025-11-10T21:54:19.293676",
