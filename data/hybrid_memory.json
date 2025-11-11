@@ -1,8 +1,958 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T17:13:34.717777",
-  "fact_count": 928,
+  "saved_at": "2025-11-10T17:41:18.686595",
+  "fact_count": 1023,
   "facts": [
+    {
+      "fact": "Presidential elections were held in the United States on November 8, 2016. The Republican ticket of businessman Donald Trump and Indiana governor Mike Pence defeated the Democratic ticket of former secretary of state Hillary Clinton and Virginia junior senator Tim Kaine, in what was considered one o...",
+      "timestamp": "2025-11-10T17:41:18.684640",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'SusTrainable: Promoting Sustainability as a Fundamental Driver in\n  Software Development Training and Education. 2nd Teacher Training, January\n  23-27, 2023, Pula, Croatia. Revised lecture notes' by Tihana Galinac Grbac, Csaba Szabó, João Paulo Fernandes - This volume exhibits the revised lecture notes of the 2nd teacher training\norganized as part of the project Promoting Sustainability as a Fundamental\nDriver in Software Development Training and Educat...",
+      "timestamp": "2025-11-10T17:38:58.024741",
+      "category": "Education Week counted 14 school shootings as of January 22, 2025",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Analyzing Mass School Shootings in the United States from 1999 to 2024\n  with Game Theory, Probability Analysis, and Machine Learning' by Wei Dai, Rui Zhang, Diya Kafle - Public safety is vital to every country, especially school safety. In the\nUnited States, students and educators are concerned about school shootings.\nThere are critical needs to understand the pattern...",
+      "timestamp": "2025-11-10T17:38:58.012553",
+      "category": "Education Week counted 14 school shootings as of January 22, 2025",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Various Artists (Other) - add compilations to this artist",
+      "timestamp": "2025-11-10T17:38:58.000249",
+      "category": "Education Week counted 14 school shootings as of January 22, 2025",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Education (Group) - Italian postpunk band from Rome",
+      "timestamp": "2025-11-10T17:38:57.987630",
+      "category": "Education Week counted 14 school shootings as of January 22, 2025",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Analyzing Mass School Shootings in the United States from 1999 to 2024\n  with Game Theory, Probability Analysis, and Machine Learning' by Wei Dai, Rui Zhang, Diya Kafle - Public safety is vital to every country, especially school safety. In the\nUnited States, students and educators are concerned about school shootings.\nThere are critical needs to understand the pattern...",
+      "timestamp": "2025-11-10T17:38:57.951779",
+      "category": "The K-12 School Shooting Database (K-12 Violence Project) recorded 207 school shootings in 2025,",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Social media affects the timing, location, and severity of school\n  shootings' by J. Garcia-Bernardo, H. Qi, J. M. Shultz - Over the past two decades, school shootings within the United States have\nrepeatedly devastated communities and shaken public opinion. Many of these\nattacks appear to be `lone wolf' ones driven by spe...",
+      "timestamp": "2025-11-10T17:38:57.939105",
+      "category": "The K-12 School Shooting Database (K-12 Violence Project) recorded 207 school shootings in 2025,",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "School Shooting (Group) - Australian hardcore punk",
+      "timestamp": "2025-11-10T17:38:57.926273",
+      "category": "The K-12 School Shooting Database (K-12 Violence Project) recorded 207 school shootings in 2025,",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "K-12 (Person)",
+      "timestamp": "2025-11-10T17:38:57.913197",
+      "category": "The K-12 School Shooting Database (K-12 Violence Project) recorded 207 school shootings in 2025,",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Second-Order Constrained Dynamic Optimization' by Yuichiro Aoyama, Oswin So, Augustinos D. Saravanos - This paper provides an overview, analysis, and comparison of second-order\ndynamic optimization algorithms, i.e., constrained Differential Dynamic\nProgramming (DDP) and Sequential Quadratic Programming...",
+      "timestamp": "2025-11-10T17:38:57.901195",
+      "category": "CNN, which conducted its own analysis of data from multiple sources, reported 64 school shootings as of October 27, 2025.",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Analyzing Mass School Shootings in the United States from 1999 to 2024\n  with Game Theory, Probability Analysis, and Machine Learning' by Wei Dai, Rui Zhang, Diya Kafle - Public safety is vital to every country, especially school safety. In the\nUnited States, students and educators are concerned about school shootings.\nThere are critical needs to understand the pattern...",
+      "timestamp": "2025-11-10T17:38:57.888762",
+      "category": "CNN, which conducted its own analysis of data from multiple sources, reported 64 school shootings as of October 27, 2025.",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Sources of I",
+      "timestamp": "2025-11-10T17:38:57.876604",
+      "category": "CNN, which conducted its own analysis of data from multiple sources, reported 64 school shootings as of October 27, 2025.",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Sources of Specialment",
+      "timestamp": "2025-11-10T17:38:57.862996",
+      "category": "CNN, which conducted its own analysis of data from multiple sources, reported 64 school shootings as of October 27, 2025.",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'A Multi-agent Simulation for the Mass School Shootings' by Wei Dai, Yash Singh, Rui Zhang - The increasing frequency of mass school shootings in the United States has\nbeen raised as a critical concern. Active shooters kill innocent students and\neducators in schools. These tragic events highl...",
+      "timestamp": "2025-11-10T17:38:57.848484",
+      "category": "Everytown for Gun Safety reported at least 57 school shootings at K-12 schools as of late August 2025,",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'A Machine Learning Analysis of Twitter Sentiment to the Sandy Hook\n  Shootings' by Nan Wang, Blesson Varghese, Peter D. Donnelly - Gun related violence is a complex issue and accounts for a large proportion\nof violent incidents. In the research reported in this paper, we set out to\ninvestigate the pro-gun and anti-gun sentiments ...",
+      "timestamp": "2025-11-10T17:38:57.835555",
+      "category": "Everytown for Gun Safety reported at least 57 school shootings at K-12 schools as of late August 2025,",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Durable Queues: The Second Amendment' by Gal Sela, Erez Petrank - We consider durable data structures for non-volatile main memory, such as the\nnew Intel Optane memory architecture. Substantial recent work has concentrated\non making concurrent data structures durabl...",
+      "timestamp": "2025-11-10T17:35:53.250447",
+      "category": "2nd amendment in usa",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Bidifferential graded algebras and integrable systems' by Aristophanes Dimakis, Folkert Muller-Hoissen - In the framework of bidifferential graded algebras, we present universal\nsolution generating techniques for a wide class of integrable systems....",
+      "timestamp": "2025-11-10T17:35:53.232693",
+      "category": "2nd amendment in usa",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "USA! USA! USA! (Group) from US",
+      "timestamp": "2025-11-10T17:35:53.216897",
+      "category": "2nd amendment in usa",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "The 2nd Amendment Band (Group)",
+      "timestamp": "2025-11-10T17:35:53.198240",
+      "category": "2nd amendment in usa",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Romeo and Juliet' by William Shakespeare (published 1597)",
+      "timestamp": "2025-11-10T17:35:53.184163",
+      "category": "2nd amendment in usa",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'The Constitution of the United States and related documents' by United States (published 1787)",
+      "timestamp": "2025-11-10T17:35:53.170880",
+      "category": "2nd amendment in usa",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "United States: The United States of America (<B>USA</B>), commonly known as the United States (U.S. or <B>US</B>) or America, is",
+      "timestamp": "2025-11-10T17:35:53.156896",
+      "category": "2nd amendment in usa",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Second <B>Amendment</B> to the United States Constitution:  belongs to <B>individuals</B>, for self-defense <B>in</B> the home, while also <B>including</B>, as dicta, that the right is",
+      "timestamp": "2025-11-10T17:35:53.144596",
+      "category": "2nd amendment in usa",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Research: 'Are School Shootings a Unique Form of Violence? A Comparison of the Individual and Contextual Correlates of Nonfatal School Shootings and Youth Gun Violence.' by Knapp KG, Fridel EE (2025 Nov 8)",
+      "timestamp": "2025-11-10T17:35:52.040053",
+      "category": "school shootings",
+      "confidence": 0.8,
+      "source": "pubmed",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Research: 'Addressing Risks of Violence to Children and Adolescents Through Oregon's Extreme Risk Protection Order Law.' by Valek R, Rakshe S, Teichman R (2025 Nov 6)",
+      "timestamp": "2025-11-10T17:35:52.028553",
+      "category": "school shootings",
+      "confidence": 0.8,
+      "source": "pubmed",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Social media affects the timing, location, and severity of school\n  shootings' by J. Garcia-Bernardo, H. Qi, J. M. Shultz - Over the past two decades, school shootings within the United States have\nrepeatedly devastated communities and shaken public opinion. Many of these\nattacks appear to be `lone wolf' ones driven by spe...",
+      "timestamp": "2025-11-10T17:35:52.016962",
+      "category": "school shootings",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Analyzing Mass School Shootings in the United States from 1999 to 2024\n  with Game Theory, Probability Analysis, and Machine Learning' by Wei Dai, Rui Zhang, Diya Kafle - Public safety is vital to every country, especially school safety. In the\nUnited States, students and educators are concerned about school shootings.\nThere are critical needs to understand the pattern...",
+      "timestamp": "2025-11-10T17:35:52.005411",
+      "category": "school shootings",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Play School from AU",
+      "timestamp": "2025-11-10T17:35:51.993602",
+      "category": "school shootings",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Girlschool (Group) from GB",
+      "timestamp": "2025-11-10T17:35:51.978223",
+      "category": "school shootings",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Unicorn Coloring Book' by kids M. shop notebook (published 2019)",
+      "timestamp": "2025-11-10T17:35:51.964443",
+      "category": "school shootings",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'School Shootings' by Laura K. Egendorf (published 2001)",
+      "timestamp": "2025-11-10T17:35:51.950619",
+      "category": "school shootings",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "A school shooting is an armed attack at an educational institution, involving the use of a firearm. Many school shootings are also categorized as mass shootings due to multiple casualties. The phenomenon is mostly widespread in the United States, which has the highest number of school-related shootings, outnumbering the other major industrialized nations combined by a factor of 57 (2009–18). Especially in the United States, school shootings have sparked a political debate over gun violence, zero tolerance policies, gun rights and gun control.",
+      "timestamp": "2025-11-10T17:35:51.938879",
+      "category": "school shootings",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Austin, Texas: Austin (UK: , US: ) is the capital city of the U.S. state of Texas, as well as the seat and largest city of Travis County, with portions extending into Hays and Williamson counties. It is the 11th-most populous city in the United States, the fourth-most-populous city in Texas, and the second-most-populous state capital city (after Phoenix, Arizona). It is also the fastest growing large city in the United States and the southernmost state capital in the contiguous United States.",
+      "timestamp": "2025-11-10T17:35:51.927396",
+      "category": "school shootings",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Sandy Hook Elementary <B>School</B> <B>shooting</B>: The Sandy Hook Elementary <B>School</B> <B>shooting</B> occurred on December 14, 2012, in Newtown, Connecticut",
+      "timestamp": "2025-11-10T17:35:51.915518",
+      "category": "school shootings",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Bureau of Alcohol, Tobacco, Firearms and Explosives - The Bureau of Alcohol, Tobacco, Firearms and Explosives, commonly referred to as the ATF, is a domestic law enforcement agency within the United States Department of Justice.",
+      "timestamp": "2025-11-10T17:35:51.903512",
+      "category": "school shootings",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Threat assessment - Threat assessment is the practice of determining the credibility and seriousness of a potential threat, as well as the probability that the threat will become a reality.",
+      "timestamp": "2025-11-10T17:35:51.891523",
+      "category": "school shootings",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "A school shooting is an armed attack at an educational institution, involving the use of a firearm. Many school shootings are also categorized as mass shootings due to multiple casualties. The phenomenon is mostly widespread in the United States, which has the highest number of school-related shootings, outnumbering the other major industrialized nations combined by a factor of 57. Especially in the United States, school shootings have sparked a political debate over gun violence, zero tolerance policies, gun rights and gun control. According to studies, factors behind school shooting include easy access to firearms, family dysfunction, lack of family supervision, and mental illness among many other psychological issues. Among the topmost motives of attackers were: bullying/persecution/threatened and revenge, while 54% reported having multiple reasons. The remaining motives included an attempt to solve a problem, suicide or depression, and seeking attention or recognition.",
+      "timestamp": "2025-11-10T17:35:51.879361",
+      "category": "school shootings",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": true
+    },
+    {
+      "fact": "Research: 'Instant synthesis of Mn(3)O(4) nanoenzymes for colorimetric/photothermal dual-readout detection of chloramphenicol in food.' by Huang J, Lian Y, Chen Y (2025 Nov 6)",
+      "timestamp": "2025-11-10T17:35:48.700019",
+      "category": "schools",
+      "confidence": 0.8,
+      "source": "pubmed",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Research: 'Conformational structure and intermolecular interaction of phenylalanine by Raman spectroscopy in the CH stretching region.' by Yao B, Bai J, Li X (2025 Nov 6)",
+      "timestamp": "2025-11-10T17:35:48.687896",
+      "category": "schools",
+      "confidence": 0.8,
+      "source": "pubmed",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Rural School Bus Routing and Scheduling' by Prabhat Hegde, Vikrant Vaze - Long school bus rides adversely affect student performance and well-being.\nRural school bus rides are particularly long, incentivizing parents to drive\ntheir children to school rather than to opt for ...",
+      "timestamp": "2025-11-10T17:35:48.676231",
+      "category": "schools",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Should we adjust for pupil background in school value-added models? A\n  study of Progress 8 and school accountability in England' by George Leckie, Harvey Goldstein - In the UK, US and elsewhere, school accountability systems increasingly\ncompare schools using value-added measures of school performance derived from\npupil scores in high-stakes standardised tests. Ra...",
+      "timestamp": "2025-11-10T17:35:48.664563",
+      "category": "schools",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Rival Schools (Group) from US",
+      "timestamp": "2025-11-10T17:35:48.652863",
+      "category": "schools",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Schools (Group)",
+      "timestamp": "2025-11-10T17:35:48.641079",
+      "category": "schools",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Misery' by Stephen King (published 1978)",
+      "timestamp": "2025-11-10T17:35:48.628548",
+      "category": "schools",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Under the Greenwood Tree or, The Mellstock quire' by Thomas Hardy (published 1872)",
+      "timestamp": "2025-11-10T17:35:48.611967",
+      "category": "schools",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "A school is the educational institution designed to provide learning environments for the teaching of students, usually under the direction of teachers. Most countries have systems of formal education, which is sometimes compulsory. In these systems, students progress through a series of schools that can be built and operated by both government and private organization. The names for these schools vary by country but generally include primary school for young children and secondary school for teenagers who have completed primary education. An institution where higher education is taught is commonly called a university college or university.",
+      "timestamp": "2025-11-10T17:35:48.600249",
+      "category": "schools",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Academy (English <B>school</B>): Academy <B>schools</B> are state-funded <B>schools</B> in England which are directly funded by the Department for",
+      "timestamp": "2025-11-10T17:35:48.585407",
+      "category": "schools",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "State <B>school</B>: State <B>schools</B>, called public <B>schools</B> in North America and many other countries, are generally",
+      "timestamp": "2025-11-10T17:35:48.573998",
+      "category": "schools",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "School of thought The perspective of a group of people who share common characteristics of opinion or outlook of a...",
+      "timestamp": "2025-11-10T17:35:48.562604",
+      "category": "schools",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "School The educational institution designed to provide learning environments for the teaching of...",
+      "timestamp": "2025-11-10T17:35:48.550696",
+      "category": "schools",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Solar System chemical abundances corrected for systematics' by Guillermo Gonzalez - The relative chemical abundances between CI meteorites and the solar\nphotosphere exhibit a significant trend with condensation temperature. A trend\nwith condensation temperature is also seen when the ...",
+      "timestamp": "2025-11-10T17:35:45.671032",
+      "category": "solar system",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Solar Elemental Abundances' by Katharina Lodders - Review of the history of solar system elemental abundances with a new\nassessment of elemental and isotopic abundances from CI-chondrites and solar\ndata. Solar elemental abundances, or solar system ele...",
+      "timestamp": "2025-11-10T17:35:45.659640",
+      "category": "solar system",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Solar System (Person) from IL - Israeli trance artist Lior Lahav",
+      "timestamp": "2025-11-10T17:35:45.648192",
+      "category": "solar system",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Solar System (Group) from ES - Spanish trance producer duo",
+      "timestamp": "2025-11-10T17:35:45.636226",
+      "category": "solar system",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'21st Century Astronomy' by Jeffrey S. Hester (published 2002)",
+      "timestamp": "2025-11-10T17:35:45.624831",
+      "category": "solar system",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'The Magic School Bus' by Joanna Cole (published 1990)",
+      "timestamp": "2025-11-10T17:35:45.613390",
+      "category": "solar system",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Solar System consists of the Sun and the objects that orbit it. The name comes from Sōl, the Latin name for the Sun. It formed about 4.6 billion years ago when a dense region of a molecular cloud collapsed, creating the Sun and a protoplanetary disc from which the orbiting bodies assembled. The fusion of hydrogen into helium inside the Sun's core releases energy, which is primarily emitted through its outer photosphere. This creates a decreasing temperature gradient across the system. Over 99.86% of the Solar System's mass is located within the Sun.",
+      "timestamp": "2025-11-10T17:35:45.601621",
+      "category": "solar system",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Formation and evolution of the <B>Solar</B> <B>System</B>: The formation and evolution of the <B>Solar</B> <B>System</B> began 4.5 billion years ago with the gravitational",
+      "timestamp": "2025-11-10T17:35:45.584581",
+      "category": "solar system",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Solar</B> <B>System</B>: The <B>Solar</B> <B>System</B> is the gravitationally bound <B>system</B> of the Sun and the objects that orbit it",
+      "timestamp": "2025-11-10T17:35:45.573244",
+      "category": "solar system",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Solar System in fiction - Locations in the Solar System besides the Earth have appeared as settings in fiction since at least classical antiquity, initially as an extension of the established literary form of the imaginary voyage to exotic locations ostensibly on Earth.",
+      "timestamp": "2025-11-10T17:35:45.562096",
+      "category": "solar system",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Solar System Category",
+      "timestamp": "2025-11-10T17:35:45.550626",
+      "category": "solar system",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Solar System consists of the Sun and the objects that orbit it. The name comes from Sōl, the Latin name for the Sun. It formed about 4.6 billion years ago when a dense region of a molecular cloud collapsed, creating the Sun and a protoplanetary disc from which the orbiting bodies assembled. The fusion of hydrogen into helium inside the Sun's core releases energy, which is primarily emitted through its outer photosphere. This creates a decreasing temperature gradient across the system. Over 99.86% of the Solar System's mass is located within the Sun. The most massive objects that orbit the Sun are the eight planets. Closest to the Sun in order of increasing distance are the four terrestrial planets – Mercury, Venus, Earth and Mars. These are the planets of the inner Solar System. Earth and Mars are the only planets in the Solar System which orbit within the Sun's habitable zone, where liquid water can exist on the surface.",
+      "timestamp": "2025-11-10T17:35:45.538821",
+      "category": "solar system",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": true
+    },
+    {
+      "fact": "Paper: 'Multi-Teacher Knowledge Distillation with Reinforcement Learning for\n  Visual Recognition' by Chuanguang Yang, Xinqiang Yu, Han Yang - Multi-teacher Knowledge Distillation (KD) transfers diverse knowledge from a\nteacher pool to a student network. The core problem of multi-teacher KD is how\nto balance distillation strengths among vari...",
+      "timestamp": "2025-11-10T17:35:45.527763",
+      "category": "teachers",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Teacher turnover in Rwanda' by Andrew Zeitlin - Despite widely documented shortfalls of teacher skills and effort, there is\nlittle systematic evidence of rates of teacher turnover in low-income\ncountries. I investigate the incidence and consequence...",
+      "timestamp": "2025-11-10T17:35:45.515929",
+      "category": "teachers",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Teachers (Group) from US",
+      "timestamp": "2025-11-10T17:35:45.504250",
+      "category": "teachers",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Teachers from AU - Australian Teachers of Dancing",
+      "timestamp": "2025-11-10T17:35:45.492917",
+      "category": "teachers",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'The Secret Adversary' by Agatha Christie (published 1922)",
+      "timestamp": "2025-11-10T17:35:45.480606",
+      "category": "teachers",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Prince Caspian' by C.S. Lewis (published 1951)",
+      "timestamp": "2025-11-10T17:35:45.465458",
+      "category": "teachers",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "A teacher, also called a schoolteacher or formally an educator, is a person who helps students to acquire knowledge, competence, or virtue, via the practice of teaching.",
+      "timestamp": "2025-11-10T17:35:45.453135",
+      "category": "teachers",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "Sunderland A.F.C.: Sunderland Association Football Club ( (), locally ) is an English professional football club based in the city of Sunderland, Tyne and Wear. Sunderland play in League One, the third tier of English football. Since its formation in 1879, the club has won six top-flight (First Division, now the Premier League) titles (1892, 1893, 1895, 1902, 1913 and 1936), a total only bettered by five other clubs, and has finished runners-up five times. The club has also won the FA Cup twice (1937 and 1973) and been runners-up twice (1913 and 1992), as well as winning the FA Charity Shield in 1936 and being finalists the following year. Sunderland have also been Football League Cup finalists in 1985 and 2014.",
+      "timestamp": "2025-11-10T17:35:45.441668",
+      "category": "teachers",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Teacher</B>: A <B>teacher</B> (also called a school <B>teacher</B> or, in some contexts, an educator) is a person who helps",
+      "timestamp": "2025-11-10T17:35:45.430477",
+      "category": "teachers",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Ontario Teachers' Pension Plan An independent organization responsible for administering defined-benefit pensions for school...",
+      "timestamp": "2025-11-10T17:35:45.418974",
+      "category": "teachers",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Teachers A person who helps students to acquire knowledge, competence, or virtue, via the practice of...",
+      "timestamp": "2025-11-10T17:35:45.404361",
+      "category": "teachers",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Entropy and Ergodic Measures for Toral Automorphisms' by Peng Sun - We show that for every linear toral automorphism, especially the\nnon-hyperbolic ones, the entropies of ergodic measures form a dense set on the\ninterval from zero to the topological entropy....",
+      "timestamp": "2025-11-10T17:35:45.391114",
+      "category": "sun",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Another Proof of an Extension of a Curious Identity' by Yidong Sun - Based on Jensen formulae and the second kind of Chebyshev polynomials,\nanother proof is presented for an extension of a curious binomial identity due\nto Z. W. Sun and K. J. Wu....",
+      "timestamp": "2025-11-10T17:35:45.379809",
+      "category": "sun",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Son Volt (Group) from US",
+      "timestamp": "2025-11-10T17:35:45.368680",
+      "category": "sun",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Sun Ra (Person) from US",
+      "timestamp": "2025-11-10T17:35:45.356997",
+      "category": "sun",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Evil Under the Sun' by Agatha Christie (published 1941)",
+      "timestamp": "2025-11-10T17:35:45.343615",
+      "category": "sun",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'The Sun Also Rises' by Ernest Hemingway (published 1926)",
+      "timestamp": "2025-11-10T17:35:45.329766",
+      "category": "sun",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Sun is the star at the centre of the Solar System. It is a massive, nearly perfect sphere of hot plasma, heated to incandescence by nuclear fusion reactions in its core, radiating the energy from its surface mainly as visible light and infrared radiation with 10% at ultraviolet energies. It is the main source of energy for life on Earth. The Sun has been an object of veneration in many cultures and a central subject for astronomical research since antiquity.",
+      "timestamp": "2025-11-10T17:35:45.318651",
+      "category": "sun",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Sun</B> Hei SC: <B>Sun</B> Hei Sports Club (Chinese: 晨曦體育會) is a Hong Kong football club which currently competes in the Hong Kong Third Division.",
+      "timestamp": "2025-11-10T17:35:45.307493",
+      "category": "sun",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Sun</B> Television: <B>Sun</B> Television Co. (株式会社サンテレビジョン, Kabushiki-gaisha San Terebijon, <B>SUN</B>, <B>SUN</B>-TV) is a commercial",
+      "timestamp": "2025-11-10T17:35:45.295882",
+      "category": "sun",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Sun in fiction - The Sun has appeared as a setting in fiction at least since classical antiquity, but for a long time it received relatively sporadic attention.",
+      "timestamp": "2025-11-10T17:35:45.284708",
+      "category": "sun",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Sun is the star at the centre of the Solar System. It is a massive, nearly perfect sphere of hot plasma, heated to incandescence by nuclear fusion reactions in its core, radiating the energy from its surface mainly as visible light and infrared radiation with 10% at ultraviolet energies. It is the main source of energy for life on Earth. The Sun has been an object of veneration in many cultures and a central subject for astronomical research since antiquity. The Sun orbits the Galactic Center at a distance of 24,000 to 28,000 light-years. Its mean distance from Earth is about 1.496×10⁸ kilometres or about 8 light-minutes. The distance between the Sun and the Earth was used to define a unit of length called the astronomical unit, now defined to be 149.5978707×10⁶ kilometres. Its diameter is about 1,391,400 km, 109 times that of Earth. The Sun's mass is about 330,000 times that of Earth, making up about 99.86% of the total mass of the Solar System.",
+      "timestamp": "2025-11-10T17:35:45.273339",
+      "category": "sun",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": true
+    },
+    {
+      "fact": "Paper: 'Real and Complex Analysis: Solutions to Problems in Amer. Math. Monthly,\n  Math. Magazine, College Math. J., Elemente der Math., Crux Math., EMS\n  Newsletter, Math. Gazette' by Raymond Mortini - In this arxiv-post I present my solutions (published or not) to Problems that\nappeared in Amer. Math. Monthly, Math. Magazine, Elemente der Mathematik and\nCRUX, that were mostly done in collaboration ...",
+      "timestamp": "2025-11-10T17:35:45.261278",
+      "category": "math",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Paper: 'Low progress math in a high performing system' by A. Jamaludin, A. I. Jabir, F. J. Wang - Math anxiety negatively relates to math performance. This negative\nrelationship may be exacerbated in low-progress math learners. However, there\nare limited studies on math anxiety among low progress ...",
+      "timestamp": "2025-11-10T17:35:45.250085",
+      "category": "math",
+      "confidence": 0.8,
+      "source": "arxiv",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Math (Person) from NL - Dutch electronic/hip hop producer Mattie Hendriks",
+      "timestamp": "2025-11-10T17:35:45.237772",
+      "category": "math",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Math (Person) from GB - UK drum n bass producer Mike Melbourne",
+      "timestamp": "2025-11-10T17:35:45.224987",
+      "category": "math",
+      "confidence": 0.8,
+      "source": "musicbrainz",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Ramayana, a Holy Bible of India' by Vālmīki (published 1823)",
+      "timestamp": "2025-11-10T17:35:45.209772",
+      "category": "math",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "'Essential Maths' by Sean McArdle (published 1996)",
+      "timestamp": "2025-11-10T17:35:45.198950",
+      "category": "math",
+      "confidence": 0.8,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Mathematics is a field of study that discovers and organizes methods, theories, and theorems that are developed and proved for the needs of empirical sciences and mathematics itself. There are many areas of mathematics, which include number theory, algebra, geometry, analysis, and set theory.",
+      "timestamp": "2025-11-10T17:35:45.188005",
+      "category": "math",
+      "confidence": 0.85,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Math</B> rock: <B>Math</B> rock is a style of progressive and indie rock with roots in bands such as King Crimson and",
+      "timestamp": "2025-11-10T17:35:45.177115",
+      "category": "math",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Mathematics</B>: <B>Mathematics</B> (from Greek μάθημα máthēma, \"knowledge, study, learning\") includes the study of such",
+      "timestamp": "2025-11-10T17:35:45.166242",
+      "category": "math",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Matha A Sanskrit word that means 'institute or college', and it also refers to a monastery in Hinduism.",
+      "timestamp": "2025-11-10T17:35:45.155085",
+      "category": "math",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Mathematics A field of study that discovers and organizes methods, theories and theorems that are developed...",
+      "timestamp": "2025-11-10T17:35:45.139585",
+      "category": "math",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
     {
       "fact": "Punk rock: Punk rock (or simply punk) is a music genre that emerged <B>in</B> the mid-1970s. Rooted <B>in</B> 1960s garage",
       "timestamp": "2025-11-10T17:13:34.716058",
@@ -1101,7 +2051,7 @@
       "source": "wikipedia",
       "status": "not_verified",
       "confidence_score": 95,
-      "is_outdated": false
+      "is_outdated": true
     },
     {
       "fact": "The Solar System consists of the Sun and the objects that orbit it. The name comes from Sōl, the Latin name for the Sun. It formed about 4.6 billion years ago when a dense region of a molecular cloud collapsed, creating the Sun and a protoplanetary disc from which the orbiting bodies assembled.",
@@ -1111,7 +2061,7 @@
       "source": "wikipedia",
       "status": "not_verified",
       "confidence_score": 95,
-      "is_outdated": false
+      "is_outdated": true
     },
     {
       "fact": "Brown dwarfs are substellar objects that have more mass than the biggest gas giant planets, but less than the least massive main-sequence stars.  Their mass is approximately 13 to 80 times that of Jupiter (MJ)—not big enough to sustain nuclear fusion of hydrogen into helium in their cores, but massi...",
@@ -1161,7 +2111,7 @@
       "source": "wikipedia",
       "status": "not_verified",
       "confidence_score": 95,
-      "is_outdated": false
+      "is_outdated": true
     },
     {
       "fact": "Counting Crows is an American rock band from the San Francisco Bay Area, California. Formed in 1991, the band consists of rhythm guitarist David Bryson, drummer Jim Bogios, vocalist Adam Duritz, keyboardist Charlie Gillingham, multi-instrumentalist David Immerglück, bassist Millard Powers, and lead ...",
@@ -2461,7 +3411,7 @@
       "source": "wikipedia",
       "status": "not_verified",
       "confidence_score": 95,
-      "is_outdated": false
+      "is_outdated": true
     },
     {
       "fact": "Olivia Rodrigo: by Heather E. Schwartz (2022) Subjects: Music, history and criticism",
@@ -4021,7 +4971,7 @@
       "source": "wikipedia",
       "status": "not_verified",
       "confidence_score": 95,
-      "is_outdated": false
+      "is_outdated": true
     },
     {
       "fact": "Python Programming Language: by Bradley N. Miller, David L. Ranum (2006) Subjects: Python (computer program language), Python (Computer program language), Scripting languages",
@@ -6179,7 +7129,7 @@
       "category": "science",
       "confidence": 0.95,
       "source": "wikipedia",
-      "is_outdated": false,
+      "is_outdated": true,
       "status": "not_verified",
       "confidence_score": 95
     },
