@@ -26,6 +26,10 @@
                 <span>✅</span>
                 <span>Fact Checking</span>
             </div>
+            <div class="nav-tab" onclick="showTab('log')">
+                <span>📋</span>
+                <span>Learning Log</span>
+            </div>
             <div class="nav-tab" onclick="showTab('quick')">
                 <span>🎓</span>
                 <span>Quick Teach</span>
@@ -39,6 +43,7 @@
     <div class="content-area">
         <iframe id="allie" class="content-frame active" src="/chat"></iframe>
         <iframe id="fact" class="content-frame" data-src="/fact-check"></iframe>
+        <iframe id="log" class="content-frame" data-src="/learning-log"></iframe>
         <iframe id="quick" class="content-frame" data-src="/quick-teach"></iframe>
         <iframe id="admin" class="content-frame" data-src="/admin-dashboard"></iframe>
     </div>

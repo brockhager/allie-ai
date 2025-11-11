@@ -306,13 +306,13 @@ async def admin_dashboard_ui():
         return HTMLResponse("<html><body><h3>Admin Dashboard not installed</h3></body></html>", status_code=404)
     return HTMLResponse(admin_path.read_text(encoding="utf-8"))
 
-@app.get("/kb", response_class=HTMLResponse)
-async def knowledge_base_ui():
-    """Serve the Knowledge Base admin UI page"""
-    kb_path = STATIC_DIR / "kb.html"
-    if not kb_path.exists():
-        return HTMLResponse("<html><body><h3>Knowledge Base UI not found</h3></body></html>", status_code=404)
-    return HTMLResponse(kb_path.read_text(encoding="utf-8"))
+@app.get("/learning-log", response_class=HTMLResponse)
+async def learning_log_ui():
+    """Serve the Learning Log UI page"""
+    log_path = STATIC_DIR / "learning-log.html"
+    if not log_path.exists():
+        return HTMLResponse("<html><body><h3>Learning Log UI not found</h3></body></html>", status_code=404)
+    return HTMLResponse(log_path.read_text(encoding="utf-8"))
 
 @app.post("/api/admin/run-reconciliation")
 async def run_reconciliation_admin():
@@ -2452,7 +2452,12 @@ async def get_facts(limit: int = 50, offset: int = 0):
         
         # Convert to expected format
         facts = []
+        current_time = datetime.now()
         for i, fact_data in enumerate(paginated_facts, start=offset + 1):
+            # Check if fact was added within last 24 hours
+            fact_timestamp = datetime.fromisoformat(fact_data["timestamp"].replace('Z', '+00:00'))
+            newly_added = (current_time - fact_timestamp).total_seconds() < 86400  # 24 hours in seconds
+            
             facts.append({
                 "id": i,
                 "fact": fact_data["fact"],
@@ -2462,7 +2467,8 @@ async def get_facts(limit: int = 50, offset: int = 0):
                 "timestamp": fact_data["timestamp"],
                 "updated_at": fact_data["timestamp"],  # Add for frontend compatibility
                 "status": "true",  # Default status
-                "is_outdated": fact_data.get("is_outdated", False)
+                "is_outdated": fact_data.get("is_outdated", False),
+                "newly_added": newly_added
             })
         
         return {
@@ -3149,29 +3155,75 @@ async def start_learning():
         logger.error(f"Error starting learning: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/learning/history")
-async def get_learning_history():
-    """Get learning episode history (mock implementation)"""
+@app.get("/api/learning-log")
+async def get_learning_log(limit: int = 100, offset: int = 0, change_type: str = None):
+    """Get learning log entries for UI"""
     try:
-        # Mock learning history
-        history = [
-            {
-                "id": "episode_001",
-                "status": "completed",
-                "start_time": 1699564800,  # Mock timestamp
-                "end_time": 1699565400,
-                "facts_learned": 5,
-                "success_rate": 0.85
+        cursor = None
+        connection = None
+        try:
+            import mysql.connector
+            connection = mysql.connector.connect(
+                host='localhost',
+                user='allie',
+                password='StrongPassword123!',
+                database='allie_memory'
+            )
+            cursor = connection.cursor(dictionary=True)
+
+            # Build query
+            query = """
+                SELECT id, fact_id, keyword, old_fact, new_fact, source, confidence, 
+                       change_type, reviewer, reason, changed_at
+                FROM learning_log
+                WHERE 1=1
+            """
+            params = []
+
+            if change_type:
+                query += " AND change_type = %s"
+                params.append(change_type)
+
+            query += " ORDER BY changed_at DESC LIMIT %s OFFSET %s"
+            params.extend([limit, offset])
+
+            cursor.execute(query, params)
+            entries = cursor.fetchall()
+
+            # Get total count
+            count_query = "SELECT COUNT(*) as total FROM learning_log WHERE 1=1"
+            count_params = []
+            if change_type:
+                count_query += " AND change_type = %s"
+                count_params.append(change_type)
+
+            cursor.execute(count_query, count_params)
+            total = cursor.fetchone()['total']
+
+            return {
+                "status": "success",
+                "entries": entries,
+                "total": total,
+                "limit": limit,
+                "offset": offset
             }
-        ]
-        
-        return {
-            "history": history,
-            "total_episodes": len(history)
-        }
-        
+
+        except mysql.connector.Error as e:
+            logger.error(f"Database error getting learning log: {e}")
+            return {
+                "status": "error",
+                "message": str(e),
+                "entries": [],
+                "total": 0
+            }
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
+
     except Exception as e:
-        logger.error(f"Error getting learning history: {e}")
+        logger.error(f"Error getting learning log: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/learning/quick-topics")

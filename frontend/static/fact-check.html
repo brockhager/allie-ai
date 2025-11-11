@@ -407,19 +407,15 @@
             color: #667eea;
         }
 
-        @media (max-width: 768px) {
-            .filter-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
+        .newly-added {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f9ff 100%);
+            border-left: 4px solid #28a745;
+            animation: fadeInHighlight 2s ease-out;
+        }
 
-            .table-responsive {
-                overflow-x: auto;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
+        @keyframes fadeInHighlight {
+            0% { background: linear-gradient(135deg, #d4edda 0%, #d1ecf1 100%); }
+            100% { background: linear-gradient(135deg, #e8f5e8 0%, #f0f9ff 100%); }
         }
     </style>
 </head>
@@ -718,10 +714,14 @@
                 const disabledAttr = hasValidId ? '' : 'disabled title="This fact cannot be edited (no valid ID)"';
                 const checkboxValue = hasValidId ? factId : `invalid_${index}`;
 
+                // Check if fact was newly added (within last 24 hours)
+                const isNewlyAdded = fact.newly_added === true;
+                const rowClass = isNewlyAdded ? 'newly-added' : '';
+
                 html += `
-                    <tr ${!hasValidId ? 'style="opacity: 0.6;"' : ''}>
+                    <tr class="${rowClass}" ${!hasValidId ? 'style="opacity: 0.6;"' : ''}>
                         <td><input type="checkbox" value="${checkboxValue}" ${disabledAttr} onchange="toggleSelection(${checkboxValue})"></td>
-                        <td class="keyword">${highlightedKeyword}</td>
+                        <td class="keyword">${highlightedKeyword}${isNewlyAdded ? ' <span style="color: #28a745; font-size: 12px;">🆕 NEW</span>' : ''}</td>
                         <td class="fact-text">${highlightedFactText}</td>
                         <td><a href="#" class="source-link" onclick="showFactDetails(${index}); return false;">${source}</a></td>
                         <td class="updated-at">${updatedDate}</td>

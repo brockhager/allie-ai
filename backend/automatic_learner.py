@@ -52,6 +52,15 @@ class AutomaticLearner:
                 # More flexible patterns
                 r"([A-Z][a-z]+ (?:was|is) (?:born|from) [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
                 r"([A-Z][a-z]+ [A-Z][a-z]+ (?:lived|worked|studied) (?:in|at) [A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+                # New expanded patterns for career, education, and events
+                r"([A-Z][a-z]+ [A-Z][a-z]+ graduated from [A-Z][a-z]+(?:\s+[A-Z][a-z]+)* (?:in|during) \d{4})",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ worked at [A-Z][a-z]+(?:\s+[A-Z][a-z]+)* (?:from \d{4} to \d{4}|in \d{4}|for \d+ years?))",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ died in [A-Z][a-z]+(?:\s+[A-Z][a-z]+)* (?:on )?(?:\d{1,2} \w+ \d{4}|in \d{4}))",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ published [\w\s]+ in \d{4})",
+                r"([\w\s]+ was published by [A-Z][a-z]+ [A-Z][a-z]+ in \d{4})",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ received (?:the )?[\w\s]+ (?:award|prize) in \d{4})",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ joined [A-Z][a-z]+(?:\s+[A-Z][a-z]+)* in \d{4})",
+                r"([A-Z][a-z]+ [A-Z][a-z]+ founded [A-Z][a-z]+(?:\s+[A-Z][a-z]+)* in \d{4})",
             ],
             "history": [
                 r"([\w\s]+ (?:ended|began|started|occurred) (?:on )?(?:\d{1,2} \w+ \d{4}|in \d{4}))",
@@ -93,7 +102,8 @@ class AutomaticLearner:
             "require_verbs": [
                 'is', 'was', 'are', 'were', 'has', 'have', 'had', 'developed', 'created',
                 'invented', 'discovered', 'served', 'died', 'born', 'located', 'flows',
-                'boils', 'freezes', 'stands'
+                'boils', 'freezes', 'stands', 'graduated', 'worked', 'published', 'received',
+                'joined', 'founded'
             ]
         }
 
@@ -285,6 +295,12 @@ class AutomaticLearner:
         # Pattern specificity bonus
         if 'born' in pattern or 'died' in pattern:
             confidence += 0.2  # Biographical facts with dates are reliable
+        elif 'graduated' in pattern or 'worked' in pattern:
+            confidence += 0.15  # Education and career facts are reliable
+        elif 'published' in pattern or 'received' in pattern:
+            confidence += 0.15  # Publication and award facts are reliable
+        elif 'joined' in pattern or 'founded' in pattern:
+            confidence += 0.15  # Career and organizational facts are reliable
         elif 'capital' in pattern or 'located' in pattern:
             confidence += 0.15  # Geographic facts are usually stable
         elif any(word in pattern for word in ['invented', 'created', 'discovered']):

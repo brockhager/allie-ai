@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allie - Learning Log</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: white;
+            min-height: 100vh;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        .filters {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .filter-group select, .filter-group input {
+            padding: 8px 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .btn-secondary:hover {
+            background: #d5dbdb;
+        }
+
+        .log-table {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .change-type-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .change-add {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .change-update {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .change-delete {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .change-validate {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .fact-text {
+            max-width: 200px;
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+
+        .keyword {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .timestamp {
+            color: #6c757d;
+            font-size: 12px;
+        }
+
+        .confidence {
+            font-weight: 600;
+            color: #28a745;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Learning Log</h1>
+            <p>Track all knowledge base insertions, updates, and changes with full provenance</p>
+        </div>
+
+        <div class="stats" id="stats">
+            <!-- Stats will be populated by JavaScript -->
+        </div>
+
+        <div class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="change-type-filter">Change Type:</label>
+                    <select id="change-type-filter">
+                        <option value="">All Changes</option>
+                        <option value="add">➕ Add</option>
+                        <option value="update">🔄 Update</option>
+                        <option value="delete">🗑️ Delete</option>
+                        <option value="validate">✅ Validate</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                <button class="btn btn-secondary" onclick="clearFilters()">Clear All</button>
+            </div>
+        </div>
+
+        <div class="log-table">
+            <div class="table-header">Knowledge Base Change History</div>
+            <div id="log-content">
+                <div class="loading">Loading learning log...</div>
+            </div>
+        </div>
+
+        <div class="pagination" id="pagination">
+            <!-- Pagination will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        let currentFilters = {};
+
+        // Load log on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLogEntries();
+            loadStats();
+        });
+
+        async function loadLogEntries(page = 1, filters = {}) {
+            currentPage = page;
+            currentFilters = filters;
+
+            const params = new URLSearchParams({
+                limit: 50,
+                offset: (page - 1) * 50,
+                ...filters
+            });
+
+            try {
+                const response = await fetch(`/api/learning-log?${params}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    renderLogTable(data.entries);
+                    renderPagination(Math.ceil(data.total / 50));
+                } else {
+                    console.error('Failed to load log entries:', data);
+                    renderLogTable([]);
+                }
+            } catch (error) {
+                console.error('Error loading log entries:', error);
+                renderLogTable([]);
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/hybrid-memory/statistics');
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    const stats = data.statistics;
+                    document.getElementById('stats').innerHTML = `
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.learning_log_entries || 0}</div>
+                            <div class="stat-label">Total Log Entries</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.total_facts || 0}</div>
+                            <div class="stat-label">Current Facts</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${Math.round(stats.average_confidence * 100) / 100 || 0}</div>
+                            <div class="stat-label">Avg Confidence</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${Object.keys(stats.categories || {}).length}</div>
+                            <div class="stat-label">Categories</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        function renderLogTable(entries) {
+            const content = document.getElementById('log-content');
+
+            if (!entries || entries.length === 0) {
+                content.innerHTML = '<div class="loading">No log entries found. Learning log entries will appear here as Allie learns new facts.</div>';
+                return;
+            }
+
+            let html = `
+                <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Change Type</th>
+                            <th>Keyword</th>
+                            <th>Old Fact</th>
+                            <th>New Fact</th>
+                            <th>Source</th>
+                            <th>Confidence</th>
+                            <th>Reviewer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            entries.forEach((entry) => {
+                const changeTypeClass = `change-${entry.change_type}`;
+                const changeTypeText = entry.change_type.replace('_', ' ').toUpperCase();
+                const timestamp = new Date(entry.changed_at).toLocaleString();
+
+                // Truncate long facts for display
+                const oldFact = entry.old_fact ? (entry.old_fact.length > 100 ? entry.old_fact.substring(0, 100) + '...' : entry.old_fact) : '';
+                const newFact = entry.new_fact ? (entry.new_fact.length > 100 ? entry.new_fact.substring(0, 100) + '...' : entry.new_fact) : '';
+
+                html += `
+                    <tr>
+                        <td class="timestamp">${timestamp}</td>
+                        <td>
+                            <span class="change-type-badge ${changeTypeClass}">${changeTypeText}</span>
+                        </td>
+                        <td class="keyword">${entry.keyword || 'N/A'}</td>
+                        <td class="fact-text">${oldFact || '<em>none</em>'}</td>
+                        <td class="fact-text">${newFact || '<em>none</em>'}</td>
+                        <td>${entry.source || 'unknown'}</td>
+                        <td class="confidence">${entry.confidence ? Math.round(entry.confidence * 100) + '%' : 'N/A'}</td>
+                        <td>${entry.reviewer || 'system'}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+                </div>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            let html = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="loadLogEntries(${i}, currentFilters)">${i}</button>`;
+            }
+
+            pagination.innerHTML = html;
+        }
+
+        function applyFilters() {
+            const filters = {
+                change_type: document.getElementById('change-type-filter').value
+            };
+
+            // Remove empty filters
+            Object.keys(filters).forEach(key => {
+                if (!filters[key]) delete filters[key];
+            });
+
+            loadLogEntries(1, filters);
+        }
+
+        function clearFilters() {
+            document.getElementById('change-type-filter').value = '';
+            loadLogEntries(1, {});
+        }
+
+        function showSuccess(message) {
+            // Simple notification
+            alert('✅ ' + message);
+        }
+
+        function showError(message) {
+            alert('❌ ' + message);
+        }
+    </script>
+</body>
+</html>
