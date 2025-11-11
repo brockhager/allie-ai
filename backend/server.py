@@ -314,6 +314,14 @@ async def learning_log_ui():
         return HTMLResponse("<html><body><h3>Learning Log UI not found</h3></body></html>", status_code=404)
     return HTMLResponse(log_path.read_text(encoding="utf-8"))
 
+@app.get("/kb", response_class=HTMLResponse)
+async def kb_ui():
+    """Serve the Knowledge Base UI page"""
+    kb_path = STATIC_DIR / "kb.html"
+    if not kb_path.exists():
+        return HTMLResponse("<html><body><h3>Knowledge Base UI not found</h3></body></html>", status_code=404)
+    return HTMLResponse(kb_path.read_text(encoding="utf-8"))
+
 @app.post("/api/admin/run-reconciliation")
 async def run_reconciliation_admin():
     """Run reconciliation worker from admin dashboard"""

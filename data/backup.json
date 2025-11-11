@@ -1,32 +1,12 @@
 [
   {
-    "id": "c-yvd2sda",
+    "id": "c-bst2j9z",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762832394200
-      },
-      {
-        "role": "me",
-        "text": "name 25 european capitals or large cities and what country they are in",
-        "timestamp": 1762832491684
-      },
-      {
-        "role": "them",
-        "text": "Sure! Here's an answer based on Wikipedia's current information about European capital cities and countries:\n- Rome (Italy) - Capital city of Italy\n- Paris (France) - Capital city of France\n- Berlin (Germany) - Capital city of Germany\n- London (United Kingdom) - Capital city of England and Wales\n- Madrid (Spain) - Capital city of Spain\n- Moscow (Russian Federation) - Capital city of Russia\n- Athens (Greece) - Capital city of Greece\n- Istanbul (T\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udcd6 Wikipedia: https://en.wikipedia.org/wiki/Europe",
-        "timestamp": 1762832516887
-      },
-      {
-        "role": "me",
-        "text": "did you know that?  or did you use the internet?",
-        "timestamp": 1762832573748
-      },
-      {
-        "role": "them",
-        "text": "No, I do not have any personal experiences to share with you about \"knowing\" or using the internet. The sentence \"Did you know that?\" implies some sort of knowledge on your part, but it's unclear what this knowledge entails specifically. In general, the phrase can be used in informal speech as an invitation for the speaker to provide more information or clarification.\n\n---\n**Source:** Model\n**Confidence:** 60%\n**URLs:**\n\ud83e\udd16 AI Model: Generated response",
-        "timestamp": 1762832587480
+        "timestamp": 1762834107405
       }
     ],
     "draft": ""
