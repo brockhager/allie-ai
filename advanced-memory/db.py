@@ -1015,6 +1015,66 @@ class AllieMemoryDB:
             logger.error(f"Error getting statistics: {e}")
             return {}
     
+    def get_kb_statistics(self) -> Dict:
+        """Get knowledge base statistics for scoring"""
+        try:
+            cursor = self.connection.cursor()
+            
+            stats = {}
+            
+            # Total KB facts
+            cursor.execute("SELECT COUNT(*) FROM knowledge_base")
+            stats['kb_total'] = cursor.fetchone()[0]
+            
+            # Active KB facts (status = 'true')
+            cursor.execute("SELECT COUNT(*) FROM knowledge_base WHERE status = 'true'")
+            stats['kb_active'] = cursor.fetchone()[0]
+            
+            # Recent KB facts (last 7 days)
+            cursor.execute("""
+                SELECT COUNT(*) FROM knowledge_base 
+                WHERE updated_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+            """)
+            stats['kb_recent_7d'] = cursor.fetchone()[0]
+            
+            # KB facts in last 24 hours
+            cursor.execute("""
+                SELECT COUNT(*) FROM knowledge_base 
+                WHERE updated_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
+            """)
+            stats['kb_recent_24h'] = cursor.fetchone()[0]
+            
+            # Average confidence score for KB
+            cursor.execute("SELECT AVG(confidence_score) FROM knowledge_base WHERE status = 'true'")
+            result = cursor.fetchone()[0]
+            stats['kb_avg_confidence'] = round(result, 2) if result else 0
+            
+            # KB facts by keyword (top 10)
+            cursor.execute("""
+                SELECT keyword, COUNT(*) as count
+                FROM knowledge_base
+                WHERE status = 'true'
+                GROUP BY keyword
+                ORDER BY count DESC
+                LIMIT 10
+            """)
+            stats['kb_top_keywords'] = {row[0]: row[1] for row in cursor.fetchall()}
+            
+            # KB facts by status
+            cursor.execute("""
+                SELECT status, COUNT(*) as count
+                FROM knowledge_base
+                GROUP BY status
+            """)
+            stats['kb_by_status'] = {row[0]: row[1] for row in cursor.fetchall()}
+            
+            cursor.close()
+            return stats
+            
+        except Error as e:
+            logger.error(f"Error getting KB statistics: {e}")
+            return {}
+    
     def close(self):
         """Close database connection"""
         if self.connection and self.connection.is_connected():

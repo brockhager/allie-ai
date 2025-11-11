@@ -505,59 +505,65 @@ async function updateLearningScore() {
     const stats = memData.statistics;
     const dataStats = learningData.data_stats || {};
     
-    // Calculate learning score (dynamic range based on KB size)
-    // New approach: dynamic scoring based on actual KB growth and recent activity
-    // Base score from 0-100, then scale by KB size, plus growth bonuses
-
-    const activeFacts = stats.active_facts || 0;
-    const totalFacts = stats.total_facts || 0;
-    const categoryCount = Object.keys(stats.categories || {}).length;
-    const conversationCount = dataStats.total_conversations || 0;
-    const qualityConversations = dataStats.quality_conversations || 0;
-
-    // Defensive: some backends may expose false/negative counts in different places
-    const falseReports = (stats.false_reports || dataStats.false_reports || 0);
-    const negativeExamples = ((stats.categories && (stats.categories.negative_example || stats.categories['negative_example'])) || 0);
-    const outdatedFacts = stats.outdated_facts || 0;
+    // Calculate learning score based on Knowledge Base growth (1-1000 range)
+    // Formula: (KB_active/KB_total * KB_recent_7d/KB_total * 100) * confidence_weight
+    // Then scale to 1-1000 range with growth bonuses
+    
+    // KB Statistics (from knowledge_base table)
+    const kbTotal = stats.kb_total || 0;
+    const kbActive = stats.kb_active || 0;
+    const kbRecent7d = stats.kb_recent_7d || 0;
+    const kbRecent24h = stats.kb_recent_24h || 0;
+    const kbAvgConfidence = stats.kb_avg_confidence || 0;
+    
+    console.log(`[KB Stats] Total: ${kbTotal}, Active: ${kbActive}, Recent 7d: ${kbRecent7d}, Recent 24h: ${kbRecent24h}, Avg Confidence: ${kbAvgConfidence}`);
 
     let rawScore = 0;
-
-    // Active facts (0-30) - core knowledge base
-    rawScore += Math.min(activeFacts / 5, 30);
-
-    // Fact quality (0-30) based on ratio of active to total facts
-    if (totalFacts > 0) {
-      const qualityRatio = Math.max(0, Math.min(1, activeFacts / totalFacts));
-      rawScore += qualityRatio * 30;
+    
+    if (kbTotal === 0) {
+      // No KB facts yet - start at minimum score
+      rawScore = 1;
+    } else {
+      // Base score: KB active facts (0-40 points)
+      // This rewards having a substantial knowledge base
+      rawScore += Math.min((kbActive / 10) * 10, 40);
+      
+      // Quality ratio (0-25 points): active/total
+      // Rewards maintaining high quality facts
+      const qualityRatio = kbActive / kbTotal;
+      rawScore += qualityRatio * 25;
+      
+      // Growth score (0-25 points): recent 7-day growth
+      // 3/12 facts in last 7 days should give ~25 points
+      if (kbTotal > 0) {
+        const growthRatio = kbRecent7d / kbTotal;
+        rawScore += Math.min(growthRatio * 100, 25);
+      }
+      
+      // Confidence weighting (0-10 points)
+      // Average confidence scales the overall score
+      if (kbAvgConfidence > 0) {
+        rawScore += (kbAvgConfidence / 100) * 10;
+      }
+      
+      // Ensure rawScore is within 0-100
+      rawScore = Math.max(0, Math.min(100, rawScore));
+      
+      console.log(`[Score Calculation] Raw score before scaling: ${rawScore}`);
     }
 
-    // Diversity (0-15): categories/topics
-    rawScore += Math.min(categoryCount * 1.5, 15);
+    // Scale rawScore (0-100) to 1-1000 range
+    let finalScore = Math.round(rawScore * 10);
+    
+    // Growth bonus: +10 points per KB fact added in last 24 hours
+    // This provides immediate feedback for learning
+    const growthBonus = kbRecent24h * 10;
+    finalScore += growthBonus;
+    
+    // Clamp final score to 1-1000 range
+    finalScore = Math.min(1000, Math.max(1, finalScore));
 
-    // Quality conversations (0-15)
-    rawScore += Math.min(qualityConversations * 0.8, 15);
-
-    // Engagement (0-10)
-    rawScore += Math.min(conversationCount * 0.2, 10);
-
-    // Penalty (subtract up to 80 points before scaling)
-    const penaltyPoints = Math.min((falseReports * 5) + (negativeExamples * 2.0) + (outdatedFacts * 0.5), 80);
-    rawScore = Math.max(0, rawScore - penaltyPoints);
-
-    // Ensure rawScore is within 0-100
-    rawScore = Math.max(0, Math.min(100, rawScore));
-
-    // Map rawScore (0-100) into the desired 1-1000 range, then add growth bonus
-    // Keep final score capped to 1000 and never drop below 1.
-    // Base mapping: rawScore * 10 -> 0-1000
-    const baseScore = Math.round(rawScore * 10);
-
-    // Growth bonus: +10 points per new fact in last 24 hours (as requested)
-    const recentFacts = stats.recent_facts_24h || 0;
-    const growthBonus = recentFacts * 10;
-
-    // Combine and clamp to 1-1000
-    let finalScore = Math.min(1000, Math.max(1, baseScore + growthBonus));
+    console.log(`[Score Calculation] Final score: ${finalScore} (growth bonus: ${growthBonus})`);
 
     // Update display
     learningScore.textContent = finalScore;

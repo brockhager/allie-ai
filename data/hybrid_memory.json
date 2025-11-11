@@ -1,8 +1,38 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T21:34:32.391785",
-  "fact_count": 1857,
+  "saved_at": "2025-11-10T21:54:19.297170",
+  "fact_count": 1860,
   "facts": [
+    {
+      "fact": "Coloring Book: by Donald Nguyen (2019)",
+      "timestamp": "2025-11-10T21:54:19.293676",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "I Miss the Hip Hop Shop is a mixtape by Detroit rapper Proof, released on June 15, 2004, via Iron Fist Records.",
+      "timestamp": "2025-11-10T21:54:19.269734",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Search engine optimization (SEO) is the process of improving the quality and quantity of website traffic to a website or a web page from search engines. SEO targets unpaid search traffic (usually referred to as \"organic\" results) rather than direct traffic, referral traffic, social media traffic, or...",
+      "timestamp": "2025-11-10T21:53:14.360659",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "Paper: 'Spectral and polar decomposition in AW*-algebras' by Michael Frank - We show the possibility and the uniqueness of polar decomposition of elements\nof arbitrary AW*-algebras inside them. We prove that spectral decomposition of\nnormal elements of normal AW*-algebras is p...",
       "timestamp": "2025-11-10T21:34:32.388933",

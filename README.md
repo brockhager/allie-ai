@@ -92,27 +92,106 @@ Deployment guide for hosting backend and frontend together
 
 Authentication and user accounts for multi‑user conversations
 
-## Learning Score (UI) — tuning notes
+## Learning Score System
 
-The frontend exposes a "Learning Score" displayed in the right-hand panel. This is a conservative, heuristic metric (range 0–1000) intended as a rough indicator of how well Allie is learning and how reliable the stored facts are.
+The UI displays a **Learning Score** (range 1-1000) that reflects Allie's knowledge base growth and quality. This metric is based on verified facts in the `knowledge_base` table and provides real-time feedback on learning progress.
 
-Key points about the current heuristic (implemented in `frontend/static/ui.html` -> `updateLearningScore()`):
+### How the Score is Calculated
 
-- The score is computed from several components that sum to a 0–100 base, and then scaled by 10 to produce the 0–1000 display value.
-- Positive contributions include:
-	- active facts (weighted, up to ~30 points)
-	- fact quality ratio (active / total facts, up to ~30 points)
-	- category/topic diversity (up to ~15 points)
-	- quality conversations (up to ~15 points)
-	- engagement (total conversations, up to ~10 points)
-- Penalties subtract from the raw 0–100 base before scaling. Penalty signals include:
-	- user `falseReports` (strong penalty multiplier) — these are the heaviest negative signals
-	- stored negative examples (user-provided corrections saved to memory)
-	- outdated facts
-- Current penalty multipliers (tunable):
-	- falseReports × 5
-	- negativeExamples × 2.0
-	- outdatedFacts × 0.5
-	- penalty capped at 80 points
+The scoring system is implemented in `frontend/static/ui.html` (`updateLearningScore()`) and uses KB statistics from the `/api/hybrid-memory/statistics` endpoint.
 
-If the score appears too high or too low for your environment, tweak the multipliers and caps in `frontend/static/ui.html` or request I add a small debug overlay that shows the component breakdown (active facts, quality ratio, diversity, engagement, penalty) to assist tuning.
+**Score Formula:**
+```
+rawScore = base + quality + growth + confidence
+finalScore = (rawScore × 10) + growthBonus
+finalScore = clamp(finalScore, 1, 1000)
+```
+
+**Components (0-100 raw points):**
+
+1. **Base Score (0-40 points)** - Active KB facts
+   - `min((kb_active / 10) × 10, 40)`
+   - 10 active facts = 10 points, 40+ facts = max 40 points
+
+2. **Quality Ratio (0-25 points)** - Proportion of verified facts
+   - `(kb_active / kb_total) × 25`
+   - Higher quality ratio = better score
+   - Penalizes accumulation of unverified facts
+
+3. **Growth Score (0-25 points)** - Recent learning activity
+   - `min((kb_recent_7d / kb_total) × 100, 25)`
+   - Rewards recent fact additions (7-day window)
+   - Example: 3/12 facts in last 7 days = ~25 points
+
+4. **Confidence Weighting (0-10 points)** - Average fact confidence
+   - `(kb_avg_confidence / 100) × 10`
+   - Based on confidence_score field (0-100)
+   - Higher confidence = better score
+
+**Growth Bonus:**
+- `kb_recent_24h × 10` points added to scaled score
+- Immediate feedback when new facts are learned
+- Example: Adding 3 facts gives +30 bonus points
+
+### Example Calculations
+
+| Scenario | KB Active | KB Total | Recent 7d | Recent 24h | Avg Confidence | Raw Score | Bonus | Final Score |
+|----------|-----------|----------|-----------|------------|----------------|-----------|-------|-------------|
+| Empty KB | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **1** (min) |
+| Starting | 8 | 8 | 8 | 8 | 87 | 74.7 | 80 | **827** |
+| Growing | 12 | 12 | 3 | 3 | 85 | 90.5 | 30 | **935** |
+| Mature | 55 | 55 | 10 | 5 | 94 | 98.4 | 50 | **1000** (max) |
+
+### KB Statistics Used
+
+The score calculation queries these statistics from `get_kb_statistics()` in `advanced-memory/db.py`:
+
+- `kb_total`: Total facts in knowledge base
+- `kb_active`: Facts with status='true' (verified/accepted)
+- `kb_recent_7d`: Facts added in last 7 days
+- `kb_recent_24h`: Facts added in last 24 hours
+- `kb_avg_confidence`: Average confidence_score of all facts
+
+### Recalculation Triggers
+
+The score updates automatically when:
+- New facts are added to knowledge base
+- Facts are verified or status changes
+- Confidence scores are updated
+- UI periodically refreshes (every 30 seconds)
+
+### Testing
+
+Unit tests: `tests/test_learning_score_kb.py`
+- Verifies formula calculations
+- Tests proportional increases
+- Validates range boundaries (1-1000)
+- Checks confidence weighting
+
+Integration tests: `tests/test_learning_score_integration.py`
+- Simulates conversation → KB growth
+- Tests compound growth from multiple conversations
+- Verifies confidence quality impact
+
+Run tests:
+```bash
+python -m pytest tests/test_learning_score_kb.py -v
+python -m pytest tests/test_learning_score_integration.py -v
+```
+
+### Design Rationale
+
+**Why knowledge_base instead of facts table?**
+- Knowledge base contains verified, authoritative facts
+- Facts table includes unverified/experimental entries
+- KB better reflects actual learning progress
+
+**Why dynamic scaling instead of fixed denominator?**
+- Proportional scoring: adding facts immediately increases score
+- Avoids "stuck at low score" problem
+- Rewards both quantity and quality of learning
+
+**Why include growth bonus?**
+- Provides immediate positive feedback
+- Encourages continued learning
+- Makes score feel responsive to user actions

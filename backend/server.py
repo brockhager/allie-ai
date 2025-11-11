@@ -2434,6 +2434,11 @@ async def get_hybrid_memory_stats():
     """Get statistics about the hybrid memory system"""
     try:
         stats = hybrid_memory.get_statistics()
+        
+        # Add KB-specific statistics for learning score calculation
+        kb_stats = advanced_memory.get_kb_statistics()
+        stats.update(kb_stats)
+        
         return {
             "status": "success",
             "statistics": stats
