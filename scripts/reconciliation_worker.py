@@ -98,10 +98,10 @@ class ReconciliationWorker:
         try:
             cursor = self.connection.cursor(dictionary=True)
             cursor.execute("""
-                SELECT id, keyword, fact, source, provenance, received_at
+                SELECT id, keyword, fact, source, created_at
                 FROM learning_queue
-                WHERE processed = FALSE
-                ORDER BY received_at ASC
+                WHERE status = 'pending'
+                ORDER BY created_at ASC
                 LIMIT %s
             """, (limit,))
 
@@ -119,9 +119,9 @@ class ReconciliationWorker:
             cursor = self.connection.cursor()
             cursor.execute("""
                 UPDATE learning_queue
-                SET suggested_action = %s
+                SET status = 'processed', processed_at = NOW()
                 WHERE id = %s
-            """, (json.dumps(suggested_action), queue_id))
+            """, (queue_id,))
 
             self.connection.commit()
             cursor.close()
@@ -353,7 +353,6 @@ class ReconciliationWorker:
         queue_id = item["id"]
         keyword = item["keyword"]
         fact = item["fact"]
-        provenance = item.get("provenance", {})
 
         logger.info(f"Processing queue item {queue_id}: '{keyword}'")
 
@@ -374,7 +373,7 @@ class ReconciliationWorker:
         agreement_score = self.calculate_agreement_score(fact, external_results)
 
         # Calculate recency (days since fact was received)
-        received_at = item.get("received_at")
+        received_at = item.get("created_at")
         if received_at:
             if isinstance(received_at, str):
                 received_at = datetime.fromisoformat(received_at.replace('Z', '+00:00'))

@@ -1,33 +1,12 @@
 [
   {
-    "id": "c-g8pd5ex",
+    "id": "c-4fux5i2",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762758232946
-      },
-      {
-        "role": "me",
-        "text": "what is bitcoin",
-        "timestamp": 1762758338688
-      },
-      {
-        "role": "them",
-        "text": "Yes, that's correct! Bitcoin is a cryptocurrency based on a free-market ideology and was created in 2008 by an unknown entity under the name \"Satoshi Nakamoto.\" Initially, bitcoin was not widely accepted due to concerns about cybersecurity and potential fraud, but over time, its popularity grew, and it became a legitimate form of money for various industries such as payments, investment, and commerce. In 2021, El Salvador implemented bitcoin as their official currency,\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/Bitcoin\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/c/Bitcoin",
-        "timestamp": 1762758368130
-      },
-      {
-        "role": "me",
-        "text": "how many cryptocurrencies are there?",
-        "timestamp": 1762758404705
-      },
-      {
-        "role": "them",
-        "text": "According to Wikipedia's current information, there are over 9,300 known cryptocurrencies in existence at present time. Stablecoins, which are similar to cryptos but do not have fiat currencies backing them, might also exist depending on their specific design and regulatory framework. We recommend checking with reputable sources for up-to-date data and insights regarding the number of cryptocurrencies currently available.\n\n---\n**Source:** External_Sources\n**Confidence:** 85%",
-        "timestamp": 1762758425959,
-        "is_false": true
+        "timestamp": 1762819510631
       }
     ],
     "draft": ""

@@ -1,8 +1,98 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T00:06:50.473462",
-  "fact_count": 919,
+  "saved_at": "2025-11-10T17:13:34.717777",
+  "fact_count": 928,
   "facts": [
+    {
+      "fact": "Punk rock: Punk rock (or simply punk) is a music genre that emerged <B>in</B> the mid-1970s. Rooted <B>in</B> 1960s garage",
+      "timestamp": "2025-11-10T17:13:34.716058",
+      "category": "election in usa",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Kentucky: , (because <B>in</B> Kentucky's first constitution, the term \"state\" was <B>used</B>), Kentucky is one of four U.S",
+      "timestamp": "2025-11-10T17:13:34.704520",
+      "category": "election in usa",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Applications of <B>artificial</B> <B>intelligence</B>: <B>Artificial</B> <B>intelligence</B>, defined as <B>intelligence</B> exhibited by machines, has many applications in",
+      "timestamp": "2025-11-10T17:13:33.829060",
+      "category": "artificial intelligence",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Artificial</B> <B>intelligence</B>: In computer science, <B>artificial</B> <B>intelligence</B> (AI), sometimes called machine <B>intelligence</B>, is",
+      "timestamp": "2025-11-10T17:13:33.813714",
+      "category": "artificial intelligence",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Association for the Advancement of Artificial Intelligence (AAAI).",
+      "timestamp": "2025-11-10T17:13:33.802983",
+      "category": "artificial intelligence",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Artificial intelligence Category",
+      "timestamp": "2025-11-10T17:13:33.792067",
+      "category": "artificial intelligence",
+      "confidence": 0.6,
+      "source": "duckduckgo_related",
+      "status": "not_verified",
+      "confidence_score": 60,
+      "is_outdated": false
+    },
+    {
+      "fact": "Artificial intelligence is the capability of computational systems to perform tasks typically associated with human intelligence, such as learning, reasoning, problem-solving, perception, and decision-making. It is a field of research in computer science that develops and studies methods and software that enable machines to perceive their environment and use learning and intelligence to take actions that maximize their chances of achieving defined goals. High-profile applications of AI include advanced web search engines; recommendation systems; virtual assistants; autonomous vehicles; generative and creative tools; and superhuman play and analysis in strategy games. However, many AI applications are not perceived as AI: \"A lot of cutting edge AI has filtered into general applications, often without being called AI because once something becomes useful enough and common enough it's not labeled AI anymore.\"",
+      "timestamp": "2025-11-10T17:13:33.778189",
+      "category": "artificial intelligence",
+      "confidence": 0.75,
+      "source": "duckduckgo_abstract",
+      "status": "not_verified",
+      "confidence_score": 75,
+      "is_outdated": false
+    },
+    {
+      "fact": "Punk rock: Punk rock (or simply punk) is a music genre that emerged <B>in</B> the mid-1970s. Rooted <B>in</B> 1960s garage",
+      "timestamp": "2025-11-10T17:13:00.677623",
+      "category": "election in usa",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Kentucky: , (because <B>in</B> Kentucky's first constitution, the term \"state\" was <B>used</B>), Kentucky is one of four U.S",
+      "timestamp": "2025-11-10T17:13:00.660685",
+      "category": "election in usa",
+      "confidence": 0.8,
+      "source": "dbpedia_lookup",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "A cryptocurrency (colloquially crypto) is a digital currency designed to work through a computer network that is not reliant on any central authority, such as a government or bank, to uphold or maintain it. However, a type of cryptocurrency called a stablecoin may rely upon government action or legi...",
       "timestamp": "2025-11-10T00:06:50.471728",

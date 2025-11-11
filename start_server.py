@@ -5,7 +5,11 @@ Server startup script that should stay running
 import uvicorn
 import signal
 import sys
+import os
 from pathlib import Path
+
+# Set environment variables for autonomous learning
+os.environ["AUTO_APPLY_UPDATES"] = "true"
 
 # Add backend to path
 backend_dir = Path(__file__).parent / "backend"

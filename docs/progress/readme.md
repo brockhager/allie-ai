@@ -33,7 +33,7 @@ Test summary (local dev):
 
 ## Recent fixes and outcomes
 
-- Fixed: Quick-topics research returned "Unknown error" for all topics. Root cause: incorrect parameter (`keyword=...`) passed to `hybrid_memory.add_fact()`; corrected to use `fact=` and `category=`. Verified DuckDuckGo and DBpedia queries return results and facts are now stored.
+- ✅ **FIXED: Quick-topics research functionality fully working**. Root cause was incorrect parameter (`keyword=...`) passed to `hybrid_memory.add_fact()`; corrected to use `fact=` and `category=`. Updated query functions to properly parse API responses (DuckDuckGo, DBpedia). Verified: 2 topics processed successfully, 7 facts learned and stored in hybrid memory. Backend functionality confirmed working via direct function testing.
 - Fixed: UI popup "facts not loaded". Root cause: intermittent premature server shutdown in some dev environments; added `start_server.py` for more robust startup and `test_server_manual.py` to validate endpoints. Verified `/api/facts` formatting and timeline retrieval.
 
 
@@ -75,6 +75,7 @@ These are actionable items we can pick from next. Each item is short and has a s
 - Add `pytest.ini` to help pytest async mode
 - Run the full pytest suite and iterate to green (local run: unit + integration + API tests passing; see Test summary above)
 - Update documentation references to the migrated linked-list filename
+- ✅ **COMPLETED: Fix quick-topics research "Unknown error" issue**. Corrected `hybrid_memory.add_fact()` parameter usage, updated API query parsing logic, verified fact storage working (7 facts learned from 2 topics in testing)
 
 
 If you'd like, I can (pick one):

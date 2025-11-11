@@ -224,8 +224,8 @@ async def lifespan(app: FastAPI):
         if LEARNING_ENABLED:
             # Temporarily disable background task to test server startup
             logger.info("Auto-learning background task disabled for testing")
-            # _auto_learning_task = asyncio.create_task(auto_learning_background_task())
-            # logger.info("Auto-learning background task started")
+            _auto_learning_task = asyncio.create_task(auto_learning_background_task())
+            logger.info("Auto-learning background task started")
         
         logger.info("Allie server startup complete")
         yield
@@ -2153,24 +2153,46 @@ async def query_duckduckgo(http_client: httpx.AsyncClient, query: str) -> Dict[s
             results = []
 
             # Extract instant answer
-            if data.get("Answer"):
+            if data.get("Answer") and data["Answer"].strip():
                 results.append({
-                    "text": data["Answer"],
+                    "text": data["Answer"].strip(),
                     "source": "duckduckgo_instant",
                     "confidence": 0.8
                 })
 
             # Extract abstract
-            if data.get("AbstractText"):
+            if data.get("AbstractText") and data["AbstractText"].strip():
                 results.append({
-                    "text": data["AbstractText"],
+                    "text": data["AbstractText"].strip(),
                     "source": "duckduckgo_abstract",
                     "confidence": 0.75
                 })
 
+            # Extract from RelatedTopics if available
+            if data.get("RelatedTopics"):
+                for topic in data["RelatedTopics"][:2]:  # Limit to 2
+                    text = topic.get("Text", "").strip()
+                    if text and len(text) > 20:  # Minimum useful length
+                        results.append({
+                            "text": text,
+                            "source": "duckduckgo_related",
+                            "confidence": 0.6
+                        })
+
+            # Extract from Results if available
+            if data.get("Results"):
+                for result in data["Results"][:2]:  # Limit to 2
+                    text = result.get("Text", "").strip()
+                    if text and len(text) > 20:  # Minimum useful length
+                        results.append({
+                            "text": text,
+                            "source": "duckduckgo_results",
+                            "confidence": 0.7
+                        })
+
             return {
                 "success": True,
-                "results": results[:3],  # Limit to top 3
+                "results": results[:3],  # Limit to top 3 total
                 "query": query
             }
         else:
@@ -2243,14 +2265,45 @@ async def query_dbpedia(http_client: httpx.AsyncClient, query: str) -> Dict[str,
             data = response.json()
             results = []
 
-            if "Resources" in data:
-                for resource in data["Resources"][:2]:  # Limit to top 2
+            # Handle the actual DBpedia Spotlight response format
+            # It returns a single annotation object, not a Resources array
+            if "@text" in data and data["@text"].strip():
+                annotated_text = data["@text"].strip()
+                confidence = float(data.get("@confidence", 0.5))
+
+                # If the annotated text is longer than the query, it found entities
+                if len(annotated_text) > len(query) and confidence > 0.3:
                     results.append({
-                        "text": resource.get("@surfaceForm", ""),
-                        "source": "dbpedia",
-                        "uri": resource.get("@URI", ""),
-                        "confidence": float(resource.get("@similarityScore", 0))
+                        "text": f"DBpedia Spotlight identified: {annotated_text}",
+                        "source": "dbpedia_spotlight",
+                        "confidence": confidence,
+                        "uri": data.get("@URI", ""),
+                        "types": data.get("@types", "")
                     })
+
+            # Alternative: Try a different DBpedia endpoint for direct facts
+            try:
+                # Try to get facts about the topic directly from DBpedia
+                lookup_url = f"https://lookup.dbpedia.org/api/search?query={query}&format=json&maxResults=3"
+                lookup_response = await http_client.get(lookup_url, headers={"Accept": "application/json"})
+
+                if lookup_response.status_code == 200:
+                    lookup_data = lookup_response.json()
+                    if lookup_data.get("docs"):
+                        for doc in lookup_data["docs"][:2]:  # Limit to 2
+                            label = doc.get("label", [""])[0] if isinstance(doc.get("label"), list) else doc.get("label", "")
+                            comment = doc.get("comment", [""])[0] if isinstance(doc.get("comment"), list) else doc.get("comment", "")
+
+                            if label and comment:
+                                fact_text = f"{label}: {comment}"
+                                results.append({
+                                    "text": fact_text,
+                                    "source": "dbpedia_lookup",
+                                    "confidence": 0.8,
+                                    "uri": doc.get("resource", [""])[0] if isinstance(doc.get("resource"), list) else doc.get("resource", "")
+                                })
+            except Exception as e:
+                logger.debug(f"DBpedia lookup failed: {e}")
 
             return {
                 "success": True,
@@ -2266,6 +2319,351 @@ async def query_dbpedia(http_client: httpx.AsyncClient, query: str) -> Dict[str,
 
     except Exception as e:
         logger.warning(f"DBpedia query failed for '{query}': {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "query": query
+        }
+
+async def query_wikipedia(http_client: httpx.AsyncClient, query: str) -> Dict[str, Any]:
+    """Query Wikipedia for facts"""
+    try:
+        await asyncio.sleep(0.5)  # Rate limiting
+
+        # Use Wikipedia API for search and extract
+        search_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{query.replace(' ', '_')}"
+        response = await http_client.get(search_url, headers={"User-Agent": "Allie-AI/1.0"})
+
+        if response.status_code == 200:
+            data = response.json()
+            results = []
+
+            # Extract the summary/description
+            if data.get("extract") and data["extract"].strip():
+                results.append({
+                    "text": data["extract"].strip(),
+                    "source": "wikipedia",
+                    "confidence": 0.85,
+                    "title": data.get("title", ""),
+                    "url": data.get("content_urls", {}).get("desktop", {}).get("page", "")
+                })
+
+            return {
+                "success": True,
+                "results": results,
+                "query": query
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"HTTP {response.status_code}",
+                "query": query
+            }
+
+    except Exception as e:
+        logger.warning(f"Wikipedia query failed for '{query}': {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "query": query
+        }
+
+async def query_openlibrary(http_client: httpx.AsyncClient, query: str) -> Dict[str, Any]:
+    """Query Open Library for book/author information"""
+    try:
+        await asyncio.sleep(0.5)  # Rate limiting
+
+        # Search for books/authors
+        search_url = f"https://openlibrary.org/search.json?q={query}&limit=3"
+        response = await http_client.get(search_url)
+
+        if response.status_code == 200:
+            data = response.json()
+            results = []
+
+            # Extract book information
+            if data.get("docs"):
+                for doc in data["docs"][:2]:  # Limit to 2
+                    title = doc.get("title", "")
+                    author = doc.get("author_name", ["Unknown"])[0] if doc.get("author_name") else "Unknown"
+                    first_publish_year = doc.get("first_publish_year", "")
+                    subject = doc.get("subject", [""])[0] if doc.get("subject") else ""
+
+                    if title:
+                        fact_text = f"'{title}' by {author}"
+                        if first_publish_year:
+                            fact_text += f" (published {first_publish_year})"
+                        if subject:
+                            fact_text += f" - {subject}"
+
+                        results.append({
+                            "text": fact_text,
+                            "source": "openlibrary",
+                            "confidence": 0.8,
+                            "key": doc.get("key", ""),
+                            "isbn": doc.get("isbn", [""])[0] if doc.get("isbn") else ""
+                        })
+
+            return {
+                "success": True,
+                "results": results,
+                "query": query
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"HTTP {response.status_code}",
+                "query": query
+            }
+
+    except Exception as e:
+        logger.warning(f"Open Library query failed for '{query}': {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "query": query
+        }
+
+async def query_musicbrainz(http_client: httpx.AsyncClient, query: str) -> Dict[str, Any]:
+    """Query MusicBrainz for music/artist information"""
+    try:
+        await asyncio.sleep(0.5)  # Rate limiting
+
+        # Search for artists/albums
+        search_url = f"https://musicbrainz.org/ws/2/artist?query={query}&limit=3&fmt=json"
+        response = await http_client.get(search_url, headers={"User-Agent": "Allie-AI/1.0"})
+
+        if response.status_code == 200:
+            data = response.json()
+            results = []
+
+            # Extract artist information
+            if data.get("artists"):
+                for artist in data["artists"][:2]:  # Limit to 2
+                    name = artist.get("name", "")
+                    country = artist.get("country", "")
+                    type = artist.get("type", "")
+                    disambiguation = artist.get("disambiguation", "")
+
+                    if name:
+                        fact_text = f"{name}"
+                        if type:
+                            fact_text += f" ({type})"
+                        if country:
+                            fact_text += f" from {country}"
+                        if disambiguation:
+                            fact_text += f" - {disambiguation}"
+
+                        results.append({
+                            "text": fact_text,
+                            "source": "musicbrainz",
+                            "confidence": 0.8,
+                            "id": artist.get("id", ""),
+                            "type": artist.get("type", "")
+                        })
+
+            return {
+                "success": True,
+                "results": results,
+                "query": query
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"HTTP {response.status_code}",
+                "query": query
+            }
+
+    except Exception as e:
+        logger.warning(f"MusicBrainz query failed for '{query}': {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "query": query
+        }
+
+async def query_restcountries(http_client: httpx.AsyncClient, query: str) -> Dict[str, Any]:
+    """Query REST Countries for country information"""
+    try:
+        await asyncio.sleep(0.5)  # Rate limiting
+
+        # Search for countries
+        search_url = f"https://restcountries.com/v3.1/name/{query}?fullText=false"
+        response = await http_client.get(search_url)
+
+        if response.status_code == 200:
+            data = response.json()
+            results = []
+
+            # Extract country information
+            for country in data[:2]:  # Limit to 2
+                name = country.get("name", {}).get("common", "")
+                capital = country.get("capital", [""])[0] if country.get("capital") else ""
+                region = country.get("region", "")
+                population = country.get("population", 0)
+                languages = list(country.get("languages", {}).values()) if country.get("languages") else []
+
+                if name:
+                    fact_text = f"{name}"
+                    if capital:
+                        fact_text += f", capital: {capital}"
+                    if region:
+                        fact_text += f", region: {region}"
+                    if population > 0:
+                        fact_text += f", population: {population:,}"
+                    if languages:
+                        fact_text += f", languages: {', '.join(languages)}"
+
+                    results.append({
+                        "text": fact_text,
+                        "source": "restcountries",
+                        "confidence": 0.9,
+                        "code": country.get("cca3", ""),
+                        "flag": country.get("flag", "")
+                    })
+
+            return {
+                "success": True,
+                "results": results,
+                "query": query
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"HTTP {response.status_code}",
+                "query": query
+            }
+
+    except Exception as e:
+        logger.warning(f"REST Countries query failed for '{query}': {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "query": query
+        }
+
+async def query_arxiv(http_client: httpx.AsyncClient, query: str) -> Dict[str, Any]:
+    """Query ArXiv for scientific papers"""
+    try:
+        await asyncio.sleep(0.5)  # Rate limiting
+
+        # Search for papers
+        search_url = f"https://export.arxiv.org/api/query?search_query=all:{query}&start=0&max_results=3"
+        response = await http_client.get(search_url)
+
+        if response.status_code == 200:
+            # Parse XML response (simple approach)
+            import xml.etree.ElementTree as ET
+            root = ET.fromstring(response.text)
+            results = []
+
+            # Extract paper information
+            for entry in root.findall("{http://www.w3.org/2005/Atom}entry")[:2]:  # Limit to 2
+                title_elem = entry.find("{http://www.w3.org/2005/Atom}title")
+                summary_elem = entry.find("{http://www.w3.org/2005/Atom}summary")
+                authors = entry.findall("{http://www.w3.org/2005/Atom}author")
+
+                title = title_elem.text.strip() if title_elem is not None else ""
+                summary = summary_elem.text.strip() if summary_elem is not None else ""
+                author_names = [author.find("{http://www.w3.org/2005/Atom}name").text
+                              for author in authors if author.find("{http://www.w3.org/2005/Atom}name") is not None]
+
+                if title and summary:
+                    fact_text = f"Paper: '{title}' by {', '.join(author_names[:3])}"
+                    if len(summary) > 100:
+                        fact_text += f" - {summary[:200]}..."
+
+                    results.append({
+                        "text": fact_text,
+                        "source": "arxiv",
+                        "confidence": 0.8,
+                        "title": title,
+                        "authors": author_names
+                    })
+
+            return {
+                "success": True,
+                "results": results,
+                "query": query
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"HTTP {response.status_code}",
+                "query": query
+            }
+
+    except Exception as e:
+        logger.warning(f"ArXiv query failed for '{query}': {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "query": query
+        }
+
+async def query_pubmed(http_client: httpx.AsyncClient, query: str) -> Dict[str, Any]:
+    """Query PubMed for medical/scientific research"""
+    try:
+        await asyncio.sleep(0.5)  # Rate limiting
+
+        # Use PubMed E-utilities (NCBI)
+        search_url = f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term={query}&retmax=3&retmode=json"
+        response = await http_client.get(search_url)
+
+        if response.status_code == 200:
+            data = response.json()
+            results = []
+
+            # Get paper IDs
+            id_list = data.get("esearchresult", {}).get("idlist", [])
+
+            if id_list:
+                # Fetch summaries for the papers
+                ids = ",".join(id_list[:2])  # Limit to 2
+                summary_url = f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id={ids}&retmode=json"
+                summary_response = await http_client.get(summary_url)
+
+                if summary_response.status_code == 200:
+                    summary_data = summary_response.json()
+                    result = summary_data.get("result", {})
+
+                    for paper_id in id_list[:2]:
+                        if paper_id in result:
+                            paper = result[paper_id]
+                            title = paper.get("title", "")
+                            authors = paper.get("authors", [])
+                            pubdate = paper.get("pubdate", "")
+
+                            if title:
+                                author_names = [author.get("name", "") for author in authors if author.get("name")]
+                                fact_text = f"Research: '{title}'"
+                                if author_names:
+                                    fact_text += f" by {', '.join(author_names[:3])}"
+                                if pubdate:
+                                    fact_text += f" ({pubdate})"
+
+                                results.append({
+                                    "text": fact_text,
+                                    "source": "pubmed",
+                                    "confidence": 0.8,
+                                    "pmid": paper_id,
+                                    "title": title
+                                })
+
+            return {
+                "success": True,
+                "results": results,
+                "query": query
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"HTTP {response.status_code}",
+                "query": query
+            }
+
+    except Exception as e:
+        logger.warning(f"PubMed query failed for '{query}': {e}")
         return {
             "success": False,
             "error": str(e),
@@ -2397,6 +2795,12 @@ async def quick_topics_research(payload: Dict[str, Any] = Body(...)):
                         query_duckduckgo(http_client, topic),
                         query_wikidata(http_client, topic),
                         query_dbpedia(http_client, topic),
+                        query_wikipedia(http_client, topic),
+                        query_openlibrary(http_client, topic),
+                        query_musicbrainz(http_client, topic),
+                        query_restcountries(http_client, topic),
+                        query_arxiv(http_client, topic),
+                        query_pubmed(http_client, topic),
                         return_exceptions=True
                     )
 
