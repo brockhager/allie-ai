@@ -1,12 +1,90 @@
 [
   {
-    "id": "c-bst2j9z",
+    "id": "c-8q1w7bl",
     "title": "Allie",
     "messages": [
       {
         "role": "them",
         "text": "Hi \u2014 I am Allie. Ask me anything.",
-        "timestamp": 1762834107405
+        "timestamp": 1762834450470
+      },
+      {
+        "role": "me",
+        "text": "how far is it to china?",
+        "timestamp": 1762834526130
+      },
+      {
+        "role": "them",
+        "text": "According to the given text material, the answer to \"How far is China?\" would be approximately 36,497 kilometers or around 22,656 miles away from the Russian Far East, which is currently known as D\u00e1lniy Vostok R\u00fas\u01d0ngji\u00e0ng.\n\n**Multiple Interpretations Detected:**\n1. **General Knowledge** \u26a0\ufe0f (94% confidence)\n   ...\n   *Sources: wikipedia*\n\n2. **General** \u26a0\ufe0f (80% confidence)\n   ...\n   *Sources: openlibrary*\n\n\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udcd6 Wikipedia: https://en.wikipedia.org/wiki/Russian_Far_East\n\ufffd OpenLibrary: https://openlibrary.org/works/OL8193465W",
+        "timestamp": 1762834544063,
+        "is_false": true
+      },
+      {
+        "role": "me",
+        "text": "how far is it from Los Angeles to Shanghai China",
+        "timestamp": 1762834597891
+      },
+      {
+        "role": "them",
+        "text": "According to available data from Wikipedia, approximately 25,000 Russians resided in Shanghai as of the late 1930s. Given that estimate, you can answer the given question by stating that Shanghai is approximately 648 km (402 miles) away from Moscow, Russia, which would be the furthest point north on your route to reach Shanghai.\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udcd6 Wikipedia: https://en.wikipedia.org/wiki/Shanghai_Russians",
+        "timestamp": 1762834619319,
+        "is_false": true
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-qvyef31",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762834729561
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-fr5cydu",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762834730995
+      },
+      {
+        "role": "me",
+        "text": "who is Tupac?",
+        "timestamp": 1762834756495
+      },
+      {
+        "role": "them",
+        "text": "Yes, Tupac Shakur was an American rapper and actor, whose real name was Lesane Parish Crooks. He is considered to be one of the greatest and most influential rappers of all time. His contributions to music have had lasting impact on popular culture and continue to inspire generations of musicians.\n\n**Multiple Interpretations Detected:**\n1. **General** \u26a0\ufe0f (100% confidence)\n   ...\n   *Sources: dbpedia, duckduckgo, openlibrary*\n\n2. **General Knowledge** \u26a0\ufe0f (94% confidence)\n   ...\n   *Sources: wikipedia*\n\n**Could you clarify which interpretation you meant?**\n\n\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udcd6 Wikipedia: https://en.wikipedia.org/wiki/Tupac_Shakur\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/Tupac_Shakur\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/Operation_Tupac\n\ufffd OpenLibrary: https://openlibrary.org/works/OL21868175W",
+        "timestamp": 1762834774823
+      },
+      {
+        "role": "me",
+        "text": "what is duckduckgo",
+        "timestamp": 1762834883273
+      },
+      {
+        "role": "them",
+        "text": "In summary, DuckDuckGo is an online privacy-focused search engine founded by Gabriel Weinberg in 2008 that specializes in protecting user data through advanced algorithmic techniques and adoption of HTTPS encryption for secure browsing. Its headquarters are located in Paoli, Pennsylvania, USA.\n\n\n\n\u2713 Learned: search engine founded by Gabriel Weinberg in 2008 (stored in biography)\n\n**Multiple Interpretations Detected:**\n1. **General Knowledge** \u26a0\ufe0f (94% confidence)\n   ...\n   *Sources: wikipedia*\n\n2. **Structured Data** \u26a0\ufe0f (90% confidence)\n   ...\n   *Sources: wikidata*\n\n3. **General** \u26a0\ufe0f (89% confidence)\n   ...\n   *Sources: dbpedia, duckduckgo*\n\n**Could you clarify which interpretation you meant?**\n\n\n\n---\n**Source:** External_Sources\n**Confidence:** 85%\n**URLs:**\n\ud83d\udcd6 Wikipedia: https://en.wikipedia.org/wiki/Microsoft_Bing\n\ud83d\udd0d duckduckgo_abstract: https://en.wikipedia.org/wiki/DuckDuckGo\n\ud83d\udd0d duckduckgo_related: https://duckduckgo.com/Timeline_of_web_search_engines\n\ud83d\uddc2\ufe0f Wikidata: https://www.wikidata.org/wiki/Q12805",
+        "timestamp": 1762834901257
+      }
+    ],
+    "draft": ""
+  },
+  {
+    "id": "c-0sf6ljl",
+    "title": "Allie",
+    "messages": [
+      {
+        "role": "them",
+        "text": "Hi \u2014 I am Allie. Ask me anything.",
+        "timestamp": 1762834734303
       }
     ],
     "draft": ""

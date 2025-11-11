@@ -219,5 +219,120 @@
       "needs_clarification": false
     },
     "expires": "2025-11-11T20:41:35.872317"
+  },
+  "how far is it to china?": {
+    "result": {
+      "is_ambiguous": true,
+      "interpretations": [
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "...",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.9499999999999998,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "General",
+          "summary": "...",
+          "sources_consulted": [
+            "openlibrary"
+          ],
+          "confidence_score": 0.8000000000000002,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.8814285714285715,
+      "needs_clarification": false
+    },
+    "expires": "2025-11-11T21:15:30.916615"
+  },
+  "how far is it from los angeles to shanghai china": {
+    "result": {
+      "is_ambiguous": false,
+      "interpretations": [
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "...",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.9499999999999998,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.9499999999999998,
+      "needs_clarification": false
+    },
+    "expires": "2025-11-11T21:16:43.688710"
+  },
+  "who is tupac?": {
+    "result": {
+      "is_ambiguous": true,
+      "interpretations": [
+        {
+          "meaning_label": "General",
+          "summary": "...",
+          "sources_consulted": [
+            "dbpedia",
+            "duckduckgo",
+            "openlibrary"
+          ],
+          "confidence_score": 1.0,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "...",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.9499999999999998,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.9756410256410257,
+      "needs_clarification": true
+    },
+    "expires": "2025-11-11T21:19:20.978135"
+  },
+  "what is duckduckgo": {
+    "result": {
+      "is_ambiguous": true,
+      "interpretations": [
+        {
+          "meaning_label": "General Knowledge",
+          "summary": "...",
+          "sources_consulted": [
+            "wikipedia"
+          ],
+          "confidence_score": 0.9499999999999998,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "Structured Data",
+          "summary": "...",
+          "sources_consulted": [
+            "wikidata"
+          ],
+          "confidence_score": 0.9,
+          "status": "not_verified"
+        },
+        {
+          "meaning_label": "General",
+          "summary": "...",
+          "sources_consulted": [
+            "dbpedia",
+            "duckduckgo"
+          ],
+          "confidence_score": 0.8999999999999999,
+          "status": "not_verified"
+        }
+      ],
+      "confidence": 0.9172727272727271,
+      "needs_clarification": true
+    },
+    "expires": "2025-11-11T21:21:27.519670"
   }
 }

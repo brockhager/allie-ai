@@ -1,8 +1,138 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T20:41:35.853639",
-  "fact_count": 1757,
+  "saved_at": "2025-11-10T21:21:27.501684",
+  "fact_count": 1770,
   "facts": [
+    {
+      "fact": "<B>DuckDuckGo</B> (DDG) is an internet search engine that emphasizes protecting searchers' privacy and",
+      "timestamp": "2025-11-10T21:21:27.498639",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "DuckDuckGo: instance_of = ['Q19778981', 'Q341', 'Q4182287', 'Q35127']",
+      "timestamp": "2025-11-10T21:21:27.478701",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikidata",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Microsoft Bing (also known simply as Bing) is a search engine owned and operated by Microsoft, it is developed by Microsoft AI. The service traces its roots back to Microsoft's earlier search engines, including MSN Search, Windows Live Search, and Live Search. Bing offers a broad spectrum of search ...",
+      "timestamp": "2025-11-10T21:21:27.458577",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Timeline of web search engines - This page provides a full timeline of web search engines, starting from the WHOis in 1982, the Archie search engine in 1990, and subsequent developments in the field. It is complementary to the history of web search engines page that provides more qualitative detail on the history.",
+      "timestamp": "2025-11-10T21:21:27.437577",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "DuckDuckGo is an American software company focused on online privacy whose flagship product is a search engine named DuckDuckGo. Founded by Gabriel Weinberg in 2008, its later products include browser extensions and a custom DuckDuckGo web browser. Headquartered in Paoli, Pennsylvania, DuckDuckGo is a privately held company with about 200 employees. The company's name is a reference to the children's game duck, duck, goose.",
+      "timestamp": "2025-11-10T21:21:27.416250",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Study Guide: by SuperSummary (2017)",
+      "timestamp": "2025-11-10T21:19:20.957087",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Tupac</B> Amaru Shakur ( TOO-pahk shə-KOOR; born Lesane Parish Crooks, June 16, 1971 – September 13",
+      "timestamp": "2025-11-10T21:19:20.935337",
+      "category": "biography",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Tupac Amaru Shakur (  TOO-pahk shə-KOOR; born Lesane Parish Crooks; June 16, 1971 – September 13, 1996), also known by his stage names 2Pac and Makaveli, was an American rapper and actor. He is widely regarded as one of the greatest rappers of all time, one of the most influential musical artists of...",
+      "timestamp": "2025-11-10T21:19:20.911298",
+      "category": "biography",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Operation Tupac The codename of a military-intelligence contingency program that was run in the 1980s by...",
+      "timestamp": "2025-11-10T21:19:20.889619",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "Tupac Shakur An American rapper and actor, regarded as one of the greatest and most influential rappers of...",
+      "timestamp": "2025-11-10T21:19:20.867983",
+      "category": "biography",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Shanghai Russians, a sizable part of the Russian diaspora, flourished in Shanghai, China, between the World Wars. By 1937 an estimated up to 25,000 Russians lived in the city; they formed the largest European group there by far.  Most of them had come from the Russian Far East, where, with the s...",
+      "timestamp": "2025-11-10T21:16:43.668084",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "A Tale of Two Cities: by Charles Dickens (1800) Subjects: British, British and irish fiction (fictional works by one author), Children's fiction",
+      "timestamp": "2025-11-10T21:15:30.894324",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "The Russian Far East (Russian: Дальний Восток России, IPA: [ˈdalʲnʲɪj vɐˈstok rɐˈsʲiɪ]) is a region in North Asia. It is the easternmost part of Russia and the Asian continent, and is coextensive with the Far Eastern Federal District, which encompasses the area between Lake Baikal and the Pacific Oc...",
+      "timestamp": "2025-11-10T21:15:30.868780",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
     {
       "fact": "Europe is a continent located entirely in the Northern Hemisphere and mostly in the Eastern Hemisphere. It is bordered by the Arctic Ocean to the north, the Atlantic Ocean to the west, the Mediterranean Sea to the south, and Asia to the east. Europe shares the landmass of Eurasia with Asia, and of A...",
       "timestamp": "2025-11-10T20:41:35.850500",

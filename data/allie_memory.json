@@ -1,6 +1,13 @@
 {
   "facts": [
     {
+      "fact": "search engine founded by Gabriel Weinberg in 2008",
+      "importance": 0.95,
+      "category": "biography",
+      "timestamp": "2025-11-10T21:21:41.226414",
+      "usage_count": 0
+    },
+    {
       "fact": "What is the capital of colorado",
       "importance": 0.9,
       "category": "geography",

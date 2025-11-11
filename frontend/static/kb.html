@@ -30,6 +30,7 @@
 <body>
   <div class="container">
     <h1>Knowledge Base</h1>
+    <div id="countDisplay" style="margin: 0 0 12px 0; color: var(--muted); font-size: 14px;">Count: Loading...</div>
     <div class="toolbar">
       <input id="filterStatus" class="input" placeholder="Filter status (true,false,not_verified)" />
       <button id="refreshBtn" class="btn">Refresh</button>
@@ -63,6 +64,17 @@ async function fetchKB(status){
   return res.json();
 }
 
+async function fetchKBTotalCount(){
+  const res = await fetch('/api/kb');
+  if(!res.ok) {
+    const errText = await res.text();
+    console.error('KB total count fetch error:', errText);
+    throw new Error('Failed to fetch total count: ' + res.status + ' - ' + errText);
+  }
+  const data = await res.json();
+  return data.facts ? data.facts.length : 0;
+}
+
 function renderTable(data){
   console.log('Rendering table with data:', data);
   if(!data || !data.facts || !Array.isArray(data.facts)){
@@ -87,9 +99,14 @@ async function refresh(){
     const data = await fetchKB(status || undefined);
     console.log('KB data loaded:', data);
     renderTable(data);
+    
+    // Always fetch and display total count
+    const totalCount = await fetchKBTotalCount();
+    document.getElementById('countDisplay').textContent = `Count: ${totalCount}`;
   }catch(e){
     console.error('Refresh error:', e);
     document.getElementById('tableWrap').textContent = 'Failed to load: '+e.message;
+    document.getElementById('countDisplay').textContent = 'Count: 0';
   }
 }
 
