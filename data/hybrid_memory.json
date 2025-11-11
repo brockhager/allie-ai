@@ -1,8 +1,58 @@
 {
   "version": "1.0",
-  "saved_at": "2025-11-10T18:35:44.319664",
-  "fact_count": 1040,
+  "saved_at": "2025-11-10T19:41:53.309778",
+  "fact_count": 1045,
   "facts": [
+    {
+      "fact": "Learning Python: by Mark Lutz, David Ascher (1999) Subjects: Python (Langage de programmation), Python (linguagem de programação), Python (Computer program language)",
+      "timestamp": "2025-11-10T19:41:53.307839",
+      "category": "cultural",
+      "confidence": 0.85,
+      "source": "openlibrary",
+      "status": "not_verified",
+      "confidence_score": 85,
+      "is_outdated": false
+    },
+    {
+      "fact": "<B>Python</B> is an interpreted, high-level, general-purpose programming language. Created by Guido van",
+      "timestamp": "2025-11-10T19:41:53.294962",
+      "category": "general",
+      "confidence": 0.9,
+      "source": "dbpedia",
+      "status": "not_verified",
+      "confidence_score": 90,
+      "is_outdated": false
+    },
+    {
+      "fact": "Monty Python, also known as the Pythons, were a British comedy troupe formed in 1969 consisting of Graham Chapman, John Cleese, Terry Gilliam, Eric Idle, Terry Jones and Michael Palin. The group came to prominence for the sketch comedy television series Monty Python's Flying Circus, which aired on t...",
+      "timestamp": "2025-11-10T19:41:53.282375",
+      "category": "general",
+      "confidence": 0.95,
+      "source": "wikipedia",
+      "status": "not_verified",
+      "confidence_score": 95,
+      "is_outdated": false
+    },
+    {
+      "fact": "Cold War history of the United Kingdom",
+      "timestamp": "2025-11-10T19:41:53.269937",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
+    {
+      "fact": "PYTHON was a Cold War contingency plan of the British Government for the continuity of government in the event of nuclear war.",
+      "timestamp": "2025-11-10T19:41:53.257173",
+      "category": "general",
+      "confidence": 0.8,
+      "source": "duckduckgo",
+      "status": "not_verified",
+      "confidence_score": 80,
+      "is_outdated": false
+    },
     {
       "fact": "The Republican Party, also known as the Grand Old Party (GOP), is a conservative and right-wing political party in the United States. It emerged as the main rival of the Democratic Party in the 1850s, and the two parties have dominated American politics since then.\nThe Republican Party was founded i...",
       "timestamp": "2025-11-10T18:35:44.317645",

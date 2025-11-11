@@ -1573,17 +1573,53 @@ async def generate_response(payload: Dict[str, Any] = Body(...)):
             # Build search results for disambiguation from all sources
             search_results_for_disambiguation = []
             
-            # Add results from all sources
+            # Add results from all sources (handle dicts and lists returned by different connectors)
             all_results = multi_source_results.get("all_results", {})
+
+            def _iter_source_results(sd):
+                """Yield result dicts from a source payload that may be a dict or a list."""
+                if sd is None:
+                    return
+                # If source returns a dict with 'results' or 'items'
+                if isinstance(sd, dict):
+                    if sd.get("results") and isinstance(sd.get("results"), list):
+                        for r in sd.get("results"):
+                            yield r
+                        return
+                    if sd.get("items") and isinstance(sd.get("items"), list):
+                        for r in sd.get("items"):
+                            yield r
+                        return
+                    # Single result represented as dict
+                    yield sd
+                    return
+                # If source returns a list of result dicts
+                if isinstance(sd, list):
+                    for item in sd:
+                        if isinstance(item, dict):
+                            # If each item wraps results
+                            if item.get("results") and isinstance(item.get("results"), list):
+                                for r in item.get("results"):
+                                    yield r
+                            else:
+                                yield item
+                    return
+
             for source_name, source_data in all_results.items():
-                if source_data.get("success") and source_data.get("results"):
-                    for result in source_data["results"]:
-                        search_results_for_disambiguation.append({
-                            "text": result.get("text", ""),
-                            "source": source_name,
-                            "title": result.get("title", ""),
-                            "confidence": result.get("confidence", 0.8)
-                        })
+                for result in _iter_source_results(source_data):
+                    # Normalize possible fields to common names
+                    text = result.get("text") or result.get("snippet") or result.get("excerpt") or result.get("description") or result.get("summary") or ""
+                    title = result.get("title") or result.get("name") or ""
+                    confidence = result.get("confidence", 0.8)
+                    # Only include meaningful results
+                    if not text and not title:
+                        continue
+                    search_results_for_disambiguation.append({
+                        "text": text,
+                        "source": source_name,
+                        "title": title,
+                        "confidence": confidence
+                    })
             
             # Use disambiguation engine if available
             if hybrid_memory.disambiguation_engine and search_results_for_disambiguation:
