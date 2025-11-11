@@ -222,10 +222,9 @@ async def lifespan(app: FastAPI):
     try:
         # The initialization code that was in startup_event
         if LEARNING_ENABLED:
-            # Temporarily disable background task to test server startup
-            logger.info("Auto-learning background task disabled for testing")
-            _auto_learning_task = asyncio.create_task(auto_learning_background_task())
-            logger.info("Auto-learning background task started")
+            # Background learning is handled by the separate reconciliation_worker.py script
+            # which can be scheduled to run periodically via Windows Task Scheduler
+            logger.info("Learning system enabled - reconciliation handled by external worker")
         
         logger.info("Allie server startup complete")
         yield
@@ -298,6 +297,122 @@ async def quick_teach_ui():
     if not quick_path.exists():
         return HTMLResponse("<html><body><h3>Quick Teach UI not installed</h3></body></html>", status_code=404)
     return HTMLResponse(quick_path.read_text(encoding="utf-8"))
+
+@app.get("/admin-dashboard", response_class=HTMLResponse)
+async def admin_dashboard_ui():
+    """Serve the Admin Dashboard page"""
+    admin_path = STATIC_DIR / "admin-dashboard.html"
+    if not admin_path.exists():
+        return HTMLResponse("<html><body><h3>Admin Dashboard not installed</h3></body></html>", status_code=404)
+    return HTMLResponse(admin_path.read_text(encoding="utf-8"))
+
+@app.post("/api/admin/run-reconciliation")
+async def run_reconciliation_admin():
+    """Run reconciliation worker from admin dashboard"""
+    try:
+        import subprocess
+        import sys
+        from pathlib import Path
+
+        # Path to the reconciliation worker script
+        script_dir = Path(__file__).parent.parent / "scripts"
+        worker_script = script_dir / "reconciliation_worker.py"
+
+        if not worker_script.exists():
+            raise HTTPException(status_code=500, detail="Reconciliation worker script not found")
+
+        # Run the worker with --once flag
+        result = subprocess.run([
+            sys.executable, str(worker_script), "--once"
+        ], capture_output=True, text=True, timeout=300)  # 5 minute timeout
+
+        if result.returncode == 0:
+            # Try to parse the output to get the number of items processed
+            processed_count = 0
+            for line in result.stdout.split('\n'):
+                if 'Batch completed:' in line and 'successful' in line:
+                    # Extract number from "Batch completed: X successful"
+                    try:
+                        parts = line.split()
+                        for i, part in enumerate(parts):
+                            if part == 'completed:':
+                                processed_count = int(parts[i+1])
+                                break
+                    except (ValueError, IndexError):
+                        pass
+
+            return {
+                "success": True,
+                "message": "Reconciliation completed successfully",
+                "processed_count": processed_count,
+                "output": result.stdout[-500:]  # Last 500 chars of output
+            }
+        else:
+            return {
+                "success": False,
+                "error": f"Reconciliation failed with exit code {result.returncode}",
+                "output": result.stderr[-500:] if result.stderr else result.stdout[-500:]
+            }
+
+    except subprocess.TimeoutExpired:
+        raise HTTPException(status_code=500, detail="Reconciliation timed out after 5 minutes")
+    except Exception as e:
+        logger.error(f"Error running reconciliation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/learning/queue/stats")
+async def get_learning_queue_stats():
+    """Get statistics about the learning queue"""
+    try:
+        # Query the learning_queue table
+        cursor = None
+        connection = None
+        try:
+            import mysql.connector
+            connection = mysql.connector.connect(
+                host='localhost',
+                user='allie',
+                password='StrongPassword123!',
+                database='allie_memory'
+            )
+            cursor = connection.cursor()
+
+            # Get pending items count
+            cursor.execute("SELECT COUNT(*) FROM learning_queue WHERE status='pending'")
+            pending = cursor.fetchone()[0]
+
+            # Get processed items count (processed today)
+            cursor.execute("""
+                SELECT COUNT(*) FROM learning_queue
+                WHERE status='processed'
+                AND DATE(processed_at) = CURDATE()
+            """)
+            processed_today = cursor.fetchone()[0]
+
+            return {
+                "pending": pending,
+                "processed_today": processed_today,
+                "total": pending + processed_today
+            }
+
+        except mysql.connector.Error as e:
+            logger.error(f"Database error getting queue stats: {e}")
+            # Return default values if database query fails
+            return {
+                "pending": 0,
+                "processed_today": 0,
+                "total": 0,
+                "error": str(e)
+            }
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
+
+    except Exception as e:
+        logger.error(f"Error getting learning queue stats: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # -------------------------

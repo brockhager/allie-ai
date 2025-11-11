@@ -30,12 +30,17 @@
                 <span>🎓</span>
                 <span>Quick Teach</span>
             </div>
+            <div class="nav-tab" onclick="showTab('admin')">
+                <span>🔧</span>
+                <span>Admin Dashboard</span>
+            </div>
         </div>
     </nav>
     <div class="content-area">
         <iframe id="allie" class="content-frame active" src="/chat"></iframe>
         <iframe id="fact" class="content-frame" src="/fact-check"></iframe>
         <iframe id="quick" class="content-frame" src="/quick-teach"></iframe>
+        <iframe id="admin" class="content-frame" src="/admin-dashboard"></iframe>
     </div>
     <script>
         function showTab(tab) {
