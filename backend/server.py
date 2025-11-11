@@ -306,6 +306,14 @@ async def admin_dashboard_ui():
         return HTMLResponse("<html><body><h3>Admin Dashboard not installed</h3></body></html>", status_code=404)
     return HTMLResponse(admin_path.read_text(encoding="utf-8"))
 
+@app.get("/kb", response_class=HTMLResponse)
+async def knowledge_base_ui():
+    """Serve the Knowledge Base admin UI page"""
+    kb_path = STATIC_DIR / "kb.html"
+    if not kb_path.exists():
+        return HTMLResponse("<html><body><h3>Knowledge Base UI not found</h3></body></html>", status_code=404)
+    return HTMLResponse(kb_path.read_text(encoding="utf-8"))
+
 @app.post("/api/admin/run-reconciliation")
 async def run_reconciliation_admin():
     """Run reconciliation worker from admin dashboard"""
